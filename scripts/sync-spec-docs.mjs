@@ -28,7 +28,7 @@ const LINK_OVERRIDES = {
 
 const FRONTMATTER = `---
 title: Specification
-description: The QUALITY.md format specification — document structure, model vocabulary, frontmatter schema, and evaluation semantics.
+description: The QUALITY.md format specification — document structure, model vocabulary, frontmatter schema, and model semantics.
 ---
 
 {/* Generated from SPECIFICATION.md by scripts/sync-spec-docs.mjs. Do not edit directly. */}

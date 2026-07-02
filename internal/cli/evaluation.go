@@ -36,7 +36,7 @@ func newEvaluationCmd() *cobra.Command {
 func newEvaluationDataCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "data",
-		Short: "Work with Evaluation structured data",
+		Short: "Work with evaluation structured data",
 		RunE:  runGroupHelpOrUnknown,
 	}
 	cmd.AddCommand(newEvaluationDataSetCmd())
@@ -55,7 +55,7 @@ func newEvaluationDataSetCmd() *cobra.Command {
 	var dryRun bool
 	cmd := &cobra.Command{
 		Use:   "set <run>",
-		Short: "Validate and persist a batch of Evaluation JSON payloads",
+		Short: "Validate and persist a batch of evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			run, err := resolveRunArg(args, runFlags)
@@ -101,7 +101,7 @@ func newEvaluationDataListCmd() *cobra.Command {
 	var jsonOutput bool
 	cmd := &cobra.Command{
 		Use:   "list <run>",
-		Short: "List stored Evaluation JSON payloads",
+		Short: "List stored evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			run, err := resolveRunArg(args, runFlags)
@@ -134,7 +134,7 @@ func newEvaluationDataListCmd() *cobra.Command {
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
-	cmd.Flags().StringVar(&kind, "kind", "", "filter by Evaluation data kind")
+	cmd.Flags().StringVar(&kind, "kind", "", "filter by evaluation data kind")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable data list")
 	return cmd
 }
@@ -149,7 +149,7 @@ func newEvaluationDataGetCmd() *cobra.Command {
 	var jsonFlag bool
 	cmd := &cobra.Command{
 		Use:   "get <run>",
-		Short: "Print one stored Evaluation JSON payload",
+		Short: "Print one stored evaluation JSON payload",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if jsonFlag {
@@ -179,10 +179,10 @@ func newEvaluationDataGetCmd() *cobra.Command {
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
-	cmd.Flags().StringVar(&kind, "kind", "", "Evaluation data kind")
-	cmd.Flags().StringVar(&areaRef, "area", "", "Area ref for Area-scoped payloads")
-	cmd.Flags().StringVar(&factorRef, "factor", "", "Factor ref for Factor-scoped payloads")
-	cmd.Flags().StringVar(&requirementRef, "requirement", "", "Requirement ref for Requirement-scoped payloads")
+	cmd.Flags().StringVar(&kind, "kind", "", "evaluation data kind")
+	cmd.Flags().StringVar(&areaRef, "area", "", "area ref for area-scoped payloads")
+	cmd.Flags().StringVar(&factorRef, "factor", "", "factor ref for factor-scoped payloads")
+	cmd.Flags().StringVar(&requirementRef, "requirement", "", "requirement ref for requirement-scoped payloads")
 	cmd.Flags().StringVar(&selector, "selector", "", "optional sub-result selector")
 	cmd.Flags().BoolVar(&jsonFlag, "json", false, "not supported: data get already emits JSON")
 	return cmd
@@ -192,7 +192,7 @@ func newEvaluationDataKindsCmd() *cobra.Command {
 	var jsonOutput bool
 	cmd := &cobra.Command{
 		Use:   "kinds",
-		Short: "List Evaluation data kinds",
+		Short: "List evaluation data kinds",
 		Args:  usage(cobra.NoArgs),
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			result := evaluation.EvaluationDataKinds()
@@ -219,7 +219,7 @@ func newEvaluationDataExampleCmd() *cobra.Command {
 	var jsonFlag bool
 	cmd := &cobra.Command{
 		Use:   "example <kind>",
-		Short: "Print a complete Evaluation example JSON payload",
+		Short: "Print a complete evaluation example JSON payload",
 		Args:  usage(cobra.ExactArgs(1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if jsonFlag {
@@ -245,7 +245,7 @@ func newEvaluationDataSchemaCmd() *cobra.Command {
 	var jsonFlag bool
 	cmd := &cobra.Command{
 		Use:   "schema [kind]",
-		Short: "Print the Evaluation structured data JSON Schema",
+		Short: "Print the evaluation structured data JSON Schema",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if jsonFlag {
@@ -275,7 +275,7 @@ func newEvaluationDataVerifyCmd() *cobra.Command {
 	var jsonOutput bool
 	cmd := &cobra.Command{
 		Use:   "verify <run>",
-		Short: "Validate persisted Evaluation JSON payloads",
+		Short: "Validate persisted evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			run, err := resolveRunArg(args, runFlags)
@@ -349,8 +349,8 @@ func newEvaluationCreateCmd() *cobra.Command {
 			return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
 		},
 	}
-	cmd.Flags().StringVar(&opts.Area, "area", "", "canonical Area reference for the evaluation scope")
-	cmd.Flags().StringArrayVar(&opts.Factors, "factor", nil, "canonical Factor reference for a scoped evaluation; repeatable")
+	cmd.Flags().StringVar(&opts.Area, "area", "", "canonical area reference for the evaluation scope")
+	cmd.Flags().StringArrayVar(&opts.Factors, "factor", nil, "canonical factor reference for a scoped evaluation; repeatable")
 	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
 	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the model-relative evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")
@@ -514,7 +514,7 @@ func modelFlagArgs(model string) string {
 func readPayload(cmd *cobra.Command) ([]byte, error) {
 	in := cmd.InOrStdin()
 	if f, ok := in.(*os.File); ok && term.IsTerminal(int(f.Fd())) {
-		return nil, fmt.Errorf("pipe a JSON array of Evaluation payloads on standard input")
+		return nil, fmt.Errorf("pipe a JSON array of evaluation payloads on standard input")
 	}
 	return io.ReadAll(in)
 }

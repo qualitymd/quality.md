@@ -90,7 +90,7 @@ func init() {
 	for _, contract := range []dataKindContract{
 		{
 			Kind:        DataKindEvaluationManifest,
-			Description: "CLI-owned Evaluation manifest written at create time.",
+			Description: "CLI-owned evaluation manifest written at create time.",
 			Object: topContract(DataKindEvaluationManifest,
 				field("evaluationId", dataString, true),
 				field("createdAt", dataString, true),
@@ -164,7 +164,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindRequirementAssessment,
-			Description: "Evidence assessment result for one Requirement.",
+			Description: "Evidence assessment result for one requirement.",
 			Object: topContract(DataKindRequirementAssessment,
 				field("requirementId", dataRequirementID, true),
 				field("status", dataString, true, enumStrings(assessmentStatusValues)),
@@ -183,7 +183,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindRequirementRating,
-			Description: "Rating result for one Requirement Assessment.",
+			Description: "Rating result for one requirement assessment.",
 			Object: topContract(DataKindRequirementRating,
 				field("requirementId", dataRequirementID, true),
 				field("status", dataString, true, enumStrings(ratingStatusValues)),
@@ -222,7 +222,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindFactorAnalysis,
-			Description: "Analysis result for one Factor node.",
+			Description: "Analysis result for one factor node.",
 			Object:      analysisResultContract(DataKindFactorAnalysis, "factorId", dataFactorID),
 			Example: func() map[string]any {
 				return factorAnalysisExample(DataKindFactorAnalysis)
@@ -248,7 +248,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindAreaAnalysis,
-			Description: "Analysis result for one Area.",
+			Description: "Analysis result for one area.",
 			Object:      areaAnalysisResultContract(),
 			Example: func() map[string]any {
 				return scopedAnalysisExample(DataKindAreaAnalysis, "areaId", exampleAreaID())
@@ -256,7 +256,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindFindingRanking,
-			Description: "Advice-phase ranking of every persisted Finding in the evaluation scope.",
+			Description: "Advice-phase ranking of every persisted finding in the evaluation scope.",
 			Object: topContract(DataKindFindingRanking,
 				field("subject", dataObject, false, object(field("scopeRef", dataString, false))),
 				field("orderedFindings", dataArray, true, arrayOfObject(findingRankingEntryContract())),
@@ -282,7 +282,7 @@ func init() {
 		},
 		{
 			Kind:        DataKindRecommendationRanking,
-			Description: "Advice-phase ranking of Recommendations and final Finding coverage accounting.",
+			Description: "Advice-phase ranking of recommendations and final finding coverage accounting.",
 			Object: topContract(DataKindRecommendationRanking,
 				field("orderedRecommendations", dataArray, true, arrayOfObject(recommendationRankingEntryContract()), minItems(1)),
 				field("findingCoverage", dataArray, true, arrayOfObject(findingCoverageEntryContract())),
@@ -646,7 +646,7 @@ func resolveDataKindArg(raw string) (DataKind, error) {
 	return "", usagef("unknown evaluation data kind %q", raw)
 }
 
-// ResolveDataKind accepts a canonical or kebab-case Evaluation data kind.
+// ResolveDataKind accepts a canonical or kebab-case evaluation data kind.
 func ResolveDataKind(raw string) (DataKind, error) {
 	return resolveDataKindArg(raw)
 }
@@ -955,7 +955,7 @@ func validateRequirementReferenceString(spec *model.Spec, value any, path string
 		return usagef("%s: %w", path, err)
 	}
 	if !model.AreaExists(spec, req.DeclaringArea) {
-		return usagef("%s declares an Area absent from the model", path)
+		return usagef("%s declares an area absent from the model", path)
 	}
 	if !model.RequirementExists(spec, req.DeclaringArea, req.Name) {
 		return usagef("%s does not resolve in the model", path)
@@ -969,7 +969,7 @@ func validateFactorReferenceString(spec *model.Spec, value any, path string) err
 		return usagef("%s: %w", path, err)
 	}
 	if !model.AreaExists(spec, factor.DeclaringArea) {
-		return usagef("%s declares an Area absent from the model", path)
+		return usagef("%s declares an area absent from the model", path)
 	}
 	if !model.FactorExists(spec, factor.DeclaringArea, factor.Path) {
 		return usagef("%s does not resolve in the model", path)

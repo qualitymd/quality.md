@@ -32,7 +32,7 @@ the selected model's workspace root. When `--model` is absent and a positional
 `<run>` path is supplied, `build` **MAY** preserve ordinary filesystem-path
 behavior.
 
-For Evaluation runs, `build` validates the structured payload graph under
+For evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
 deterministic Markdown report tree from completed structured outputs, including
 the generated report frontmatter, header, and primary source-data section
@@ -42,19 +42,19 @@ recompute ratings, invent findings, choose new recommendations by evaluator
 judgment, or read generated report frontmatter or Markdown body content as
 source data. It
 **MUST** fail before writing generated report files when the run is not
-renderable, including when required Evaluation data is missing, malformed,
+renderable, including when required evaluation data is missing, malformed,
 schema-incompatible, or structurally incomplete. The failure **MUST** identify
 the blocking gap and point the caller to `qualitymd evaluation status <run>` for
 the complete gap list. It **MUST** be deterministic and idempotent: unchanged
 structured data produces byte-identical report files.
 
 `build` **MUST** read the run scope from `EvaluationManifest.plannedScope`.
-`report.md` **MUST** render as the scoped Area report for
+`report.md` **MUST** render as the scoped area report for
 `plannedScope.areaId`, narrowed by `factorFilter` when present. It **MUST NOT**
 choose a headline subject from `EvaluationFrame` or any other agent-authored
 payload ordering. `report.md` **MUST** title the run entrypoint as
 `Quality evaluation - <Area title>` and append a parenthesized comma-separated
-Factor title list when `plannedScope.factorFilter` is present. `report.md`
+factor title list when `plannedScope.factorFilter` is present. `report.md`
 **MUST** render non-judgmental run metadata in YAML frontmatter, omit the
 visible top run-context line, and open with the standard `Evaluation links:`
 blockquote, `Summary`, `Key details`, `Contents`, and `Model evaluation` before
@@ -62,12 +62,12 @@ Top findings.
 `report.md` **MUST NOT** render visible `Limits and incomplete inputs`, `Scope`,
 `Coverage`, or `Report Details` sections.
 
-`build` **MUST** render persisted Advice outputs into `report.md`,
+`build` **MUST** render persisted advice outputs into `report.md`,
 `findings.md`, `recommendations.md`, and recommendation detail reports under
 `recommendations/`. `report.md` **MUST** include Top findings and Top
-Recommendations sections capped at 10 rows each and **MUST** link to
+recommendations sections capped at 10 rows each and **MUST** link to
 `findings.md` and `recommendations.md`. Recommendation report content **MUST** be
-rendered from persisted Advice data and the model snapshot, not from YAML
+rendered from persisted advice data and the model snapshot, not from YAML
 frontmatter or Markdown body content in other generated reports.
 
 Generated Markdown report frontmatter **MUST** contain only non-judgmental
@@ -77,15 +77,15 @@ Contents sections and `Evaluation links:` navigation and **MUST NOT** render
 compact `Jump to:` lines, local `Legend` blocks, or a bottom `Legend` section as
 defined by the report-tree contract. Every generated Markdown report **MUST**
 end with a `Primary source data` section listing the report-local primary
-structured Evaluation payload files used as source data for the specific report
+structured evaluation payload files used as source data for the specific report
 artifact. The generated `data/evaluation-output-result.json` index **MUST NOT**
 be listed as report source data unless a report is directly rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
-The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by
+The receipt's `ratingResult` **MUST** describe the scoped area result rendered by
 `report.md`.
 
 `build` **MUST NOT** accept a gate flag.
 
-The Evaluation report content contract is defined by
+The evaluation report content contract is defined by
 [Evaluation report tree](../evaluation/reports/report-tree.md).

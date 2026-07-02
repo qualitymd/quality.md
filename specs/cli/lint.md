@@ -17,7 +17,7 @@ This file specifies only what is particular to `lint`.
 exiting non-zero on errors so it drops into CI.
 
 **Boundary.** `lint` applies qualitymd's default lint profile: normative
-QUALITY.md Model checks plus documented qualitymd tooling-key checks, such as
+QUALITY.md model checks plus documented qualitymd tooling-key checks, such as
 the root `config` pointer. It does not assess whether the model is a _good_
 quality model; that judgment lives in the evaluation skills, not the
 deterministic CLI.
@@ -55,8 +55,8 @@ The lint rule-system, rule-authoring guidance, and rule catalog live in
 [`qualitymd lint rules`](lint-rules.md). `lint` rules remain mechanically
 grounded in the format specification, deterministic, format-conformance focused,
 and self-contained within the linted file and declared cross-references. The
-default lint profile enforces the strict name grammar for Area names, Factor
-names, and Rating Level IDs, and rejects `root` as a reserved Area name.
+default lint profile enforces the strict name grammar for area names, factor
+names, and rating level IDs, and rejects `root` as a reserved area name.
 
 ### Repair behavior
 

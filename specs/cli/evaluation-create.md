@@ -22,8 +22,8 @@ all capitals.
 ## Arguments and flags
 
 - `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
-- `--area <area-id>` — optional canonical Area reference for the run scope.
-- `--factor <factor-id>` — optional canonical Factor reference; repeatable.
+- `--area <area-id>` — optional canonical area reference for the run scope.
+- `--factor <factor-id>` — optional canonical factor reference; repeatable.
 - `--model <path>` — selected `QUALITY.md` file to snapshot.
 - `--evaluation-dir <path>` — override the model-relative evaluation directory.
 - `--json` — emit a receipt on stdout.
@@ -63,7 +63,7 @@ directory, create `data/`, snapshot `model-snapshot.md`, and write
 `data/evaluation-manifest.json` **MUST** be a CLI-owned `EvaluationManifest`
 payload containing `schemaVersion`, `kind`, `evaluationId`, `createdAt`,
 `model`, `requestedScope`, `plannedScope`, and `run`. `evaluationId` **MUST** be
-a globally-unique Evaluation ID generated from the creation instant plus a
+a globally-unique evaluation ID generated from the creation instant plus a
 random tail and **MUST NOT** be derived from `run.number`. `createdAt` **MUST**
 be a UTC RFC 3339 timestamp for run creation and **MUST** be computed from the
 same instant as `evaluationId`. `requestedScope` **MUST** faithfully record
@@ -73,13 +73,13 @@ defaulting `areaId` to `area:root` and `factorFilter` to an array. `run`
 name.
 
 The command **MUST** validate `--area` and every `--factor` against the model
-snapshot before creating a numbered run folder. If a Factor does not belong to
-the planned Area, the command **MUST** fail without creating the run folder.
+snapshot before creating a numbered run folder. If a factor does not belong to
+the planned area, the command **MUST** fail without creating the run folder.
 
 New run folders **MUST** be named `NNNN-<scope>-eval`. `<scope>` **MUST** be
-derived from `plannedScope`: a root Area with an empty `factorFilter` produces
-`NNNN-full-eval`; otherwise the slug is built from the planned Area path and any
-filtered Factor structural paths. Callers **MUST NOT** supply the slug.
+derived from `plannedScope`: a root area with an empty `factorFilter` produces
+`NNNN-full-eval`; otherwise the slug is built from the planned area path and any
+filtered factor structural paths. Callers **MUST NOT** supply the slug.
 
 The command **MUST NOT** create previous-runtime record folders or planning
 coverage files such as `assessments/`, `analysis/`, `recommendations/`,

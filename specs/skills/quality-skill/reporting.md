@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
 title: /quality reporting
-description: Component spec for /quality Evaluation reports and run artifacts.
+description: Component spec for /quality evaluation reports and run artifacts.
 tags: [skill, quality, evaluation, reporting]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # /quality reporting
 
-This spec owns the `/quality` skill's Evaluation reporting and run-artifact
+This spec owns the `/quality` skill's evaluation reporting and run-artifact
 contract. It composes the shared contracts in the parent
 [/quality skill](quality-skill.md), the judgment workflow in
 [/quality evaluation workflow](evaluation.md), and the durable
@@ -48,10 +48,10 @@ Generated Markdown reports carry identity frontmatter and visible bottom
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Report
 frontmatter `title` matches the visible H1 document title; `type` carries the
 report artifact taxonomy. The `Primary source data` section lists report-local
-primary structured Evaluation payloads used to render the specific report
+primary structured evaluation payloads used to render the specific report
 artifact. Generated reports use standard `Contents` sections and
 `Evaluation links:` navigation instead of compact `Jump to:` lines or local
-`Legend` blocks or bottom `Legend` sections. The Evaluation run folder is not
+`Legend` blocks or bottom `Legend` sections. The evaluation run folder is not
 yet a full OKF bundle: it does not require
 generated `index.md`, `schema.md`, or `log.md` files, and generated reports do
 not require registration in `specs/schema.md`.
@@ -83,7 +83,7 @@ analysis, or recommendations.
 Reports **MUST NOT** read generated report frontmatter or Markdown body content
 from other generated reports as source data.
 
-Area and Factor reports **MUST NOT** render `Findings` sections or standalone
+Area and factor reports **MUST NOT** render `Findings` sections or standalone
 `Rating Drivers` sections. Their human-facing roll-up explanation belongs in
 summary, ratings, confidence, limits, incomplete inputs, and breakdown tables,
 while structured `ratingDrivers` remain available through the payloads listed in
@@ -91,8 +91,8 @@ the report's `Primary source data` section.
 
 Run reports **MUST** render the Model evaluation section required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Area reports
-**MUST** render the Area / Factor breakdown required by that report tree. These
-sections are the human-facing Area / Factor structure and status surface; the
+**MUST** render the Area / factor breakdown required by that report tree. These
+sections are the human-facing area / factor structure and status surface; the
 machine-readable generated-report manifest remains
 `data/evaluation-output-result.json`.
 
@@ -101,19 +101,19 @@ credential type only, never secret values or unsafe raw content.
 
 ## Report tree
 
-The run-level Evaluation report **MUST** be `report.md` at the run root.
+The run-level evaluation report **MUST** be `report.md` at the run root.
 
-The root Area report **MUST** be `root-area.md` at the run root when the root
-Area has an Area Analysis Result in the run.
+The root area report **MUST** be `root-area.md` at the run root when the root
+area has an area analysis result in the run.
 
-Non-root Area reports **MUST** be written with short subject-aware filenames
-under their Area folder, such as `areas/<area>/<area>-area.md`.
+Non-root area reports **MUST** be written with short subject-aware filenames
+under their area folder, such as `areas/<area>/<area>-area.md`.
 
 Factor reports **MUST** be written with short subject-aware filenames under the
-owning Area report folder, such as `factors/<factor>/<factor>-factor.md`.
+owning area report folder, such as `factors/<factor>/<factor>-factor.md`.
 
 Requirement reports **MUST** be written with short subject-aware filenames under
-the owning Area report folder, such as
+the owning area report folder, such as
 `requirements/<requirement>/<requirement>-requirement.md`.
 
 Every report **MUST** include the navigation trails required by the
@@ -128,16 +128,16 @@ required by that report tree. Report bodies **MUST NOT** duplicate report-level
 source-data links in header `Data` columns; the `Primary source data` section
 owns those pointers.
 
-Area reports **MUST** link to local and descendant Area and Factor reports
-through the Area / Factor breakdown, and to local Requirement reports through
-their Requirement table.
+Area reports **MUST** link to local and descendant area and factor reports
+through the Area / factor breakdown, and to local requirement reports through
+their requirement table.
 
-Factor reports **MUST** link to their owning Area report when that Area report
-was generated, parent Factor report when present, Sub-Factor reports, and
-direct Requirement reports.
+Factor reports **MUST** link to their owning area report when that area report
+was generated, parent factor report when present, sub-factor reports, and
+direct requirement reports.
 
-Requirement reports **MUST** link to their owning Area report and every attached
-Factor report.
+Requirement reports **MUST** link to their owning area report and every attached
+factor report.
 
 ## User-facing closeout
 

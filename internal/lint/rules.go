@@ -264,7 +264,7 @@ func (s *runState) checkRatingLevelID(level *yaml.Node, path []PathSegment, inde
 	name := value.Value
 	location := s.loc(value, levelPath, label)
 	if !validModelName(name) {
-		s.add(RuleInvalidRatingLevelID, "The rating level ID `"+name+"` is invalid; Area names, Factor names, Requirement names, and Rating Level IDs must match "+qschema.ModelNamePattern+".", location, nil)
+		s.add(RuleInvalidRatingLevelID, "The rating level ID `"+name+"` is invalid; area names, factor names, requirement names, and rating level IDs must match "+qschema.ModelNamePattern+".", location, nil)
 	}
 	if prior, ok := seen[name]; ok {
 		s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", location, nil)
@@ -469,8 +469,8 @@ func (s *runState) checkRequirementUniqueness(area *areaRef) {
 	for _, req := range localRequirements(area) {
 		location := s.locForMissing(req.path, label(req.path))
 		if prior, ok := seen[req.name]; ok {
-			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; Requirement names must be unique within their declaring Area.", location, nil)
-			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; Requirement names must be unique within their declaring Area.", prior, nil)
+			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; requirement names must be unique within their declaring area.", location, nil)
+			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; requirement names must be unique within their declaring area.", prior, nil)
 			continue
 		}
 		seen[req.name] = location

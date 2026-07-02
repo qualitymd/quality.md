@@ -7,7 +7,7 @@ description: Quick lifecycle and model-usefulness routing checks for QUALITY.md 
 # Top 10 QUALITY.md checks
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
-lifecycle state and model usefulness. The result is not an Evaluation Report and
+lifecycle state and model usefulness. The result is not an evaluation report and
 does not rate the evaluated source. It produces routing findings that read-only
 orientation and model-review workflows can use to choose the next public
 workflow.
@@ -181,7 +181,7 @@ Factors should be meaningful quality lenses, not vague labels alone.
   context of use; do not flag a harness-less or throwaway project, which hits the
   not-germane disqualifier.
 - Finding when an agent-collaborated composite root does not carry
-  Agent Harnessability or its sub-factors among its model-wide factors: route to
+  agent harnessability or its sub-factors among its model-wide factors: route to
   improve with model focus. Do not flag a non-agent-collaborated, harness-less,
   throwaway, or narrowly scoped entity where the factor is not germane. Treat an
   existing `harnessability` factor as stale legacy naming, not current coverage;
@@ -206,7 +206,7 @@ Factors should be meaningful quality lenses, not vague labels alone.
   software: route to improve with model focus. Rephrase toward how this project's
   steering materials point to verification, enforce standards, or bound action.
 - Finding when a model carries two same-rooted projections of one concern (e.g. an
-  Agent Harnessability factor and an agent-harness area) with no boundary note —
+  agent harnessability factor and an agent-harness area) with no boundary note —
   neither a YAML comment nor a disambiguating description clause distinguishing
   them: route to improve with model focus. A reader cannot tell the projections
   apart, and the double-count risk is invisible.
@@ -250,7 +250,7 @@ either inline or by referencing a traceable entity that defines it.
 - Finding when evidence or criteria cannot distinguish adjacent rating levels:
   route to improve with model focus before evaluation.
 
-### 10. Quality Loop maintenance signals
+### 10. Quality loop maintenance signals
 
 Use evaluation history and visible model context to decide whether the next
 workflow is maintenance rather than new authoring or evaluation. The checklist

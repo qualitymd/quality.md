@@ -13,14 +13,14 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-a
 
 ## Key details
 
-| Overall Rating | Local Rating | Confidence |
+| Overall rating | Local rating | Confidence |
 | --- | --- | --- |
 | 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |
 
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor breakdown](#area--factor-breakdown)
+- [Area / factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
 - [Limits and incomplete inputs](#limits-and-incomplete-inputs)
 - [Primary source data](#primary-source-data)
@@ -29,9 +29,9 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-a
 
 Agent guidance exposes the quality evaluation entry point clearly.
 
-## Area / Factor breakdown
+## Area / factor breakdown
 
-| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |

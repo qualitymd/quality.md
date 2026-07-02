@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
-title: Authoring Factors
+title: Authoring factors
 description: Factor naming, coverage, descriptions, stable-stakes factors, and sub-factor guidance for QUALITY.md models.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Factors
+# Authoring factors
 
 Read this when:
 
-- creating, revising, reviewing, or evaluating Factors or sub-factors other than Agent Harnessability.
+- creating, revising, reviewing, or evaluating factors or sub-factors other than agent harnessability.
 
 Depends on:
 
@@ -30,11 +30,11 @@ are illustrative, non-exhaustive, and may overlap. A factor may decompose into
 sub-factor is itself a factor of the same shape, nested to any depth.
 
 Factor identity is local to its area: factors of the same name on two
-different areas are distinct. A Factor's stable ID is the declaring Area ID plus
-its path of Factor names from that Area's `factors` map.
+different areas are distinct. A factor's stable ID is the declaring area ID plus
+its path of factor names from that area's `factors` map.
 
 Within one area, avoid reusing the same factor name anywhere in that area's
-factor tree. The full Factor IDs stay distinct, but Requirement `factors`
+factor tree. The full factor IDs stay distinct, but requirement `factors`
 entries use scalar names, so repeated names in one area are hard for authors,
 agents, and reports to read unambiguously.
 
@@ -205,7 +205,7 @@ on them, or lacks evidence about them.
 
 - **Do** treat a child area's factor that shares a name with an ancestor's as a
   local refinement tailored to the child. _They're distinct factors with
-  distinct IDs; a Requirement in the child area references the child factor, not
+  distinct IDs; a requirement in the child area references the child factor, not
   the ancestor._
 - **Avoid** reusing the same factor name in multiple places inside one area's
   own factor tree. _Scalar `factors` references name local factors by name, so

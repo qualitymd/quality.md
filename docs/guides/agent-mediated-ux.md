@@ -346,8 +346,8 @@ Good:
 ```text
 **Question 4: How costly is poor quality here?**
 
-**Why it matters:** This sets modeling rigor, risk strictness, and which Factors
-need explicit Requirements.
+**Why it matters:** This sets modeling rigor, risk strictness, and which factors
+need explicit requirements.
 
 1. High cost - poor quality can cause serious business, operational, financial,
    or trust impact. **Recommended**
@@ -421,13 +421,13 @@ answer path. Keep important boundaries, logging decisions, and approval paths
 visible without turning the gate into a formal questionnaire. For example:
 
 ```text
-**Planned edit:** Add root-level Security coverage.
+**Planned edit:** Add root-level security coverage.
 
 **Why:** Whole-repo evaluation should catch security-sensitive concerns even
-when the details live in child Areas.
+when the details live in child areas.
 
-**Approach:** Add a root `security` Factor with one Requirement that checks
-descendant Areas for security-related Factors, Requirements, and evidence.
+**Approach:** Add a root `security` factor with one requirement that checks
+descendant areas for security-related factors, requirements, and evidence.
 
 **Boundary:** This is broad cross-area security coverage, not only a roll-up of
 `api-service/security`.
@@ -456,18 +456,18 @@ parts that would be hard to scan in prose. The default review gate is a short
 plain-language plan, not a task list.
 
 A specific steering axis is better than an exhaustive menu. If the most
-consequential assumption is broad Security versus narrower appsec, ask that. Do
+consequential assumption is broad security versus narrower appsec, ask that. Do
 not dilute it with every possible concern, naming preference, edge case, and
 constraint unless those dimensions are equally likely to change the edit.
 
 Avoid long single-flow prose for review gates:
 
 ```text
-I’m reading this as: add a model-wide Security Factor at the root so whole-repo
-evaluation can judge security-sensitive concerns even when the detailed Factor
-lives in a child Area. I’d implement that as a root Security Factor with one
-Requirement that inspects descendant Areas for security-related Factors,
-Requirements, and evidence...
+I’m reading this as: add a model-wide security factor at the root so whole-repo
+evaluation can judge security-sensitive concerns even when the detailed factor
+lives in a child area. I’d implement that as a root security factor with one
+requirement that inspects descendant areas for security-related factors,
+requirements, and evidence...
 ```
 
 The content may be right, but the user has to parse too much before finding the
@@ -500,7 +500,7 @@ Replace the starter model with a project-specific model.
   [y] Update `QUALITY.md` now  — recommended
   [n] Stop, or only scaffold the file
 
-Reason: repo has enough context to draft Areas, Factors, and Requirements.
+Reason: repo has enough context to draft areas, factors, and requirements.
 Done when: `qualitymd lint QUALITY.md` passes.
 Not changed: no evaluation, no issues, no automations.
 ```
@@ -566,7 +566,7 @@ Good uses:
 - `✅` for a completed validation or workflow result.
 - `⚠️` for an important gap or caution.
 - `❓` for an unknown or unresolved question.
-- `🟢`, `🔵`, `🟡`, and `🔴` for Rating Level display titles when the standard
+- `🟢`, `🔵`, `🟡`, and `🔴` for rating level display titles when the standard
   QUALITY.md scale fits.
 
 Avoid emoji in every heading or label. Repeated decorative emoji reduces scan

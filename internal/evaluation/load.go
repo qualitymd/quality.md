@@ -8,7 +8,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-// Run is a loaded Evaluation run folder.
+// Run is a loaded evaluation run folder.
 type Run struct {
 	Path    string
 	AbsPath string
@@ -16,14 +16,14 @@ type Run struct {
 	Scale   []model.RatingLevel
 }
 
-// RunGap describes a reportability or validation gap in an Evaluation run.
+// RunGap describes a reportability or validation gap in an evaluation run.
 type RunGap struct {
 	Kind   RunGapKind `json:"kind"`
 	Ref    string     `json:"ref"`
 	Detail string     `json:"detail"`
 }
 
-// RunGapKind identifies a class of Evaluation run gap.
+// RunGapKind identifies a class of evaluation run gap.
 type RunGapKind string
 
 const (
@@ -33,7 +33,7 @@ const (
 	GapIncompleteEvaluationData RunGapKind = "incomplete-evaluation-data"
 )
 
-// DataStatus summarizes persisted Evaluation data artifacts.
+// DataStatus summarizes persisted evaluation data artifacts.
 type DataStatus struct {
 	Artifacts int `json:"artifacts"`
 }
@@ -48,17 +48,17 @@ type RunStatus struct {
 	NextActions   []receipt.Action `json:"nextActions"`
 }
 
-// Load reads an Evaluation run.
+// Load reads an evaluation run.
 func Load(path string) (*Run, error) {
 	return load(path)
 }
 
-// Inspect reads an Evaluation run for history/status views.
+// Inspect reads an evaluation run for history/status views.
 func Inspect(path string) (*Run, error) {
 	return load(path)
 }
 
-// InspectWithDisplay reads an Evaluation run and uses displayPath in receipts.
+// InspectWithDisplay reads an evaluation run and uses displayPath in receipts.
 func InspectWithDisplay(path, displayPath string) (*Run, error) {
 	return loadWithDisplay(path, displayPath)
 }
@@ -91,7 +91,7 @@ func loadWithDisplay(path, displayPath string) (*Run, error) {
 	}, nil
 }
 
-// Status summarizes whether the Evaluation data graph is reportable.
+// Status summarizes whether the evaluation data graph is reportable.
 func (r *Run) Status() RunStatus {
 	gaps := evaluationRenderableGaps(r.AbsPath)
 	data := DataStatus{}
@@ -108,13 +108,13 @@ func (r *Run) Status() RunStatus {
 	if status.Reportable {
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-report-build",
-			Label:   "Build Evaluation report",
+			Label:   "Build evaluation report",
 			Command: "qualitymd evaluation report build " + r.Path,
 		}}
 	} else {
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-data-set",
-			Label:   "Persist required Evaluation data",
+			Label:   "Persist required evaluation data",
 			Command: "qualitymd evaluation data set " + r.Path + " < payloads.json",
 		}}
 	}

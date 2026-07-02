@@ -13,14 +13,14 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 
 ## Key details
 
-| Overall Rating | Local Rating | Confidence |
+| Overall rating | Local rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
 
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor breakdown](#area--factor-breakdown)
+- [Area / factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
 - [Limits and incomplete inputs](#limits-and-incomplete-inputs)
 - [Primary source data](#primary-source-data)
@@ -29,9 +29,9 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 
 Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
-## Area / Factor breakdown
+## Area / factor breakdown
 
-| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |

@@ -1,5 +1,23 @@
 # Specs update log
 
+## 2026-07-01
+
+- **Revision**: Narrowed [`SPECIFICATION.md`](../SPECIFICATION.md) (0.9 → 0.10
+  Draft) to a document-only conformance surface. Conformance is now a property
+  of QUALITY.md documents; the parser/linter/evaluator/report-renderer
+  conformance classes, normative Evaluation semantics, Advice, and Report
+  semantics sections are removed. A new normative Model semantics section
+  defines source resolution, Requirement scope (no inheritance by child Areas;
+  overlapping Sources do not reassign Requirements), Factor connection, and
+  Rating Scale semantics; a non-normative Appendix D illustrates the `/quality`
+  skill's evaluation method as one method among others, and `not assessed` is
+  now owned by the evaluation record specs. Updated
+  [`quality-skill.md`](skills/quality-skill/quality-skill.md) and
+  [`evaluation.md`](skills/quality-skill/evaluation.md) to bind the skill to
+  the format spec's Model semantics (the process contract is the skill's own),
+  the versioning reference, the runtime skill prerequisites, and the Mintlify
+  spec/overview/quickstart pages.
+
 ## 2026-06-30
 
 - **Revision**: Implemented durable spec changes for

@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
 title: Evaluation protocol
-description: Phase ordering, traversal, and stop behavior for Evaluation.
+description: Phase ordering, traversal, and stop behavior for evaluation.
 tags: [evaluation, protocol, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # Evaluation protocol
 
-This spec defines the Evaluation protocol order. It inherits shared
+This spec defines the evaluation protocol order. It inherits shared
 invariants from [Evaluation](evaluation.md).
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -17,15 +17,15 @@ capitals.
 
 ## Protocol order
 
-An Evaluation run **MUST** perform these protocol moves:
+An evaluation run **MUST** perform these protocol moves:
 
 1. `frameEvaluation`
-2. `frameAreaEvaluation` for each in-scope Area
-3. `frameRequirementEvaluation` for each local Requirement
-4. `assessRequirement` for each framed Requirement
-5. `rateRequirement` for each Requirement Assessment
-6. `frameFactorAnalysis` and `analyzeFactor` for each Factor node bottom-up
-7. `frameAreaAnalysis` and `analyzeArea` for each Area bottom-up
+2. `frameAreaEvaluation` for each in-scope area
+3. `frameRequirementEvaluation` for each local requirement
+4. `assessRequirement` for each framed requirement
+5. `rateRequirement` for each requirement assessment
+6. `frameFactorAnalysis` and `analyzeFactor` for each factor node bottom-up
+7. `frameAreaAnalysis` and `analyzeArea` for each area bottom-up
 8. `rankFindings`
 9. `recommend`
 10. `accountForFindingCoverage`
@@ -39,19 +39,19 @@ dependency order and produce the same persisted outputs.
 
 ## Area traversal
 
-The evaluator **MUST** walk the Area tree bottom-up for analysis.
+The evaluator **MUST** walk the area tree bottom-up for analysis.
 
-For each Area, the evaluator **MUST**:
+For each area, the evaluator **MUST**:
 
-1. create an Area Evaluation Frame;
-2. evaluate local Requirements;
-3. analyze the Area's local Factor forest bottom-up;
-4. evaluate child Areas;
-5. create an Area Analysis Frame after root Factor and child Area analyses are
+1. create an area evaluation frame;
+2. evaluate local requirements;
+3. analyze the area's local factor forest bottom-up;
+4. evaluate child areas;
+5. create an area analysis frame after root factor and child area analyses are
    complete; and
-6. produce the Area Analysis Result.
+6. produce the area analysis result.
 
-Root Area `localAndDescendantAnalysis`, when analyzed, is the overall evaluation
+Root area `localAndDescendantAnalysis`, when analyzed, is the overall evaluation
 result.
 
 ## Planned scope
@@ -61,9 +61,9 @@ authoritative scope. It **MUST NOT** select a headline subject from
 agent-authored frame input ordering.
 
 The planned expansion is derived from `plannedScope` and the model snapshot: the
-planned Area, its descendant Areas, the filtered Factors when `factorFilter` is
-non-empty or all in-scope Factors when it is empty, and the Requirements reached
-from those in-scope Areas and Factors.
+planned area, its descendant areas, the filtered factors when `factorFilter` is
+non-empty or all in-scope factors when it is empty, and the requirements reached
+from those in-scope areas and factors.
 
 Report generation **MUST** fail when required analysis data for the planned
 scope is missing. Coverage checks **MUST** compare the planned expansion against
@@ -71,29 +71,29 @@ the structured analysis artifacts actually produced.
 
 ## Factor traversal
 
-The evaluator **MUST** walk each Area's Factor tree bottom-up.
+The evaluator **MUST** walk each area's factor tree bottom-up.
 
-For each Factor node, the evaluator **MUST** analyze child Factors before the
-parent Factor.
+For each factor node, the evaluator **MUST** analyze child factors before the
+parent factor.
 
-A Factor Analysis Frame **MUST** include direct Requirement Rating Results for
-that exact Factor node and direct child Factor Analysis Results. It **MUST NOT**
-include transitive descendant Factor refs because each child result already
+A factor analysis frame **MUST** include direct requirement rating results for
+that exact factor node and direct child factor analysis results. It **MUST NOT**
+include transitive descendant factor refs because each child result already
 accounts for its descendants.
 
-When a Factor has no direct Requirements (an umbrella Factor), its Factor
-Analysis Result **MUST** record `localAnalysis` with the `empty` status and a
-reason, because there is no local signal to analyze; the Factor's
-`localAndDescendantAnalysis` carries the roll-up of its child Factor analyses.
+When a factor has no direct requirements (an umbrella factor), its factor
+analysis result **MUST** record `localAnalysis` with the `empty` status and a
+reason, because there is no local signal to analyze; the factor's
+`localAndDescendantAnalysis` carries the roll-up of its child factor analyses.
 
 ## Requirement flow
 
-A Requirement **MUST** be framed before evidence assessment.
+A requirement **MUST** be framed before evidence assessment.
 
-A Requirement **MUST** be assessed before it is rated.
+A requirement **MUST** be assessed before it is rated.
 
-Requirement rating **MUST** map the Requirement Assessment Result to the
-pre-framed applied Rating Level criteria. It **MUST NOT** inspect new evidence or
+Requirement rating **MUST** map the requirement assessment result to the
+pre-framed applied rating level criteria. It **MUST NOT** inspect new evidence or
 change the criteria after evidence is observed.
 
 ## Stop conditions and limits
@@ -125,12 +125,12 @@ They **MUST NOT** synthesize new findings; roll-up explanation belongs in
 
 ## Advice flow
 
-Advice **MUST** run after Area analysis has completed and before output assembly
+Advice **MUST** run after area analysis has completed and before output assembly
 or report generation.
 
-`rankFindings` **MUST** consider every Requirement Finding produced in the
+`rankFindings` **MUST** consider every requirement finding produced in the
 effective run data and write one `FindingRankingResult`. The ranking's tiers and
-order express relative priority; no Requirement Finding is omitted from the
+order express relative priority; no requirement finding is omitted from the
 ranking, so a low-priority finding is ranked at a low tier rather than dropped.
 If the evaluation produced no findings, the ranking result **MUST** record an
 empty ranking.
@@ -151,4 +151,4 @@ quality impact, quality-bar relevance, trace strength, confidence, and whether
 the advice addresses binding constraints. Ranking recommendation refs **MUST**
 use `RecommendationResult.id`. It **MUST NOT** use effort, ROI,
 quick-win status, backlog priority, or numeric score fields as required
-Evaluation data.
+evaluation data.

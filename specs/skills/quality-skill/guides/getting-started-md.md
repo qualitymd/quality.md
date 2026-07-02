@@ -80,7 +80,7 @@ building the model.
 The guide **MUST** cover these first-pass jobs:
 
 - filling the recommended Markdown body stubs;
-- reviewing setup assumptions such as root Area, domain, lifecycle, risk
+- reviewing setup assumptions such as root area, domain, lifecycle, risk
   tolerance, modeling rigor, collaboration context, stakeholder needs, and missing
   context;
 - confirming or lightly adapting the seeded rating scale;

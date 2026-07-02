@@ -43,7 +43,7 @@ The sampled persistence evidence supports balance preservation.
 
 ### strength-002 Ledger mutation checks preserve balance invariants in the sampled paths.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 3 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

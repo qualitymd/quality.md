@@ -15,7 +15,7 @@ Factor: [Agent Accessibility](agent-accessibility-factor.md)
 
 ## Key details
 
-| Overall Rating | Local Rating | Status | Confidence |
+| Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
@@ -39,9 +39,9 @@ Agent Accessibility follows its direct requirement signal.
 
 ## Sub-factors
 
-| Factor | Path | Local Rating | + Sub-Factors Rating |
+| Factor | Path | Local rating | + Sub-factors rating |
 | --- | --- | --- | --- |
-| (no Sub-Factors) | — | — | — |
+| (no sub-factors) | — | — | — |
 
 ## Limits and incomplete inputs
 

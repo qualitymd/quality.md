@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
-title: Authoring Model Structure
+title: Authoring model structure
 description: Area, source, decomposition, traceability, constituent, and use-context guidance for QUALITY.md models.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Model structure
+# Authoring model structure
 
 Read this when:
 
-- creating or revising Areas, Sources, child Areas, decomposition shape, traceability edges, normative artifacts, constituent kinds, or recurring use-context constituents.
+- creating or revising areas, sources, child areas, decomposition shape, traceability edges, normative artifacts, constituent kinds, or recurring use-context constituents.
 
 Depends on:
 
@@ -37,7 +37,7 @@ An area's **source** defines _what_ it evaluates; its **factors** and
 
 | Property       | Presence   | What it is                                                             |
 | -------------- | ---------- | ---------------------------------------------------------------------- |
-| `title`        | Required   | Display name in reports; the map key is the Area name.                 |
+| `title`        | Required   | Display name in reports; the map key is the area name.                 |
 | `description`  | Optional   | What the area is — the entity or scope it covers.                      |
 | `factors`      | Optional\* | [Factors](factors.md) scoped to this area's subtree.                   |
 | `requirements` | Optional\* | [Requirements](requirements.md) assessed against this area's source.   |
@@ -51,7 +51,7 @@ subtree with no requirements evaluates nothing.
 
 ### Working with areas
 
-An Area's stable ID is its path of Area names from the root. The root Area ID is
+An area's stable ID is its path of area names from the root. The root area ID is
 empty and renders as `area:root` when a canonical model reference is needed.
 
 - **Do** point an area at the thing whose quality you actually care about.
@@ -276,7 +276,7 @@ root concern, not because they duplicate one another.
   projections are rated nodes that surface in an evaluation report, add a short
   disambiguating clause to each `description` too, because comments do not survive
   rendering. Keep the clause to the distinction — that is the same "distinguishes,
-  not enumerates" rule descriptions already follow. The Agent Harnessability factor
+  not enumerates" rule descriptions already follow. The agent harnessability factor
   vs. the agent-harness area is the canonical instance._
 - **Avoid** letting a stewardship word modify or replace the taxonomy noun for
   its projection. _A concern is the *source* a factor projects from, not a kind of
@@ -357,7 +357,7 @@ is an agent/AI-assistant-collaborated project. That context of use — not the
 modeled domain — makes two constituents recur in a composite root when germane:
 
 - the **agent harness** — the project-owned harness system around the model,
-  scoped in the Area to checked-in governing artifacts such as agent entry points,
+  scoped in the area to checked-in governing artifacts such as agent entry points,
   guidance files, skills, prompts, owned hooks, tool/MCP definitions,
   sandbox/permission policy, and orchestration config; read
   [Agent harness authoring](agent-harness.md) for its area guidance; and

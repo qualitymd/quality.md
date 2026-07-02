@@ -1,6 +1,6 @@
 ---
 type: Runtime Workflow
-title: Setup Workflow
+title: Setup workflow
 description: Runtime workflow for creating or updating a useful first QUALITY.md.
 ---
 
@@ -143,7 +143,7 @@ supplied an explicit model path or context strongly indicates a narrower root.
 When the root spans multiple workspaces, packages, or services, delegate a
 bounded `Explore` fan-out only when proportional. Use one bounded pass per
 component to capture purpose, entry points, external systems, risk surfaces, and
-test/CI coverage. Feed the result into candidate Area shape. Do not turn this
+test/CI coverage. Feed the result into candidate area shape. Do not turn this
 into source-quality evaluation.
 
 Build this setup brief as working context:
@@ -191,7 +191,7 @@ I found enough project context to draft the first shape of a QUALITY.md model.
 **Likely root:** <root area or boundary> (<confidence>, <evidence>)
 **Likely domain:** <domain or quality context> (<confidence>, <evidence>)
 **Visible evidence:** <key local paths or signals>
-**Likely model shape:** <candidate Areas, Factors, or quality concerns>
+**Likely model shape:** <candidate areas, factors, or quality concerns>
 **Missing context:** <specific gaps or none visible>
 
 **Next:** I’ll ask a few calibration questions with recommended defaults. Short
@@ -253,22 +253,22 @@ being told how to reply.
 1. Root area: Should this QUALITY.md model the whole current project, or a
    narrower area?
    Why it matters: Sets the model's boundary — what this QUALITY.md evaluates and
-   what falls outside it. Shapes the root Area, the Scope body, and the
-   `quality-md` self-check Area's `source`.
+   what falls outside it. Shapes the root area, the Scope body, and the
+   `quality-md` self-check area's `source`.
    Recommended: <default> (<confidence>)
    Answer: Reply `y` to accept, or name the narrower area/path.
 
 2. Domain: What kind of thing is this model evaluating?
    Why it matters: Names the kind of thing under evaluation (software, document,
-   dataset, research report, service, process, agent, and so on) so Factors and
-   evidence use the right vocabulary. Shapes the Overview and the candidate Factor
+   dataset, research report, service, process, agent, and so on) so factors and
+   evidence use the right vocabulary. Shapes the Overview and the candidate factor
    set.
    Recommended: <default> (<confidence>)
    Answer: Reply `y` to accept, or name the kind of thing being evaluated.
 
 3. Lifecycle: Which stage best fits?
    Why it matters: The stage calibrates how much rigor and which risks matter
-   now. Shapes Scope, Risks, and which Requirements are realistic to assess yet.
+   now. Shapes Scope, Risks, and which requirements are realistic to assess yet.
    Available values: exploratory, pre-release, active production, maintenance,
    sunset
    Present as numbered options with <default> first and marked Recommended.
@@ -277,8 +277,8 @@ being told how to reply.
 
 4. Risk tolerance: How costly is poor quality here?
    Why it matters: How costly poor quality is drives modeling rigor and which
-   Factors earn explicit Requirements rather than stay descriptive. Shapes the
-   Risks section and Requirement strictness.
+   factors earn explicit requirements rather than stay descriptive. Shapes the
+   Risks section and requirement strictness.
    Visible choices: high cost, moderate cost, low cost.
    Internal mapping: high cost -> low tolerance; moderate cost -> moderate
    tolerance; low cost -> high tolerance.
@@ -287,8 +287,8 @@ being told how to reply.
    Confidence: <confidence>
    Answer: Reply `1` to accept the recommendation, or choose another number.
 
-5. Rating scale: Should this model use the recommended four-level Rating Scale?
-   Why it matters: Rating Levels are configurable in QUALITY.md, not baked into
+5. Rating scale: Should this model use the recommended four-level rating scale?
+   Why it matters: Rating levels are configurable in QUALITY.md, not baked into
    the format; the recommended four-level scale fits most first models. Cite the
    per-level glosses below only if the user weighs the choice.
    Present as numbered options:
@@ -327,7 +327,7 @@ low-confidence inference rather than confirmed fact.
 
 Why it matters:
 
-- Primary users and outcomes anchor the Needs section and justify which Factors
+- Primary users and outcomes anchor the Needs section and justify which factors
   are worth evaluating.
 - Maintainers and collaborators shape maintainability and operability Needs
   and who the model must align.
@@ -408,7 +408,7 @@ asks which human collaborators, reviewers, maintainers, or stakeholders also
 need to align with the quality bar.
 
 The rating-scale question is a confirmation/calibration question, not an
-invitation to design Rating Levels cold. If the user rejects the recommended
+invitation to design rating levels cold. If the user rejects the recommended
 scale and project context clearly supports a simple alternate scale, such as a
 pass/fail gate, use that scale. Otherwise use the recommended scale and record
 the scale decision as an open question or assumption in the model body.
@@ -420,8 +420,8 @@ handling, work-handoff destination, issue tracker, or automation preferences.
 Ad hoc `/quality evaluate` is always available after setup; it is not a
 selectable automation option.
 
-Do not ask users to design factors, child Areas, Requirements, or custom Rating
-Level names cold. Derive model shape from the setup brief, discovery answers,
+Do not ask users to design factors, child areas, requirements, or custom rating
+level names cold. Derive model shape from the setup brief, discovery answers,
 authoring guide, and repository context.
 
 ## Factor proposal checkpoint
@@ -433,35 +433,35 @@ review the shape, not author YAML or invent factors cold.
 
 Build the proposal from the setup brief, discovery answers, human context
 checkpoint, repository context, and factor authoring guide. For each candidate
-Area's factor set, apply the set-level desiderata:
+area's factor set, apply the set-level desiderata:
 
 - **Comprehensive** — the proposed set covers what matters.
 - **Proportionate** — the proposed set gives most attention to what matters most.
 - **Sustainable** — the proposed set can stay usable over time.
 
-For each candidate Factor, apply the individual-factor desiderata:
+For each candidate factor, apply the individual-factor desiderata:
 
 - **Consequential** — the factor names a quality concern that matters for this
   entity.
 - **Bounded** — the factor has a clear boundary and grain.
-- **Operational** — the factor can become assessable Requirements, evidence,
+- **Operational** — the factor can become assessable requirements, evidence,
   findings, and ratings.
 - **Traceable** — the factor traces backward to Needs, Risks, stakeholders, or
-  stable stakes, and forward to candidate Requirements.
+  stable stakes, and forward to candidate requirements.
 - **Neutral** — the factor names the quality to be judged, not an implementation,
   workflow, tactic, or metric.
 
 Use those desiderata to improve the proposal before showing it. A consequential
 concern that is weak on boundary, operational path, trace, or neutrality should
-usually be refined, not dropped. Adjust its name, Area placement, sub-factor
-shape, candidate Requirement direction, evidence strategy, or depth.
+usually be refined, not dropped. Adjust its name, area placement, sub-factor
+shape, candidate requirement direction, evidence strategy, or depth.
 
 Present the user-facing checkpoint as a correction-oriented review:
 
 ```text
 **Draft factor set**
 
-I propose these initial Factors because they cover visible Needs, Risks,
+I propose these initial factors because they cover visible Needs, Risks,
 stakeholders, and stable stakes without making the first model too heavy.
 
 For the set, I am aiming for:
@@ -469,7 +469,7 @@ For the set, I am aiming for:
 - proportionate: gives most attention to what matters most
 - sustainable: stays usable over time
 
-For each Factor, I am checking that it is consequential, bounded, operational,
+For each factor, I am checking that it is consequential, bounded, operational,
 traceable, and neutral.
 
 | Area | Factor | Why it matters | Depth |
@@ -494,7 +494,7 @@ The proposal table may group or abbreviate factors when the model is large, but
 it must preserve the correction affordance: the user should be able to identify
 what is missing, overemphasized, misplaced, or badly named without reading YAML.
 Incorporate any correction before the final review recap. If the correction
-materially changes root Area, domain, risk tolerance, or human context, update
+materially changes root area, domain, risk tolerance, or human context, update
 the affected discovery answer in the final recap rather than treating the factor
 proposal as isolated.
 
@@ -523,7 +523,7 @@ proposal, and wait for the user to respond before authoring proceeds.
   **Rating scale:** <final rating-scale answer>
   **Human context:** <primary users/outcomes, maintainers, stakeholders>
   **Open gaps:** <missing or not-agent-accessible context>
-  **Factor proposal:** <Areas, key Factors, and light/normal/deep depth notes>
+  **Factor proposal:** <areas, key factors, and light/normal/deep depth notes>
 
   **Write `QUALITY.md`?**
   Create or update `<model path>` with the reviewed setup answers.
@@ -568,7 +568,7 @@ If the model file exists, classify it before planning the edit:
   but still has important setup gaps. Preserve useful content and name any
   replacement or removal in the review gate before editing.
 - **Mature** — already contains coherent project-specific scope, needs, risks,
-  factors, and assessable Requirements. Prefer routing to `/quality review` or
+  factors, and assessable requirements. Prefer routing to `/quality review` or
   `/quality improve` unless the user explicitly asked for setup-style reshaping.
 
 If the model file exists and setup would change it, the final review decision
@@ -601,25 +601,25 @@ frontmatter model:
 - The rating scale uses the recommended four-level scale with emoji-prefixed
   human titles unless the rating-scale answer and body show a real mismatch;
   unclear customization requests become an open question or assumption rather
-  than invented Rating Levels.
-- Factors and child Areas derive from project needs, risks, stakeholder
+  than invented rating levels.
+- Factors and child areas derive from project needs, risks, stakeholder
   concerns, component boundaries, and available evidence.
 - Factor sets should be comprehensive, proportionate, and sustainable: cover what
   matters, give most attention to what matters most, and stay usable over time.
-  Individual Factors should be consequential, then refined until they are
+  Individual factors should be consequential, then refined until they are
   bounded, operational, traceable, and neutral. Use the reviewed depth labels to
-  decide where starter Requirements should be light, normal, or deep.
+  decide where starter requirements should be light, normal, or deep.
 - When the root is composite, enumerate the constituent _kinds_ the domain
   implies — not only the components that already have folders in the repository.
   Walk the stewardship concerns (discover, define, realize, verify, enable,
   operate, maintain; and the protective pair secure and safeguard) and the
-  audiences the Needs name, then model each kind as its own Area by default. Skip
-  a kind's own Area only when it has no distinct concerns (fold it into a parent or
+  audiences the Needs name, then model each kind as its own area by default. Skip
+  a kind's own area only when it has no distinct concerns (fold it into a parent or
   sibling) or is not germane / outside the boundary (mark it out of Scope). Never
   drop a germane concern to prose: when its artifact is thin or missing, surface
-  the gap as a ratable element — a minimal Area carrying a missing-anchor finding
+  the gap as a ratable element — a minimal area carrying a missing-anchor finding
   (for a high-leverage kind such as tests, specs, or a threat model), or a
-  requirement on an existing Area. Deferral ("modeled later") is a narrow exception
+  requirement on an existing area. Deferral ("modeled later") is a narrow exception
   for a genuinely blocked kind, with the blocker recorded — not "next iteration."
   Treat the kinds as a prompt scaled to this entity, not a roster. See the
   authoring guide's "Cover the domain's constituent kinds".
@@ -635,7 +635,7 @@ frontmatter model:
   accountability. Never drop it because the harness is thin or absent; that is a
   ratable gap and finding. Keep
   it distinct from the agent harness constituent: the factor rates how each
-  constituent equips an agent, while the harness Area rates the checked-in,
+  constituent equips an agent, while the harness area rates the checked-in,
   project-owned governing artifacts themselves.
 - When the root is an agent-collaborated composite and the agent harness is
   germane, actively check for project-owned runtime harness machinery: hooks,
@@ -643,29 +643,29 @@ frontmatter model:
   subagent config. Scope the generated agent-harness area as the checked-in
   steering and owned-control artifacts, not instructions alone; include a
   disambiguating `description` and YAML boundary comment that distinguish it from
-  the broader Agent Harnessability factor. Surface owned runtime harness
+  the broader agent harnessability factor. Surface owned runtime harness
   machinery in that area or, if it is large enough to carry distinct factors, in
   its own area. Do not silently fold it into prose guidance or drop it. In the
   user-facing recap, include one line naming that scope: the agent-harness area is
-  the checked-in steering and owned-control artifacts, while Agent
-  Harnessability rates the broader equipping capability.
-- When naming the model in any recap or summary, name factors as Factors (or
+  the checked-in steering and owned-control artifacts, while agent
+  harnessability rates the broader equipping capability.
+- When naming the model in any recap or summary, name factors as factors (or
   model-wide factors); the stewardship concerns are the _source_ factors trace to,
   not a kind of factor. Do not call them "stewardship factors" or "stewardship
   lenses" — keep the motivation-layer vocabulary from modifying a taxonomy noun.
 - Requirements are small, concrete, and assessable from agent-accessible
   evidence, or explicitly name missing evidence.
-- Include the `quality-md` self-check Area when appropriate unless the user
+- Include the `quality-md` self-check area when appropriate unless the user
   declines or the model file is not in the root area it governs. Use
-  `quality-md` as the Area key, `<Root Title> QUALITY.md` as the Area title, an
-  Area `description`, and an explicit path-based `source` for the model file
+  `quality-md` as the area key, `<Root Title> QUALITY.md` as the area title, an
+  area `description`, and an explicit path-based `source` for the model file
   such as `./QUALITY.md`; do not use prose aliases such as `(this file)` for
-  `source`. Add concise YAML comments around that Area explaining that `source`
-  is the `QUALITY.md` artifact being evaluated, while the Requirement's
-  `assessment` references the guide used to judge it. Prefer one Area-level
-  Requirement that cites the active authoring guide family once and lists each affected
-  Factor under `factors` when that guide defines one coherent judgment across
-  the Factors.
+  `source`. Add concise YAML comments around that area explaining that `source`
+  is the `QUALITY.md` artifact being evaluated, while the requirement's
+  `assessment` references the guide used to judge it. Prefer one area-level
+  requirement that cites the active authoring guide family once and lists each affected
+  factor under `factors` when that guide defines one coherent judgment across
+  the factors.
 
 ## Verify and close
 
@@ -679,8 +679,8 @@ project evaluation and not a readiness or maturity classification. Important
 gaps include thin or generic Overview/Scope/Needs/Risks, missing material
 unknowns or open questions, factors that do not trace to the body's needs and
 risks, factor sets that miss consequential concerns or allocate depth
-unreasonably, vague or unassessable Requirements, missing germane constituent
-kinds, and missing Agent Harnessability coverage for an agent-collaborated
+unreasonably, vague or unassessable requirements, missing germane constituent
+kinds, and missing agent harnessability coverage for an agent-collaborated
 composite root.
 
 For a composite model, treat a germane constituent left unmodeled or recorded
@@ -688,7 +688,7 @@ only as a deferral as an important gap unless it clearly hits one of the
 authoring guide's disqualifiers: no distinct concerns, or not germane / outside
 the boundary. A bare deferral or Scope note does not satisfy coverage.
 
-For an agent-collaborated composite root, treat missing Agent Harnessability or
+For an agent-collaborated composite root, treat missing agent harnessability or
 missing sub-factor coverage as an important gap unless the model states a clear
 not-germane boundary. A thin or absent harness is a rating concern, not a
 factor-omission reason. Treat an existing `harnessability` factor as stale

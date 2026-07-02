@@ -15,7 +15,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-// DataKind identifies an Evaluation structured payload kind.
+// DataKind identifies an evaluation structured payload kind.
 type DataKind string
 
 const (
@@ -35,7 +35,7 @@ const (
 	DataKindEvaluationOutput           DataKind = "EvaluationOutputResult"
 )
 
-// supportedDataKinds lists every Evaluation payload kind the CLI can persist,
+// supportedDataKinds lists every evaluation payload kind the CLI can persist,
 // including the CLI-owned EvaluationOutputResult. It is the single typed source
 // for the reference-kind vocabulary: any reference may name any of these kinds.
 var supportedDataKinds = []DataKind{
@@ -79,12 +79,12 @@ func kindStrings[T ~string](kinds []T) []string {
 	return out
 }
 
-// DataSetOptions configures Evaluation data writes.
+// DataSetOptions configures evaluation data writes.
 type DataSetOptions struct {
 	DryRun bool
 }
 
-// DataSetReceipt is emitted after validating or writing Evaluation data.
+// DataSetReceipt is emitted after validating or writing evaluation data.
 type DataSetReceipt struct {
 	SchemaVersion int              `json:"schemaVersion"`
 	Count         int              `json:"count"`
@@ -107,33 +107,33 @@ type dataWriteCandidate struct {
 	Canonical []byte
 }
 
-// DataKindList lists Evaluation data kinds.
+// DataKindList lists evaluation data kinds.
 type DataKindList struct {
 	SchemaVersion int            `json:"schemaVersion"`
 	Kinds         []DataKindInfo `json:"kinds"`
 }
 
-// DataKindInfo describes one Evaluation data kind.
+// DataKindInfo describes one evaluation data kind.
 type DataKindInfo struct {
 	Kind          DataKind `json:"kind"`
 	AgentWritable bool     `json:"agentWritable"`
 	Description   string   `json:"description"`
 }
 
-// DataList lists stored Evaluation data artifacts.
+// DataList lists stored evaluation data artifacts.
 type DataList struct {
 	SchemaVersion int             `json:"schemaVersion"`
 	Path          string          `json:"path"`
 	Artifacts     []DataListEntry `json:"artifacts"`
 }
 
-// DataListEntry identifies one stored Evaluation data artifact.
+// DataListEntry identifies one stored evaluation data artifact.
 type DataListEntry struct {
 	Kind DataKind `json:"kind"`
 	Path string   `json:"path"`
 }
 
-// DataQuery identifies an Evaluation data artifact by kind and model ID.
+// DataQuery identifies an evaluation data artifact by kind and model ID.
 type DataQuery struct {
 	Kind            DataKind
 	AreaRef         string
@@ -144,7 +144,7 @@ type DataQuery struct {
 	RequireArtifact bool
 }
 
-// SetData validates and writes a batch of Evaluation data payloads.
+// SetData validates and writes a batch of evaluation data payloads.
 func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, error) {
 	payloads, err := decodeDataPayloadBatch(raw)
 	if err != nil {
@@ -186,7 +186,7 @@ func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, 
 	}, nil
 }
 
-// ListData lists stored Evaluation data artifacts.
+// ListData lists stored evaluation data artifacts.
 func ListData(runPath string, kind DataKind) (*DataList, error) {
 	root := filepath.Join(runPath, "data")
 	result := &DataList{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(runPath)}
@@ -233,7 +233,7 @@ func ListData(runPath string, kind DataKind) (*DataList, error) {
 	return result, nil
 }
 
-// GetData reads one stored Evaluation data artifact.
+// GetData reads one stored evaluation data artifact.
 func GetData(runPath string, query DataQuery) ([]byte, string, error) {
 	rel, err := dataPathForQuery(query)
 	if err != nil {
@@ -246,7 +246,7 @@ func GetData(runPath string, query DataQuery) ([]byte, string, error) {
 	return raw, filepath.ToSlash(rel), nil
 }
 
-// EvaluationDataKinds lists Evaluation data kinds.
+// EvaluationDataKinds lists evaluation data kinds.
 func EvaluationDataKinds() *DataKindList {
 	var infos []DataKindInfo
 	for _, kind := range acceptedDataKinds {
@@ -655,18 +655,18 @@ func validateEffectiveRequirementRating(path string, payload map[string]any, pay
 	assessmentPath := requirementDataPath(req, "requirement-assessment-result.json")
 	assessment, ok := payloads[assessmentPath]
 	if !ok {
-		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult with at least one finding"})
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated requirement requires paired RequirementAssessmentResult with at least one finding"})
 	} else {
 		status := firstString(assessment, "status")
 		if status != string(AssessmentStatusAssessed) && status != string(AssessmentStatusPartiallyAssessed) {
-			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult status assessed or partially_assessed"})
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated requirement requires paired RequirementAssessmentResult status assessed or partially_assessed"})
 		}
 		if len(objectSlice(assessment["findings"])) == 0 {
-			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult with at least one finding"})
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated requirement requires paired RequirementAssessmentResult with at least one finding"})
 		}
 	}
 	if len(objectSlice(payload["ratingDrivers"])) == 0 {
-		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires at least one ratingDrivers entry"})
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated requirement requires at least one ratingDrivers entry"})
 	}
 	failures = append(failures, validateRatingDriverInputRefs(path, DataKindRequirementRating, payload, payloads)...)
 	return failures
@@ -722,7 +722,7 @@ func validateEffectiveFindingRanking(path string, payload map[string]any, payloa
 			continue
 		}
 		if _, ok := expected[key]; !ok {
-			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindFindingRanking, Reason: fmt.Sprintf("orderedFindings[%d].findingRef does not resolve to an in-scope Finding", i)})
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindFindingRanking, Reason: fmt.Sprintf("orderedFindings[%d].findingRef does not resolve to an in-scope finding", i)})
 			continue
 		}
 		if _, ok := seen[key]; ok {
@@ -797,7 +797,7 @@ func validateFindingCoverage(path string, payload map[string]any, payloads map[s
 			continue
 		}
 		if _, ok := expectedFindings[key]; !ok {
-			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRecommendationRanking, Reason: fmt.Sprintf("findingCoverage[%d].findingRef does not resolve to an in-scope Finding", i)})
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRecommendationRanking, Reason: fmt.Sprintf("findingCoverage[%d].findingRef does not resolve to an in-scope finding", i)})
 			continue
 		}
 		if _, ok := covered[key]; ok {
@@ -1450,8 +1450,8 @@ func areaEvaluationFrameExample(kind DataKind) map[string]any {
 			"childAreaIds":        []any{exampleChildAreaID()},
 		},
 		"derivedContext": map[string]any{
-			"scope":                    "root Area",
-			"expectedEvaluationLimits": []any{exampleLimit("area-source-gap", "A child Area source was not inspected.", "Child roll-up confidence is lower.")},
+			"scope":                    "root area",
+			"expectedEvaluationLimits": []any{exampleLimit("area-source-gap", "A child area source was not inspected.", "Child roll-up confidence is lower.")},
 		},
 	}
 }
@@ -1471,7 +1471,7 @@ func requirementEvaluationFrameExample(kind DataKind) map[string]any {
 		},
 		"derivedContext": map[string]any{
 			"evidenceTargets":          []any{map[string]any{"id": "tests", "question": "Do tests exist?", "purpose": "Assessment basis", "sourceRefs": []any{"tests/example_test.go"}, "required": true}},
-			"appliedRatingCriteria":    []any{map[string]any{"ratingLevelId": RatingReference("target"), "criterion": "Tests cover the requirement.", "source": "model_default", "adaptationRationale": "Applies the model criterion to this Requirement."}},
+			"appliedRatingCriteria":    []any{map[string]any{"ratingLevelId": RatingReference("target"), "criterion": "Tests cover the requirement.", "source": "model_default", "adaptationRationale": "Applies the model criterion to this requirement."}},
 			"stopConditions":           []any{exampleLimit("missing-required-evidence", "Stop if required evidence cannot be inspected.", "Requirement status becomes blocked or partial.")},
 			"expectedEvaluationLimits": []any{exampleLimit("narrow-test-review", "Only test files are in scope for this example.", "Runtime behavior may remain uninspected.")},
 		},
@@ -1565,7 +1565,7 @@ func requirementRatingExample(kind DataKind) map[string]any {
 		"kind":             string(kind),
 		"requirementId":    exampleRequirementID(),
 		"status":           "rated",
-		"statusReason":     "Assessment maps to a Rating Level.",
+		"statusReason":     "Assessment maps to a rating level.",
 		"ratingLevelId":    RatingReference("target"),
 		"rationale":        "Evidence satisfies the target criterion.",
 		"ratingDrivers":    []any{map[string]any{"description": "Focused evidence satisfies the target criterion.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "")}}},
@@ -1589,8 +1589,8 @@ func factorAnalysisFrameExample(kind DataKind) map[string]any {
 		"derivedContext": map[string]any{
 			"synthesisGuidanceRef":     "protocol:factor-synthesis-default-v0",
 			"emptySignalPolicy":        "ignore_empty",
-			"stopConditions":           []any{exampleLimit("missing-ratings", "Stop if direct Requirement ratings are unavailable.", "Factor analysis becomes incomplete.")},
-			"expectedEvaluationLimits": []any{exampleLimit("factor-source-limit", "Only direct Requirement ratings and child Factor analyses are synthesized.", "Other evidence is out of scope.")},
+			"stopConditions":           []any{exampleLimit("missing-ratings", "Stop if direct requirement ratings are unavailable.", "Factor analysis becomes incomplete.")},
+			"expectedEvaluationLimits": []any{exampleLimit("factor-source-limit", "Only direct requirement ratings and child factor analyses are synthesized.", "Other evidence is out of scope.")},
 		},
 	}
 }
@@ -1607,8 +1607,8 @@ func areaAnalysisFrameExample(kind DataKind) map[string]any {
 		"derivedContext": map[string]any{
 			"synthesisGuidanceRef":     "protocol:area-synthesis-default-v0",
 			"emptySignalPolicy":        "ignore_empty",
-			"stopConditions":           []any{exampleLimit("missing-factor-analysis", "Stop if in-scope Factor analyses are unavailable.", "Area analysis becomes incomplete.")},
-			"expectedEvaluationLimits": []any{exampleLimit("area-rollup-limit", "Only available Factor and child Area analyses are synthesized.", "Roll-up confidence is limited.")},
+			"stopConditions":           []any{exampleLimit("missing-factor-analysis", "Stop if in-scope factor analyses are unavailable.", "Area analysis becomes incomplete.")},
+			"expectedEvaluationLimits": []any{exampleLimit("area-rollup-limit", "Only available factor and child area analyses are synthesized.", "Roll-up confidence is limited.")},
 		},
 	}
 }
@@ -1646,11 +1646,11 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 	return example
 }
 
-// factorAnalysisExample models an umbrella Factor — one with no direct
-// Requirements. Its localAnalysis records the empty status (there is no local
-// signal to analyze), while localAndDescendantAnalysis carries the child-Factor
+// factorAnalysisExample models an umbrella factor — one with no direct
+// requirements. Its localAnalysis records the empty status (there is no local
+// signal to analyze), while localAndDescendantAnalysis carries the child-factor
 // roll-up. This is the case that makes the local vs local+descendant distinction
-// concrete; a leaf Factor's both-blocks-analyzed shape is mirrored by the Area
+// concrete; a leaf factor's both-blocks-analyzed shape is mirrored by the area
 // analysis example.
 func factorAnalysisExample(kind DataKind) map[string]any {
 	childRollupRef := routineRef(DataKindFactorAnalysis, map[string]any{"factorId": exampleChildFactorID()}, "localAndDescendantAnalysis")
@@ -1660,17 +1660,17 @@ func factorAnalysisExample(kind DataKind) map[string]any {
 		"factorId":      exampleFactorID(),
 		"localAnalysis": map[string]any{
 			"status":       "empty",
-			"statusReason": "This Factor has no direct Requirements, so there is no local signal to analyze.",
+			"statusReason": "This factor has no direct requirements, so there is no local signal to analyze.",
 		},
 		"localAndDescendantAnalysis": map[string]any{
 			"status":           "analyzed",
-			"statusReason":     "Child Factor analyses were rolled up.",
+			"statusReason":     "Child factor analyses were rolled up.",
 			"ratingLevelId":    RatingReference("target"),
-			"rationale":        "The child Factor roll-up satisfies the target criterion.",
+			"rationale":        "The child factor roll-up satisfies the target criterion.",
 			"inputRefs":        []any{childRollupRef},
-			"ratingDrivers":    []any{map[string]any{"description": "The child Factor's roll-up is the binding input.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{childRollupRef}}},
-			"incompleteInputs": []any{map[string]any{"id": "missing-child", "description": "One child Factor analysis was unavailable.", "impact": "Roll-up is provisional."}},
-			"evaluationLimits": []any{exampleLimit("rollup-limit", "Only available child Factor analyses were synthesized.", "Confidence is limited.")},
+			"ratingDrivers":    []any{map[string]any{"description": "The child factor's roll-up is the binding input.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{childRollupRef}}},
+			"incompleteInputs": []any{map[string]any{"id": "missing-child", "description": "One child factor analysis was unavailable.", "impact": "Roll-up is provisional."}},
+			"evaluationLimits": []any{exampleLimit("rollup-limit", "Only available child factor analyses were synthesized.", "Confidence is limited.")},
 			"confidence":       "medium",
 			"confidenceReason": "Roll-up uses available child inputs only.",
 		},
@@ -1702,7 +1702,7 @@ func findingRankingExample() map[string]any {
 				"rationale":  "Minor and not advice-driving; ranked at the lowest tier only because the ranking accounts for every finding.",
 			},
 		},
-		"rationale": "The ranking accounts for every Requirement Finding; tier and order express relative priority, and the lowest-tier entries are not dropped.",
+		"rationale": "The ranking accounts for every requirement finding; tier and order express relative priority, and the lowest-tier entries are not dropped.",
 	}
 }
 
@@ -1714,7 +1714,7 @@ func recommendationExample() map[string]any {
 		"title":         "Review the next quality bar",
 		"description":   "Review whether the next evaluation should use sharper criteria.",
 		"background":    "The current evidence suggests the evaluated entity may already meet the present bar.",
-		"expectedValue": "The Model stays useful as the evaluated entity improves.",
+		"expectedValue": "The model stays useful as the evaluated entity improves.",
 		"doneCriterion": "The review records either an updated bar or a rationale for keeping the current bar.",
 		"impact":        "high",
 		"confidence":    "medium",
@@ -1745,7 +1745,7 @@ func recommendationRankingExample() map[string]any {
 				"rationale":   "The strength is context only and does not change the next quality-management move.",
 			},
 		},
-		"rationale": "Recommendation ranking closes Advice after Finding coverage is accounted for.",
+		"rationale": "Recommendation ranking closes Advice after finding coverage is accounted for.",
 	}
 }
 

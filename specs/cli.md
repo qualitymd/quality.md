@@ -38,7 +38,7 @@ judgment and pass judgment payloads to the deterministic surface.
 | [`spec`](./cli/spec.md)                           | Emit the QUALITY.md format specification.                |
 | [`status`](./cli/status.md)                       | Emit a deterministic workspace status snapshot.          |
 | [`evaluation create`](./cli/evaluation-create.md) | Create a numbered evaluation run folder.                 |
-| [`evaluation data`](./cli/evaluation-data.md)     | Persist and inspect Evaluation structured data.          |
+| [`evaluation data`](./cli/evaluation-data.md)     | Persist and inspect evaluation structured data.          |
 | [`evaluation list`](./cli/evaluation-list.md)     | List evaluation runs.                                    |
 | [`evaluation status`](./cli/evaluation-status.md) | Inspect whether a run can be rendered.                   |
 | [`evaluation report`](./cli/evaluation-report.md) | Build evaluation reports.                                |
@@ -55,7 +55,7 @@ judgment and pass judgment payloads to the deterministic surface.
 - [`status`](./cli/status.md) — emit a deterministic workspace status snapshot.
 - [`evaluation create`](./cli/evaluation-create.md) — create a numbered
   evaluation run folder.
-- [`evaluation data`](./cli/evaluation-data.md) — persist and inspect Evaluation
+- [`evaluation data`](./cli/evaluation-data.md) — persist and inspect evaluation
   structured data.
 - [`evaluation list`](./cli/evaluation-list.md) — list evaluation runs.
 - [`evaluation status`](./cli/evaluation-status.md) — inspect renderability.

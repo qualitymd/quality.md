@@ -43,7 +43,7 @@ Recovery ownership is visible but ambiguous across the sampled records.
 
 ### gap-002 The current owner for ledger recovery drills is ambiguous.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 6 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

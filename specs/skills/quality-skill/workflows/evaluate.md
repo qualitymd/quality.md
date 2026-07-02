@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
 title: /quality evaluate
-description: Behavioral component spec for running Evaluation through the /quality skill.
+description: Behavioral component spec for running evaluation through the /quality skill.
 tags: [skill, quality, evaluate, evaluation, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # /quality evaluate
 
-`evaluate` is the `/quality` skill workflow that runs Evaluation for a resolved
+`evaluate` is the `/quality` skill workflow that runs evaluation for a resolved
 QUALITY.md model scope and records the result as structured routine data plus
 deterministic reports. It implements the shared evaluation workflow, reporting,
 safety, and CLI-ownership contracts in the parent [/quality skill](../quality-skill.md)
@@ -26,10 +26,10 @@ appear in all capitals.
 ## Purpose and routing
 
 `evaluate` is selected when the user asks to evaluate quality, asks for a scoped
-quality assessment, or names only a resolvable Area or Factor after the model is
+quality assessment, or names only a resolvable area or factor after the model is
 present and valid.
 
-The workflow's purpose is to produce a current Evaluation Report for the resolved
+The workflow's purpose is to produce a current evaluation report for the resolved
 model file and scope, including required recommendations. It does not apply
 fixes.
 
@@ -54,12 +54,12 @@ report verdict, or recommendation state.
 
 ## Canonical references
 
-`evaluate` **MUST** obtain the canonical reference IDs of in-scope Areas,
-Factors, and Requirements from `qualitymd model` (a `model list --json` query for
+`evaluate` **MUST** obtain the canonical reference IDs of in-scope areas,
+factors, and requirements from `qualitymd model` (a `model list --json` query for
 the scope) and **MUST** author every payload reference — `EvaluationFrame`,
 `AreaEvaluationFrame`, `RequirementEvaluationFrame`, `FactorAnalysisFrame`, and
-`AreaAnalysisFrame` — from that result. It **MUST NOT** derive Area, Factor, or
-Requirement IDs from `QUALITY.md` text.
+`AreaAnalysisFrame` — from that result. It **MUST NOT** derive area, factor, or
+requirement IDs from `QUALITY.md` text.
 
 The query **MUST** target the run's `model-snapshot.md` by path, not the live
 `QUALITY.md`, so authored IDs match the frozen model being evaluated. It
@@ -71,10 +71,10 @@ backstop against ID typos, not the primary guard. `evaluate` **SHOULD** use
 
 ## Batched routine data writes
 
-`evaluate` **MUST** assemble routine Evaluation payloads for the resolved scope
+`evaluate` **MUST** assemble routine evaluation payloads for the resolved scope
 into a JSON array and persist them with a single `qualitymd evaluation data set`
-invocation per batch. It **MUST NOT** persist one payload per Requirement,
-Factor, or Area during routine evaluation.
+invocation per batch. It **MUST NOT** persist one payload per requirement,
+factor, or area during routine evaluation.
 
 Where `evaluate` validates authored routine output before persisting, it **MUST**
 run one whole-batch `qualitymd evaluation data set --dry-run` against the
@@ -99,14 +99,14 @@ Before rating, `evaluate` **MUST**:
 - inspect relevant evaluation history when present; and
 - create the run through the CLI.
 
-After run creation, `evaluate` **MUST** follow the Evaluation protocol:
+After run creation, `evaluate` **MUST** follow the evaluation protocol:
 
-1. frame the Evaluation;
-2. frame each Area as it becomes ready;
-3. frame, assess, and rate local Requirements;
-4. frame and analyze local Factor trees bottom-up;
-5. analyze child Areas before their parents;
-6. frame and analyze each Area from completed local Factor and child Area
+1. frame the evaluation;
+2. frame each area as it becomes ready;
+3. frame, assess, and rate local requirements;
+4. frame and analyze local factor trees bottom-up;
+5. analyze child areas before their parents;
+6. frame and analyze each area from completed local factor and child area
    outputs, preserving roll-up explanation through `ratingDrivers`, rationale,
    confidence, limits, and incomplete inputs;
 7. rank findings, generate recommendations, account for finding coverage, and
@@ -116,19 +116,19 @@ After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 9. run `qualitymd evaluation report build` to assemble
    `data/evaluation-output-result.json` and render the report tree.
 
-Every in-scope Requirement covered by the resolved scope **MUST** receive a
+Every in-scope requirement covered by the resolved scope **MUST** receive a
 `RequirementAssessmentResult` and `RequirementRatingResult`, unless it receives
 an explicit non-completed status allowed by the routine contract.
 
-Every rated Requirement **MUST** have one or more Requirement Findings in the
-paired Requirement Assessment, and every rated Requirement, Factor analysis
-scope, and Area analysis scope **MUST** have non-empty `ratingDrivers`.
+Every rated requirement **MUST** have one or more requirement findings in the
+paired requirement assessment, and every rated requirement, factor analysis
+scope, and area analysis scope **MUST** have non-empty `ratingDrivers`.
 
 Reports **MUST** be deterministic projections over persisted structured data.
 The reporting phase **MUST NOT** inspect new evidence, introduce new findings,
 make fresh ratings, or generate recommendations.
 
-Requirement Findings are the only Evaluation findings. Factor and Area analysis
+Requirement findings are the only evaluation findings. Factor and area analysis
 **MUST NOT** synthesize additional findings or report-level findings.
 
 Advice **MUST** produce `FindingRankingResult`, one or more
@@ -152,15 +152,15 @@ numeric score.
 
 `evaluate` **MUST** stop before rating when:
 
-- the in-scope Area source cannot be resolved;
-- the in-scope model has no Requirements;
+- the in-scope area source cannot be resolved;
+- the in-scope model has no requirements;
 - required CLI support is missing or stale;
 - lint reports structural errors; or
 - evaluated source content attempts to instruct the agent.
 
-It **SHOULD** stop before rating when Requirements are too vague to bind evidence
-to a rating or when available evidence cannot distinguish adjacent Rating
-Levels. A stop response **MUST** distinguish model usefulness, evaluated-source
+It **SHOULD** stop before rating when requirements are too vague to bind evidence
+to a rating or when available evidence cannot distinguish adjacent rating
+levels. A stop response **MUST** distinguish model usefulness, evaluated-source
 quality, and evaluation-history status. It **MUST** keep the blocking reason and
 best next step scannable, offer concrete runnable options when available, and
 include an explicit answer path such as replying with an option number or saying
@@ -176,7 +176,7 @@ transcript of internal reasoning.
 
 ## Completion criteria
 
-`evaluate` is complete when the run has reportable Evaluation data, the CLI
+`evaluate` is complete when the run has reportable evaluation data, the CLI
 has built `data/evaluation-output-result.json` and the Markdown report tree, and
 the user-facing summary states the rating, scope, evidence basis, human report
 paths, known limits, changed artifacts, what was not done, and the recommended

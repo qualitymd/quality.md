@@ -165,18 +165,18 @@ const (
 
 var dataKindValues = enumCatalog[DataKind]{
 	Label:       "Data kind",
-	Description: "Kind of structured Evaluation payload stored for a run.",
+	Description: "Kind of structured evaluation payload stored for a run.",
 	Values: []enumValue[DataKind]{
 		{Value: DataKindEvaluationManifest, Label: "Evaluation Manifest", Marker: "📋", Description: "Evaluation metadata, scope, and run context."},
 		{Value: DataKindEvaluationFrame, Label: "Evaluation Frame", Marker: "🧭", Description: "Top-level evaluation planning frame."},
-		{Value: DataKindAreaEvaluationFrame, Label: "Area Evaluation Frame", Marker: "🗺️", Description: "Planned evaluation frame for an Area."},
-		{Value: DataKindRequirementEvaluationFrame, Label: "Requirement Evaluation Frame", Marker: "📋", Description: "Planned assessment frame for a Requirement."},
-		{Value: DataKindRequirementAssessment, Label: "Requirement Assessment", Marker: "🔎", Description: "Judgment evidence and findings for a Requirement."},
-		{Value: DataKindRequirementRating, Label: "Requirement Rating", Marker: "🎚️", Description: "Rating assigned to a Requirement."},
-		{Value: DataKindFactorAnalysisFrame, Label: "Factor Analysis Frame", Marker: "🧩", Description: "Planned analysis frame for a Factor."},
-		{Value: DataKindFactorAnalysis, Label: "Factor Analysis", Marker: "📊", Description: "Synthesized judgment for a Factor."},
-		{Value: DataKindAreaAnalysisFrame, Label: "Area Analysis Frame", Marker: "🏗️", Description: "Planned analysis frame for an Area."},
-		{Value: DataKindAreaAnalysis, Label: "Area Analysis", Marker: "📈", Description: "Synthesized judgment for an Area."},
+		{Value: DataKindAreaEvaluationFrame, Label: "Area Evaluation Frame", Marker: "🗺️", Description: "Planned evaluation frame for an area."},
+		{Value: DataKindRequirementEvaluationFrame, Label: "Requirement Evaluation Frame", Marker: "📋", Description: "Planned assessment frame for a requirement."},
+		{Value: DataKindRequirementAssessment, Label: "Requirement Assessment", Marker: "🔎", Description: "Judgment evidence and findings for a requirement."},
+		{Value: DataKindRequirementRating, Label: "Requirement Rating", Marker: "🎚️", Description: "Rating assigned to a requirement."},
+		{Value: DataKindFactorAnalysisFrame, Label: "Factor Analysis Frame", Marker: "🧩", Description: "Planned analysis frame for a factor."},
+		{Value: DataKindFactorAnalysis, Label: "Factor Analysis", Marker: "📊", Description: "Synthesized judgment for a factor."},
+		{Value: DataKindAreaAnalysisFrame, Label: "Area Analysis Frame", Marker: "🏗️", Description: "Planned analysis frame for an area."},
+		{Value: DataKindAreaAnalysis, Label: "Area Analysis", Marker: "📈", Description: "Synthesized judgment for an area."},
 		{Value: DataKindFindingRanking, Label: "Finding Ranking", Marker: "🔝", Description: "Ordered finding priority set."},
 		{Value: DataKindRecommendation, Label: "Recommendation", Marker: "💡", Description: "Proposed improvement action."},
 		{Value: DataKindRecommendationRanking, Label: "Recommendation Ranking", Marker: "🏁", Description: "Ordered recommendation priority set."},
@@ -197,7 +197,7 @@ var runGapKindValues = enumCatalog[RunGapKind]{
 
 var analysisStatusValues = enumCatalog[AnalysisStatus]{
 	Label:       "Analysis status",
-	Description: "Whether an Area or Factor analysis has been completed, skipped as empty, not analyzed, or blocked.",
+	Description: "Whether an area or factor analysis has been completed, skipped as empty, not analyzed, or blocked.",
 	Values: []enumValue[AnalysisStatus]{
 		{Value: AnalysisStatusAnalyzed, Label: "Analyzed", Marker: "✅", Description: "Analysis completed with a recorded result."},
 		{Value: AnalysisStatusEmpty, Label: "Empty", Marker: "⬜", Description: "Scope had nothing applicable to analyze."},
@@ -208,7 +208,7 @@ var analysisStatusValues = enumCatalog[AnalysisStatus]{
 
 var assessmentStatusValues = enumCatalog[AssessmentStatus]{
 	Label:       "Assessment status",
-	Description: "Whether a Requirement assessment has been completed, partially completed, not assessed, or blocked.",
+	Description: "Whether a requirement assessment has been completed, partially completed, not assessed, or blocked.",
 	Values: []enumValue[AssessmentStatus]{
 		{Value: AssessmentStatusAssessed, Label: "Assessed", Marker: "✅", Description: "Requirement was assessed with usable findings."},
 		{Value: AssessmentStatusPartiallyAssessed, Label: "Partially Assessed", Marker: "🟡", Description: "Assessment is incomplete but contains usable judgment."},
@@ -240,7 +240,7 @@ var confidenceValues = enumCatalog[ConfidenceLevel]{
 
 var ratingResultKindValues = enumCatalog[RatingResultKind]{
 	Label:       "Rating result",
-	Description: "Whether a Rating Result contains an assigned rating or records that the subject was not assessed.",
+	Description: "Whether a rating result contains an assigned rating or records that the subject was not assessed.",
 	Values: []enumValue[RatingResultKind]{
 		{Value: RatingResultRated, Label: "Rated", Marker: "✅", Description: "The result contains an assigned rating."},
 		{Value: RatingResultNotAssessed, Label: "Not Assessed", Marker: "⚪", Description: "The subject was not assessed."},
@@ -263,7 +263,7 @@ var reportKindValues = enumCatalog[ReportKind]{
 
 var findingTypeValues = enumCatalog[FindingType]{
 	Label:       "Finding type",
-	Description: "Classification of what a finding contributes to the Evaluation judgment.",
+	Description: "Classification of what a finding contributes to the evaluation judgment.",
 	Values: []enumValue[FindingType]{
 		{Value: FindingTypeGap, Label: "Gap", Marker: "🚩", Description: "Current shortfall against the quality bar."},
 		{Value: FindingTypeRisk, Label: "Risk", Marker: "⚠️", Description: "Plausible future or conditional quality concern."},

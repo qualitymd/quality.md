@@ -112,7 +112,7 @@ and exposes an agent harness for quality-management work.
 
 The example is intentionally software-specific so report design can exercise a
 familiar, non-trivial service shape. It is not a default QUALITY.md template and
-does not imply these Factors are universal defaults.
+does not imply these factors are universal defaults.
 
-The generated Evaluation report uses synthetic routine outputs and synthetic
+The generated evaluation report uses synthetic routine outputs and synthetic
 evidence references. The concrete source system is omitted.

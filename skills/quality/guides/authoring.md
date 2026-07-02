@@ -28,9 +28,9 @@ specification governs on any conflict.
 - Requirement names and titles, assessments, factor connections,
   splitting/combining claims, and rating overrides →
   [`authoring/requirements.md`](authoring/requirements.md).
-- Rating Scale design, criteria, required margin, roll-up, veto requirements, and
+- Rating scale design, criteria, required margin, roll-up, veto requirements, and
   `not assessed` handling → [`authoring/rating-scale.md`](authoring/rating-scale.md).
-- Agent Harnessability as a model-wide factor →
+- Agent harnessability as a model-wide factor →
   [`authoring/agent-harnessability.md`](authoring/agent-harnessability.md).
 - The agent harness as a modeled area/constituent →
   [`authoring/agent-harness.md`](authoring/agent-harness.md).
@@ -38,7 +38,7 @@ specification governs on any conflict.
   [`authoring/quality-changelog.md`](authoring/quality-changelog.md).
 
 For first-model setup, read the body, model-structure, factors, requirements,
-rating-scale, Agent Harnessability, agent-harness, and quality-changelog guides before
+rating-scale, agent-harnessability, agent-harness, and quality-changelog guides before
 authoring. For narrow recommendation follow-up, read only the sub-guides matching
 the confirmed mutation surface.
 
@@ -80,12 +80,12 @@ evaluation, unless an area narrows it with a `source`.
 | Requirement  | A specific quality expectation.                                |
 | Assessment   | The means of checking a requirement against an area source.    |
 | Finding      | An observation produced by an assessment.                      |
-| Rating Scale | The ordered model-wide scale used to rate results.             |
+| Rating scale | The ordered model-wide scale used to rate results.             |
 
-## Quality Model
+## Quality model
 
-The **quality model** is the frontmatter. The root model is also the apex Area and
-carries one model-wide property, `ratingScale`, plus all Area properties.
+The **quality model** is the frontmatter. The root model is also the apex area and
+carries one model-wide property, `ratingScale`, plus all area properties.
 
 | Property       | Presence   | What it is                                                      |
 | -------------- | ---------- | --------------------------------------------------------------- |
@@ -99,7 +99,7 @@ carries one model-wide property, `ratingScale`, plus all Area properties.
 
 \* At least one of `factors`, `requirements`, or `areas` must be present.
 
-Area names, Factor names, Requirement names, and Rating Level IDs use the same
+Area names, factor names, requirement names, and rating level IDs use the same
 strict name grammar: letters or digits at both ends, with letters, digits, `_`,
 or `-` inside. Requirement titles stay natural language. When a tool needs a
 stable text handle, it uses canonical model references such as `area:root`,
@@ -110,7 +110,7 @@ stable text handle, it uses canonical model references such as `area:root`,
 
 1. Name the entity with `title` and think through the body's Overview first.
 2. Fill the Markdown body before expanding the frontmatter.
-3. Confirm the Rating Scale after the body and before writing requirements.
+3. Confirm the rating scale after the body and before writing requirements.
 4. Derive factors and requirements from the body context.
 5. Trace at least one important concern from body to model before expanding the
    tree: a need names the outcome, a risk names the failure mode, a factor names

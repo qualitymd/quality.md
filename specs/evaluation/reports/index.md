@@ -1,8 +1,8 @@
-# Evaluation Reports
+# Evaluation reports
 
-Deterministic Markdown report contracts for Evaluation.
+Deterministic Markdown report contracts for evaluation.
 
 # Concepts
 
-- [Report tree](report-tree.md) - Area, Factor, and Requirement report structure
+- [Report tree](report-tree.md) - area, factor, and requirement report structure
   and rendering rules.

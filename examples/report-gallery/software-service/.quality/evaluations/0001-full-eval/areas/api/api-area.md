@@ -13,14 +13,14 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 ## Key details
 
-| Overall Rating | Local Rating | Confidence |
+| Overall rating | Local rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor breakdown](#area--factor-breakdown)
+- [Area / factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
 - [Limits and incomplete inputs](#limits-and-incomplete-inputs)
 - [Primary source data](#primary-source-data)
@@ -29,9 +29,9 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Area / Factor breakdown
+## Area / factor breakdown
 
-| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |

@@ -33,8 +33,8 @@ Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
 **MUST** identify the run path, root area, evaluation data artifact count,
 reportability, gap count, `requestedScope`, and `plannedScope`.
 
-The command **MUST** use the current Evaluation run inspection path. If a
-recognized run has a broken Evaluation skeleton, the command **MUST** fail
+The command **MUST** use the current evaluation run inspection path. If a
+recognized run has a broken evaluation skeleton, the command **MUST** fail
 with the same diagnostic as `qualitymd evaluation status <run>`.
 
 The command **MAY** accept `--state all|complete|reportable|incomplete` to

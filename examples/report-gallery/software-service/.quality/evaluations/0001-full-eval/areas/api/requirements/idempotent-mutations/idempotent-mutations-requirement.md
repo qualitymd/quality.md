@@ -43,7 +43,7 @@ The idempotency contract is present but incomplete for retry recovery.
 
 ### gap-001 Mutation retry behavior is not fully specified for duplicate idempotency keys.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 1 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

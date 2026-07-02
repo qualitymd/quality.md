@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation JSON conventions
-description: Shared JSON conventions for Evaluation routine payloads.
+description: Shared JSON conventions for evaluation routine payloads.
 tags: [evaluation, json, records]
 timestamp: 2026-06-25T00:00:00Z
 ---
@@ -16,9 +16,9 @@ capitals.
 
 ## Common fields
 
-Every Evaluation JSON payload **MUST** include `schemaVersion`.
+Every evaluation JSON payload **MUST** include `schemaVersion`.
 
-Every Evaluation JSON payload **MUST** include `kind`.
+Every evaluation JSON payload **MUST** include `kind`.
 
 `kind` **MUST** name the payload type.
 
@@ -38,7 +38,7 @@ qualified model-reference strings:
 
 Repeated identity fields such as `areaIds`, `factorIds`,
 `localRequirementIds`, `rootFactorIds`, `childAreaIds`, `ratingLevelIds`, and
-the secondary Factor lists **MUST** be arrays of those same qualified reference
+the secondary factor lists **MUST** be arrays of those same qualified reference
 strings and default to `[]` when empty.
 
 Persisted routine JSON **MUST NOT** use structured identity sub-fields such as
@@ -47,12 +47,12 @@ unqualified references.
 
 > Rationale: the qualified reference grammar is the lossless string encoding of
 > the same composite identity; carrying the parsed object in persisted JSON adds
-> shape complexity without adding information. The `root` Area-name reservation
+> shape complexity without adding information. The `root` area-name reservation
 > keeps `area:root` unambiguous. — 0120
 
 The CLI **MUST** resolve persisted identity fields against the run's
 `model-snapshot.md` before accepting a write. A payload that names an absent
-Area, Factor, Requirement, or Rating Level **MUST** be rejected rather than
+area, factor, requirement, or rating level **MUST** be rejected rather than
 persisted as a free-form string.
 
 A reference object's `kind` field **MUST** name a value from a closed
@@ -64,9 +64,9 @@ the identity-resolution rule above. A routine reference (`*Ref` / `inputRefs[]`)
 including the CLI-owned `EvaluationOutputResult`). A report reference `kind`
 names one of the report kinds `run`, `area`, `factor`, `requirement`,
 `findings`, `recommendations`, or `recommendation`. The `run` report kind
-identifies the run-level `report.md` and does not include Area, Factor, or
-Requirement identity fields. Area, Factor, and Requirement report refs include
-`areaId`; Factor report refs also include `factorId`; Requirement report refs
+identifies the run-level `report.md` and does not include area, factor, or
+requirement identity fields. Area, factor, and requirement report refs include
+`areaId`; factor report refs also include `factorId`; requirement report refs
 also include `requirementId`. `findings` identifies `findings.md`,
 `recommendations` identifies `recommendations.md`, and `recommendation`
 identifies a recommendation detail report.
@@ -80,18 +80,18 @@ Generated routine outputs, protocol guidance, report artifacts, and payload-loca
 artifacts **MUST** use `*Ref` names.
 
 Payload-local IDs are local to the containing payload unless the payload kind
-defines a wider owner. Finding `id` values are payload-local IDs, not Model IDs
+defines a wider owner. Finding `id` values are payload-local IDs, not model IDs
 or durable cross-run identifiers. Cross-payload references to findings **MUST**
 use a routine reference qualified by the owning payload subject plus a selector,
 such as `findings[gap-001]`. Candidate action `id` values are local to their
-containing Finding, not the payload or run. References to candidate actions
-**MUST** qualify the containing Finding selector, for example
+containing finding, not the payload or run. References to candidate actions
+**MUST** qualify the containing finding selector, for example
 `findings[gap-001].candidateActions[action-001]`.
 
 Evaluation identity has two parts:
 
-- `EvaluationManifest.evaluationId` is the globally-unique, opaque Evaluation
-  identifier. New Evaluation IDs are generated as `<timestamp>-<nanoid>`, where
+- `EvaluationManifest.evaluationId` is the globally-unique, opaque evaluation
+  identifier. New evaluation IDs are generated as `<timestamp>-<nanoid>`, where
   `<timestamp>` is the UTC ISO-8601 basic creation timestamp
   (`YYYYMMDDThhmmssZ`) and `<nanoid>` is at least 12 lowercase base32 characters
   from cryptographic-strength randomness. Readers **MUST** treat it as opaque
@@ -101,28 +101,28 @@ Evaluation identity has two parts:
   presented as a durable handoff identifier. `EvaluationManifest.run.label`
   records the created run folder name.
 
-The structured Evaluation identity rule is: `id` names opaque artifact identity;
+The structured evaluation identity rule is: `id` names opaque artifact identity;
 user-facing `number` values name ranked report positions.
-`EvaluationManifest.evaluationId` names the Evaluation. `RecommendationResult.id`
-names a recommendation artifact within the Evaluation and **MUST** use the
+`EvaluationManifest.evaluationId` names the evaluation. `RecommendationResult.id`
+names a recommendation artifact within the evaluation and **MUST** use the
 `qrec_<token>` form, where `<token>` contains only lowercase ASCII letters and
-digits. Requirement Findings use their requirement-scoped selector. `qualitymd
+digits. Requirement findings use their requirement-scoped selector. `qualitymd
 evaluation data set` **MUST** assign a missing `RecommendationResult.id` before
 writing a recommendation and **MUST NOT** assign an artifact ID to
 `FindingRankingResult.orderedFindings[]`.
 
 Recommendation ranking and finding coverage **MUST** reference recommendations by
 their assigned `id`. Cross-payload references to findings **MUST** use the
-Requirement Assessment routine reference plus selector, for example
+requirement assessment routine reference plus selector, for example
 `findings[gap-001]`.
 
 The user-facing recommendation number is derived from
 `RecommendationRankingResult.orderedRecommendations[].rank`; in reports it is
 rendered as `#` or `Number`. Typed artifact references used in reports and
-external handoff text **SHOULD** combine the Evaluation ID and recommendation ID, for
+external handoff text **SHOULD** combine the evaluation ID and recommendation ID, for
 example
 `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_7h4km2p9`. These
-artifact references do not replace routine `*Ref` objects or canonical Model
+artifact references do not replace routine `*Ref` objects or canonical model
 references.
 
 ## Optional and repeated fields
@@ -158,5 +158,5 @@ incomplete.
 `none` means no confidence judgment was possible because there was no
 assessment-quality evidence.
 
-Fixed Evaluation enum values **MUST** be written as their canonical persisted
+Fixed evaluation enum values **MUST** be written as their canonical persisted
 values, not as report display labels, markers, aliases, or case variants.

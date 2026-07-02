@@ -1,21 +1,21 @@
 ---
 type: How-to Guide
 title: Designing report outputs
-description: How to design generated Evaluation report Markdown for fast human reading and light agent accessibility.
+description: How to design generated evaluation report Markdown for fast human reading and light agent accessibility.
 tags: [reports, evaluation, design, contributing]
 timestamp: 2026-06-29T00:00:00Z
 ---
 
 # Designing report outputs
 
-Generated Evaluation reports are primarily human review surfaces. They should
+Generated evaluation reports are primarily human review surfaces. They should
 help a reader land in any report file, understand the run context in a few
 seconds, and move to the surrounding reports without reconstructing the tree from
 paths.
 
 Use this guide when designing or reshaping generated Markdown reports,
-especially `report.md`, `findings.md`, `recommendations.md`, Area reports,
-Factor reports, Requirement reports, and recommendation detail reports.
+especially `report.md`, `findings.md`, `recommendations.md`, area reports,
+factor reports, requirement reports, and recommendation detail reports.
 
 ## Research basis
 
@@ -73,7 +73,7 @@ report.
 The top of every report should answer:
 
 - What report is this?
-- What Evaluation run produced it?
+- What evaluation run produced it?
 - What subject or index does it cover?
 - What was the planned scope?
 - Where are the overview, findings, recommendations, and relevant parent or
@@ -89,7 +89,7 @@ The top of a primary run report should have one stable job per section:
 2. `Summary`: bottom line, main reason, and consequence.
 3. `Key details`: compact table of scan-critical facts.
 4. `Contents`: local navigation for the major sections in this report.
-5. `Model evaluation`: the evaluated Model structure and ratings.
+5. `Model evaluation`: the evaluated model structure and ratings.
 6. Ranked findings and recommendations.
 
 Keep these roles distinct. Do not repeat the same fact in navigation, summary
@@ -97,7 +97,7 @@ prose, key-details table, and local jump links. The opening area should read as 
 answer, not a pile of metadata.
 
 For run reports, frontmatter owns routing metadata. Do not repeat
-frontmatter-only facts such as Evaluation ID, creation time, and stable subject
+frontmatter-only facts such as evaluation ID, creation time, and stable subject
 reference in the visible body unless they materially help human judgment. Keep
 scope visible when it changes how the rating should be read, usually in
 `Key details` and the H1 title for factor-scoped runs.
@@ -105,14 +105,14 @@ scope visible when it changes how the rating should be read, usually in
 ### Deterministic projection
 
 Generated reports are deterministic projections over completed structured
-Evaluation data. Do not introduce report-only findings, ratings, evidence,
+evaluation data. Do not introduce report-only findings, ratings, evidence,
 limits, recommendations, or analysis in the Markdown body or in frontmatter.
 
 Structured data under `data/` remains the machine-readable source of truth.
 The report body may point to that data in its bottom `Primary source data`
 section, but the report must not become a second result format.
 
-Keep rating drivers in structured Evaluation payloads instead of rendering
+Keep rating drivers in structured evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
 rating trace, the report's `Primary source data` section should point them to
 the relevant primary analysis payload; the visible body should foreground
@@ -128,15 +128,15 @@ state and scan-critical context.
 Good header table examples:
 
 - run report: `Overall Rating`, `Scope`, `Confidence`;
-- Area report: `Overall Rating`, `Local Rating`, `Confidence`;
-- Factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`;
-- Requirement report: `Rating`, `Assessment`, `Confidence`;
-- Findings report: `Findings`, `Highest Concern Severity`;
-- Recommendations report: `Recommendations`, `Highest Impact`, `Coverage`.
+- area report: `Overall Rating`, `Local Rating`, `Confidence`;
+- factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`;
+- requirement report: `Rating`, `Assessment`, `Confidence`;
+- findings report: `Findings`, `Highest Concern Severity`;
+- recommendations report: `Recommendations`, `Highest Impact`, `Coverage`.
 
 For `report.md`, render this table under `## Key details` instead of leaving it
 as an unlabeled header table. The key-details table is for facts: rating,
-confidence, scope, total Finding count, and total Recommendation count. Do not
+confidence, scope, total finding count, and total recommendation count. Do not
 use the key-details table for summary prose, recommendation text, evidence,
 limits, or ranking-state wording.
 
@@ -145,16 +145,16 @@ limits, or ranking-state wording.
 Detail reports should expose report-level navigation near the H1:
 
 - `report.md` as the overview;
-- `findings.md` as the Findings report;
-- `recommendations.md` as the Recommendations report;
-- parent Area or Factor reports when relevant;
-- attached Factor reports for Requirement reports.
+- `findings.md` as the findings report;
+- `recommendations.md` as the recommendations report;
+- parent area or factor reports when relevant;
+- attached factor reports for requirement reports.
 
 Keep the existing model context lines:
 
-- `Area:` trail for Area, Factor, Requirement, and scoped run reports;
-- `Factor:` trail for Factor reports;
-- plural `Factors:` line for Requirement reports.
+- `Area:` trail for area, factor, requirement, and scoped run reports;
+- `Factor:` trail for factor reports;
+- plural `Factors:` line for requirement reports.
 
 Use breadcrumb trails for hierarchy and a separate report-nav line for sibling
 report-list artifacts. Do not overload breadcrumbs with every report in the run.
@@ -191,7 +191,7 @@ Useful run-report targets, when the corresponding sections are rendered:
 
 Useful detail-report targets, when the corresponding sections are rendered:
 
-- `Area / Factor breakdown`;
+- `Area / factor breakdown`;
 - `Limits and incomplete inputs`;
 - `Findings summary`;
 - `Finding details`;
@@ -204,17 +204,17 @@ reports, render Contents after the opening context and key details.
 ### Frontmatter
 
 Generated report YAML frontmatter should stay readable and non-judgmental. It is
-an identity and indexing layer, not a second Evaluation result format,
+an identity and indexing layer, not a second evaluation result format,
 metadata-summary table, or source-data manifest.
 
 It is reasonable for frontmatter to carry document metadata such as stable report
-kind, title, Evaluation ID, creation time, model path, and run folder label when
+kind, title, evaluation ID, creation time, model path, and run folder label when
 those fields help agents, static-site tooling, or editors find and route the
 report without making the file harder for people to open. These fields are
-metadata about the report document and Evaluation, not judgment about the
+metadata about the report document and evaluation, not judgment about the
 evaluated subject.
 
-Do not repeat Evaluation judgment or evidence in frontmatter, including:
+Do not repeat evaluation judgment or evidence in frontmatter, including:
 
 - summaries;
 - ratings;
@@ -232,7 +232,7 @@ bundle `index.md`, `schema.md`, or `log.md`. A later Change Case should decide
 the full report-bundle contract and update the generated report specs.
 Do not rename report files such as `findings.md` or `recommendations.md` to
 `index.md` for OKF compatibility. In OKF, `index.md` is a bundle listing file;
-`findings.md` is still a report concept whose subject is the ranked Findings
+`findings.md` is still a report concept whose subject is the ranked findings
 index.
 
 Use a stable report `type` and a human-friendly `title` in every generated
@@ -269,12 +269,12 @@ parentheses, for example `Quality evaluation - Public API (Reliability,
 Correctness)`.
 
 Use report types that name the reported subject and keep the word `Report` in
-the type so report artifacts do not collide with Model concepts:
+the type so report artifacts do not collide with model concepts:
 
 | Output                                | `type`                          | Subject                        |
 | ------------------------------------- | ------------------------------- | ------------------------------ |
 | `report.md`                           | `Evaluation Overview Report`    | Evaluation run / planned scope |
-| `root-area.md`                        | `Area Evaluation Report`        | Root Area                      |
+| `root-area.md`                        | `Area Evaluation Report`        | Root area                      |
 | `areas/<area>/<area>-area.md`         | `Area Evaluation Report`        | Area                           |
 | `factors/<factor>/<factor>-factor.md` | `Factor Evaluation Report`      | Factor                         |
 | `requirements/<requirement>/...`      | `Requirement Evaluation Report` | Requirement                    |
@@ -282,7 +282,7 @@ the type so report artifacts do not collide with Model concepts:
 | `recommendations.md`                  | `Recommendation Index Report`   | Ranked recommendations         |
 | `recommendations/<number>-<slug>.md`  | `Recommendation Report`         | Recommendation                 |
 
-Avoid `type: Area`, `type: Factor`, or `type: Requirement`; those name Model
+Avoid `type: Area`, `type: Factor`, or `type: Requirement`; those name model
 concepts, not report artifacts. `report.md` should use
 `Evaluation Overview Report` rather than `Area Evaluation Report` because it is
 the run entrypoint and includes findings, recommendations, scope, coverage, and
@@ -290,7 +290,7 @@ subject report links.
 
 This keeps the first lines of a report readable in editors that expose
 frontmatter, makes frontmatter `title` the same document title as the H1, and
-keeps the structured Evaluation data as the single source of truth for
+keeps the structured evaluation data as the single source of truth for
 judgment. If a future consumer needs richer machine access to ratings, findings,
 recommendations, evidence, or limits, use `data/evaluation-output-result.json`
 and the payloads it indexes instead of expanding generated report frontmatter.
@@ -305,13 +305,13 @@ confidence, severity, finding type, recommendation impact, and priority-like
 value as a text label, optionally preceded by a marker or icon. Markers are
 supplemental scanning aids; do not rely on color or icon shape alone.
 
-In `Model evaluation` and `Area / Factor breakdown` tables, use
-`▦ Area / □ Factor` as the first column label. This keeps the Area and Factor row
+In `Model evaluation` and `Area / factor breakdown` tables, use
+`▦ Area / □ Factor` as the first column label. This keeps the area and factor row
 markers visible as a compact key while row cells still carry linked text labels.
 
 Use one compact `Evaluation links:` blockquote immediately below the H1 in every
-generated report. The blockquote links to the run overview, Findings,
-Recommendations, and the workspace-root glossary:
+generated report. The blockquote links to the run overview, findings,
+recommendations, and the workspace-root glossary:
 
 ```markdown
 > **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
@@ -330,7 +330,7 @@ values.
 ### Primary source data at the bottom
 
 Every generated report should end with a stable `## Primary source data`
-section. The section lists the report-local primary structured Evaluation
+section. The section lists the report-local primary structured evaluation
 payloads used to render that report artifact. This is the only standard footer
 utility section.
 
@@ -358,7 +358,7 @@ list every payload used by more granular linked reports. Do not list
 `data/evaluation-output-result.json` merely because it exists: that file is a
 generated output index, not report source data unless a future renderer directly
 consumes it. For `report.md`, prefer primary run/report inputs such as the run
-manifest, scoped Area analysis, and advice ranking payloads; let linked detail
+manifest, scoped area analysis, and advice ranking payloads; let linked detail
 reports own their own deeper source lists.
 
 ## Header patterns
@@ -366,7 +366,7 @@ reports own their own deeper source lists.
 ### Run report
 
 The run report is the primary decision-ready report. Its opening should make the
-result, key facts, evaluated Model shape, and ranked evidence obvious without
+result, key facts, evaluated model shape, and ranked evidence obvious without
 duplicating detail-report navigation or provenance sections.
 
 ```markdown
@@ -438,7 +438,7 @@ Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 ### Area reports
 
-Area reports should orient with both run navigation and Area hierarchy.
+Area reports should orient with both run navigation and area hierarchy.
 
 ```markdown
 # Area: Public API
@@ -456,7 +456,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor breakdown](#area--factor-breakdown)
+- [Area / factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
 - [Limits and incomplete inputs](#limits-and-incomplete-inputs)
 - [Primary source data](#primary-source-data)
@@ -465,7 +465,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Area / Factor breakdown
+## Area / factor breakdown
 
 | ▦ Area / □ Factor                                            | Overall Rating | Local Rating | Findings | Recommendations |
 | ------------------------------------------------------------ | -------------- | ------------ | -------- | --------------- |
@@ -476,7 +476,7 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 
 ### Factor reports
 
-Factor reports should preserve Area context and Factor hierarchy.
+Factor reports should preserve area context and factor hierarchy.
 
 ```markdown
 # Factor: Correctness
@@ -509,7 +509,7 @@ Correctness follows its direct requirement signal.
 ### Requirement reports
 
 Requirement reports are often the deep link target from findings. Their header
-should make the owning Area, attached Factors, rating state, assessment state,
+should make the owning area, attached factors, rating state, assessment state,
 and confidence immediately visible.
 
 ```markdown
@@ -575,8 +575,8 @@ Before changing report output, check:
   area.
 - Detail report navigation links to the overview, findings, and recommendations
   where those reports exist.
-- Detail report hierarchical context is visible through Area, Factor, or Factors
-  lines.
+- Detail report hierarchical context is visible through `Area:`, `Factor:`, or
+  `Factors:` lines.
 - `report.md` uses `## Summary`, `## Key details`, `## Contents`, and
   `## Model evaluation` before ranked lists.
 - Frontmatter-only routing metadata is not repeated in the visible body unless

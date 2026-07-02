@@ -36,7 +36,7 @@ func Project(spec *Spec) *Element {
 	return root
 }
 
-// buildArea populates an Area element's children from the factor, requirement,
+// buildArea populates an area element's children from the factor, requirement,
 // and child-area maps declared at areaPath.
 func buildArea(parent *Element, areaPath AreaPath, factors map[string]Factor, requirements map[string]Requirement, areas map[string]Area) {
 	for _, name := range sortedKeys(factors) {
@@ -66,7 +66,7 @@ func buildArea(parent *Element, areaPath AreaPath, factors map[string]Factor, re
 	}
 }
 
-// buildFactor populates a Factor element's children: its sub-factors (nested)
+// buildFactor populates a factor element's children: its sub-factors (nested)
 // then its directly declared requirements.
 func buildFactor(parentID string, areaPath AreaPath, factorPath FactorPath, factor Factor) *Element {
 	node := &Element{

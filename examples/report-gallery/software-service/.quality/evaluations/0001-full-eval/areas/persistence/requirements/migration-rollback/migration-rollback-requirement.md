@@ -43,7 +43,7 @@ Rollback instructions are present, but the rehearsal signal is stale.
 
 ### risk-001 Rollback guidance exists, but rehearsal evidence is stale.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

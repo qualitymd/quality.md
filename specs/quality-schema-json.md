@@ -60,7 +60,7 @@ Deferred / non-goals:
 - No JSON form of the specification _prose_ — that is a separate deferral noted
   in [`spec`](cli/spec.md), distinct from this structural artifact.
 - No qualitymd-only tooling conventions such as the root `config` pointer; those
-  are lint/CLI behavior, not normative Model structure.
+  are lint/CLI behavior, not normative model structure.
 - No published hosted-URL `$id` registry or versioned schema-hosting scheme
   beyond the identifier the artifact declares.
 - The command surface that emits the artifact is specified in
@@ -69,8 +69,8 @@ Deferred / non-goals:
 ## Requirements
 
 `quality.schema.json` **MUST** be a valid JSON Schema describing the structural
-shape of QUALITY.md frontmatter: the Model root, and recursively Areas, Factors,
-Requirements, and Rating Levels, matching the structure in
+shape of QUALITY.md frontmatter: the model root, and recursively areas, factors,
+requirements, and rating levels, matching the structure in
 [`SPECIFICATION.md`](../SPECIFICATION.md#frontmatter-schema).
 
 `quality.schema.json` **MUST** encode the structural constraints the linter
@@ -78,9 +78,9 @@ enforces from [`internal/schema`](../internal/schema/schema.go): per-property
 shape (scalar / map / sequence), required vs. optional presence, the rating-scale
 `minItems` of 2, map-keyed entries for `factors` / `requirements` / `areas`,
 strict `propertyNames` patterns for `factors`, `requirements`, and `areas`, the
-`root` Area-name reservation where JSON Schema can express it, the strict scalar
+`root` area-name reservation where JSON Schema can express it, the strict scalar
 pattern for `ratingScale[].level`, and the "at least one of factors,
-requirements, or areas" rule on the Model.
+requirements, or areas" rule on the model.
 
 > Rationale: the value of a companion schema is that it agrees with the tool; a
 > schema that accepts what the linter rejects (or vice versa) is worse than none.
@@ -109,10 +109,10 @@ omits it rather than encoding a misleading one.
 > Rationale: a near-miss structural check that looks semantic teaches consumers
 > to trust the schema for guarantees only the linter makes. — 0049
 
-`quality.schema.json` **MUST** constrain Requirement names with the strict
+`quality.schema.json` **MUST** constrain requirement names with the strict
 model-name pattern.
 
-`quality.schema.json` **MUST NOT** constrain Requirement `ratings` override keys
+`quality.schema.json` **MUST NOT** constrain requirement `ratings` override keys
 with the strict model-name pattern.
 
 `quality.schema.json` **MUST** declare its JSON Schema dialect (`$schema`) as
@@ -128,8 +128,8 @@ not set `additionalProperties: false`), consistent with the format's
 > reject conforming documents that use it. — 0049
 
 `quality.schema.json` **MUST NOT** describe the qualitymd-only root `config`
-convention as a normative Model property.
+convention as a normative model property.
 
 > Rationale: `config` selects qualitymd tooling configuration for a workspace;
 > including it in the companion schema would blur tooling behavior with the
-> QUALITY.md Model. — 0057
+> QUALITY.md model. — 0057

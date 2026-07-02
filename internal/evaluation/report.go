@@ -8,7 +8,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-// BuildReportReceipt is the JSON contract emitted after building Evaluation
+// BuildReportReceipt is the JSON contract emitted after building evaluation
 // report files.
 type BuildReportReceipt struct {
 	SchemaVersion          int              `json:"schemaVersion"`
@@ -19,12 +19,12 @@ type BuildReportReceipt struct {
 	NextActions            []receipt.Action `json:"nextActions,omitempty"`
 }
 
-// BuildReport renders the Evaluation report tree and output result for a run.
+// BuildReport renders the evaluation report tree and output result for a run.
 func BuildReport(path string) (*BuildReportReceipt, error) {
 	return buildEvaluationReport(path, "")
 }
 
-// BuildReportWithDisplay renders the Evaluation report tree and uses displayPath
+// BuildReportWithDisplay renders the evaluation report tree and uses displayPath
 // in command receipts.
 func BuildReportWithDisplay(path, displayPath string) (*BuildReportReceipt, error) {
 	return buildEvaluationReport(path, displayPath)

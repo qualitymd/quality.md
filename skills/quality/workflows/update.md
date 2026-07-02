@@ -1,6 +1,6 @@
 ---
 type: Runtime Workflow
-title: Update Workflow
+title: Update workflow
 description: Runtime workflow for updating the /quality skill and qualitymd CLI pair.
 ---
 

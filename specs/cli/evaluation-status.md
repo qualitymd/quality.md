@@ -31,9 +31,9 @@ to the selected model's workspace root. When `--model` is absent and a
 positional `<run>` path is supplied, the command **MAY** preserve ordinary
 filesystem-path behavior.
 
-The command **MUST NOT** write files. It exits `0` when a current Evaluation
+The command **MUST NOT** write files. It exits `0` when a current evaluation
 run can be inspected, even when it is not yet reportable. Missing, malformed,
-unreadable, schema-incompatible, or structurally incomplete Evaluation payloads under
+unreadable, schema-incompatible, or structurally incomplete evaluation payloads under
 `data/` **MUST** produce typed gaps and make the run non-reportable.
 
 A missing run folder or broken evaluation run skeleton fails as a command error.
@@ -43,18 +43,18 @@ reportability, and any gaps. Under `--json`, stdout **MUST** include
 `schemaVersion`, `path`, `reportable`, `data`, gaps, and `nextActions`.
 
 Every gap `kind` **MUST** be one of the typed evaluation-run gap kinds defined by
-the implementation and the active evaluation contract. For Evaluation runs,
+the implementation and the active evaluation contract. For evaluation runs,
 typed gaps come from the [Evaluation](../evaluation/evaluation.md)
 record and reportability rules. Status routing **MUST** use those typed gap kinds
 rather than interpreting free-form text in `detail`.
 
-When a run contains Evaluation data, `status` **MUST** inspect the required
+When a run contains evaluation data, `status` **MUST** inspect the required
 structured payload graph under `data/` and report missing, malformed, unreadable,
 schema-incompatible, or structurally incomplete payloads as typed gaps.
 
-For Evaluation runs, missing or incomplete Advice payloads **MUST** make the run
-non-reportable. Required Advice payloads include `FindingRankingResult`, at
-least one `RecommendationResult`, and `RecommendationRankingResult` with Finding
+For evaluation runs, missing or incomplete advice payloads **MUST** make the run
+non-reportable. Required advice payloads include `FindingRankingResult`, at
+least one `RecommendationResult`, and `RecommendationRankingResult` with finding
 coverage accounting.
 
 Status **MUST NOT** expose planned coverage gaps or compatibility transforms.

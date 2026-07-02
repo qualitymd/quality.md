@@ -1,5 +1,15 @@
 # /quality runtime skill update log
 
+## 2026-07-02
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) prerequisites for the
+  document-only `0.10 (Draft)` format specification. Runtime guidance now points
+  agents to Model semantics for source resolution, Requirement scope, Factor
+  connection, and Rating Scale meaning.
+
+- **Release prep**: Bumped the runtime skill metadata to `0.27.0` with
+  `qualitymd >=0.27.0 <0.28.0` compatibility for the `v0.27.0` release.
+
 ## 2026-06-30
 
 - **Revision**: Updated runtime skill headings for 0189 - Heading sentence case.

@@ -90,7 +90,7 @@ description = "Verify the npm launcher package includes the generated root READM
 run = "node scripts/check-npm-package.mjs"
 
 [tasks.report-gallery]
-description = "Regenerate the checked-in Evaluation report gallery examples"
+description = "Regenerate the checked-in evaluation report gallery examples"
 run = "go run ./scripts/report-gallery"
 
 [tasks.report-gallery-check]

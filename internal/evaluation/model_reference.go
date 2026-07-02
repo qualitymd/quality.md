@@ -6,7 +6,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/model"
 )
 
-// ParseRatingReference resolves a canonical Rating Level model reference against
+// ParseRatingReference resolves a canonical rating level model reference against
 // spec.
 func ParseRatingReference(spec *model.Spec, ref string) (string, error) {
 	if spec == nil {
@@ -19,7 +19,7 @@ func ParseRatingReference(spec *model.Spec, ref string) (string, error) {
 	return parseRatingReferenceBody(spec, ref, level, "rating model reference")
 }
 
-// ParseUnqualifiedRatingReference resolves a Rating Level reference in a context
+// ParseUnqualifiedRatingReference resolves a rating level reference in a context
 // where the expected reference type is fixed.
 func ParseUnqualifiedRatingReference(spec *model.Spec, ref string) (string, error) {
 	if spec == nil {
@@ -30,7 +30,7 @@ func ParseUnqualifiedRatingReference(spec *model.Spec, ref string) (string, erro
 
 func parseRatingReferenceBody(spec *model.Spec, ref, level, label string) (string, error) {
 	if !model.ValidReferenceName(level) {
-		return "", usagef("%s %q has an invalid Rating Level ID", label, ref)
+		return "", usagef("%s %q has an invalid rating level ID", label, ref)
 	}
 	for _, candidate := range spec.RatingScale {
 		if candidate.Level == level {

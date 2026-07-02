@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
 title: Evaluation payload kinds
-description: Supported structured payload kinds for Evaluation.
+description: Supported structured payload kinds for evaluation.
 tags: [evaluation, records, json]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # Evaluation payload kinds
 
-This spec lists the payload kinds supported by the first Evaluation
+This spec lists the payload kinds supported by the first evaluation
 implementation slice.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -43,8 +43,8 @@ Fixed enum fields **MUST** use their canonical persisted values. The CLI **MUST
 NOT** accept display labels, emoji or shape markers, aliases, case variants, or
 legacy values as substitutes.
 
-The CLI **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
-Level ID in an accepted payload against the run's model snapshot before writing
+The CLI **MUST** resolve every area ID, factor ID, requirement ID, and rating
+level ID in an accepted payload against the run's model snapshot before writing
 it. Those IDs **MUST** use the canonical qualified reference strings defined in
 [`Evaluation JSON conventions`](json-conventions.md#identity-and-references).
 
@@ -59,7 +59,7 @@ Agents **MUST NOT** write `EvaluationManifest` or `EvaluationOutputResult` throu
 
 `EvaluationManifest` **MUST** include `evaluationId`, `createdAt`, `model`,
 `requestedScope`, `plannedScope`, and `run`. `createdAt` **MUST** be a UTC RFC
-3339 timestamp for Evaluation creation. `requestedScope` **MUST** record
+3339 timestamp for evaluation creation. `requestedScope` **MUST** record
 requested `areaId` and `factorFilter` fields only when scope was supplied.
 `plannedScope` **MUST** include an `areaId` and `factorFilter` array. `run`
 **MUST** include the local run `number` and folder `label`.
@@ -69,11 +69,11 @@ requested `areaId` and `factorFilter` fields only when scope was supplied.
 
 `runReportRef` **MUST** reference the run-level `report.md`.
 
-`scopedAreaAnalysisRef` **MUST** reference the Area Analysis Result selector used
-as `report.md`'s scoped Area result.
+`scopedAreaAnalysisRef` **MUST** reference the area analysis result selector used
+as `report.md`'s scoped area result.
 
-`rootAreaAnalysisRef` **MAY** be present when the root Area has an Area Analysis
-Result in the run.
+`rootAreaAnalysisRef` **MAY** be present when the root area has an area analysis
+result in the run.
 
 ## Required payload shape
 
@@ -86,7 +86,7 @@ derivedContext
 ```
 
 `EvaluationFrame` **MUST NOT** carry run scope fields such as `requestedScope`,
-`areaIds`, or `factorIds`; Evaluation scope belongs to `EvaluationManifest`.
+`areaIds`, or `factorIds`; evaluation scope belongs to `EvaluationManifest`.
 
 Result payloads **MUST** follow the result shape for their routine.
 
@@ -110,8 +110,8 @@ include:
 finding entries. Finding identity is the `findingRef` routine reference plus its
 payload-local selector.
 
-`FindingRankingResult.orderedFindings` **MUST** account for every Requirement
-Finding in the effective run data exactly once. The `tier` and order express
+`FindingRankingResult.orderedFindings` **MUST** account for every requirement
+finding in the effective run data exactly once. The `tier` and order express
 relative priority, not inclusion: a low-priority finding is ranked at a low tier,
 never omitted. If no findings were produced, the array **MUST** be empty.
 `tier` **MUST** be one of `P1`, `P2`, `P3`, or `P4`.
@@ -133,7 +133,7 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 `RecommendationResult.id` values **MUST** match `^qrec_[a-z0-9]+$` and **MUST**
 be unique in the run.
 `impact` **MUST** be one of `very_high`, `high`, `medium`, or `low`.
-`confidence` **MUST** use the Evaluation confidence vocabulary: `high`,
+`confidence` **MUST** use the evaluation confidence vocabulary: `high`,
 `medium`, `low`, or `none`.
 `expectedValue` **MUST** state the quality-management value expected from
 completing the recommendation.
@@ -165,16 +165,16 @@ one or more `recommendationRefs`. When `disposition` is
 `not_advice_driving`, the entry **SHOULD** include `rationale`.
 
 `RecommendationRankingResult.findingCoverage` **MUST** account for every
-Requirement Finding in the effective run data exactly once. It **MUST NOT**
+requirement finding in the effective run data exactly once. It **MUST NOT**
 claim coverage by a recommendation ID that has no corresponding
 `RecommendationResult`. Recommendation ranking and coverage references **MUST**
 use `RecommendationResult.id`.
 
 ## Finding core
 
-`RequirementAssessmentResult.findings[]` **MUST** use the Finding Core.
+`RequirementAssessmentResult.findings[]` **MUST** use the finding core.
 
-Each Finding Core object **MUST** include:
+Each finding core object **MUST** include:
 
 - `id`;
 - `type`;
@@ -199,14 +199,14 @@ Finding `type` **MUST** be one of:
 
 Finding `severity` **MUST** be present when `type` is `gap` or `risk`, and
 **MUST NOT** be present when `type` is `strength` or `note`. When present,
-Finding `severity` **MUST** be one of:
+finding `severity` **MUST** be one of:
 
 - `critical`
 - `high`
 - `medium`
 - `low`
 
-Informational observations use Finding `type: note`; `info` is not a severity
+Informational observations use finding `type: note`; `info` is not a severity
 value.
 
 Finding `confidence` **MUST** be one of:
@@ -240,11 +240,11 @@ include `rationale` and `ratingEffect`.
 Each `evidence` entry **MUST** include `sourceRef` and `statement`. Each
 `evidence` entry **MAY** include `rationale`.
 
-Requirement Findings **MAY** include `candidateActions`, a list of
+Requirement findings **MAY** include `candidateActions`, a list of
 finding-local candidate action objects.
 
-Requirement Findings use the fixed Finding type values `strength`, `gap`,
-`risk`, and `note`. `unknown` is not a valid Finding type. Missing or
+Requirement findings use the fixed finding type values `strength`, `gap`,
+`risk`, and `note`. `unknown` is not a valid finding type. Missing or
 insufficient evidence that prevents rating belongs in assessment/rating status,
 assessment `unknowns`, or rating `missingEvidence`; ambiguous current-state
 evidence that constrains a rating is a `gap`.
@@ -256,7 +256,7 @@ Each candidate action object **MUST** include:
 
 Each candidate action object **MAY** include `rationale`.
 
-Candidate action `id` values **MUST** be unique within the containing Finding.
+Candidate action `id` values **MUST** be unique within the containing finding.
 
 Finding objects **MUST NOT** include legacy top-level `description`, `summary`,
 `rationale`, or `actions` fields. Rationale belongs on the specific nested field
@@ -269,19 +269,19 @@ any analysis-level finding object shape.
 
 A `RequirementRatingResult` with `status: rated` **MUST** include non-empty
 `ratingDrivers` and **MUST** have a paired `RequirementAssessmentResult` for the
-same Requirement with `status: assessed` or `status: partially_assessed` and at
-least one Requirement Finding.
+same requirement with `status: assessed` or `status: partially_assessed` and at
+least one requirement finding.
 
 A `FactorAnalysisResult` or `AreaAnalysisResult` analysis scope with
 `status: analyzed` and `ratingLevelId` **MUST** include non-empty
-`ratingDrivers`. A `FactorAnalysisResult` for a Factor with no direct
-Requirements **MUST** record `localAnalysis` with `status: empty`; its
-`localAndDescendantAnalysis` carries the child-Factor roll-up.
+`ratingDrivers`. A `FactorAnalysisResult` for a factor with no direct
+requirements **MUST** record `localAnalysis` with `status: empty`; its
+`localAndDescendantAnalysis` carries the child-factor roll-up.
 
-Each Rating Driver's `inputRefs` **MUST** resolve to persisted routine outputs
-in the run. Requirement Rating Drivers **SHOULD** select the specific
-Requirement Findings that drove the rating.
+Each rating driver's `inputRefs` **MUST** resolve to persisted routine outputs
+in the run. Requirement rating drivers **SHOULD** select the specific
+requirement findings that drove the rating.
 
 Advice `traceRefs`, finding ranking refs, and finding coverage refs **MUST**
 resolve to persisted routine outputs in the run. Finding refs **MUST** select a
-Finding by `selector`, for example `findings[gap-001]`.
+finding by `selector`, for example `findings[gap-001]`.

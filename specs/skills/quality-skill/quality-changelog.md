@@ -25,7 +25,7 @@ in all capitals.
 
 A `QUALITY.md` snapshot and `git log` together record _what_ the model is and
 _how_ it changed, but not _why_: which evaluation surfaced a gap, whether a
-criterion moved by recalibration or drift, what a new Factor was reacting to.
+criterion moved by recalibration or drift, what a new factor was reacting to.
 That rationale is what the [learn loop](evaluation.md#evaluation-workflow) runs on, and it is
 lost once a commit scrolls away. The **quality changelog** is a curated,
 evidence-linked timeline of meaningful model changes the skill maintains under
@@ -90,7 +90,7 @@ recommendation it traces to. The body states _why_ the change was made.
 ### What is meaningful
 
 The skill **MUST** log a change that alters what the model _is_ or _how it
-judges_: adding, removing, or renaming an Area, Factor, or Requirement; changing
+judges_: adding, removing, or renaming an area, factor, or requirement; changing
 the rating scale, a criterion, or a relative weight; shifting scope; changing the
 apex or required margin; or applying an evaluation recommendation. An entry
 **SHOULD** state whether a criterion change is deliberate recalibration or a drift

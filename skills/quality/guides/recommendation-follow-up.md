@@ -1,6 +1,6 @@
 ---
 type: Runtime Guide
-title: Recommendation Follow-Up
+title: Recommendation follow-up
 description: Guide for applying or handing off evaluation recommendations.
 ---
 

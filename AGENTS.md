@@ -90,16 +90,22 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 ### QUALITY.md vocabulary capitalization
 
-- Capitalize formal model concepts when used as type names or terms of art:
-  Model, Area, Factor, Requirement, Assessment, Finding, Rating Scale,
-  Rating Level, Rating Result, Evaluation Report.
-- Use lowercase in ordinary prose: area, factor, requirement, assessment,
-  finding, rating, recommendation.
+- Use normal English capitalization for model vocabulary everywhere, including
+  `SPECIFICATION.md`: model, area, factor, requirement, assessment, finding,
+  rating scale, rating level, source, evaluation report.
 - Use backticks for concrete YAML fields, file names, commands, and literal
   values: `areas`, `factors`, `requirements`, `ratingScale`, `QUALITY.md`,
   `qualitymd`.
-- Prefer lowercase in README, guides, tutorials, and user-facing prose unless
-  capitalization improves precision.
+- Capitalize only proper nouns and acronyms: QUALITY.md, `qualitymd`, OKF,
+  YAML, RFC 2119 keywords in all caps.
+- Definitions (the spec's Terminology section, the glossary), not
+  capitalization, carry precision.
+- When a defined term collides with its ordinary English sense, rephrase rather
+  than capitalize: in the spec, bare "requirement" means the model object;
+  write "conformance requirement" or "normative requirement" for the RFC 2119
+  sense.
+- Go exported identifiers keep Go casing; this rule covers prose, including
+  prose strings in code (help text, descriptions, error messages).
 
 ### Heading capitalization
 
@@ -108,10 +114,9 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
   report artifacts, and active project records: capitalize only the first word,
   the first word after a colon, and proper nouns.
 - Keep these capitalized in headings and prose as proper nouns: QUALITY.md,
-  `qualitymd`, acronyms (CLI, OKF, YAML), model vocabulary used as terms of art
-  (Model, Area, Factor, Agent Harnessability, Agent Harness), and the named loop
-  framing (Quality Loop Stack; the Inner Loop, Middle Loop, Meta Loop, Outer
-  Loop).
+  `qualitymd`, acronyms (CLI, OKF, YAML), and the named loop framing
+  (Quality Loop Stack; the Inner Loop, Middle Loop, Meta Loop, Outer Loop).
+  Model vocabulary (model, area, factor, agent harness) is not a proper noun.
 - This proper-noun list is closed; lowercase generic or descriptive uses (quality
   loops, loop engineering, "up the loop stack") and preserve a cited source's own
   casing (e.g. Annie Vella's lowercase _middle loop_).
@@ -128,7 +133,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - The stewardship/care core language — stewardship, care, tending, vulnerability,
   concern — is **motivation-layer**: it describes _why_ a concern exists and what
   it means to tend an entity. The taxonomy — factor, area, requirement,
-  constituent, audience — names the slots in the Model.
+  constituent, audience — names the slots in the model.
 - Do not let a motivation-layer word modify or replace a taxonomy noun. A
   stewardship concern _projects into_ a factor/constituent/audience; it is not one.
   Avoid "stewardship factor" / "stewardship lens" / "care requirement" — they
@@ -154,7 +159,7 @@ Read it before adding or reviewing example quality-model content. Summary:
 - Lead with domain-neutral principles; do not make software product quality the
   default. For worked examples, pair software/product quality with one cite-worthy
   secondary domain, balanced.
-- Factors are earned per Model from the modeled entity's own risks and needs; do
+- Factors are earned per model from the modeled entity's own risks and needs; do
   not adopt an external standard's characteristic list as a default factor family.
 - Domain agnostic is not context neutral: the _modeled domain_ stays agnostic, but
   the _use context_ is agent- and skill-first. Preserve agentic/AI references that

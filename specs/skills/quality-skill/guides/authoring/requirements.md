@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md requirement authoring guide
-description: Contract for Requirement names and titles, Assessments, factor connections, and rating overrides.
+description: Contract for requirement names and titles, assessments, factor connections, and rating overrides.
 tags: [skill, quality, guide, authoring]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -18,13 +18,13 @@ described in [RFC 2119](../../../../../docs/reference/rfc2119.md) and
 [RFC 8174](../../../../../docs/reference/rfc8174.md) when, and only when, they
 appear in all capitals.
 
-The guide **MUST** cover Requirements as assessable quality expectations, stable
-Requirement names, natural-language Requirement titles, primary and secondary
-factor connections, Area-local `factors`, concrete observable properties, scale
+The guide **MUST** cover requirements as assessable quality expectations, stable
+requirement names, natural-language requirement titles, primary and secondary
+factor connections, area-local `factors`, concrete observable properties, scale
 and meter preflight, ratable statements, behavioral trigger conditions,
-verifiable Assessments, risk-weighted detail, exactly one Assessment per
-Requirement, external assessment references, one referenced assessment feeding
-several same-Area factors, splitting by assessable claim rather than by factor,
+verifiable assessments, risk-weighted detail, exactly one assessment per
+requirement, external assessment references, one referenced assessment feeding
+several same-area factors, splitting by assessable claim rather than by factor,
 conformance vs fitness separation, rating overrides, and closing validation of
-the Requirement set. The guide **MUST NOT** tell agents that `factors` entries
-can resolve to ancestor Area Factors.
+the requirement set. The guide **MUST NOT** tell agents that `factors` entries
+can resolve to ancestor area factors.

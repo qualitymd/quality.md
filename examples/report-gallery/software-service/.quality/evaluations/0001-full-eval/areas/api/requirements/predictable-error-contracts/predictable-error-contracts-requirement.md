@@ -43,7 +43,7 @@ The error contract is consistent across the sampled API cases.
 
 ### strength-001 Common caller error cases share a documented response shape.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 2 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation report tree
-description: Deterministic run, Area, Factor, and Requirement Markdown reports for Evaluation.
+description: Deterministic run, area, factor, and requirement Markdown reports for evaluation.
 tags: [evaluation, reports, markdown]
 timestamp: 2026-06-25T00:00:00Z
 ---
@@ -23,26 +23,26 @@ structured routine outputs.
 Report generation **MUST NOT** inspect new source evidence.
 
 Report generation **MUST NOT** introduce new findings, ratings, evidence, limits,
-analysis, or recommendations. It **MUST** render persisted Advice outputs when
+analysis, or recommendations. It **MUST** render persisted advice outputs when
 the run is otherwise renderable.
 
 Generated report frontmatter and Markdown body content **MUST NOT** be read as
 report-generation input. Generated reports are output conveniences for readers,
-agents, and editor previews; structured Evaluation data remains the source of
+agents, and editor previews; structured evaluation data remains the source of
 truth.
 
 ## Report paths
 
-The run-level Evaluation report **MUST** be generated as `report.md` at the run
+The run-level evaluation report **MUST** be generated as `report.md` at the run
 root.
 
-The full ranked Findings report **MUST** be generated as `findings.md` at the run
+The full ranked findings report **MUST** be generated as `findings.md` at the run
 root.
 
-The root Area report **MUST** be generated as `root-area.md` at the run root
-when the root Area has an Area Analysis Result in the run.
+The root area report **MUST** be generated as `root-area.md` at the run root
+when the root area has an area analysis result in the run.
 
-Non-root Area, Factor, and Requirement reports **MUST** use short
+Non-root area, factor, and requirement reports **MUST** use short
 subject-aware filenames derived from structural model IDs:
 
 - `areas/<area>/<area>-area.md`
@@ -54,14 +54,14 @@ Report filenames **MUST NOT** be derived from display titles, natural labels, or
 rendered human labels.
 
 The report builder **MUST NOT** write duplicate compatibility copies using old
-root Area or descendant `report.md` filenames.
+root area or descendant `report.md` filenames.
 
 The report builder **MUST NOT** rename report content files such as
 `findings.md` or `recommendations.md` to `index.md` for OKF compatibility.
-Generated `index.md`, `schema.md`, and `log.md` files for Evaluation run folders
+Generated `index.md`, `schema.md`, and `log.md` files for evaluation run folders
 are deferred.
 
-The Recommendations report **MUST** be generated as `recommendations.md` at the
+The recommendations report **MUST** be generated as `recommendations.md` at the
 run root. Recommendation detail reports **MUST** be generated under
 `recommendations/` with rank-prefixed filenames:
 
@@ -71,7 +71,7 @@ The `<NNN>` prefix **MUST** follow `RecommendationRankingResult` ordering. The
 slug **SHOULD** derive from the recommendation title and fall back to the
 recommendation ID when needed.
 
-> Rationale: `report.md` is the run entrypoint. The root Area detail report uses
+> Rationale: `report.md` is the run entrypoint. The root area detail report uses
 > `root-area.md` so its filename names the subject it contains, while descendant
 > filenames keep enough local subject context for editor and browser tabs.
 > Structural IDs keep paths stable; the existing directory tree carries full
@@ -86,18 +86,18 @@ The `type` field **MUST** use this report-subject taxonomy:
 | Report output                  | `type`                          |
 | ------------------------------ | ------------------------------- |
 | `report.md`                    | `Evaluation Overview Report`    |
-| root and non-root Area reports | `Area Evaluation Report`        |
+| root and non-root area reports | `Area Evaluation Report`        |
 | Factor reports                 | `Factor Evaluation Report`      |
 | Requirement reports            | `Requirement Evaluation Report` |
 | `findings.md`                  | `Finding Index Report`          |
 | `recommendations.md`           | `Recommendation Index Report`   |
 | recommendation detail reports  | `Recommendation Report`         |
 
-Report frontmatter **MUST NOT** use Model concept names such as `Area`,
+Report frontmatter **MUST NOT** use model concept names such as `Area`,
 `Factor`, or `Requirement` as the report `type`.
 
 The `title` field **MUST** equal the plain-text content of the report's H1 title
-line, with the leading Markdown `#` marker removed. For example, a Requirement
+line, with the leading Markdown `#` marker removed. For example, a requirement
 report frontmatter title uses `Requirement: <title>`, matching the visible H1
 `# Requirement: <title>`.
 
@@ -126,11 +126,11 @@ Every generated Markdown report **MUST** end with a `## Primary source data`
 section.
 
 The `Primary source data` section **MUST** list the run-root-relative
-structured Evaluation payload paths used as primary source data for that
+structured evaluation payload paths used as primary source data for that
 specific Markdown report artifact. Primary source data is report-local: it
 includes payloads that establish the report's identity, scope, subject result,
-ranking, or recommendation content. It **MUST NOT** list descendant Area,
-Factor, Requirement, assessment, rating, finding, or recommendation payloads
+ranking, or recommendation content. It **MUST NOT** list descendant area,
+factor, requirement, assessment, rating, finding, or recommendation payloads
 solely because the report links to, summarizes, or counts data from more
 granular reports.
 
@@ -138,8 +138,8 @@ Each source-data list item **MUST** render as a Markdown link whose label is the
 run-root-relative payload path and whose target is relative to the report file
 that contains the section.
 
-Reports that render run number, Evaluation ID, creation time, model path, or
-requested scope from the Evaluation manifest **MUST** include
+Reports that render run number, evaluation ID, creation time, model path, or
+requested scope from the evaluation manifest **MUST** include
 `data/evaluation-manifest.json`.
 
 The `Primary source data` section **MUST NOT** include
@@ -158,7 +158,7 @@ report is directly rendered from it.
 
 ## Fixed enum display
 
-Generated Markdown reports **MUST** render known fixed Evaluation enum values
+Generated Markdown reports **MUST** render known fixed evaluation enum values
 with the shared marker-plus-label display for that vocabulary. Structured JSON,
 schemas, and receipts **MUST** preserve the raw canonical enum value.
 
@@ -216,12 +216,12 @@ Finding severity ordering **MUST** use `critical`, `high`, `medium`, then
 `medium`, then `low`. Finding ranking tier ordering **MUST** use `P1`, `P2`,
 `P3`, then `P4`.
 
-Each fixed Evaluation enum catalog **MUST** carry a human key label and concise
-catalog description. Each fixed Evaluation enum value **MUST** carry a concise
+Each fixed evaluation enum catalog **MUST** carry a human key label and concise
+catalog description. Each fixed evaluation enum value **MUST** carry a concise
 value description. Generated reports **MUST NOT** render fixed enum catalog or
 value descriptions inline; those descriptions belong in `glossary.md`.
 
-> Rationale: fixed Evaluation values are strict machine data, but Markdown
+> Rationale: fixed evaluation values are strict machine data, but Markdown
 > reports are a human scanning surface. Keeping labels, markers, ordering, and
 > key labels in one contract prevents validation and report presentation from
 > drifting. Descriptions belong in catalog metadata and the shared glossary, not
@@ -242,7 +242,7 @@ The link text **MUST** be the filename: `report.md`, `findings.md`,
 `recommendations.md`, and `glossary.md`.
 
 The `report.md`, `findings.md`, and `recommendations.md` links **MUST** target
-the generated artifacts for the same Evaluation run. The `glossary.md` link
+the generated artifacts for the same evaluation run. The `glossary.md` link
 **MUST** target the workspace-root `glossary.md`. All four targets **MUST** be
 relative to the current report artifact.
 
@@ -266,36 +266,36 @@ Generated reports **MUST NOT** render local `Legend` blocks or a bottom
 > glossary-backed navigation blockquote avoids repeating partial legends in every
 > report and avoids noisy cell-level links. — 0183, 0184
 
-## Run Report
+## Run report
 
-The run-level `report.md` **MUST** render as the scoped Area report described by
+The run-level `report.md` **MUST** render as the scoped area report described by
 `EvaluationManifest.plannedScope`. It **MUST** include:
 
-- scoped Area title and rating;
+- scoped area title and rating;
 - `## Summary`, `## Key details`, `## Contents`, and `## Model evaluation`
   before Top findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
-- link to the Findings report;
-- link to the Recommendations report;
-- summary from the scoped Area result;
-- Model evaluation table for the scoped Area;
-- requested Evaluation scope in Key details; and
+- link to the findings report;
+- link to the recommendations report;
+- summary from the scoped area result;
+- Model evaluation table for the scoped area;
+- requested evaluation scope in Key details; and
 - `Evaluation links:` navigation.
 
 The run-level `report.md` **MUST NOT** render the visible top `Run:` context
 line used by detail reports. It **MUST NOT** render the top `Area:` context line
 used by detail reports.
 
-The run report `## Summary` section **MUST** render the scoped Area summary.
+The run report `## Summary` section **MUST** render the scoped area summary.
 It **MUST NOT** render a `Recommended next action:` sentence.
 
 The run report `## Key details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
-order. `Confidence` **MUST** render the scoped Area confidence paired with the
+order. `Confidence` **MUST** render the scoped area confidence paired with the
 visible `Overall Rating`, not a paired overall/local confidence value. `Scope`
-**MUST** render a human-readable description of the evaluated Area and filtered
-Factors when present. `Findings` and `Recommendations` **MUST** render total
+**MUST** render a human-readable description of the evaluated area and filtered
+factors when present. `Findings` and `Recommendations` **MUST** render total
 ranked counts as `<N> total` and **MUST NOT** include the word `ranked`. The
 section **MUST NOT** include limits or incomplete-input counts.
 
@@ -339,9 +339,9 @@ source data available through routine JSON payloads and granular report
 `Primary source data` sections.
 
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
-filtered Factors in visible report content such as the H1 title.
+filtered factors in visible report content such as the H1 title.
 
-The run report **MUST** state when the root Area was not evaluated in the run,
+The run report **MUST** state when the root area was not evaluated in the run,
 but it **MUST NOT** use a `## Coverage` section for that signal.
 
 The run report **MUST NOT** introduce report-only findings, ratings, evidence,
@@ -352,16 +352,16 @@ The Top findings table **MUST** render rows from
 **MUST** render the columns `Rank`, `Finding`, `Area`, `Factors`, `Type`, and
 `Severity`, in that order. The `Finding` cell **MUST** use the finding
 `statement` as link text and link to the exact finding detail section in the
-Requirement report. The table **MUST NOT** render a finding artifact-ID column.
-The `Area` cell **MUST** link the declaring Area title to the Area report. The
-`Factors` cell **MUST** render comma-separated attached Factor title links, or
-`—` when no Factor link can be rendered. `Type` **MUST** render existing display
+requirement report. The table **MUST NOT** render a finding artifact-ID column.
+The `Area` cell **MUST** link the declaring area title to the area report. The
+`Factors` cell **MUST** render comma-separated attached factor title links, or
+`—` when no factor link can be rendered. `Type` **MUST** render existing display
 labels, including their emoji, for known finding type enum values. `Severity`
 **MUST** render existing display labels, including their emoji, for `gap` and
-`risk` Findings and `—` for `strength` and `note` Findings.
+`risk` findings and `—` for `strength` and `note` findings.
 
 The top finding and recommendation sections **MUST** be omitted only when the
-persisted Advice payloads contain no rows to render. `report.md` **MUST** always
+persisted advice payloads contain no rows to render. `report.md` **MUST** always
 link to `findings.md` and `recommendations.md` when the report tree is built.
 Because the run-report tables are capped overview tables, each full-list link
 **MUST** render immediately after its corresponding `## Top findings` or
@@ -377,21 +377,21 @@ filename-as-label links and the complete ranked count outside the link text:
 The count **MUST** reflect the complete ranked list for the linked report, not
 the number of rows rendered in the capped `report.md` table.
 
-When ranked Findings exist, the full Findings report link count **MUST** include
-an inline summary ordered by Finding type: gaps, risks, strengths, then notes,
-using the Finding type marker, count, and text label. Gap and risk segments
-**MUST** include only observed severity counts ordered by the Finding severity
+When ranked findings exist, the full findings report link count **MUST** include
+an inline summary ordered by finding type: gaps, risks, strengths, then notes,
+using the finding type marker, count, and text label. Gap and risk segments
+**MUST** include only observed severity counts ordered by the finding severity
 catalog, using the severity marker, count, and text label after a colon.
 Finding type groups **MUST** be separated with semicolons; severity groups
 within a gap or risk segment **MUST** be separated with commas. Zero-count
-Finding types and zero-count severity values **MUST NOT** render in the inline
+finding types and zero-count severity values **MUST NOT** render in the inline
 summary.
 
-When ranked Recommendations exist, the full Recommendations report link count
+When ranked recommendations exist, the full recommendations report link count
 **MUST** include an inline recommendation impact summary after the complete
 ranked count. The total count and impact summary **MUST** be separated with a
 semicolon. The impact summary **MUST** begin with lowercase `impact:` and then
-render non-zero recommendation impact groups in Recommendation impact catalog
+render non-zero recommendation impact groups in recommendation impact catalog
 order, using the impact marker, count, and text label separated by commas.
 
 The Top recommendations table **MUST** render rows from
@@ -401,18 +401,18 @@ Factors`, `Impact`, `Confidence`, and `Reason`, in that order. The `#` cell
 **MUST** render the user-facing recommendation number derived from the ranking
 entry's `rank`. The table **MUST NOT** render a separate `Rank` column. The
 `Recommendation` cell **MUST** use `RecommendationResult.title` as link text and
-link to the generated recommendation detail report. The `Area / Factors` cell
-**MUST** render linked Area and Factor names resolved from
+link to the generated recommendation detail report. The `Area / factors` cell
+**MUST** render linked area and factor names resolved from
 `RecommendationResult.traceRefs` through persisted evaluation data and the model
-snapshot, or `—` when no Area or Factor can be resolved. The `Impact` cell
+snapshot, or `—` when no area or factor can be resolved. The `Impact` cell
 **MUST** render the shared recommendation impact display label. The `Confidence`
-cell **MUST** render the shared confidence display label from the Recommendation
+cell **MUST** render the shared confidence display label from the recommendation
 ranking entry. The `Reason` cell **MUST** render
 `RecommendationResult.expectedValue`.
 
-## Finding Reports
+## Finding reports
 
-`findings.md` **MUST** render a complete ranked Findings report from
+`findings.md` **MUST** render a complete ranked findings report from
 `FindingRankingResult`. It **MUST** include:
 
 - a `## Ranked findings` section;
@@ -421,7 +421,7 @@ ranking entry. The `Reason` cell **MUST** render
 
 ## Recommendation reports
 
-`recommendations.md` **MUST** render a complete Recommendations report from
+`recommendations.md` **MUST** render a complete recommendations report from
 persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
@@ -429,7 +429,7 @@ It **MUST** include:
 - all ranked recommendations with a `#` column derived from
   `RecommendationRankingResult.orderedRecommendations[].rank` and no separate
   `Rank` column;
-- Area / Factors links resolved from `RecommendationResult.traceRefs`;
+- Area / factors links resolved from `RecommendationResult.traceRefs`;
 - impact;
 - confidence;
 - Reason from `RecommendationResult.expectedValue`;
@@ -471,8 +471,8 @@ marker.
 
 Every report **MUST** render its H1 title line as the first Markdown content
 after frontmatter. The H1 **MUST** prefix the subject display title with the
-report kind: `Area:` for root and non-root Area reports, `Factor:` for Factor
-reports, `Requirement:` for Requirement reports, and `Recommendation:` for
+report kind: `Area:` for root and non-root area reports, `Factor:` for factor
+reports, `Requirement:` for requirement reports, and `Recommendation:` for
 recommendation detail reports. The run-level H1 **MUST** identify the report as
 a Quality evaluation. The H1 title line and frontmatter `title` **MUST** use the
 same plain-text title.
@@ -481,40 +481,40 @@ Every non-run report **MUST** render a run context line near the H1, after the
 standard `Evaluation links:` blockquote. The standard `Evaluation links:`
 blockquote **MUST** be the only generated report navigation line that links to
 the run overview `report.md`, full findings report `findings.md`, and
-Recommendations report `recommendations.md`.
+recommendations report `recommendations.md`.
 
 The `Area:` navigation trail **MUST** render after the standard
-`Evaluation links:` blockquote. Its elements **MUST** link to generated Area
-reports from the root Area through the current Area report or owning Area
-report. When an ancestor Area report was not generated
+`Evaluation links:` blockquote. Its elements **MUST** link to generated area
+reports from the root area through the current area report or owning area
+report. When an ancestor area report was not generated
 because the run was scoped below it, the trail **MUST** render that ancestor as
-plain text. The root trail element **MUST** render the Model `title` when
+plain text. The root trail element **MUST** render the model `title` when
 present.
 
 Factor reports **MUST** include a `Factor:` navigation trail after the `Area:`
-trail. The `Factor:` trail **MUST** link each Factor ancestor and the current
-Factor to its generated Factor report.
+trail. The `Factor:` trail **MUST** link each factor ancestor and the current
+factor to its generated factor report.
 
 Requirement reports **MUST** include a plural `Factors:` context line after the
-`Area:` trail. The line **MUST** list every attached Factor as a link to its
-generated Factor report, joined with `;` as a flat set. When no Factors are
+`Area:` trail. The line **MUST** list every attached factor as a link to its
+generated factor report, joined with `;` as a flat set. When no factors are
 attached, it **MUST** render an explicit empty-state marker.
 
 Requirement reports **MUST NOT** render a singular `Factor:` breadcrumb, use the
-`/` nesting separator for the `Factors:` line, or choose one attached Factor as
+`/` nesting separator for the `Factors:` line, or choose one attached factor as
 a navigation parent.
 
 Reports **MUST NOT** render standalone `Breadcrumb:`, `Parent Area:`,
 `Parent Factor:`, `Parent:`, `Path:`, or `Name:` header lines.
 
-Area reports **MUST** link to local root Factor reports, local Requirement
-reports, and direct child Area reports.
+Area reports **MUST** link to local root factor reports, local requirement
+reports, and direct child area reports.
 
-Factor reports **MUST** link to their owning Area report, parent Factor report
-when present, child Factor reports, and direct Requirement reports.
+Factor reports **MUST** link to their owning area report, parent factor report
+when present, child factor reports, and direct requirement reports.
 
-Requirement reports **MUST** link to their owning Area report and every attached
-Factor report.
+Requirement reports **MUST** link to their owning area report and every attached
+factor report.
 
 Report tables **MUST** render the row subject as the generated human report link
 when that row has exactly one generated human report target. Generated Markdown
@@ -522,7 +522,7 @@ report bodies **MUST NOT** duplicate report-level source-data links in `Data`
 columns or equivalent header source-data lines; the `Primary source data`
 section owns those pointers.
 
-> Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
+> Rationale: labeled trails expose the model hierarchy directly, and subject-cell
 > links make report navigation land on the named thing readers naturally open.
 > Machine data links target structured payloads, not generated human report
 > pages, so they live in a dedicated bottom section rather than summary tables.
@@ -530,53 +530,53 @@ section owns those pointers.
 > easier to scan without hiding the source-data manifest from agents or
 > secondary tooling. — 0104, 0105, 0109, 0159, 0162
 
-## Area Reports
+## Area reports
 
 Area reports **MUST** include:
 
-- kind-prefixed Area title;
+- kind-prefixed area title;
 - Area navigation trail;
 - overall and local ratings;
 - overall and local confidence;
 - summary;
-- Area / Factor breakdown for the reported Area;
-- local Requirements; and
+- Area / factor breakdown for the reported area;
+- local requirements; and
 - limits and incomplete inputs.
 
 Area reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Area Analysis Result payloads listed in the report's
+structured area analysis result payloads listed in the report's
 `Primary source data` section.
 
-## Factor Reports
+## Factor reports
 
 Factor reports **MUST** include:
 
-- owning Area link;
+- owning area link;
 - Factor navigation trail;
-- kind-prefixed Factor title;
-- overall and local ratings, where `Overall Rating` is the Factor
+- kind-prefixed factor title;
+- overall and local ratings, where `Overall Rating` is the factor
   `localAndDescendantAnalysis` rating and `Local Rating` is its `localAnalysis`
   rating;
 - local and local-and-descendant statuses;
 - confidence;
 - summary;
-- direct Requirements;
+- direct requirements;
 - direct Sub-factors; and
 - limits and incomplete inputs.
 
 Factor reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Factor Analysis Result payloads listed in the report's
+structured factor analysis result payloads listed in the report's
 `Primary source data` section.
 
-## Requirement Reports
+## Requirement reports
 
 Requirement reports **MUST** include:
 
-- owning Area link;
-- attached Factor links in a plural `Factors:` context line;
-- kind-prefixed Requirement title;
+- owning area link;
+- attached factor links in a plural `Factors:` context line;
+- kind-prefixed requirement title;
 - Requirement rating status and selected rating when present;
 - assessment status;
 - confidence;
@@ -589,8 +589,8 @@ Requirement report finding detail sections **MUST** provide stable anchors
 derived from the finding ID. Ranked findings links **MUST NOT** depend on
 statement wording.
 
-Requirement report finding detail sections **MUST** render Advice ranking
-context when the finding appears in `FindingRankingResult`: Advice rank as
+Requirement report finding detail sections **MUST** render advice ranking
+context when the finding appears in `FindingRankingResult`: advice rank as
 `<rank> / <total ranked findings>`, assigned finding ID, tier, and ranking
 rationale. When no matching ranking entry exists, the section **MUST** render an
 explicit not-ranked state.
@@ -603,61 +603,61 @@ in `RecommendationResult` and generated recommendation reports.
 
 Reports **MUST** render empty tables with explicit empty-state rows.
 
-Requirement report Finding sections **MUST** render the same
+Requirement report finding sections **MUST** render the same
 list columns: `ID`, `Statement`, `Type`, `Severity`, `Confidence`, `Effect`, and
 `Basis`.
 
-Finding detail sections **MUST** render the Finding Core in this order:
-condition, criteria, basis, effect, and evidence. Requirement Finding details
+Finding detail sections **MUST** render the finding core in this order:
+condition, criteria, basis, effect, and evidence. Requirement finding details
 **MUST NOT** render `candidateActions`.
 
-Area and Factor reports **MUST NOT** render `Findings` sections. Their
+Area and factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
 limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`
 remain available through report `Primary source data` links and routine JSON
 payloads, not standalone Markdown body sections.
 
 Run reports **MUST** render a `Model evaluation` section before Top findings.
-Area reports **MUST** render an `Area / Factor breakdown` section before
-Requirement detail sections. Both sections use the same breakdown table columns:
+Area reports **MUST** render an `Area / factor breakdown` section before
+requirement detail sections. Both sections use the same breakdown table columns:
 `▦ Area / □ Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
 `Recommendations`, in that order. The first column label **MUST** include the
-Area and Factor row markers as a compact key. The first column cell **MUST**
+area and factor row markers as a compact key. The first column cell **MUST**
 render the row subject as the generated human report link when that report
 exists, and the table **MUST NOT** render a separate `Report` column.
 
-The run report's Model evaluation table **MUST** list the scoped Area as the
-first row, followed by in-scope descendant Areas and Factors in deterministic
-model order. An Area report's Area / Factor breakdown **MUST** list the reported
-Area as the first row, followed by its evaluated descendant Areas and Factors in
+The run report's Model evaluation table **MUST** list the scoped area as the
+first row, followed by in-scope descendant areas and factors in deterministic
+model order. An area report's Area / factor breakdown **MUST** list the reported
+area as the first row, followed by its evaluated descendant areas and factors in
 deterministic model order. The first row **MUST** emphasize only the table's
-root Area in the first column cell. Area rows **MUST** carry the `▦` marker,
-and Factor rows **MUST** carry the `□` marker, inline in the first column cell
+root area in the first column cell. Area rows **MUST** carry the `▦` marker,
+and factor rows **MUST** carry the `□` marker, inline in the first column cell
 instead of using a separate Kind column. The marker **MUST** be part of the row
 subject's visible link text when a report link exists.
 
 The `Findings` column **MUST** count ranked findings that resolve to each row's
-Area or Factor. The `Recommendations` column **MUST** count ranked
-recommendations that resolve to each row's Area or Factor. A ranked
+area or factor. The `Recommendations` column **MUST** count ranked
+recommendations that resolve to each row's area or factor. A ranked
 recommendation with multiple trace refs **MUST** count at most once for a given
 breakdown row.
 
 > Rationale: `Subject Reports` was a generated-file manifest rather than a
-> quality overview, and separate Area `Factors` / `Child Areas` tables forced
+> quality overview, and separate area `Factors` / `Child Areas` tables forced
 > readers to assemble the local model shape by kind. A single narrow breakdown
 > keeps navigation and quality signals together while leaving the machine report
 > manifest in `EvaluationOutputResult.reportOutputs`. — 0161
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Run reports should summarize
-`Overall Rating`, `Scope`, and `Confidence`; Area headers should summarize
-`Overall Rating`, `Local Rating`, and `Confidence`; Factor headers should
+`Overall Rating`, `Scope`, and `Confidence`; area headers should summarize
+`Overall Rating`, `Local Rating`, and `Confidence`; factor headers should
 summarize `Overall Rating`, `Local Rating`, `Status`, and `Confidence`;
-Requirement headers should summarize `Rating`, `Assessment`, and `Confidence`;
-Findings and Recommendations reports should summarize list-specific counts and
-priority signals. The Findings report's priority signal should be labeled
-`Highest Concern Severity` and calculated from gap and risk Findings; attached
-Factors belong in the plural `Factors:` context line, not in the summary table.
+requirement headers should summarize `Rating`, `Assessment`, and `Confidence`;
+findings and recommendations reports should summarize list-specific counts and
+priority signals. The findings report's priority signal should be labeled
+`Highest Concern Severity` and calculated from gap and risk findings; attached
+factors belong in the plural `Factors:` context line, not in the summary table.
 
 Opening summary tables **MUST** render under `## Key details` when they are part
 of the report opening.
@@ -669,20 +669,20 @@ of the report opening.
 > redundant. — 0104, 0119
 
 Run report frontmatter `title` and H1 text **MUST** render as
-`Quality evaluation - <Area title>` for Area-only planned scopes. When the
+`Quality evaluation - <Area title>` for area-only planned scopes. When the
 planned scope has a factor filter, the run report frontmatter `title` and H1
 text **MUST** render as
 `Quality evaluation - <Area title> (<Factor title list>)`, where
 `<Factor title list>` contains every planned factor filter as comma-separated
-Factor titles in `EvaluationManifest.plannedScope.factorFilter` order. The run
-report title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area
-references, or raw Factor references; stable scope references belong in
+factor titles in `EvaluationManifest.plannedScope.factorFilter` order. The run
+report title **MUST NOT** include `Evaluation Report`, `Area:`, raw area
+references, or raw factor references; stable scope references belong in
 `data/evaluation-manifest.json` and human-readable scope belongs in Key details.
 
 > Rationale: `report.md` and the report `type` already identify the artifact as
 > a report. The H1 should name the quality-evaluation scope, while
-> factor-scoped evaluations preserve both the Area context and the user's
-> requested Factors. — 0168
+> factor-scoped evaluations preserve both the area context and the user's
+> requested factors. — 0168
 
 When a report table cell would otherwise render an empty scalar value, including
 one component of a paired Confidence or Status cell, the cell **MUST** render an
@@ -690,7 +690,7 @@ em dash (`—`) instead of a blank segment. Empty whole-section placeholder rows
 such as `(no findings)` and `(none recorded)` **MUST** remain worded empty-state
 rows rather than being replaced by the cell marker. Generated report table cells
 **MUST** escape Markdown table separators and normalize multiline scalar content
-so persisted Evaluation text cannot alter the table column shape.
+so persisted evaluation text cannot alter the table column shape.
 
 Generated reports **MUST NOT** render blank table cells for empty scalar values.
 When an em dash appears as an empty-cell marker, the report **MUST NOT** define
@@ -710,12 +710,12 @@ rating column `Local Rating`.
 > Rationale: the adjacent header columns are self-describing nouns, so bare
 > `Overall` / `Local` made a reader supply the missing noun. — 0111
 
-The Factor report Sub-factors table lists a Factor's immediate descendant
-Factors, one row per child. It **MUST** render a `Local Rating` column from the
+The factor report Sub-factors table lists a factor's immediate descendant
+factors, one row per child. It **MUST** render a `Local Rating` column from the
 child's `localAnalysis` rating and a descendant-inclusive `+ Sub-factors Rating`
 column from the child's `localAndDescendantAnalysis` rating. It **MUST NOT**
 render a boolean in a rating column. When a row's subject has no descendant
-Factors, its `+ Sub-factors Rating` cell **MUST** render an em dash (`—`) rather
+factors, its `+ Sub-factors Rating` cell **MUST** render an em dash (`—`) rather
 than repeating the local rating.
 
 > Rationale: these breakdown tables previously rendered the aggregate rating in
@@ -724,25 +724,25 @@ than repeating the local rating.
 > case 0097 required. The em dash preserves the old boolean's "has children"
 > signal without presenting a redundant rating. — 0097, 0111
 
-Factor reports **MUST** render the immediate descendant-Factor section heading
+Factor reports **MUST** render the immediate descendant-factor section heading
 as `Sub-factors` and its empty-state row as `(no Sub-factors)`. Reports
 **MUST NOT** use `Sub-Areas` or `Child Factors` for generated human-facing
 labels.
 
-> Rationale: the Model vocabulary names Factor descendants as sub-factors.
+> Rationale: the model vocabulary names factor descendants as sub-factors.
 > Generated reports should not make the same relationship look like a different
 > concept. — 0147
 
-Reports **MUST** render selected Rating Levels with the Rating Level `title`
-resolved from the run's `model-snapshot.md` snapshot, falling back to the stable Rating
-Level ID only when a title is unavailable.
+Reports **MUST** render selected rating levels with the rating level `title`
+resolved from the run's `model-snapshot.md` snapshot, falling back to the stable rating
+level ID only when a title is unavailable.
 
 > Rationale: Markdown reports are the human review surface, and the model
 > snapshot is the historical source for display vocabulary. Structured routine
-> data and machine receipts keep stable Rating Level IDs. — 0102
+> data and machine receipts keep stable rating level IDs. — 0102
 
 Reports **MUST** render `not_assessed`, `not_rated`, `empty`, `not_analyzed`,
-and `blocked` distinctly from Rating Level labels.
+and `blocked` distinctly from rating level labels.
 
 Reports **MUST** render CLI-owned enum-like report values, including statuses,
 confidence levels, boolean values, report kinds, limits/incomplete-input types,
@@ -757,7 +757,7 @@ report-build receipts.
 > free-form values should remain readable through fallback title-casing rather
 > than turning presentation decoration into schema validation. — 0103
 
-Reports **MUST** omit Rating Level values when the source result status says the
+Reports **MUST** omit rating level values when the source result status says the
 rating or scoped analysis was not produced.
 
 Reports **MUST** preserve secret-handling boundaries. They may name the locator
@@ -766,8 +766,8 @@ content.
 
 Ordering **MUST** be deterministic:
 
-- Areas by canonical Area identity, with the root Area first;
-- Factors by canonical Factor identity;
-- Requirements by canonical Requirement identity;
-- findings in Requirement Assessment Result order; and
+- Areas by canonical area identity, with the root area first;
+- Factors by canonical factor identity;
+- Requirements by canonical requirement identity;
+- findings in requirement assessment result order; and
 - evidence in recorded order.

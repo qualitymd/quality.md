@@ -9,7 +9,7 @@ accepted as structured data values.
 
 ## Analysis status
 
-Whether an Area or Factor analysis has been completed, skipped as empty, not
+Whether an area or factor analysis has been completed, skipped as empty, not
 analyzed, or blocked.
 
 | Label           | Value          | Description                                |
@@ -25,7 +25,7 @@ An entity or set of entities with quality requirements subject to evaluation.
 
 ## Assessment status
 
-Whether a Requirement assessment has been completed, partially completed, not
+Whether a requirement assessment has been completed, partially completed, not
 assessed, or blocked.
 
 | Label                 | Value                | Description                                            |
@@ -48,20 +48,20 @@ Confidence in the recorded judgment based on available evidence.
 
 ## Data kind
 
-Kind of structured Evaluation payload stored for a run.
+Kind of structured evaluation payload stored for a run.
 
 | Label                           | Value                         | Description                                       |
 | ------------------------------- | ----------------------------- | ------------------------------------------------- |
 | 📋 Evaluation Manifest          | `EvaluationManifest`          | Evaluation metadata, scope, and run context.      |
 | 🧭 Evaluation Frame             | `EvaluationFrame`             | Top-level evaluation planning frame.              |
-| 🗺️ Area Evaluation Frame        | `AreaEvaluationFrame`         | Planned evaluation frame for an Area.             |
-| 📋 Requirement Evaluation Frame | `RequirementEvaluationFrame`  | Planned assessment frame for a Requirement.       |
-| 🔎 Requirement Assessment       | `RequirementAssessmentResult` | Judgment evidence and findings for a Requirement. |
-| 🎚️ Requirement Rating           | `RequirementRatingResult`     | Rating assigned to a Requirement.                 |
-| 🧩 Factor Analysis Frame        | `FactorAnalysisFrame`         | Planned analysis frame for a Factor.              |
-| 📊 Factor Analysis              | `FactorAnalysisResult`        | Synthesized judgment for a Factor.                |
-| 🏗️ Area Analysis Frame          | `AreaAnalysisFrame`           | Planned analysis frame for an Area.               |
-| 📈 Area Analysis                | `AreaAnalysisResult`          | Synthesized judgment for an Area.                 |
+| 🗺️ Area Evaluation Frame        | `AreaEvaluationFrame`         | Planned evaluation frame for an area.             |
+| 📋 Requirement Evaluation Frame | `RequirementEvaluationFrame`  | Planned assessment frame for a requirement.       |
+| 🔎 Requirement Assessment       | `RequirementAssessmentResult` | Judgment evidence and findings for a requirement. |
+| 🎚️ Requirement Rating           | `RequirementRatingResult`     | Rating assigned to a requirement.                 |
+| 🧩 Factor Analysis Frame        | `FactorAnalysisFrame`         | Planned analysis frame for a factor.              |
+| 📊 Factor Analysis              | `FactorAnalysisResult`        | Synthesized judgment for a factor.                |
+| 🏗️ Area Analysis Frame          | `AreaAnalysisFrame`           | Planned analysis frame for an area.               |
+| 📈 Area Analysis                | `AreaAnalysisResult`          | Synthesized judgment for an area.                 |
 | 🔝 Finding Ranking              | `FindingRankingResult`        | Ordered finding priority set.                     |
 | 💡 Recommendation               | `RecommendationResult`        | Proposed improvement action.                      |
 | 🏁 Recommendation Ranking       | `RecommendationRankingResult` | Ordered recommendation priority set.              |
@@ -69,13 +69,13 @@ Kind of structured Evaluation payload stored for a run.
 
 ## Factor
 
-A quality characteristic or attribute through which an Area's quality is
-described. A Factor groups connected Requirements and can be decomposed into
+A quality characteristic or attribute through which an area's quality is
+described. A factor groups connected requirements and can be decomposed into
 sub-factors.
 
 ## Finding
 
-A single observation produced by a Requirement Assessment. A Finding records
+A single observation produced by a requirement assessment. A finding records
 what was observed, the criteria applied, its evidence basis, and its quality or
 rating effect.
 
@@ -124,7 +124,7 @@ Severity of the finding's quality concern or evaluation significance.
 
 ## Finding type
 
-Classification of what a finding contributes to the Evaluation judgment.
+Classification of what a finding contributes to the evaluation judgment.
 
 | Label       | Value      | Description                                                     |
 | ----------- | ---------- | --------------------------------------------------------------- |
@@ -135,10 +135,10 @@ Classification of what a finding contributes to the Evaluation judgment.
 
 ## Quality rating
 
-A quality rating is the Rating Level assigned to evaluated work. Rating Levels
-are configured by the quality model, not by a fixed Evaluation enum.
+A quality rating is the rating level assigned to evaluated work. Rating levels
+are configured by the quality model, not by a fixed evaluation enum.
 
-These labels and values come from this project's `QUALITY.md` Rating Scale.
+These labels and values come from this project's `QUALITY.md` rating scale.
 
 | Label           | Value          | Description                                                                                    |
 | --------------- | -------------- | ---------------------------------------------------------------------------------------------- |
@@ -149,7 +149,7 @@ These labels and values come from this project's `QUALITY.md` Rating Scale.
 
 ## Rating result
 
-Whether a Rating Result contains an assigned rating or records that the subject
+Whether a rating result contains an assigned rating or records that the subject
 was not assessed.
 
 | Label           | Value          | Description                             |
@@ -169,7 +169,7 @@ Whether a rating result has been assigned, not assigned, or blocked.
 
 ## Recommendation
 
-A proposed improvement action produced from Evaluation findings and judgment.
+A proposed improvement action produced from evaluation findings and judgment.
 
 ## Recommendation impact
 
@@ -198,8 +198,8 @@ Kind of generated Markdown report artifact.
 
 ## Requirement
 
-An assessable quality expectation. A Requirement has a stable Requirement name,
-a title, an Assessment, zero or more explicit Factor references, and optional
+An assessable quality expectation. A requirement has a stable requirement name,
+a title, an assessment, zero or more explicit factor references, and optional
 per-level criterion overrides.
 
 ## Run gap kind

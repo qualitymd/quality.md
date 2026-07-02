@@ -141,8 +141,8 @@ as a vague verb:
 Weak: Status output **MUST** be better for incomplete runs.
 
 Strong: `qualitymd evaluation status <run>` **MUST** report a run as incomplete
-when any planned in-scope Requirement lacks a Requirement Rating Result, and the
-JSON output **MUST** include the missing Requirement IDs.
+when any planned in-scope requirement lacks a requirement rating result, and the
+JSON output **MUST** include the missing requirement IDs.
 ```
 
 When the reason would not be obvious from the nearby Background / motivation,

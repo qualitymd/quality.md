@@ -23,8 +23,8 @@ ratingScale:
     description: "Below the floor: the artifact is not good enough to rely on."
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:
-  # Agent Harnessability rates the broader equipping capability across the
-  # project. The agent-harness Area below rates the checked-in steering and
+  # Agent harnessability rates the broader equipping capability across the
+  # project. The agent-harness area below rates the checked-in steering and
   # owned-control artifacts themselves.
   agent-harnessability:
     title: Agent Harnessability
@@ -428,15 +428,15 @@ areas:
               and mise release tasks for checks that cover versioning,
               packaging, changelog, smoke installs, and compatibility metadata.
 
-  # This Area rates the checked-in steering and owned-control artifacts
-  # themselves. The Agent Harnessability factor above rates the broader
+  # This area rates the checked-in steering and owned-control artifacts
+  # themselves. The agent harnessability factor above rates the broader
   # equipping capability those artifacts help create.
   agent-harness:
     title: Agent Harness
     description: >
       The repository-owned steering and control artifacts that guide, verify, and
-      bound AI assistant or coding-agent work, distinct from the broader Agent
-      Harnessability capability they support.
+      bound AI assistant or coding-agent work, distinct from the broader agent
+      harnessability capability they support.
     source: ./AGENTS.md
     factors:
       completeness:
@@ -473,10 +473,10 @@ areas:
           .githooks/, .github/workflows/, mise.toml, and .quality/logs/ to
           confirm the checked-in harness defines project rules, routes to
           relevant guides, exposes verification, records workflow feedback, and
-          distinguishes agent-harness artifacts from Agent Harnessability as a
+          distinguishes agent-harness artifacts from agent harnessability as a
           project-wide factor.
 
-  # This Area evaluates the concrete QUALITY.md artifact. Its `source` is the
+  # This area evaluates the concrete QUALITY.md artifact. Its `source` is the
   # model file itself; the requirement's assessment names the guide family used
   # to judge it.
   quality-md:
@@ -520,7 +520,7 @@ areas:
           its routed sub-guides under skills/quality/guides/authoring/, especially
           whether the body credibly supports the model, factors come from visible
           needs and risks, requirements are assessable, sources are inspectable,
-          Agent Harnessability is distinct from the agent-harness Area, and
+          agent harnessability is distinct from the agent-harness area, and
           unknowns or open questions are explicit.
 
   evaluation-history:
@@ -597,16 +597,16 @@ specification bundles, install and release infrastructure, repository-owned
 agent harness, this `QUALITY.md`, and local quality/evaluation history.
 
 The model treats the project root as a composite. The root carries the
-model-wide Agent Harnessability factor because the project is explicitly used
-through AI assistants and coding agents. Child Areas represent distinct
-constituents with their own factor families. The agent-harness Area is the
-checked-in steering and owned-control artifact set; Agent Harnessability is the
+model-wide agent harnessability factor because the project is explicitly used
+through AI assistants and coding agents. Child areas represent distinct
+constituents with their own factor families. The agent-harness area is the
+checked-in steering and owned-control artifact set; agent harnessability is the
 broader capability the whole project exhibits when it equips agents to work
 well.
 
 Ratings should be read with a low-tolerance, pre-release posture. Contract
 failures in the format spec, mutation/evaluation safety in the skill, automation
-contracts in the CLI, and install/update paths can cap their Areas even when
+contracts in the CLI, and install/update paths can cap their areas even when
 surrounding material is strong. Documentation polish can tolerate more
 iteration, but not when it misrepresents the domain-agnostic model or hides the
 agent-first use context.
@@ -696,15 +696,15 @@ steering and owned-control artifacts. `quality-md` evaluates this model itself.
 `evaluation-history` covers the local records and logs that preserve what prior
 quality work learned.
 
-Agent Harnessability is model-wide and decomposed into agent accessibility, task
+Agent harnessability is model-wide and decomposed into agent accessibility, task
 specifiability, agent operability, continuity, self-verifiability, enforcement
 of standards, and containment of action. It is intentionally distinct from the
-agent-harness Area: the factor asks how the project equips agents to work well;
-the Area asks whether the owned harness artifacts themselves are complete,
+agent-harness area: the factor asks how the project equips agents to work well;
+the area asks whether the owned harness artifacts themselves are complete,
 coherent, current, and assessable.
 
 _Unknowns_ — none known.
 _Open questions_ — whether distribution and evaluation history should split into
-smaller child Areas after the next full evaluation produces findings.
+smaller child areas after the next full evaluation produces findings.
 
 _Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._

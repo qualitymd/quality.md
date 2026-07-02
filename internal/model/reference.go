@@ -13,7 +13,7 @@ var modelReferenceNamePattern = regexp.MustCompile(qschema.ModelNamePattern)
 // AreaPath is a stable path from the root area to a nested area.
 type AreaPath []string
 
-// Clone returns a copy of the Area path.
+// Clone returns a copy of the area path.
 func (p AreaPath) Clone() AreaPath {
 	if len(p) == 0 {
 		return AreaPath{}
@@ -26,7 +26,7 @@ func (p AreaPath) Elements() []string {
 	return []string(p)
 }
 
-// Display returns the human-facing Area path label.
+// Display returns the human-facing area path label.
 func (p AreaPath) Display() string {
 	if len(p) == 0 {
 		return "/"
@@ -41,20 +41,20 @@ func (p AreaPath) referencePath() string {
 	return strings.Join(p, "/")
 }
 
-// Reference returns the canonical typed model reference for an Area path.
+// Reference returns the canonical typed model reference for an area path.
 func (p AreaPath) Reference() string {
 	return "area:" + p.referencePath()
 }
 
-// UnqualifiedReference returns the fixed-type Area reference.
+// UnqualifiedReference returns the fixed-type area reference.
 func (p AreaPath) UnqualifiedReference() string {
 	return p.referencePath()
 }
 
-// FactorPath is a stable path from an Area's Factor set to a nested Factor.
+// FactorPath is a stable path from an area's factor set to a nested factor.
 type FactorPath []string
 
-// Clone returns a copy of the Factor path.
+// Clone returns a copy of the factor path.
 func (p FactorPath) Clone() FactorPath {
 	if len(p) == 0 {
 		return FactorPath{}
@@ -67,7 +67,7 @@ func (p FactorPath) Elements() []string {
 	return []string(p)
 }
 
-// Display returns the human-facing Factor path label.
+// Display returns the human-facing factor path label.
 func (p FactorPath) Display() string {
 	if len(p) == 0 {
 		return "root"
@@ -82,29 +82,29 @@ func (p FactorPath) referencePath() string {
 	return strings.Join(p, "/")
 }
 
-// FactorReference returns the canonical typed model reference for a Factor path
+// FactorReference returns the canonical typed model reference for a factor path
 // declared by areaPath.
 func FactorReference(areaPath AreaPath, factorPath FactorPath) string {
 	return "factor:" + areaPath.referencePath() + "::" + factorPath.referencePath()
 }
 
-// UnqualifiedFactorReference returns the fixed-type Factor reference.
+// UnqualifiedFactorReference returns the fixed-type factor reference.
 func UnqualifiedFactorReference(areaPath AreaPath, factorPath FactorPath) string {
 	return areaPath.referencePath() + "::" + factorPath.referencePath()
 }
 
 // RequirementReference returns the canonical typed model reference for a
-// Requirement name declared by areaPath.
+// requirement name declared by areaPath.
 func RequirementReference(areaPath AreaPath, requirementName string) string {
 	return "requirement:" + areaPath.referencePath() + "::" + requirementName
 }
 
-// UnqualifiedRequirementReference returns the fixed-type Requirement reference.
+// UnqualifiedRequirementReference returns the fixed-type requirement reference.
 func UnqualifiedRequirementReference(areaPath AreaPath, requirementName string) string {
 	return areaPath.referencePath() + "::" + requirementName
 }
 
-// ParseAreaReference resolves a canonical Area model reference against spec.
+// ParseAreaReference resolves a canonical area model reference against spec.
 func ParseAreaReference(spec *Spec, ref string) (AreaPath, error) {
 	if spec == nil {
 		return nil, fmt.Errorf("model reference %q cannot resolve without a model", ref)
@@ -116,7 +116,7 @@ func ParseAreaReference(spec *Spec, ref string) (AreaPath, error) {
 	return parseAreaReferenceBody(spec, ref, body, "area model reference")
 }
 
-// ParseUnqualifiedAreaReference resolves an Area reference in a context where
+// ParseUnqualifiedAreaReference resolves an area reference in a context where
 // the expected reference type is fixed.
 func ParseUnqualifiedAreaReference(spec *Spec, ref string) (AreaPath, error) {
 	if spec == nil {
@@ -136,7 +136,7 @@ func parseAreaReferenceBody(spec *Spec, ref, body, label string) (AreaPath, erro
 	return AreaPath(path), nil
 }
 
-// ParseFactorReference resolves a canonical Factor model reference against spec.
+// ParseFactorReference resolves a canonical factor model reference against spec.
 func ParseFactorReference(spec *Spec, ref string) (AreaPath, FactorPath, error) {
 	if spec == nil {
 		return nil, nil, fmt.Errorf("model reference %q cannot resolve without a model", ref)
@@ -148,7 +148,7 @@ func ParseFactorReference(spec *Spec, ref string) (AreaPath, FactorPath, error) 
 	return parseFactorReferenceBody(spec, ref, body, "factor model reference")
 }
 
-// ParseUnqualifiedFactorReference resolves a Factor reference in a context where
+// ParseUnqualifiedFactorReference resolves a factor reference in a context where
 // the expected reference type is fixed.
 func ParseUnqualifiedFactorReference(spec *Spec, ref string) (AreaPath, FactorPath, error) {
 	if spec == nil {
@@ -182,7 +182,7 @@ func parseFactorReferenceBody(spec *Spec, ref, body, label string) (AreaPath, Fa
 	return AreaPath(areaPath), FactorPath(factorPath), nil
 }
 
-// ParseRequirementReference resolves a canonical Requirement model reference
+// ParseRequirementReference resolves a canonical requirement model reference
 // against spec.
 func ParseRequirementReference(spec *Spec, ref string) (AreaPath, string, error) {
 	if spec == nil {
@@ -195,7 +195,7 @@ func ParseRequirementReference(spec *Spec, ref string) (AreaPath, string, error)
 	return parseRequirementReferenceBody(spec, ref, body, "requirement model reference")
 }
 
-// ParseUnqualifiedRequirementReference resolves a Requirement reference in a
+// ParseUnqualifiedRequirementReference resolves a requirement reference in a
 // context where the expected reference type is fixed.
 func ParseUnqualifiedRequirementReference(spec *Spec, ref string) (AreaPath, string, error) {
 	if spec == nil {
@@ -207,14 +207,14 @@ func ParseUnqualifiedRequirementReference(spec *Spec, ref string) (AreaPath, str
 func parseRequirementReferenceBody(spec *Spec, ref, body, label string) (AreaPath, string, error) {
 	areaPart, requirementName, ok := strings.Cut(body, "::")
 	if !ok {
-		return nil, "", fmt.Errorf("%s %q must contain :: between area path and Requirement name", label, ref)
+		return nil, "", fmt.Errorf("%s %q must contain :: between area path and requirement name", label, ref)
 	}
 	areaPath, err := parseReferencePath(areaPart)
 	if err != nil {
 		return nil, "", fmt.Errorf("%s %q has invalid area path: %w", label, ref, err)
 	}
 	if !ValidReferenceName(requirementName) {
-		return nil, "", fmt.Errorf("%s %q has an invalid Requirement name", label, ref)
+		return nil, "", fmt.Errorf("%s %q has an invalid requirement name", label, ref)
 	}
 	if !AreaExists(spec, areaPath) {
 		return nil, "", fmt.Errorf("%s %q declares an area that does not resolve in the model", label, ref)
@@ -242,12 +242,12 @@ func parseReferencePath(raw string) ([]string, error) {
 }
 
 // ValidReferenceName reports whether name matches the strict model-name grammar
-// shared by Area, Factor, Requirement, and Rating Level identifiers.
+// shared by area, factor, requirement, and rating level identifiers.
 func ValidReferenceName(name string) bool {
 	return modelReferenceNamePattern.MatchString(name)
 }
 
-// AreaExists reports whether path resolves to an Area declared in spec.
+// AreaExists reports whether path resolves to an area declared in spec.
 func AreaExists(spec *Spec, path []string) bool {
 	areas := spec.Areas
 	for _, element := range path {
@@ -260,8 +260,8 @@ func AreaExists(spec *Spec, path []string) bool {
 	return true
 }
 
-// FactorExists reports whether factorPath resolves to a Factor declared by the
-// Area at areaPath in spec.
+// FactorExists reports whether factorPath resolves to a factor declared by the
+// area at areaPath in spec.
 func FactorExists(spec *Spec, areaPath []string, factorPath []string) bool {
 	factors, ok := factorsForArea(spec, areaPath)
 	if !ok {
@@ -280,8 +280,8 @@ func FactorExists(spec *Spec, areaPath []string, factorPath []string) bool {
 	return false
 }
 
-// RequirementExists reports whether requirementName resolves to a Requirement
-// declared by the Area at areaPath in spec, directly or under one of its Factors.
+// RequirementExists reports whether requirementName resolves to a requirement
+// declared by the area at areaPath in spec, directly or under one of its factors.
 func RequirementExists(spec *Spec, areaPath []string, requirementName string) bool {
 	areaRequirements, areaFactors, ok := requirementsForArea(spec, areaPath)
 	if !ok {

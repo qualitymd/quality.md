@@ -83,17 +83,17 @@ type ModelShape struct {
 	RatingLevels int `json:"ratingLevels"`
 }
 
-// SourceState describes how an Area's evaluation Source is resolved.
+// SourceState describes how an area's evaluation source is resolved.
 type SourceState string
 
 const (
-	// SourceStateDeclared means the Area declares its own source.
+	// SourceStateDeclared means the area declares its own source.
 	SourceStateDeclared SourceState = "declared"
-	// SourceStateInherited means the Area inherits a source declared by an
-	// ancestor Area.
+	// SourceStateInherited means the area inherits a source declared by an
+	// ancestor area.
 	SourceStateInherited SourceState = "inherited"
-	// SourceStateDefault means no Area in the chain declares a source, so the
-	// Area resolves to the document's default Source: the directory containing
+	// SourceStateDefault means no area in the chain declares a source, so the
+	// area resolves to the document's default source: the directory containing
 	// the QUALITY.md file. This is a deliberate, valid choice, not a defect.
 	SourceStateDefault SourceState = "default"
 	// SourceStateMissing is reserved for a source that cannot be resolved. A
@@ -262,7 +262,7 @@ func modelShape(spec *model.Spec) ModelShape {
 	return shape
 }
 
-// sourceCoverage builds the per-Area source provenance rows. Source state is a
+// sourceCoverage builds the per-area source provenance rows. Source state is a
 // status-only concern the identity projection deliberately omits, so it keeps
 // its own source-aware walk.
 func sourceCoverage(spec *model.Spec) []SourceCoverage {
@@ -308,8 +308,8 @@ func sourceCoverageRow(path []string, label, declaredSource, inheritedSource str
 		row.SourceState = SourceStateInherited
 		row.Source = inheritedSource
 	default:
-		// No Area declares a source, so this Area resolves to the document
-		// default Source — the directory containing the QUALITY.md file.
+		// No area declares a source, so this area resolves to the document
+		// default source — the directory containing the QUALITY.md file.
 		row.SourceState = SourceStateDefault
 	}
 	return row

@@ -26,8 +26,8 @@ const (
 	PropertyRatings      = "ratings"
 )
 
-// ModelNamePattern is the strict grammar for Area names, Factor names,
-// Requirement names, and Rating Level IDs.
+// ModelNamePattern is the strict grammar for area names, factor names,
+// requirement names, and rating level IDs.
 const ModelNamePattern = `^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$`
 
 // Shape is the YAML shape a property value must have.

@@ -48,7 +48,7 @@ func evaluationRenderableGaps(runAbs string) []RunGap {
 func readRequiredEvaluationPayload(runAbs, rel string, want DataKind) (map[string]any, *RunGap) {
 	raw, err := os.ReadFile(filepath.Join(runAbs, rel))
 	if os.IsNotExist(err) {
-		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: rel, Detail: "required Evaluation evaluation payload is missing"}
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: rel, Detail: "required evaluation payload is missing"}
 	}
 	if err != nil {
 		return nil, &RunGap{Kind: GapUnreadableEvaluationData, Ref: rel, Detail: err.Error()}
@@ -234,7 +234,7 @@ func collectEvaluationArtifacts(runAbs string) (*evaluationArtifacts, error) {
 		}
 		return nil
 	}); err != nil {
-		return nil, fmt.Errorf("collecting Evaluation evaluation data: %w", err)
+		return nil, fmt.Errorf("collecting evaluation data: %w", err)
 	}
 	return out, nil
 }
@@ -456,7 +456,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"Findings",
-			"Highest Concern Severity",
+			"Highest concern severity",
 		},
 		SummaryRow: []string{
 			fmt.Sprintf("%d findings", len(artifacts.rankedFindings())),
@@ -486,7 +486,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"Recommendations",
-			"Highest Impact",
+			"Highest impact",
 			"Coverage",
 		},
 		SummaryRow: []string{
@@ -1001,7 +1001,7 @@ func runReportCreated(artifacts *evaluationArtifacts) string {
 }
 
 func writeRunReportKeyDetails(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, scopedArea, localArea map[string]any) {
-	b.WriteString(md.TableRow("Overall Rating", "Confidence", "Scope", "Findings", "Recommendations"))
+	b.WriteString(md.TableRow("Overall rating", "Confidence", "Scope", "Findings", "Recommendations"))
 	b.WriteString(md.TableRow("---", "---", "---", "---", "---"))
 	b.WriteString(md.TableRow(
 		evaluationRatingLabel(spec, scopedArea),
@@ -1131,7 +1131,7 @@ func writeRunReportCoverageNote(b *strings.Builder, reports []evaluationRendered
 	if reportForRootArea(reports) != nil {
 		return
 	}
-	b.WriteString("Root Area was not evaluated in this run")
+	b.WriteString("Root area was not evaluated in this run")
 	if reportPath != "report.md" {
 		b.WriteString(" for " + reportLink(reportPath, "report.md", "the run overview"))
 	}
@@ -1154,8 +1154,8 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 			evaluationAreaTrailLine(spec, artifacts, area.ID, reportPath),
 		},
 		SummaryHead: []string{
-			"Overall Rating",
-			"Local Rating",
+			"Overall rating",
+			"Local rating",
 			"Confidence",
 		},
 		SummaryRow: []string{
@@ -1165,7 +1165,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
-			{Label: "Area / Factor breakdown", Anchor: "#area--factor-breakdown"},
+			{Label: "Area / factor breakdown", Anchor: "#area--factor-breakdown"},
 			{Label: "Requirements", Anchor: "#requirements"},
 			{Label: "Limits and incomplete inputs", Anchor: "#limits-and-incomplete-inputs"},
 			{Label: "Primary source data", Anchor: "#primary-source-data"},
@@ -1174,12 +1174,12 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n")
-	writeAreaFactorBreakdownSection(&b, "Area / Factor breakdown", spec, artifacts, area.ID, reportPath)
+	writeAreaFactorBreakdownSection(&b, "Area / factor breakdown", spec, artifacts, area.ID, reportPath)
 	b.WriteString("## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	if requirements := artifacts.requirementsForArea(area.ID); len(requirements) == 0 {
-		b.WriteString("| (no local Requirements) | — | — | — |\n\n")
+		b.WriteString("| (no local requirements) | — | — | — |\n\n")
 	} else {
 		for _, req := range requirements {
 			b.WriteString(md.TableRow(reportLink(reportPath, requirementReportPath(req.ID), requirementTitle(spec, req.ID)), evaluationRequirementRatingLabel(spec, req.Rating), assessmentStatusTitle(evaluationString(req.Assessment, "status")), requirementFactorLinks(req, reportPath)))
@@ -1209,8 +1209,8 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 			evaluationFactorTrailLine(spec, factor.ID, reportPath),
 		},
 		SummaryHead: []string{
-			"Overall Rating",
-			"Local Rating",
+			"Overall rating",
+			"Local rating",
 			"Status",
 			"Confidence",
 		},
@@ -1234,7 +1234,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	b.WriteString("| Requirement | Rating | Status |\n")
 	b.WriteString("| --- | --- | --- |\n")
 	if requirements := artifacts.requirementsForFactor(factor.ID); len(requirements) == 0 {
-		b.WriteString("| (no direct Requirements) | — | — |\n\n")
+		b.WriteString("| (no direct requirements) | — | — |\n\n")
 	} else {
 		for _, req := range requirements {
 			b.WriteString(md.TableRow(reportLink(reportPath, requirementReportPath(req.ID), requirementTitle(spec, req.ID)), evaluationRequirementRatingLabel(spec, req.Rating), assessmentStatusTitle(evaluationString(req.Assessment, "status"))))
@@ -1242,10 +1242,10 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		b.WriteString("\n")
 	}
 	b.WriteString("## Sub-factors\n\n")
-	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
+	b.WriteString("| Factor | Path | Local rating | + Sub-factors rating |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	if children := artifacts.childFactors(factor.ID); len(children) == 0 {
-		b.WriteString("| (no Sub-Factors) | — | — | — |\n\n")
+		b.WriteString("| (no sub-factors) | — | — | — |\n\n")
 	} else {
 		for _, child := range children {
 			childLocal := scopedMap(child.Analysis, "localAnalysis")
@@ -1372,7 +1372,7 @@ func resolveEvaluationReportPlan(artifacts *evaluationArtifacts) (*evaluationRep
 		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: evaluationManifestPath, Detail: "required EvaluationManifest payload is missing"}
 	}
 	if artifacts.Frame == nil {
-		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: "required Evaluation evaluation payload is missing"}
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: "required evaluation payload is missing"}
 	}
 	areaID, err := areaIDFrom(artifacts.Manifest.PlannedScope.AreaID)
 	if err != nil {
@@ -1385,16 +1385,16 @@ func resolveEvaluationReportPlan(artifacts *evaluationArtifacts) (*evaluationRep
 			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: err.Error()}
 		}
 		if !sameStrings(id.DeclaringArea, areaID) {
-			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: fmt.Sprintf("factor %s does not belong to planned Area %s", ref, artifacts.Manifest.PlannedScope.AreaID)}
+			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: fmt.Sprintf("factor %s does not belong to planned area %s", ref, artifacts.Manifest.PlannedScope.AreaID)}
 		}
 		if factor := artifacts.Factors[factorKey(id)]; factor == nil || factor.Analysis == nil {
-			return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: factorDataPath(id, "factor-analysis-result.json"), Detail: "required planned Factor analysis payload is missing"}
+			return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: factorDataPath(id, "factor-analysis-result.json"), Detail: "required planned factor analysis payload is missing"}
 		}
 		factors = append(factors, id)
 	}
 	area := artifacts.Areas[areaKey(areaID)]
 	if area == nil || area.Analysis == nil {
-		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: areaDataPath(areaID, "area-analysis-result.json"), Detail: "required scoped Area analysis payload is missing"}
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: areaDataPath(areaID, "area-analysis-result.json"), Detail: "required scoped area analysis payload is missing"}
 	}
 	return &evaluationReportPlan{
 		Frame:              artifacts.Frame,
@@ -1454,21 +1454,21 @@ func plannedCoverageGaps(spec *model.Spec, artifacts *evaluationArtifacts, plan 
 	plannedAreas, plannedFactors, plannedRequirements := plannedExpansion(spec, plan)
 	for _, areaID := range plannedAreas {
 		if area := artifacts.Areas[areaKey(areaID)]; area == nil || area.Analysis == nil {
-			return []RunGap{{Kind: GapMissingEvaluationData, Ref: areaDataPath(areaID, "area-analysis-result.json"), Detail: "planned Area analysis payload is missing"}}
+			return []RunGap{{Kind: GapMissingEvaluationData, Ref: areaDataPath(areaID, "area-analysis-result.json"), Detail: "planned area analysis payload is missing"}}
 		}
 	}
 	for _, factor := range plannedFactors {
 		if item := artifacts.Factors[factorKey(factor)]; item == nil || item.Analysis == nil {
-			return []RunGap{{Kind: GapMissingEvaluationData, Ref: factorDataPath(factor, "factor-analysis-result.json"), Detail: "planned Factor analysis payload is missing"}}
+			return []RunGap{{Kind: GapMissingEvaluationData, Ref: factorDataPath(factor, "factor-analysis-result.json"), Detail: "planned factor analysis payload is missing"}}
 		}
 	}
 	for _, req := range plannedRequirements {
 		item := artifacts.Requirements[requirementKey(req)]
 		if item == nil || item.Assessment == nil {
-			return []RunGap{{Kind: GapMissingEvaluationData, Ref: requirementDataPath(req, "requirement-assessment-result.json"), Detail: "planned Requirement assessment payload is missing"}}
+			return []RunGap{{Kind: GapMissingEvaluationData, Ref: requirementDataPath(req, "requirement-assessment-result.json"), Detail: "planned requirement assessment payload is missing"}}
 		}
 		if item.Rating == nil {
-			return []RunGap{{Kind: GapMissingEvaluationData, Ref: requirementDataPath(req, "requirement-rating-result.json"), Detail: "planned Requirement rating payload is missing"}}
+			return []RunGap{{Kind: GapMissingEvaluationData, Ref: requirementDataPath(req, "requirement-rating-result.json"), Detail: "planned requirement rating payload is missing"}}
 		}
 	}
 	return nil
@@ -1550,11 +1550,11 @@ func factorInScope(id factorID, plan *evaluationReportPlan) bool {
 
 func writeAreaFactorBreakdownSection(b *strings.Builder, heading string, spec *model.Spec, artifacts *evaluationArtifacts, rootAreaID []string, reportPath string) {
 	b.WriteString("## " + heading + "\n\n")
-	b.WriteString("| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |\n")
+	b.WriteString("| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	root := artifacts.Areas[areaKey(rootAreaID)]
 	if root == nil || root.Analysis == nil {
-		b.WriteString("| (no Area / Factor breakdown) | — | — | — | — |\n\n")
+		b.WriteString("| (no area / factor breakdown) | — | — | — | — |\n\n")
 		return
 	}
 	writeAreaFactorBreakdownAreaRows(b, spec, artifacts, root, reportPath, 0, true)
@@ -1977,7 +1977,7 @@ func requirementIDForAssessmentPath(path string) requirementID {
 }
 
 func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| # | Recommendation | Area / Factors | Impact | Confidence | Reason |\n")
+	b.WriteString("| # | Recommendation | Area / factors | Impact | Confidence | Reason |\n")
 	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
@@ -2006,7 +2006,7 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 }
 
 func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string) {
-	b.WriteString("| # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
+	b.WriteString("| # | Recommendation | Area / factors | Impact | Confidence | Reason | Ranking rationale |\n")
 	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
@@ -2357,7 +2357,7 @@ func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, fi
 }
 
 func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranked bool) {
-	b.WriteString("| Advice Rank | Tier | Ranking Rationale |\n")
+	b.WriteString("| Advice rank | Tier | Ranking rationale |\n")
 	b.WriteString("| --- | --- | --- |\n")
 	if !ranked {
 		b.WriteString("| (not ranked) | — | — |\n\n")
@@ -2621,7 +2621,7 @@ func areaTitle(spec *model.Spec, areaID []string) string {
 		if spec.Title != "" {
 			return spec.Title
 		}
-		return "Root Area"
+		return "Root area"
 	}
 	area, ok := lookupArea(spec, areaID)
 	if ok && area.Title != "" {
@@ -2779,8 +2779,8 @@ func evaluationRequirementRatingLabel(spec *model.Spec, rating map[string]any) s
 	return ratingStatusTitle(string(RatingStatusRated))
 }
 
-// evaluationSubRatingCell renders the descendant-inclusive Sub-Factors rating
-// cell. When the Factor has no descendants there is no roll-up distinct from
+// evaluationSubRatingCell renders the descendant-inclusive sub-factors rating
+// cell. When the factor has no descendants there is no roll-up distinct from
 // its local rating, so it renders an em dash rather than repeating the local
 // rating.
 func evaluationSubRatingCell(spec *model.Spec, aggregate map[string]any, hasDescendants bool) string {

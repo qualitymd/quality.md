@@ -20,13 +20,13 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 		{heading: "Requirement", node: Requirement},
 	} {
 		t.Run(tc.heading, func(t *testing.T) {
-			got := parseTopLevelProperties(firstYAMLBlock(t, spec, "#### "+tc.heading))
+			got := parseTopLevelProperties(firstYAMLBlock(t, spec, "### "+tc.heading))
 			assertPropertiesMatch(t, got, tc.node)
 		})
 	}
 
 	t.Run("RatingLevel", func(t *testing.T) {
-		modelSnippet := firstYAMLBlock(t, spec, "#### Model")
+		modelSnippet := firstYAMLBlock(t, spec, "### Model")
 		got := parseTopLevelProperties(ratingLevelSnippet(t, modelSnippet))
 		assertPropertiesMatch(t, got, RatingLevel)
 	})
@@ -35,7 +35,7 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 	if !ok {
 		t.Fatal("model schema has no ratingScale property")
 	}
-	if ratingScale.MinItems > 0 && !strings.Contains(spec, "At least two rating levels MUST be supplied.") {
+	if ratingScale.MinItems > 0 && !strings.Contains(spec, "MUST be a sequence of at least two rating levels") {
 		t.Fatalf("SPECIFICATION.md does not document ratingScale MinItems = %d", ratingScale.MinItems)
 	}
 	for _, group := range Model.RequiredAny {
@@ -47,7 +47,7 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 				t.Fatalf("SPECIFICATION.md does not mention required-any property %q", property)
 			}
 		}
-		if !strings.Contains(spec, "An entry on either factors, requirements, or areas MUST be supplied.") {
+		if !strings.Contains(spec, "An entry on either `factors`, `requirements`, or `areas` MUST be supplied.") {
 			t.Fatal("SPECIFICATION.md does not document the model-content required-any group")
 		}
 	}

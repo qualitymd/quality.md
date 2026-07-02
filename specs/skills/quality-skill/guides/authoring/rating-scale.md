@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md rating-scale authoring guide
-description: Contract for Rating Scale, Rating Level, criterion, roll-up, veto, and not-assessed guidance.
+description: Contract for rating scale, rating level, criterion, roll-up, veto, and not-assessed guidance.
 tags: [skill, quality, guide, authoring]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -18,9 +18,9 @@ described in [RFC 2119](../../../../../docs/reference/rfc2119.md) and
 [RFC 8174](../../../../../docs/reference/rfc8174.md) when, and only when, they
 appear in all capitals.
 
-The guide **MUST** cover the ordered model-wide Rating Scale, Rating Level
+The guide **MUST** cover the ordered model-wide rating scale, rating level
 properties, the suggested four-level scale and emoji-prefixed display titles,
 custom scale fit, `description` vs `criterion`, measurable criteria, required
 margin, exemplars, roll-up communication, ordinal-scale non-averaging, veto
-Requirements, relative importance, and keeping `not assessed` distinct from a low
+requirements, relative importance, and keeping `not assessed` distinct from a low
 rating.

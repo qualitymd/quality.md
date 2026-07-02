@@ -8,7 +8,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 # Recommendation follow-up guide
 
-This spec governs the **Recommendation Follow-Up** guide the
+This spec governs the **Recommendation follow-up** guide the
 [`/quality` skill](../quality-skill.md) ships at
 [`skills/quality/guides/recommendation-follow-up.md`](../../../../skills/quality/guides/recommendation-follow-up.md).
 The guide is the runtime procedure for acting on evaluation recommendations.

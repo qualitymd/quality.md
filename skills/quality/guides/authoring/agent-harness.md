@@ -1,17 +1,17 @@
 ---
 type: Runtime Guide
-title: Authoring the Agent Harness Area
+title: Authoring the agent harness area
 description: Guidance for modeling the agent harness as a QUALITY.md area/constituent.
 tags: [quality, authoring, agent-harness]
 ---
 
-# Authoring the Agent Harness Area
+# Authoring the agent harness area
 
 Read this when:
 
-- creating, revising, reviewing, or evaluating the agent-harness Area;
+- creating, revising, reviewing, or evaluating the agent-harness area;
 - deciding whether agent governing artifacts are germane to a composite root;
-- distinguishing the agent-harness Area from the Agent Harnessability factor.
+- distinguishing the agent-harness area from the agent harnessability factor.
 
 Depends on:
 
@@ -35,7 +35,7 @@ feedforward component of the harness, not the harness as a whole.
 
 The agent harness recurs from QUALITY.md's agent/AI-assistant use context, not
 from the modeled domain. Define the harness at full breadth first, then scope the
-agent-harness Area as one projection of it.
+agent-harness area as one projection of it.
 
 - **Do** model the agent harness by default in a composite root when it is germane.
   _A harness-less or throwaway project hits not-germane and carries no harness
@@ -47,24 +47,24 @@ agent-harness Area as one projection of it.
   _Watch for double-counting if its influence is also assessed inside a domain
   constituent._
 - **Do** distinguish the three projections of the agent-collaboration concern:
-  **Agent Harnessability** is the model-wide factor, the **agent harness** is the
-  constituent, and the **agent** is the audience. _Keep the harness as an Area
-  when it is germane; Agent Harnessability rates how each constituent equips an
-  agent, while the harness Area rates the project-owned governing artifacts'
+  **agent harnessability** is the model-wide factor, the **agent harness** is the
+  constituent, and the **agent** is the audience. _Keep the harness as an area
+  when it is germane; agent harnessability rates how each constituent equips an
+  agent, while the harness area rates the project-owned governing artifacts'
   own quality. Harness files are evidence for the factor and the evaluated
-  entity for the Area. Encode that boundary in the model per the
+  entity for the area. Encode that boundary in the model per the
   projection-boundary rule under
   [Cover the domain's constituent kinds](model-structure.md#cover-the-domains-constituent-kinds)._
-- **Do** model the agent-harness Area as the project's checked-in,
+- **Do** model the agent-harness area as the project's checked-in,
   project-owned governing artifacts: agent entry points, guidance files, skills,
   prompts, and related instructions, plus project-owned hooks, tool/MCP
   definitions, sandbox or permission policy, and orchestration config when those
   exist. _This is an **enable** constituent and partly **normative** artifact.
   Project-owned runtime harness machinery must be surfaced here or, when large
-  enough to warrant distinct factors, given its own Area; never silently fold it
+  enough to warrant distinct factors, given its own area; never silently fold it
   into prose instructions or drop it._
 - **Do** scope artifacts by primary job. _Rate an artifact in the agent-harness
-  Area when its primary job is to govern or equip the agent's work and the
+  area when its primary job is to govern or equip the agent's work and the
   project owns it. Cede it to a domain constituent when it is primarily a
   product artifact the agent merely also uses: the product test suite belongs to
   tests, and the deploy runtime belongs to operations. When one artifact does
@@ -97,6 +97,6 @@ agent-harness Area as one projection of it.
   context"._
 - **Avoid** defining the agent harness as "the instructions" or equivalent
   steering-prose shorthand. _Define the harness as the whole engineered system
-  around the model - feedforward and feedback controls - then scope the Area to
+  around the model - feedforward and feedback controls - then scope the area to
   the checked-in, project-owned slice. Tools, sandbox, orchestration, and
   verification are equally harness._

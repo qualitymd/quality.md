@@ -207,7 +207,7 @@ qualitymd evaluation
 | `qualitymd evaluation create` | Create a numbered evaluation run folder |
 | `qualitymd evaluation list` | List evaluation runs |
 | `qualitymd evaluation status` | Show whether an evaluation run is reportable |
-| `qualitymd evaluation data` | Work with Evaluation structured data |
+| `qualitymd evaluation data` | Work with evaluation structured data |
 | `qualitymd evaluation report` | Build evaluation reports |
 
 ### `qualitymd evaluation create`
@@ -222,9 +222,9 @@ qualitymd evaluation create [model] [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--area` | canonical Area reference for the evaluation scope |
+| `--area` | canonical area reference for the evaluation scope |
 | `--evaluation-dir` | override the model-relative evaluation directory |
-| `--factor` | canonical Factor reference for a scoped evaluation; repeatable |
+| `--factor` | canonical factor reference for a scoped evaluation; repeatable |
 | `--json` | emit a machine-readable run creation receipt |
 | `--model` | QUALITY.md file to snapshot |
 
@@ -264,7 +264,7 @@ qualitymd evaluation status <run> [flags]
 
 ### `qualitymd evaluation data`
 
-Work with Evaluation structured data
+Work with evaluation structured data
 
 ```bash
 qualitymd evaluation data
@@ -274,17 +274,17 @@ qualitymd evaluation data
 
 | Command | Description |
 | --- | --- |
-| `qualitymd evaluation data set` | Validate and persist a batch of Evaluation JSON payloads |
-| `qualitymd evaluation data list` | List stored Evaluation JSON payloads |
-| `qualitymd evaluation data get` | Print one stored Evaluation JSON payload |
-| `qualitymd evaluation data kinds` | List Evaluation data kinds |
-| `qualitymd evaluation data example` | Print a complete Evaluation example JSON payload |
-| `qualitymd evaluation data schema` | Print the Evaluation structured data JSON Schema |
-| `qualitymd evaluation data verify` | Validate persisted Evaluation JSON payloads |
+| `qualitymd evaluation data set` | Validate and persist a batch of evaluation JSON payloads |
+| `qualitymd evaluation data list` | List stored evaluation JSON payloads |
+| `qualitymd evaluation data get` | Print one stored evaluation JSON payload |
+| `qualitymd evaluation data kinds` | List evaluation data kinds |
+| `qualitymd evaluation data example` | Print a complete evaluation example JSON payload |
+| `qualitymd evaluation data schema` | Print the evaluation structured data JSON Schema |
+| `qualitymd evaluation data verify` | Validate persisted evaluation JSON payloads |
 
 #### `qualitymd evaluation data set`
 
-Validate and persist a batch of Evaluation JSON payloads
+Validate and persist a batch of evaluation JSON payloads
 
 ```bash
 qualitymd evaluation data set <run> [flags]
@@ -302,7 +302,7 @@ qualitymd evaluation data set <run> [flags]
 
 #### `qualitymd evaluation data list`
 
-List stored Evaluation JSON payloads
+List stored evaluation JSON payloads
 
 ```bash
 qualitymd evaluation data list <run> [flags]
@@ -314,13 +314,13 @@ qualitymd evaluation data list <run> [flags]
 | --- | --- |
 | `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
 | `--json` | emit a machine-readable data list |
-| `--kind` | filter by Evaluation data kind |
+| `--kind` | filter by evaluation data kind |
 | `--latest` | use the most recent evaluation run |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
 
 #### `qualitymd evaluation data get`
 
-Print one stored Evaluation JSON payload
+Print one stored evaluation JSON payload
 
 ```bash
 qualitymd evaluation data get <run> [flags]
@@ -330,19 +330,19 @@ qualitymd evaluation data get <run> [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--area` | Area ref for Area-scoped payloads |
+| `--area` | area ref for area-scoped payloads |
 | `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--factor` | Factor ref for Factor-scoped payloads |
+| `--factor` | factor ref for factor-scoped payloads |
 | `--json` | not supported: data get already emits JSON |
-| `--kind` | Evaluation data kind |
+| `--kind` | evaluation data kind |
 | `--latest` | use the most recent evaluation run |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
-| `--requirement` | Requirement ref for Requirement-scoped payloads |
+| `--requirement` | requirement ref for requirement-scoped payloads |
 | `--selector` | optional sub-result selector |
 
 #### `qualitymd evaluation data kinds`
 
-List Evaluation data kinds
+List evaluation data kinds
 
 ```bash
 qualitymd evaluation data kinds [flags]
@@ -356,7 +356,7 @@ qualitymd evaluation data kinds [flags]
 
 #### `qualitymd evaluation data example`
 
-Print a complete Evaluation example JSON payload
+Print a complete evaluation example JSON payload
 
 ```bash
 qualitymd evaluation data example <kind> [flags]
@@ -370,7 +370,7 @@ qualitymd evaluation data example <kind> [flags]
 
 #### `qualitymd evaluation data schema`
 
-Print the Evaluation structured data JSON Schema
+Print the evaluation structured data JSON Schema
 
 ```bash
 qualitymd evaluation data schema [kind] [flags]
@@ -384,7 +384,7 @@ qualitymd evaluation data schema [kind] [flags]
 
 #### `qualitymd evaluation data verify`
 
-Validate persisted Evaluation JSON payloads
+Validate persisted evaluation JSON payloads
 
 ```bash
 qualitymd evaluation data verify <run> [flags]

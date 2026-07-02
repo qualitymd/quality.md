@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 # qualitymd model
 
 `qualitymd model` projects a `QUALITY.md` model as a read-only structure: its
-Areas, Factors, and Requirements, each with the canonical reference ID used in
+areas, factors, and requirements, each with the canonical reference ID used in
 evaluation payloads, and how they contain one another. It has three verbs:
 `tree` (hierarchical view), `list` (flat enumeration), and `get <id>`
 (single-element detail).
@@ -27,8 +27,8 @@ all capitals.
 
 Authoring evaluation payloads requires the canonical reference IDs of a model's
 elements — `area:<path>`, `factor:<area>::<path>`, `requirement:<area>::<name>`.
-No other command emits them: `status` reports source coverage by Area path and
-label, not canonical IDs, and does not enumerate Factors or Requirements. Agents
+No other command emits them: `status` reports source coverage by area path and
+label, not canonical IDs, and does not enumerate factors or requirements. Agents
 therefore hand-derive tens of IDs from `QUALITY.md` text — slow, and a
 silent-typo source. `model` makes those IDs a query for an agent (`--json`) and
 a person (tree) alike.
@@ -65,7 +65,7 @@ elements, canonical IDs, labels, and containment.
 
 Each `model` verb **MUST** read a model file — the default `QUALITY.md` in the
 current working directory, or a `[path]` argument when given — and **MUST NOT**
-be aware of evaluation runs, Evaluation IDs, or run-folder layout. A run's
+be aware of evaluation runs, evaluation IDs, or run-folder layout. A run's
 `model-snapshot.md` is itself a model file, reachable by path.
 
 `model` **MUST NOT** write, create, repair, or delete files.
@@ -76,14 +76,14 @@ path.
 ## Canonical IDs and ordering
 
 Every element a verb emits **MUST** carry its canonical qualified reference
-string, identical to the form persisted in evaluation payloads. The root Area is
-`area:root`. A Requirement is addressed by its declaring Area and name
-(`requirement:<area>::<name>`) whether it is declared directly under the Area or
-under one of the Area's Factors.
+string, identical to the form persisted in evaluation payloads. The root area is
+`area:root`. A requirement is addressed by its declaring area and name
+(`requirement:<area>::<name>`) whether it is declared directly under the area or
+under one of the area's factors.
 
 For the same model file and content, each verb's output **MUST** be byte-stable
-under one documented element ordering: the rooted Area, then its Factors
-(sub-Factors nested), then its Requirements, then its child Areas, recursively,
+under one documented element ordering: the rooted area, then its factors
+(sub-factors nested), then its requirements, then its child areas, recursively,
 with siblings of each kind in lexicographic key order. No sort or ordering flag
 is offered.
 
@@ -93,21 +93,21 @@ Beyond the shared `[path]` and `--json`, each verb **MUST** accept only the flag
 named for it below and **MUST NOT** offer write, output-redirection, dry-run,
 quiet, or verbose flags.
 
-Where a verb accepts `--area`, its value **MUST** be a canonical Area reference
+Where a verb accepts `--area`, its value **MUST** be a canonical area reference
 (`area:<path>`), the same form `model` emits, so the value round-trips with
-`list`/`get` output. A value that is not a canonical Area reference, or that does
-not resolve to an Area in the model, is a usage error. A bare path is not
+`list`/`get` output. A value that is not a canonical area reference, or that does
+not resolve to an area in the model, is a usage error. A bare path is not
 accepted.
 
 ## `model tree`
 
-`model tree [path]` **MUST** render the model as a hierarchy — the rooted Area,
-its Factors with sub-Factors nested, its Requirements, then child Areas
+`model tree [path]` **MUST** render the model as a hierarchy — the rooted area,
+its factors with sub-factors nested, its requirements, then child areas
 recursively. The human form is an indented tree; under `--json` it is a nested
 structure where every node carries its canonical `id`, `label`, and element
 `kind`, with nested children under `children`.
 
-`model tree` **MUST** accept `--area <area-id>` to root the output at that Area's
+`model tree` **MUST** accept `--area <area-id>` to root the output at that area's
 subtree instead of the whole model.
 
 `model tree` **MUST** accept `--depth <n>` to limit nesting, where `0` emits only
@@ -117,12 +117,12 @@ the rooted node. A negative `--depth` is a usage error.
 
 `model list [path]` **MUST** emit a flat enumeration of model elements, each with
 its canonical `id`, `kind` (`area` | `factor` | `requirement`), `label`, and
-parent `id` (absent for the root Area). Under `--json` it is a JSON array of
+parent `id` (absent for the root area). Under `--json` it is a JSON array of
 those objects.
 
 `model list` **MUST** accept `--type` restricting output to one or more element
 kinds (`area`, `factor`, `requirement`), and `--area <area-id>` restricting
-output to one Area's subtree; the two **MAY** be combined. An invalid `--type`
+output to one area's subtree; the two **MAY** be combined. An invalid `--type`
 value is a usage error naming the allowed values.
 
 With no filter, `model list` **MUST** enumerate every element of every kind in
@@ -132,9 +132,9 @@ the model.
 
 `model get <id> [path]` **MUST** accept a canonical reference id as a required
 positional argument and emit that element's `id`, `kind`, `label`, and its
-structural relationships — for an Area, its immediate Factor IDs, Requirement
-IDs, and child-Area IDs; for a Factor, its sub-Factor IDs and immediate
-Requirement IDs — as an object under `--json` and a human-readable form
+structural relationships — for an area, its immediate factor IDs, requirement
+IDs, and child-area IDs; for a factor, its sub-factor IDs and immediate
+requirement IDs — as an object under `--json` and a human-readable form
 otherwise. It **MUST NOT** require a `--type` hint, since the id prefix carries
 the kind.
 

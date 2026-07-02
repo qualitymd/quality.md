@@ -10,7 +10,7 @@ timestamp: 2026-06-24T00:00:00Z
 
 ## Why the range is wide
 
-QUALITY.md is **quality-domain agnostic**: a Model can describe quality for
+QUALITY.md is **quality-domain agnostic**: a model can describe quality for
 software, documentation, data sets, research, services, operations, processes, or
 other evaluated entities. That breadth is not a neutral fact about a schema — it
 follows from what the format is finally _for_.
@@ -24,7 +24,7 @@ something in their charge, and the format means to serve that care no less than 
 professional kind. [Why care, not conformance](#why-care-not-conformance) develops
 the claim; the rest of the guide puts it to work.
 
-Domain agnostic is not context neutral. QUALITY.md is agnostic about _what_ a Model
+Domain agnostic is not context neutral. QUALITY.md is agnostic about _what_ a model
 evaluates and opinionated about _how_ it is used — the agent- and skill-first
 workflow described under [Agentic use context](#agentic-use-context).
 
@@ -129,7 +129,7 @@ That is the deepest reason a `QUALITY.md` under-determines quality: not a gap to
 close with more requirements, but the nature of care, which a written artifact can
 point toward and never exhaust. Their caution also lands on this project's own use
 context — they worry about systems that "process our values but do not care." A
-Model handed to an agent or a team can be _processed_ without being _cared_ through;
+model handed to an agent or a team can be _processed_ without being _cared_ through;
 the requirements read the same either way, and only the second is quality.
 
 ## Three axes that do not line up
@@ -138,7 +138,7 @@ It is tempting to collapse "the work," "the kind of quality in play," and "the
 lenses a model uses" into one idea called a _domain_. Pulling them apart gives a
 simple picture of where quality lives:
 
-**society → spheres → quality contexts → a Model → factors**
+**society → spheres → quality contexts → a model → factors**
 
 - A **society** is held up by its **spheres** — family, the trades, commerce and
   industry, the academy, civic life, the arts, and the rest. A sphere is a domain of
@@ -148,7 +148,7 @@ simple picture of where quality lives:
   _kinds_ of quality concern, or contexts of use: requirements quality, data
   quality, documentation, budgeting, caregiving, the quality of an analysis or a
   decision. This axis carries the _shape_ of the concern.
-- A **Model** is a single `QUALITY.md` for a single entity, and it earns its
+- A **model** is a single `QUALITY.md` for a single entity, and it earns its
   **factors** — the specific quality lenses — from that entity's own risks and needs
   (see [the authoring guide](../../skills/quality/guides/authoring.md)).
 
@@ -166,7 +166,7 @@ The nesting orients, but it is not a tree, and the axes do not line up:
   the attribute most tied to the [agentic use context](#agentic-use-context): an
   assistant is most often in the loop on knowledge-work contexts, whatever the
   sphere.
-- **Factors are earned per Model**, never assigned by sphere or read off a context.
+- **Factors are earned per model**, never assigned by sphere or read off a context.
 
 The lists in this guide are illustrative, non-exhaustive, and overlapping — not
 taxonomies to fill in. That holds throughout; the
@@ -192,7 +192,7 @@ not the checklist stance.
 
 Software is the project's primary illustrative domain — most contributors think in
 it fluently — but it is _unrepresentative_ in ways that quietly bias the format's
-abstractions. In a software Model the `source` is a readable code path, the
+abstractions. In a software model the `source` is a readable code path, the
 `assessment` can often lean on a runnable check, the audience is a roughly aligned
 team, and "good" usually means correctness. A format tuned only against that domain
 can develop hidden assumptions — that a source is always a file an agent can read,
@@ -233,7 +233,7 @@ When an example needs a non-software illustration, draw from the catalog below. 
 organized by _quality context_, because a context recurs across spheres rather than
 belonging to one — each entry notes the spheres it **recurs across** to show that.
 Everything here is illustrative, non-exhaustive, and overlapping (as throughout); the
-factor sketches are _not_ default factor sets — a real Model earns its factors (see
+factor sketches are _not_ default factor sets — a real model earns its factors (see
 [the authoring guide](../../skills/quality/guides/authoring.md)). Two roles are
 tagged: **cite-worthy** contexts are the ones to reach for in worked or substantial
 examples; **range-finders** probe the edges of the format's reach.
@@ -261,7 +261,7 @@ models, and the project takes no position on any tradition, legal stance, or per
 arrangement:
 
 - **Legal / contract.** Quality serves _multiple parties under a shared good_ — the
-  law's public purpose — so a Model cannot reduce "good" to one party's preference;
+  law's public purpose — so a model cannot reduce "good" to one party's preference;
   it names the good a fair ordering serves. Law is not by nature adversarial; legal
   quality is fidelity to the law's purposes, not winning. (Developed under
   [Why care, not conformance](#why-care-not-conformance).) Recurs
@@ -297,7 +297,7 @@ to the quietest thing kept at home.
 
 Asserting agnosticism is cheap; the README and SPECIFICATION already show the model
 _shape_ with a software service. What follows shows it holding in a different domain
-— a complete documentation / knowledge-base Model. Two things make it a real stress
+— a complete documentation / knowledge-base model. Two things make it a real stress
 test rather than the software example relabeled: the `source` is a prose corpus, and
 every `assessment` describes a human-judgment check, with no runnable oracle. It also
 runs all three oracle views — internal (the page is well-formed), external (its
@@ -398,7 +398,7 @@ structure, and the body sections are identical in shape — the format needed no
 documentation-specific dialect. What changed is domain-carried: the factor family
 (accuracy, findability, completeness, clarity) and the `assessment` strings, which
 describe a reviewer's judgment rather than a test run. That is the demonstration: the
-same Model carries a domain whose quality lives entirely in judgment.
+same model carries a domain whose quality lives entirely in judgment.
 
 ## Rules for domain-agnostic example content
 
@@ -406,8 +406,8 @@ These rules are normative for repo content. [`AGENTS.md`](../../AGENTS.md) carri
 one-line summary and links here; this section governs.
 
 Concrete quality model content in this repo is **illustrative** unless it defines
-this project's own Model or states a normative format rule. That covers example
-Areas, Factors, Requirements, Assessments, criteria, Rating Levels, Findings,
+this project's own model or states a normative format rule. That covers example
+areas, factors, requirements, assessments, criteria, rating levels, findings,
 recommendations, and any quality-domain example. When in doubt, treat content as
 illustrative and mark it so.
 
@@ -421,7 +421,7 @@ illustrative and mark it so.
   illustrations need not carry two full domains — lead with the principle and cite a
   context or two non-exhaustively.
 - **Mark illustrative status.** Make clear an example illustrates one domain and is
-  not a default — unless it is a format rule or this project's own Model.
+  not a default — unless it is a format rule or this project's own model.
 - **Frame lists as open.** When citing quality contexts or factor families, make
   clear the examples are brief, illustrative, overlapping, and not exhaustive.
 - **Don't make software the default.** Prefer domain-neutral principles first, then
@@ -449,7 +449,7 @@ for modeled domains. The agent harness and the QUALITY.md self-check recur from 
 agentic use context, so project guidance may name their expected shapes, factor
 families, and requirement patterns. A modeled domain — the thing a particular
 `QUALITY.md` evaluates — still never receives a default factor roster; factors are
-earned per Model from the entity's own risks and needs.
+earned per model from the entity's own risks and needs.
 
 Even for a use-context constituent, keep its factors and requirements agnostic to
 the **served domain**: the domain the project model is about, and that the
@@ -516,7 +516,7 @@ Before adding concrete quality-model example content, check:
 - It is anchored in software/product and paired with one cite-worthy secondary
   context, balanced — unless it is a brief inline illustration.
 - Illustrative status is clear, unless it is a format rule or this project's own
-  Model.
+  model.
 - Brief lists are framed as non-exhaustive and possibly overlapping.
 - Factors are earned for the example's entity, not imported from a standard's
   characteristic list.

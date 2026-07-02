@@ -15,7 +15,7 @@ Factor: [Recoverability](recoverability-factor.md)
 
 ## Key details
 
-| Overall Rating | Local Rating | Status | Confidence |
+| Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low |
 
@@ -39,9 +39,9 @@ Recoverability follows its direct requirement signal.
 
 ## Sub-factors
 
-| Factor | Path | Local Rating | + Sub-Factors Rating |
+| Factor | Path | Local rating | + Sub-factors rating |
 | --- | --- | --- | --- |
-| (no Sub-Factors) | — | — | — |
+| (no sub-factors) | — | — | — |
 
 ## Limits and incomplete inputs
 

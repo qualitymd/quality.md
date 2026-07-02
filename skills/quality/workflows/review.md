@@ -1,6 +1,6 @@
 ---
 type: Runtime Workflow
-title: Review Workflow
+title: Review workflow
 description: Runtime workflow stub for reviewing an evaluation result, QUALITY.md model, or quality concern.
 ---
 

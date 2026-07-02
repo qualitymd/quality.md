@@ -68,7 +68,18 @@
     "socials": {
       "github": "https://github.com/qualitymd/quality.md",
       "x": "https://x.com/qualitydotmd"
-    }
+    },
+    "links": [
+      {
+        "header": "Project",
+        "items": [
+          {
+            "label": "MIT license",
+            "href": "https://github.com/qualitymd/quality.md/blob/main/LICENSE"
+          }
+        ]
+      }
+    ]
   },
   "integrations": {
     "ga4": {

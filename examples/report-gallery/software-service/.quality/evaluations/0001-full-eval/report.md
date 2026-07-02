@@ -17,7 +17,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ## Key details
 
-| Overall Rating | Confidence | Scope | Findings | Recommendations |
+| Overall rating | Confidence | Scope | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 7 total | 3 total |
 
@@ -30,7 +30,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ## Model evaluation
 
-| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
 | ↳ [▦ Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
@@ -63,7 +63,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 2 High, ● 1 Medium)
 
-| # | Recommendation | Area / Factors | Impact | Confidence | Reason |
+| # | Recommendation | Area / factors | Impact | Confidence | Reason |
 | --- | --- | --- | --- | --- | --- |
 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. |

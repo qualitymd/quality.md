@@ -86,8 +86,8 @@ The setup workflow **MUST** include these stages, in order:
 12. Report completion and one immediate next step, and finalize the setup feedback
     log.
 
-The workflow **MUST NOT** ask the user to design Factors, child Areas,
-Requirements, or Rating Levels cold. The skill derives model shape from the
+The workflow **MUST NOT** ask the user to design factors, child areas,
+requirements, or rating levels cold. The skill derives model shape from the
 setup brief, discovery answers, authoring guide, and repository context.
 
 ## Context analysis and setup brief
@@ -153,22 +153,22 @@ visible workflow signals that affect first-model authoring. This inspection
 **MUST** stay bounded to setup signals and **MUST NOT** become source-quality
 evaluation.
 
-Setup **MUST** treat the current directory as the default root Area convention
+Setup **MUST** treat the current directory as the default root area convention
 unless the user supplied an explicit model path or repository context strongly
 indicates a narrower root.
 
 When the root spans multiple workspaces, packages, or services, setup **SHOULD**
 delegate a bounded component census — one bounded exploration pass per component
 capturing purpose, entry points, external systems, risk surfaces, and test or CI
-coverage — to produce structured Area candidates. This census **MUST** remain
+coverage — to produce structured area candidates. This census **MUST** remain
 optional and proportional: a small single-package root does not require it.
 
 Before asking discovery questions, setup **MUST** build a concise setup brief
-containing root Area, domain, lifecycle, risk tolerance, modeling rigor,
+containing root area, domain, lifecycle, risk tolerance, modeling rigor,
 rating-scale recommendation, collaboration context, inferred primary users and
 outcomes, inferred maintainer or collaborator needs, inferred other stakeholder
 needs, missing or non-agent-accessible context, candidate model shape, candidate
-Factor-set quality, and candidate Factor rationales.
+factor-set quality, and candidate factor rationales.
 
 Every inferred setup brief item **MUST** include a recommended default,
 confidence signal, and short evidence note when evidence exists.
@@ -192,10 +192,10 @@ the prior `assumed` label carried.
 Before discovery questions, setup **MUST** present a user-facing setup preview
 distilled from the setup brief. The preview **MUST** include:
 
-- likely root Area or boundary;
+- likely root area or boundary;
 - likely domain or quality context;
 - visible evidence used for the inference;
-- likely candidate model shape, such as initial Areas, Factors, or quality
+- likely candidate model shape, such as initial areas, factors, or quality
   concerns;
 - missing or not-agent-accessible context;
 - the next user action.
@@ -216,7 +216,7 @@ Setup **MUST** ask or present the following discovery inputs before writing
 `QUALITY.md`:
 
 1. **Root area.** Should this `QUALITY.md` model the whole current project, or a
-   narrower Area?
+   narrower area?
 2. **Domain.** What kind of thing is this model evaluating?
 3. **Lifecycle.** Which stage best fits: exploratory, pre-release, active
    production, maintenance, or sunset?
@@ -224,8 +224,8 @@ Setup **MUST** ask or present the following discovery inputs before writing
    cost, or low cost? Setup maps the visible cost answer to the internal
    risk-tolerance meaning: high cost maps to low tolerance, moderate cost maps to
    moderate tolerance, and low cost maps to high tolerance.
-5. **Rating Scale.** Should the model use the recommended
-   `outstanding`, `target`, `minimum`, `unacceptable` Rating Scale?
+5. **Rating scale.** Should the model use the recommended
+   `outstanding`, `target`, `minimum`, `unacceptable` rating scale?
 6. **Human context checkpoint.** A draft for correction that covers primary
    users and outcomes, maintainers and collaborators, other stakeholders, and
    missing or not-agent-accessible context.
@@ -234,7 +234,7 @@ Each discovery question **MUST** include a recommended answer and confidence
 signal. Each human context checkpoint item **MUST** include a recommended answer
 and confidence signal when setup has inferred one from repository evidence.
 
-The lifecycle, risk-tolerance, and Rating Scale questions are single-select
+The lifecycle, risk-tolerance, and rating scale questions are single-select
 closed-choice intents and **MUST** be rendered per the shared
 [progressive-enhancement contract](../quality-skill.md#user-interaction-contract):
 through a fit-for-purpose native option picker when present, otherwise the text
@@ -253,9 +253,9 @@ of making the user translate while answering.
 > with an option picker renders the same single-select intent through it. The
 > visible-axis and recommended-first rules govern the fallback regardless. — 0123
 
-The Rating Scale question **MUST** explain that Rating Levels are configurable in
+The rating scale question **MUST** explain that rating levels are configurable in
 `QUALITY.md` and are not baked into the format. It **MUST** recommend the
-standard four-level scale for most first models, keep its stable Rating Level IDs
+standard four-level scale for most first models, keep its stable rating level IDs
 as `outstanding`, `target`, `minimum`, and `unacceptable`, and use the default
 display titles `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and
 `🔴 Unacceptable` unless the project context calls for plain or custom titles. It
@@ -265,7 +265,7 @@ good-enough bar, `minimum` is the acceptable floor that still warrants
 improvement, and `unacceptable` is below the floor. It **MUST NOT** treat emoji
 markers as rating identity, ordering, or semantics.
 
-Setup **MUST NOT** ask the user to invent custom Rating Level names during
+Setup **MUST NOT** ask the user to invent custom rating level names during
 discovery. When the user rejects the recommended scale, setup **MAY** choose a
 simple alternate scale only when project context clearly supports it, such as a
 pass/fail gate; otherwise setup **SHOULD** use the recommended scale and record
@@ -341,7 +341,7 @@ question that can obscure the primary users/outcomes, maintainer/collaborator,
 and other stakeholder dimensions.
 
 > Annotation: the human context dimensions are still required because they ground
-> Needs, Risks, Factors, and Unknowns. The change is their response shape:
+> Needs, Risks, factors, and Unknowns. The change is their response shape:
 > reviewing and correcting a draft is easier than answering four essay prompts,
 > especially when the final prompt is the broadest one. Silence on a
 > low-confidence item is not evidence, so setup records unresolved material
@@ -463,27 +463,27 @@ interaction.
 
 After the discovery questions and human context checkpoint, `setup` **MUST**
 present a draft factor proposal before the final review gate. The checkpoint
-**MUST** teach the Factor-selection desiderata in the context of the proposed
+**MUST** teach the factor-selection desiderata in the context of the proposed
 model and **MUST** ask the user to review the proposed shape, not to author YAML
-or design Factors cold.
+or design factors cold.
 
 The proposal **MUST** be derived from the setup brief, discovery answers, human
-context checkpoint, repository context, and Factor authoring guide. Before
-presenting it, setup **MUST** check the proposed Factor set for comprehensive,
+context checkpoint, repository context, and factor authoring guide. Before
+presenting it, setup **MUST** check the proposed factor set for comprehensive,
 proportionate, sustainable coverage: it covers what matters, gives most
 attention to what matters most, and remains usable over time. Setup **MUST**
-check each individual proposed Factor for consequentiality first, then refine it
+check each individual proposed factor for consequentiality first, then refine it
 for bounded, operational, traceable, and neutral shape.
 
 Setup **MUST** preserve consequential concerns by refinement rather than dropping
 them solely because their boundary, operational path, trace, or neutrality is
-initially weak. Refinement can include renaming the Factor, moving it to a
-different Area, decomposing or combining it, changing starter Requirement depth,
+initially weak. Refinement can include renaming the factor, moving it to a
+different area, decomposing or combining it, changing starter requirement depth,
 or recording missing evidence or open questions.
 
-The checkpoint **MUST** present the candidate Factors by Area with a short "why
+The checkpoint **MUST** present the candidate factors by area with a short "why
 it matters" rationale and visible initial depth. The visible depth labels are
-`light`, `normal`, and `deep`; they describe initial Requirement and assessment
+`light`, `normal`, and `deep`; they describe initial requirement and assessment
 rigor, not importance alone. Setup **SHOULD** use deeper initial treatment for
 high-consequence, volatile, hard-to-recover, or decision-critical concerns, and
 may use lighter treatment for consequential but stable or lower-risk concerns.
@@ -576,7 +576,7 @@ may have their placeholders replaced after the normal review gate. Partially
 authored files contain useful project-specific model or body content but still
 have important setup gaps; setup **MUST** preserve useful existing content unless
 the review gate names replacement or removal. Mature files contain coherent
-project-specific scope, needs, risks, factors, and assessable Requirements;
+project-specific scope, needs, risks, factors, and assessable requirements;
 setup **SHOULD** route them toward `/quality review` or `/quality improve`
 unless the user explicitly asks for setup-style reshaping.
 
@@ -585,7 +585,7 @@ follows the authoring guide and active specification. The model **MUST** address
 the Markdown body's Overview, Scope, Needs, and Risks, including each section's
 unknowns, open questions, and any material support that is not
 agent-accessible. The body **MUST** preserve setup assumptions where they shape
-the model: root Area, domain, lifecycle, risk tolerance, modeling rigor,
+the model: root area, domain, lifecycle, risk tolerance, modeling rigor,
 rating-scale choice, collaboration context, stakeholder needs, and important
 missing or non-agent-accessible context.
 
@@ -595,23 +595,23 @@ came from explicit setup input rather than repository inspection. Setup **MUST N
 treat tacit maintainer, operator, contributor, or stakeholder knowledge as
 available evidence unless it has been explicitly provided or cited.
 
-Setup-authored Factors **MUST** derive from project-specific needs, risks,
+Setup-authored factors **MUST** derive from project-specific needs, risks,
 stakeholder concerns, component boundaries, and available evidence, not generic
-quality labels or setup-question labels alone. Child Areas **SHOULD** be added
-only when they represent distinct evaluated entities. Starter Requirements
+quality labels or setup-question labels alone. Child areas **SHOULD** be added
+only when they represent distinct evaluated entities. Starter requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
 
-Setup-authored Factor sets **MUST** aim for comprehensive, proportionate,
-sustainable coverage as defined by the Factor authoring guide. Setup-authored
-individual Factors **MUST** be consequential first, then refined to be bounded,
+Setup-authored factor sets **MUST** aim for comprehensive, proportionate,
+sustainable coverage as defined by the factor authoring guide. Setup-authored
+individual factors **MUST** be consequential first, then refined to be bounded,
 operational, traceable, and neutral enough for a first useful model. Setup
 **MUST** use the reviewed `light` / `normal` / `deep` depth labels to decide
-where starter Requirements and assessments should stay coarse or become more
+where starter requirements and assessments should stay coarse or become more
 rigorous.
 
 For an agent-collaborated composite root, setup **MUST** propose
-`agent-harnessability` / Agent Harnessability as a model-wide umbrella factor by
+`agent-harnessability` / agent harnessability as a model-wide umbrella factor by
 default, decomposed into the authoring guide's seven sub-factors:
 `agent-accessibility`, `task-specifiability`, `agent-operability`,
 `continuity`, `self-verifiability`, `enforcement-of-standards`, and
@@ -620,51 +620,51 @@ Setup **MUST** define it as the degree to which the project's own materials and
 tooling equip an AI agent to understand the project, take scoped work, operate the
 environment, preserve and resume state, verify its output, and stay safely bounded
 while preserving clear human direction, review, and accountability. Setup **MUST
-NOT** omit Agent
-Harnessability because the project's harness is thin or absent; that condition is
-a rating gap and finding, not a factor-omission reason. Setup **MUST** keep Agent
-Harnessability distinct from the agent harness constituent: the factor rates how
-each constituent equips an agent, while the harness Area rates the checked-in,
+NOT** omit agent
+harnessability because the project's harness is thin or absent; that condition is
+a rating gap and finding, not a factor-omission reason. Setup **MUST** keep agent
+harnessability distinct from the agent harness constituent: the factor rates how
+each constituent equips an agent, while the harness area rates the checked-in,
 project-owned governing artifacts themselves.
 
 For an agent-collaborated composite root whose agent harness is germane, setup
 **MUST** actively check for project-owned runtime harness machinery such as
 hooks, tool/MCP definitions, sandbox or permission policy, orchestration config,
-and subagent config. Setup **MUST** scope the generated agent-harness Area as the
+and subagent config. Setup **MUST** scope the generated agent-harness area as the
 checked-in steering and owned-control artifacts, not instructions alone. Setup
-**MUST** align the generated Area `description` and projection-boundary comment
-with that scope and distinguish the Area from the broader Agent Harnessability
+**MUST** align the generated area `description` and projection-boundary comment
+with that scope and distinguish the area from the broader agent harnessability
 factor. Setup **MUST** surface project-owned runtime harness machinery in the
-agent-harness Area or, when large enough to carry distinct factors, in its own
-Area; it **MUST NOT** silently fold that machinery into prose guidance or drop
+agent-harness area or, when large enough to carry distinct factors, in its own
+area; it **MUST NOT** silently fold that machinery into prose guidance or drop
 it. Setup **SHOULD** include in its user-facing recap one line naming that the
-agent-harness Area is the checked-in steering and owned-control artifacts while
-Agent Harnessability rates the broader equipping capability.
+agent-harness area is the checked-in steering and owned-control artifacts while
+agent harnessability rates the broader equipping capability.
 
-> Annotation: Agent Harnessability is the factor-side projection of the same
+> Annotation: agent harnessability is the factor-side projection of the same
 > agent-collaboration concern that 0080 made a modeled-by-default constituent.
 > Leading with the factor prevents a thin harness from being deferred out of the
 > model and makes the agent-equipping quality visible across every constituent. —
 > 0081, refined by 0085
 
-Setup **SHOULD** use the standard Rating Scale, including its emoji-prefixed
+Setup **SHOULD** use the standard rating scale, including its emoji-prefixed
 human display titles, unless discovery and the body show a real need to
 customize it. If the user rejects the recommended scale but the project context
 does not clearly support an alternate scale, setup **SHOULD** use the
 recommended scale and record the scale decision as an open question or assumption
 in the model body.
 
-Setup **SHOULD** include a `quality-md` Area that evaluates the `QUALITY.md`
+Setup **SHOULD** include a `quality-md` area that evaluates the `QUALITY.md`
 artifact itself against the active authoring guide family unless the user declines or
-the model file is not in the root Area it governs. The Area **SHOULD** use the
-key `quality-md`, a title of the form `<Root Title> QUALITY.md`, an Area
+the model file is not in the root area it governs. The area **SHOULD** use the
+key `quality-md`, a title of the form `<Root Title> QUALITY.md`, an area
 `description`, and an explicit path-based `source` such as `./QUALITY.md`. It
 **MUST NOT** use prose aliases such as `(this file)` for `source`.
 
-When setup adds that Area, it **SHOULD** include concise YAML comments that
-distinguish the Area `source` from the Requirement `assessment`. It **SHOULD**
-use one Area-level Requirement with `factors` when the active authoring guide family
-defines one coherent judgment across multiple Factors.
+When setup adds that area, it **SHOULD** include concise YAML comments that
+distinguish the area `source` from the requirement `assessment`. It **SHOULD**
+use one area-level requirement with `factors` when the active authoring guide family
+defines one coherent judgment across multiple factors.
 
 ## Stop conditions
 
@@ -677,12 +677,12 @@ report lint failures before offering evaluation as a next step.
 
 When lint passes, `setup` **MUST** inspect the model for important gaps that
 materially affect first-model usefulness. This inspection **MUST** remain a
-model-usefulness inspection and **MUST NOT** evaluate root Area source quality.
+model-usefulness inspection and **MUST NOT** evaluate root area source quality.
 Important gaps include thin or generic Markdown body context, missing material
 unknowns or open questions, factors that do not trace to the body's needs and
-risks, Factor sets that omit consequential concerns or allocate depth
-unreasonably, vague or unassessable Requirements, missing germane constituent
-kinds, and missing Agent Harnessability coverage for an agent-collaborated
+risks, factor sets that omit consequential concerns or allocate depth
+unreasonably, vague or unassessable requirements, missing germane constituent
+kinds, and missing agent harnessability coverage for an agent-collaborated
 composite root.
 Setup **MUST NOT** collapse those gaps into a `starter`, `immature`,
 `evaluation-ready`, `Maturity`, or `Evaluation readiness` label.
@@ -693,11 +693,11 @@ outside the boundary) is left unmodeled or recorded only as a deferral; a bare
 deferral or Scope note **MUST NOT** be treated as satisfying constituent coverage.
 
 For an agent-collaborated composite root, `setup` **MUST** report an important
-gap when Agent Harnessability or its sub-factors are missing from the model-wide
+gap when agent harnessability or its sub-factors are missing from the model-wide
 factors without a clear not-germane boundary. A thin or absent harness **MUST
 NOT** satisfy that boundary. An existing `harnessability` factor **MUST** be
 treated as stale legacy naming, not current coverage; setup **MUST** report the
-gap and recommend renaming it to `agent-harnessability` / Agent Harnessability
+gap and recommend renaming it to `agent-harnessability` / agent harnessability
 during model-authoring work.
 
 > Rationale: model-by-default is enforceable only if under-coverage is reported

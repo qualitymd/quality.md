@@ -20,8 +20,8 @@ appear in all capitals.
 
 The guide **MUST** cover when to update QUALITY.md, model drift vs root-area
 quality, body/frontmatter synchronization, defect-backlog boundaries,
-recalibration vs drift correction, criteria gaming, missing Requirements surfaced
-by findings, and whether the Requirement set still delivers the body's Needs.
+recalibration vs drift correction, criteria gaming, missing requirements surfaced
+by findings, and whether the requirement set still delivers the body's Needs.
 
 The guide **MUST** define what counts as a meaningful quality changelog entry while
 leaving the quality-changelog format contract in `SKILL.md`. It **MUST** cover

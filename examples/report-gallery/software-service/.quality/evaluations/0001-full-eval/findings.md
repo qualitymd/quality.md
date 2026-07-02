@@ -11,7 +11,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 ## Key details
 
-| Findings | Highest Concern Severity |
+| Findings | Highest concern severity |
 | --- | --- |
 | 7 findings | 🔴 High |
 

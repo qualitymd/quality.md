@@ -8,7 +8,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # /quality review
 
-`review` is the `/quality` skill workflow that inspects an Evaluation result, the
+`review` is the `/quality` skill workflow that inspects an evaluation result, the
 `QUALITY.md` model, or a specific quality concern before the user decides
 whether to act. It implements the shared contracts in the parent
 [/quality skill](../quality-skill.md) spec and owns only the review-specific
@@ -25,7 +25,7 @@ appear in all capitals.
 
 ## Purpose and routing
 
-`review` is selected when the user asks to review an Evaluation result, review
+`review` is selected when the user asks to review an evaluation result, review
 the `QUALITY.md` model, or review a specific quality concern.
 
 The workflow's purpose is judgment and routing. It helps the user understand
@@ -40,7 +40,7 @@ evidence, model fit, and likely next action before mutation.
 - model — `QUALITY.md` usefulness, clarity, coverage, assessability, stale
   assumptions, or authoring quality; and
 - concern — a named quality concern that is not clearly a model element or
-  Evaluation artifact.
+  evaluation artifact.
 
 When focus is absent or ambiguous, `review` **MUST** infer likely focus from user
 text and lifecycle state before asking. When inference is not strong enough,
@@ -50,7 +50,7 @@ recommended focus first and an explicit shortest answer path.
 ## Mutation surface and artifacts
 
 `review` is read-only by default. It **MUST NOT** edit evaluated source, edit
-`QUALITY.md`, write Evaluation records, write the quality changelog, create external
+`QUALITY.md`, write evaluation records, write the quality changelog, create external
 issues, update tooling, or create workflow feedback logs.
 
 ## Required flow
@@ -63,7 +63,7 @@ After focus is resolved, `review` **MUST** confirm the focus before deep review
 work. Confirmation may be a concise statement when inference is strong, or a
 single-select choice when it is not.
 
-For Evaluation-result focus, `review` **SHOULD** inspect the latest reportable
+For evaluation-result focus, `review` **SHOULD** inspect the latest reportable
 run when no run is named, summarize available ratings, findings, evidence
 limits, incomplete inputs, and likely improve focuses.
 

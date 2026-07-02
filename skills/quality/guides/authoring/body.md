@@ -1,6 +1,6 @@
 ---
 type: Runtime Guide
-title: Authoring the Markdown Body
+title: Authoring the Markdown body
 description: Markdown-body guidance for QUALITY.md judgment context, unknowns, open questions, and review state.
 tags: [quality, authoring, guide]
 ---

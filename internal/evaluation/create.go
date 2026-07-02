@@ -72,7 +72,7 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 		Number: number,
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-data-set",
-			Label:   "Record Evaluation data",
+			Label:   "Record evaluation data",
 			Command: "qualitymd evaluation data set" + modelArgs + " " + runRel + " < payloads.json",
 		}},
 	}, nil

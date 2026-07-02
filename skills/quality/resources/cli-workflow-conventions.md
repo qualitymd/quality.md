@@ -1,6 +1,6 @@
 ---
 type: Runtime Resource
-title: CLI Workflow Conventions
+title: CLI workflow conventions
 description: Workflow conventions for how the /quality skill drives qualitymd CLI introspection and artifacts.
 ---
 
@@ -23,7 +23,7 @@ Discover command shapes, flags, and payload contracts from the CLI at runtime:
   whether the install is in the skill's supported range.
 - Use `qualitymd spec` for active format rules and rating vocabulary.
 - Use `qualitymd evaluation data kinds`, `qualitymd evaluation data schema`, and
-  `qualitymd evaluation data example` for Evaluation payload discovery. For one
+  `qualitymd evaluation data example` for evaluation payload discovery. For one
   kind, `data schema <kind>` is self-contained and is the source for required
   fields and allowed enum values; `data example <kind>` is one concrete valid
   instance.
@@ -55,7 +55,7 @@ continues into discovery. Evaluate creates and updates its current-run feedback
 log after the run frame. Record material workflow-experience events only; do not
 duplicate assessment evidence.
 
-## Starting or repairing a Model
+## Starting or repairing a model
 
 Sequence the work this way:
 
@@ -123,7 +123,7 @@ default, and derive the run-folder slug.
 - Use `--json` when a command offers it and the agent must consume the result.
 - Prefer structured status output for readiness, model shape, evaluation
   history, and stale-run signals.
-- Use model introspection output for canonical Area, Factor, and Requirement IDs.
+- Use model introspection output for canonical area, factor, and requirement IDs.
 - Persist routine JSON only through the CLI data write path.
 - Use the CLI payload schema and populated example commands to inspect payload
   shape.

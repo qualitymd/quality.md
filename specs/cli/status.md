@@ -32,7 +32,7 @@ ratings, or replace evaluation reports.
 ## Scope
 
 Covered: `qualitymd status [path]`, `--json`, workspace metadata, model validity
-and shape, per-Area source coverage, recognized Evaluation run history, stale
+and shape, per-area source coverage, recognized evaluation run history, stale
 and incomplete run counts, readiness, next actions, deterministic ordering, and
 exit behavior.
 
@@ -61,30 +61,30 @@ When lint can inspect the file, `status` **MUST** report whether the model is
 valid, lint summary counts, and lint findings under `--json`.
 
 When the model is lint-valid, `status` **MUST** report deterministic model-shape
-counts for Areas, Factors, Requirements, and rating-scale levels. The Area
-count includes the root Model as the root Area.
+counts for areas, factors, requirements, and rating-scale levels. The area
+count includes the root model as the root area.
 
 When the model is lint-valid, `status` **MUST** report source coverage for every
-Area, including the root Model. Each source-coverage row **MUST** include the
+area, including the root model. Each source-coverage row **MUST** include the
 ordered `areaPath`, a label, `sourceState`, known `source` value when present,
-and direct Factor, Requirement, and child Area counts.
+and direct factor, requirement, and child area counts.
 
-`sourceState` reports how the Area's evaluation Source is resolved:
+`sourceState` reports how the area's evaluation source is resolved:
 
-- `declared` — the Area declares its own `source`; the `source` value is
+- `declared` — the area declares its own `source`; the `source` value is
   reported.
-- `inherited` — the Area inherits a `source` declared by an ancestor Area; the
+- `inherited` — the area inherits a `source` declared by an ancestor area; the
   inherited `source` value is reported.
-- `default` — no Area in the chain declares a `source`, so the Area resolves to
-  the document's default Source: the directory containing the QUALITY.md file.
-  This is a deliberate, valid choice — a lean root that only groups child Areas
+- `default` — no area in the chain declares a `source`, so the area resolves to
+  the document's default source: the directory containing the QUALITY.md file.
+  This is a deliberate, valid choice — a lean root that only groups child areas
   takes the directory default and **MUST** report `default`, not a defect-like
   label.
 - `missing` is reserved for a source that cannot be resolved. A lint-valid model
   **MUST NOT** produce it, because an undeclared source always resolves to the
   document default.
 
-Human-facing labels **SHOULD** use required Area `title` values. JSON
+Human-facing labels **SHOULD** use required area `title` values. JSON
 `areaPath` values **MUST** remain identifier-based and **MUST NOT** be replaced
 by titles.
 
@@ -122,7 +122,7 @@ history path when no resolved config file changes it.
 If the evaluation directory is absent, `status` **MUST** report zero recognized
 runs rather than failing.
 
-`status` **MUST** recognize Evaluation run folders by the current
+`status` **MUST** recognize evaluation run folders by the current
 [Evaluation](../evaluation/evaluation.md) contract and inspect them in
 deterministic order by run number, then folder name.
 
@@ -131,8 +131,8 @@ reportable run count, incomplete run count, and stale run count. A stale run is
 one whose `model-snapshot.md` snapshot bytes differ from the selected model file bytes.
 
 Malformed, unreadable, schema-incompatible, missing, or structurally incomplete
-Evaluation data **MUST** make its run incomplete with status gaps. Broken
-Evaluation skeletons **MUST** be reported as run inspection problems.
+evaluation data **MUST** make its run incomplete with status gaps. Broken
+evaluation skeletons **MUST** be reported as run inspection problems.
 
 For each run summary under `--json`, `status` **MUST** include run path,
 reportability, stale state, evaluation data artifact count, gap count, and any

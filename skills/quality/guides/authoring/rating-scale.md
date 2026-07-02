@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
-title: Authoring Rating Scales
-description: Rating Scale, Rating Level, criterion, roll-up, veto, and not-assessed guidance for QUALITY.md models.
+title: Authoring rating scales
+description: Rating scale, rating level, criterion, roll-up, veto, and not-assessed guidance for QUALITY.md models.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Rating Scales
+# Authoring rating scales
 
 Read this when:
 
-- creating, revising, reviewing, or evaluating Rating Scales, Rating Level criteria, roll-up expectations, veto Requirements, or `not assessed` handling.
+- creating, revising, reviewing, or evaluating rating scales, rating level criteria, roll-up expectations, veto requirements, or `not assessed` handling.
 
 Depends on:
 
@@ -17,7 +17,7 @@ Depends on:
 
 ---
 
-## Rating Scale
+## Rating scale
 
 The **rating scale** is the fixed set of levels every requirement result is
 rated against — the model's shared vocabulary for "how good." It is a list of
@@ -38,7 +38,7 @@ Each level does two distinct jobs through two properties:
 
 | Property      | Presence    | What it is                                                      |
 | ------------- | ----------- | --------------------------------------------------------------- |
-| `level`       | Required    | Rating Level ID; unique within the scale.                       |
+| `level`       | Required    | Rating level ID; unique within the scale.                       |
 | `title`       | Required    | Human-readable label for reports.                               |
 | `description` | Recommended | What the level means across the model (fixed).                  |
 | `criterion`   | Required    | Default rule for rating a requirement's findings at this level. |

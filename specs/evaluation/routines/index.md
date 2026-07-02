@@ -1,6 +1,6 @@
 # Evaluation routines
 
-Prompt-style routine contracts for Evaluation.
+Prompt-style routine contracts for evaluation.
 
 # Concepts
 

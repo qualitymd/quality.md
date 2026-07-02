@@ -22,7 +22,7 @@ type RunList struct {
 	Runs          []RunListEntry `json:"runs"`
 }
 
-// RunSelection describes how a command chooses an Evaluation run.
+// RunSelection describes how a command chooses an evaluation run.
 type RunSelection struct {
 	Model         string
 	EvaluationDir string
@@ -30,7 +30,7 @@ type RunSelection struct {
 	Latest        bool
 }
 
-// ResolvedRun is an Evaluation run path resolved for command execution.
+// ResolvedRun is an evaluation run path resolved for command execution.
 type ResolvedRun struct {
 	Path        string
 	DisplayPath string

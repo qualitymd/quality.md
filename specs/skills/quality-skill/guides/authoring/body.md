@@ -19,7 +19,7 @@ described in [RFC 2119](../../../../../docs/reference/rfc2119.md) and
 appear in all capitals.
 
 The guide **MUST** cover the Markdown body as evaluable judgment context: root
-Area identity, why quality matters, decisions the model supports, Needs, Risks,
+area identity, why quality matters, decisions the model supports, Needs, Risks,
 unknowns, open questions, and inaccessible context.
 
 The guide **MUST** teach the recommended body sections, the common section shape,

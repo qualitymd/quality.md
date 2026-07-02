@@ -20,15 +20,14 @@ distributed separately from the CLI and declares its skill version and supported
 `skills/quality/SKILL.md` frontmatter metadata (see
 [`Versioning`](../../../docs/reference/versioning.md)). The skill is responsible
 for **specifying and implementing** the _evaluation_ it performs — this spec, the
-skill's own prompt, and the CLI together. That evaluation **MUST conform to** the
-format spec's
-
-> [Evaluation](../../../SPECIFICATION.md#evaluation) contract, but the skill does
-> **not defer** its definition to it: the process below is the skill's own,
-> written to satisfy that contract rather than to merely point at it (see
-> [Conformance to the format spec](#conformance-to-the-format-spec)). Recording
-> assessment results _through the CLI_ is **deferred** in step with the CLI's deferred
-> record/gate surface (see [Deferred](#deferred)).
+skill's own prompt, and the CLI together. The format spec defines what a
+QUALITY.md document means, not how to evaluate it: the skill's evaluation
+**MUST** read models according to the format spec's
+[Model semantics](../../../SPECIFICATION.md#model-semantics), while the
+evaluation process itself is the skill's own (see
+[Conformance to the format spec](evaluation.md#conformance-to-the-format-spec)).
+Recording assessment results _through the CLI_ is **deferred** in step with the
+CLI's deferred record/gate surface (see [Deferred](#deferred)).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", "RECOMMENDED", and "MAY" are to be
@@ -66,8 +65,8 @@ mutation, and delegates mechanical changes to the Agent Skills installer and
 `qualitymd update`.
 
 Scope is a modifier, not a separate use case. Every evaluation takes an optional
-scope — a full evaluation, or a narrowing to a particular Area and optional
-Factor filter.
+scope — a full evaluation, or a narrowing to a particular area and optional
+factor filter.
 The scope parameterizes the invocation rather than multiplying it (see
 [Invocation](#invocation)).
 
@@ -112,7 +111,7 @@ skill safe against the content it reads.
 - **A scoped result is not a full-evaluation verdict.** When evaluation is narrowed
   (see [Invocation](#invocation)), every rating is understood within that scope;
   the skill **MUST NOT** present a scoped result as a full-evaluation verdict
-  (per [Define](../../../SPECIFICATION.md#define)).
+  (see [Scope resolution](evaluation.md#scope-resolution)).
 - **Determinism over flair.** Given the same model, evaluated source, and scope, the skill
   should reach the same ratings and surface the same key gaps. Ratings are
   inferred judgments, not sampled opinions (see
@@ -192,7 +191,7 @@ QUALITY.md and the meaning of its terms, which are grounded at runtime. It does
 **not** apply to the skill's _evaluation process_, which the skill owns and
 specifies here and carries in its prompt (see
 [Conformance to the format spec](#conformance-to-the-format-spec)); that process
-conforms to the spec's Evaluation contract rather than being fetched from it.
+conforms to the spec's evaluation contract rather than being fetched from it.
 
 ### Arguments
 
@@ -209,9 +208,9 @@ scope:
   upgrade, or repair the installed `/quality` skill and `qualitymd` CLI pair.
   `setup` is selected when no model file is present or the user asks to create one;
   otherwise the default action is `evaluate`, so naming only an evaluation scope
-  still evaluates. Requests to review an Evaluation result, review the model, or
+  still evaluates. Requests to review an evaluation result, review the model, or
   review a specific quality concern resolve to `review`. Requests to improve from
-  an Evaluation result, improve the model, improve a quality concern, apply, act
+  an evaluation result, improve the model, improve a quality concern, apply, act
   on, or hand off a recommendation resolve to `improve`. Direct model authoring
   and recommendation follow-up are implementation routes under `improve`, not
   separate public workflow names.
@@ -221,8 +220,8 @@ scope:
   NOT** walk parent directories or discover multiple models unless a future CLI
   convention defines that behavior.
 - **Focus** — for `review` and `improve`, the attention target. `review` supports
-  latest or selected Evaluation result, the `QUALITY.md` model, and a specific
-  quality concern. `improve` supports Evaluation result or finding/candidate
+  latest or selected evaluation result, the `QUALITY.md` model, and a specific
+  quality concern. `improve` supports evaluation result or finding/candidate
   action, the `QUALITY.md` model, a specific quality concern, and an existing
   recommendation artifact when one is present. The skill **MUST** use an explicit
   focus unless impossible or unsafe. When focus is absent or ambiguous, the skill
@@ -230,23 +229,24 @@ scope:
   asking. When inference is not strong enough, the skill **MUST** ask a
   single-select closed-choice question with the recommended focus first and an
   explicit shortest answer path.
-- **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
-  and its subtree) and/or by **Factor** through a planned Factor filter, per
-  [Define](../../../SPECIFICATION.md#define). Natural Area and Factor labels are
+- **Scope** — full evaluation (default), or a narrowing by **area** (an area
+  and its subtree) and/or by **factor** through a planned factor filter, per
+  [Scope resolution](evaluation.md#scope-resolution). Natural area and factor
+  labels are
   the primary user-facing scoped-evaluation input for the skill. The skill
-  **SHOULD** match one label against Area titles, Area names, Factor titles, and
-  Factor names in the grounded model; a unique Area match evaluates that Area,
-  and a unique Factor match evaluates that Factor in its declaring Area. For two
-  labels, the skill **SHOULD** resolve the Area label first, then resolve the
-  Factor label within that Area. When a Factor label is present in multiple
-  Areas, the skill **SHOULD** ask `What area do you want to evaluate <Factor>
-for?` and lead clarification options with human-readable Area titles or names.
+  **SHOULD** match one label against area titles, area names, factor titles, and
+  factor names in the grounded model; a unique area match evaluates that area,
+  and a unique factor match evaluates that factor in its declaring area. For two
+  labels, the skill **SHOULD** resolve the area label first, then resolve the
+  factor label within that area. When a factor label is present in multiple
+  areas, the skill **SHOULD** ask `What area do you want to evaluate <Factor>
+for?` and lead clarification options with human-readable area titles or names.
   The skill **MUST** continue to accept qualified model references such as
   `area:<area-path>` and `factor:<declaring-area-path>::<factor-path>` for exact
   addressing, disambiguation, and advanced workflows. It may also accept
   unqualified references at fixed-type human/input edges such as
   `area webhooks/delivery` or `factor webhooks/delivery::reliability`. Display
-  values, such as `/` for the root Area in reports, are not model references.
+  values, such as `/` for the root area in reports, are not model references.
   Evaluation artifacts **MUST** use canonical qualified model-reference strings
   such as `area:webhooks`, `factor:webhooks::reliability`,
   `requirement:webhooks::retry-window`, and `rating:target` rather than natural
@@ -333,7 +333,7 @@ responses.
 
 The skill **MUST** use Markdown emphasis as hierarchy, not decoration. It
 **MUST NOT** bold whole paragraphs or add decorative emoji to routine headings.
-Emoji **MAY** be used as semantic status markers, and Rating Level emoji remain
+Emoji **MAY** be used as semantic status markers, and rating level emoji remain
 display-title scanning aids only.
 
 ### Run frames
@@ -466,7 +466,7 @@ evaluated-source defect.
 
 ### History-aware operation
 
-Before `evaluate`, `review` or `improve` with Evaluation focus, and
+Before `evaluate`, `review` or `improve` with evaluation focus, and
 recommendation follow-up, the skill **SHOULD** inspect available evaluation
 history when present, including the latest run, incomplete or stale-looking runs,
 open recommendations, and prior ratings for the same resolved scope. Prior
@@ -517,11 +517,11 @@ output: area, factor, requirement, rating, finding, and recommendation. It
 **MUST** capitalize formal type names only when precision requires it.
 
 For user-facing labels, the skill **SHOULD** use required `title` values for
-Models, Areas, Factors, and Rating Levels as the primary wording. It **MAY**
+models, areas, factors, and rating levels as the primary wording. It **MAY**
 include qualified model references as secondary context when needed for
 disambiguation or traceability. In generated human reports, the skill **MAY**
 rely on display values rendered by the CLI for user-facing discussion; the root
-Area displays as `/`, while its references remain `area:root` and `root`. The
+area displays as `/`, while its references remain `area:root` and `root`. The
 skill **MUST NOT** replace structured stable identifiers with titles, display
 values, or unqualified references in evaluation record payloads.
 
@@ -581,8 +581,8 @@ would materially change the model/body target, mutation surface, judgment effect
 quality changelog decision, or safety boundary. It **MUST NOT** use a fixed full
 questionnaire for routine direct edits. Common material follow-up triggers
 include choosing between body-only context and a structured model change,
-unclear Area/Factor/Requirement or Rating Level targets, and edits to Rating
-Scale criteria, weights, required margin, scope, or apex.
+unclear area/factor/requirement or rating level targets, and edits to rating
+scale criteria, weights, required margin, scope, or apex.
 
 Before mutating `QUALITY.md` through direct model authoring, the skill **MUST**
 present a lightweight intent checkpoint that states the inferred intent, the
@@ -642,10 +642,10 @@ evaluated source.
 
 ### Review
 
-[`review`](workflows/review.md) inspects an Evaluation result, the `QUALITY.md`
+[`review`](workflows/review.md) inspects an evaluation result, the `QUALITY.md`
 model, or a specific quality concern. It is read-only by default, emits a run
 frame with focus, confirms or asks for focus before deeper review, and recommends
-one next action without editing files, writing Evaluation records, writing the
+one next action without editing files, writing evaluation records, writing the
 quality changelog, creating issues, or updating tooling.
 
 ### Improve
@@ -653,7 +653,7 @@ quality changelog, creating issues, or updating tooling.
 [`improve`](workflows/improve.md) acts on quality judgment after focus and
 mutation surface are confirmed. It starts read-only, then delegates model-focused
 changes to direct model authoring and compatible recommendation artifacts to
-recommendation follow-up. It does not create numbered Evaluation records itself.
+recommendation follow-up. It does not create numbered evaluation records itself.
 
 ### Recommendation follow-up
 
@@ -683,12 +683,12 @@ arguments, defaulting the ones left out:
 /quality review model          # review the QUALITY.md model
 /quality improve               # infer focus and mutation surface before acting
 /quality improve model         # improve QUALITY.md through direct authoring
-/quality evaluate Triage     # scope to the Triage Area
-/quality evaluate Accuracy     # scope to the unique Accuracy Factor
-/quality evaluate Triage Accuracy   # Triage Area's Accuracy Factor
-/quality evaluate area:triage   # exact qualified Area reference
-/quality evaluate factor:triage::accuracy   # exact qualified Factor reference
-/quality evaluate factor flow  # fixed-type unqualified reference when a label is both an Area and a Factor
+/quality evaluate Triage     # scope to the Triage area
+/quality evaluate Accuracy     # scope to the unique Accuracy factor
+/quality evaluate Triage Accuracy   # Triage area's Accuracy factor
+/quality evaluate area:triage   # exact qualified area reference
+/quality evaluate factor:triage::accuracy   # exact qualified factor reference
+/quality evaluate factor flow  # fixed-type unqualified reference when a label is both an area and a factor
 /quality improve recommendation 002 # follow up: apply or hand off on confirmation
 /quality update              # plan and orchestrate paired skill/CLI updates
 /quality setup                 # author a new model file (drives qualitymd init)
@@ -708,7 +708,7 @@ output as the source of truth:
 - **`spec`** emits the format specification; the skill **MUST** ground its
   understanding of the _format and schema rules and rating vocabulary_ in this
   output rather than a hard-coded copy. Its _evaluation process_ is the skill's
-  own (see [Evaluation Workflow](#evaluation-workflow)) and **conforms to**,
+  own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
 
 The skill should discover the CLI's available commands and flags from the CLI
@@ -718,7 +718,7 @@ introspection channel where the [CLI](../../cli.md) offers one. The
 command or flag listing; it is scoped to workflow conventions the CLI cannot
 teach by itself. The skill **MUST** consume machine-readable output where a
 command provides it (the [`--json` convention](../../cli.md#conventions)) rather
-than parsing human-formatted text. For structured Evaluation payloads, it
+than parsing human-formatted text. For structured evaluation payloads, it
 **MUST** discover payload kinds with `qualitymd evaluation data kinds`, inspect
 the authoritative payload contract with
 `qualitymd evaluation data schema [<kind>]`, including a kind's required fields
@@ -729,7 +729,7 @@ before committing data. Examples are instances, not closed value-set sources, an
 the dry run is payload validation, not the mechanism for discovering shape.
 Before evaluation work, it **MUST** verify that
 the CLI surfaces the workflow depends on are available through CLI introspection:
-version/compatibility, update check, run creation, Evaluation data discovery and
+version/compatibility, update check, run creation, evaluation data discovery and
 write/verify support, run listing/status, and report build. If any required
 surface is missing, it stops rather than hand-authoring the run.
 
@@ -737,7 +737,7 @@ surface is missing, it stops rather than hand-authoring the run.
 
 The shared evaluation workflow lives in
 [/quality evaluation workflow](evaluation.md). That component spec owns
-conformance to the format spec's Evaluation contract, the evaluation workflow,
+conformance to the format spec's evaluation contract, the evaluation workflow,
 grounding judgment, exhaustive coverage, the QC phase, and rating-binding
 evidence checks.
 

@@ -63,7 +63,7 @@ changes the model, record it in the **quality changelog**. Its format contract l
 [`SKILL.md`](../../SKILL.md); this guide covers what counts as meaningful:
 
 - **Do** log a change that alters what the model _is_ or _how it judges_: adding,
-  removing, or renaming an Area, Factor, or Requirement; changing the rating
+  removing, or renaming an area, factor, or requirement; changing the rating
   scale, a criterion, or a relative weight; shifting scope; changing the apex or
   required margin; or applying an evaluation recommendation.
 - **Do** state whether a criterion move is deliberate _recalibration_ or a _drift

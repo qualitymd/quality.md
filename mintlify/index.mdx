@@ -272,17 +272,37 @@ mode: custom
         quality living in people's heads and scattered review comments, the
         model makes it visible enough for teams and agents to evaluate, align
         on, and improve.
+
+        The idea has a long lineage. Manufacturing quality management
+        (Shewhart's statistical quality control, Juran's "fitness for use")
+        carried into software through McCall's and Boehm's models in the
+        1970s, HP's FURPS, Dromey's model, and the ISO 9126 and ISO 25010
+        standards. Across five decades the same pattern recurs: decompose
+        quality into the characteristics that matter for a particular thing
+        and its stakeholders, refine them into sub-characteristics, and tie
+        those to assessable criteria.
+
+        In practice, these models rarely spread beyond large organizations
+        with formal quality programs: building and tailoring a detailed model
+        was costly, and the metric-based rating methods meant to make quality
+        measurable proved too reductive — or too complex — for everyday use.
+        AI changes that. Agents make a tailored quality model cheap to
+        establish and maintain, and inferential judging of quality
+        requirements makes holistic evaluation accessible — good enough for
+        many use cases where formal measurement never was.
       </Accordion>
       <Accordion title="What's covered by the formal QUALITY.md specification?">
         The [specification](/specification) defines the file format and its
         meaning: document structure (YAML frontmatter plus a Markdown body), the
         frontmatter schema for areas, factors, requirements, and the rating
-        scale, naming and reference rules, evaluation semantics (how
-        requirements are assessed, rated, and rolled up), report vocabulary, and
-        conformance classes for files and tools. It's deliberately agent-,
-        tool-, and vendor-agnostic. The [`/quality` skill](/skill) and
-        [`qualitymd` CLI](/cli) are companions — a reference implementation and
-        starter kit, not part of the format itself.
+        scale, naming and reference rules, and model semantics (how sources
+        resolve, how requirements scope to their declaring area, how factors
+        connect, and what the rating scale means). Conformance is a property of
+        documents; the spec doesn't prescribe or certify any evaluation method.
+        It's deliberately agent-, tool-, and vendor-agnostic. The
+        [`/quality` skill](/skill) and [`qualitymd` CLI](/cli) are companions —
+        a reference implementation and starter kit, not part of the format
+        itself.
       </Accordion>
       <Accordion title="Is QUALITY.md only for modeling software quality?">
         No. The format is domain agnostic: it applies wherever you want to be
@@ -309,6 +329,7 @@ mode: custom
         evaluation and improvement loops above it.
       </Accordion>
     </AccordionGroup>
+
   </div>
 </div>
 <div role="contentinfo" className="px-6 pb-12 max-w-5xl mx-auto">

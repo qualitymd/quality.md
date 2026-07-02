@@ -35,7 +35,7 @@ that make it concrete. The installable skill artifact lives at
 # Subfolders
 
 - [examples/](examples/index.md) - worked reference artifacts produced by the
-  skill (e.g. an example Evaluation Report), used to make the
+  skill (e.g. an example evaluation report), used to make the
   [Reporting](reporting.md#reporting) contract concrete.
 - [guides/](guides/index.md) - contracts for runtime guide resources bundled
   with the skill.

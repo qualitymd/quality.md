@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation routine contracts
-description: Prompt-contract requirements for agent-run Evaluation routines.
+description: Prompt-contract rules for agent-run evaluation routines.
 tags: [evaluation, routines, prompts]
 timestamp: 2026-06-25T00:00:00Z
 ---
@@ -65,25 +65,25 @@ them.
 Framing routines **MUST** produce structured frame payloads before judgment
 routines run.
 
-Framing routines **MUST NOT** inspect evidence to decide findings, assign Rating
-Levels, synthesize Factor or Area ratings, or write report prose.
+Framing routines **MUST NOT** inspect evidence to decide findings, assign rating
+levels, synthesize factor or area ratings, or write report prose.
 
 ## Judgment routines
 
 Judgment routines **MUST** use only their frames and declared inputs.
 
 Requirement assessment **MUST** produce `RequirementAssessmentResult` and **MUST
-NOT** assign a Rating Level. Each Requirement Finding **MUST** use the shared
-Finding Core: type, confidence, statement, condition, criteria, basis, effect,
-and evidence. `gap` and `risk` Findings **MUST** include severity; `strength`
-and `note` Findings **MUST NOT** include severity.
+NOT** assign a rating level. Each requirement finding **MUST** use the shared
+finding core: type, confidence, statement, condition, criteria, basis, effect,
+and evidence. `gap` and `risk` findings **MUST** include severity; `strength`
+and `note` findings **MUST NOT** include severity.
 
 Requirement assessment **MUST** classify findings by type using these semantics:
 `gap` falls short of declared criteria, `risk` could plausibly cause future
 quality loss, `strength` supports or exceeds criteria, and `note` preserves
 relevant non-driving context. Ambiguous current-state evidence that constrains a
 rating is a `gap`. Missing or insufficient evidence that prevents rating belongs
-in assessment/rating status, `unknowns`, or `missingEvidence`, not in a Finding
+in assessment/rating status, `unknowns`, or `missingEvidence`, not in a finding
 type.
 
 Requirement assessment **MUST NOT** record `basis.status: verified` unless
@@ -98,45 +98,45 @@ separate basis beyond the cited evidence is claimed.
 Requirement assessment **MAY** record finding-local `candidateActions` —
 non-binding remediation leads carried on a finding — and **MUST NOT** synthesize,
 aggregate, deduplicate, or prioritize them across findings. Cross-finding
-synthesis belongs in the Advice routines.
+synthesis belongs in the advice routines.
 
 Requirement rating **MUST** produce `RequirementRatingResult` and **MUST NOT**
 inspect new source evidence.
 
 Requirement rating **MUST NOT** produce `status: rated` unless the paired
-Requirement Assessment has one or more Requirement Findings sufficient to justify
-the selected configured Rating Level. Requirement rating **MUST** remain
-scale-agnostic and **MUST NOT** assume fixed Rating Level meanings such as
+requirement assessment has one or more requirement findings sufficient to justify
+the selected configured rating level. Requirement rating **MUST** remain
+scale-agnostic and **MUST NOT** assume fixed rating level meanings such as
 target, sub-target, pass, or fail.
 
-Rated Requirement results **MUST** include non-empty `ratingDrivers` that cite
-the paired Requirement Assessment through `inputRefs`; drivers **SHOULD** select
-the specific Requirement Findings that drove the rating.
+Rated requirement results **MUST** include non-empty `ratingDrivers` that cite
+the paired requirement assessment through `inputRefs`; drivers **SHOULD** select
+the specific requirement findings that drove the rating.
 
-Factor and Area analysis **MUST** preserve lower-level drivers that prevent a
+Factor and area analysis **MUST** preserve lower-level drivers that prevent a
 higher rating.
 
-Factor and Area analysis **MUST NOT** produce findings. Rated Factor and Area
+Factor and area analysis **MUST NOT** produce findings. Rated factor and area
 analysis scopes **MUST** include non-empty `ratingDrivers` that cite lower-level
-Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
+requirement rating results, factor analysis results, or area analysis results
 through `inputRefs`. Analysis drivers **MUST NOT** introduce new evidence or
 claims absent from the referenced lower-level outputs.
 
 ## Advice routines
 
-Advice routines **MUST** run after Area analysis and before report generation.
+Advice routines **MUST** run after area analysis and before report generation.
 
 `rankFindings` **MUST** produce `FindingRankingResult` from persisted
-Requirement Findings. Ranking **MUST** use judgment about quality-bar relevance,
+requirement findings. Ranking **MUST** use judgment about quality-bar relevance,
 concern severity when present, binding effect on ratings, confidence, affected
 scope, and whether the finding changes next quality-management action.
 
 `recommend` **MUST** produce one or more `RecommendationResult` payloads. A
 recommendation **MUST** be quality-domain agnostic: it should name the quality
 improvement or review move without assuming software, product, operations, or
-any other modeled domain unless that domain is present in the evaluated Model.
+any other modeled domain unless that domain is present in the evaluated model.
 
-`accountForFindingCoverage` **MUST** ensure every persisted Finding is accounted
+`accountForFindingCoverage` **MUST** ensure every persisted finding is accounted
 for before recommendation ranking closes. A finding may be covered by one or
 more recommendations, referenced by `RecommendationResult.id`, or marked
 `not_advice_driving` with rationale.
@@ -149,7 +149,7 @@ constraints. Ranking entries **MUST** reference recommendations by
 backlog priority, or numeric score fields.
 
 Recommendations **MAY** be concrete work or recommended review. When the
-evaluation meets the current bar and has no gap/risk requiring work, the Advice
+evaluation meets the current bar and has no gap/risk requiring work, the advice
 phase **MUST** still recommend whether to review, raise, clarify, or confirm the
 next quality bar.
 

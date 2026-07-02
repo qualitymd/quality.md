@@ -43,7 +43,7 @@ The agent-facing entry point is clear enough for quality evaluation work.
 
 ### strength-004 Agent guidance points to the quality model and generated report path.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 7 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

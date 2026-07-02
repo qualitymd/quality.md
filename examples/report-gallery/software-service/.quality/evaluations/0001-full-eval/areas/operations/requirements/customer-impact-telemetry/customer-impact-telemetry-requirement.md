@@ -43,7 +43,7 @@ The sampled telemetry explains customer impact for core failure modes.
 
 ### strength-003 Health dashboards connect service errors to failed customer actions.
 
-| Advice Rank | Tier | Ranking Rationale |
+| Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
 | 5 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 

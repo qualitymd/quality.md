@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.26.0 <0.27.0.
+compatibility: Requires qualitymd CLI >=0.27.0 <0.28.0.
 metadata:
-  version: "0.26.3"
-  requires-qualitymd-cli: ">=0.26.0 <0.27.0"
+  version: "0.27.0"
+  requires-qualitymd-cli: ">=0.27.0 <0.28.0"
 ---
 
 ## Purpose
@@ -19,8 +19,9 @@ recommendations.
 ## Prerequisites
 
 - Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md) for the schema
-  and evaluation semantics. Read the spec's roll-up and evaluation sections when
-  authoring rating overrides, reasoning about roll-up, or evaluating.
+  and model semantics. Read the spec's Model semantics section — source
+  resolution, requirement scope, factor connection, and rating scale meaning —
+  when authoring rating overrides, reasoning about roll-up, or evaluating.
 - Read [`guides/authoring.md`](guides/authoring.md) when
   creating, populating, reviewing, or improving a QUALITY.md file. It is the
   entry point and router; after reading it, read every routed sub-guide relevant
@@ -54,7 +55,7 @@ recommendations.
 - The quality changelog under `.quality/changelog/` is written only by confirmed
   model-authoring or recommendation-apply workflows (one entry per meaningful
   model change). `setup`, `evaluate`, read-only orientation, and issue-tracker
-  handoff never write it. See [Quality Changelog](#quality-changelog).
+  handoff never write it. See [Quality changelog](#quality-changelog).
 - `setup` and `evaluate` write workflow feedback logs under `.quality/logs/`
   (the flat workflow-log directory, distinct from `.quality/changelog/`)
   recording the _experience_ of running the workflow. `setup` writes
@@ -128,35 +129,35 @@ Parse the user's request from free-form arguments:
   infer the likely focus from user text and local lifecycle state before asking.
   When inference is not strong enough, ask a single-select closed choice with the
   recommended focus first and an explicit shortest answer path.
-- Scope: full evaluation by default, or a narrowing. Natural Area and Factor
+- Scope: full evaluation by default, or a narrowing. Natural area and factor
   labels are the primary scoped input for `/quality evaluate`; match them
   against required titles and stable YAML names in the grounded model. One label
-  evaluates the uniquely matching Area or Factor. Two labels are
-  `<area-label> <factor-label>`: resolve the Area first, then the Factor within
-  that Area. Pass resolved canonical scope IDs to
+  evaluates the uniquely matching area or factor. Two labels are
+  `<area-label> <factor-label>`: resolve the area first, then the factor within
+  that area. Pass resolved canonical scope IDs to
   `qualitymd evaluation create` with `--area <area-id>` and repeatable
   `--factor <factor-id>`; let the CLI write `EvaluationManifest`, apply the root
-  default, and derive the run-folder slug. When a Factor label exists in
-  multiple Areas, ask exactly:
-  `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
+  default, and derive the run-folder slug. When a factor label exists in
+  multiple areas, ask exactly:
+  `What area do you want to evaluate <Factor> for?`, list numbered runnable area
   choices with human-readable titles or names first, include qualified model
   references as secondary context when useful, and add an `Answer` line that
-  accepts a number. When a label matches both Area and Factor candidates, ask a
+  accepts a number. When a label matches both area and factor candidates, ask a
   targeted clarification before rating; when candidates are enumerable, use
   numbered runnable options and an `Answer` line. Continue to accept qualified
-  model references for exact addressing: `area:<area-path>` for an Area,
-  `factor:<declaring-area-path>::<factor-path>` for a Factor, and
+  model references for exact addressing: `area:<area-path>` for an area,
+  `factor:<declaring-area-path>::<factor-path>` for a factor, and
   `rating:<rating-level-id>` where rating references are needed. Accept
   unqualified references at fixed-type input edges such as `area webhooks` or
   `factor webhooks::reliability`. Never persist natural labels, display values,
-  or unqualified references in structured evaluation data; use stable Area,
-  Factor, Requirement, and Rating Level IDs. In generated human reports, the root
-  Area display value is `/`; its references remain `area:root` and `root`.
-  Generated `report.md` is the run-level Evaluation report. The root Area detail
-  report is `root-area.md` when the root Area was evaluated.
+  or unqualified references in structured evaluation data; use stable area,
+  factor, requirement, and rating level IDs. In generated human reports, the root
+  area display value is `/`; its references remain `area:root` and `root`.
+  Generated `report.md` is the run-level evaluation report. The root area detail
+  report is `root-area.md` when the root area was evaluated.
 
 When a scoped request is ambiguous, inspect the grounded model, summarize the
-concrete runnable scope options, and ask only for the missing Area, Factor, or
+concrete runnable scope options, and ask only for the missing area, factor, or
 kind decision.
 
 ## User interaction contract
@@ -200,7 +201,7 @@ At the start of a public workflow, emit a short run frame. Emit it as the
 workflow's first output, before any tool call — before CLI checks, repository
 reads, lint, or any feedback-log write; do not gate it on a tool result. When a
 field cannot be resolved without a tool call (such as a scope that spans many
-Areas), still emit the frame first with a best-known or `resolving…` value and
+areas), still emit the frame first with a best-known or `resolving…` value and
 confirm the resolved value in a later message. The header names the resolved
 workflow (`setup`, `evaluate`, `review`, `improve`, or `update`); do not render
 `/quality run` or any command-style header, and do not use a `Mode:` field. Use
@@ -255,7 +256,7 @@ mutation surface. Infer the user's intent from the request, the current
 missing information would materially change the model/body target, mutation
 surface, judgment effect, quality changelog decision, or safety boundary. Common
 material follow-ups include body context versus structured model change, unclear
-Area/Factor/Requirement or Rating Level targets, and edits to Rating Scale
+area/factor/requirement or rating level targets, and edits to rating scale
 criteria, weights, required margin, scope, or apex. Do not use a fixed full
 questionnaire for routine direct edits.
 
@@ -286,7 +287,7 @@ the assumption most likely to change the edit. After presenting this checkpoint,
 stop and wait for the user's response before mutating; do not ask what the user
 wants adjusted and then proceed in the same turn. If the edit reshapes future
 judgment — for example by changing rating semantics, removing model coverage,
-shifting scope or apex, or adding/changing model-wide Factors or Requirements —
+shifting scope or apex, or adding/changing model-wide factors or requirements —
 prefer this review gate even when the intent seems clear. For high-risk edits,
 use the decision-brief shape instead of the lightweight checkpoint alone. For
 confirmed direct model-authoring edits, write one quality changelog entry only when the
@@ -356,7 +357,8 @@ verification, rating movement when known, and remaining limits.
 Distinguish CLI/tooling readiness, model validity, model usefulness,
 evaluated-source quality, and evaluation history status. Use QUALITY.md
 vocabulary consistently: area, factor, requirement, rating, finding, and
-recommendation. Capitalize formal type names only when precision requires it.
+recommendation. Use normal English capitalization for model vocabulary; do not
+capitalize it as terms of art.
 
 When maintaining the current evaluate feedback log, record only material
 workflow-experience events: scope resolution friction, history inspection,
@@ -370,7 +372,7 @@ point to the formal assessment record, but it must not copy raw command output
 or duplicate the finding.
 
 Use required `title` values as the primary human-facing labels for models,
-Areas, Factors, and Rating Levels. When disambiguation or traceability matters,
+areas, factors, and rating levels. When disambiguation or traceability matters,
 include qualified model references as secondary context, for example
 `Format specification (area:format-spec)`. Evaluation record payloads use
 canonical qualified model-reference strings such as `area:format-spec`,
@@ -405,36 +407,36 @@ unqualified references.
 ## Evaluation coverage and QC
 
 Every evaluate run uses one best-quality workflow. Scope is the only breadth
-control: evaluate the full model by default, or narrow by Area/Factor reference
+control: evaluate the full model by default, or narrow by area/factor reference
 or label. Do not expose or accept `quick`, `standard`, `deep`, `--rigor`, or
 `/quality evaluate deep`.
 
-Assess every in-scope Requirement against a full read of the in-scope Area
-`source`. Each in-scope Requirement must finish either rated against verified
+Assess every in-scope requirement against a full read of the in-scope area
+`source`. Each in-scope requirement must finish either rated against verified
 evidence or explicitly recorded as not assessed with a reason. The report must
 state anything not assessed so a limited run never reads as whole coverage.
 
-Write every Requirement Finding with the Finding Core: `id`, `type`,
+Write every requirement finding with the finding core: `id`, `type`,
 `confidence`, `statement`, `condition`, `criteria`, `basis`, `effect`, and
-`evidence`. Include `severity` for `gap` and `risk` Findings only; omit
-`severity` from `strength` and `note` Findings. Use short payload-local IDs such
+`evidence`. Include `severity` for `gap` and `risk` findings only; omit
+`severity` from `strength` and `note` findings. Use short payload-local IDs such
 as `gap-001`; do not use semantic slugs or treat finding IDs as durable
 cross-run identifiers. Reference findings from other payloads only through
 `inputRefs` with a selector such as `findings[gap-001]`.
 
-A Requirement Rating Result with `status: rated` must be backed by one or more
-Requirement Findings from the paired Requirement Assessment and must include
+A requirement rating result with `status: rated` must be backed by one or more
+requirement findings from the paired requirement assessment and must include
 non-empty `ratingDrivers`. Requirement rating is scale-agnostic: justify the
-selected configured Rating Level against the applied criteria and do not assume
+selected configured rating level against the applied criteria and do not assume
 fixed meanings such as target, sub-target, pass, or fail. If findings are absent,
 too weak, or insufficient to distinguish the configured levels, record the
-Requirement as not rated/not assessed instead of assigning a level.
+requirement as not rated/not assessed instead of assigning a level.
 
 Finding fields have distinct jobs:
 
 - `statement`: one short claim suitable for report tables.
 - `condition`: the observed state or missing-evidence state.
-- `criteria`: the Requirement and applied Rating Level criterion being judged.
+- `criteria`: the requirement and applied rating level criterion being judged.
 - `basis`: the finding-local explanation or support posture for the observed
   condition; use `verified`, `plausible`, `not_assessed`, or `not_applicable`.
 - `effect`: the quality or rating consequence, not a recommendation.
@@ -460,11 +462,11 @@ Classify finding types by analysis pattern:
   itself. Do not write `severity`.
 
 Evidence needed for judgment that is missing, inaccessible, stale, or ambiguous
-enough to prevent rating is not a Finding type. Record it through
+enough to prevent rating is not a finding type. Record it through
 not-assessed/not-rated status, `unknowns`, or `missingEvidence`, and name the
 blocked criterion or confidence limit there.
 
-Write canonical fixed enum values in Evaluation data, not report display labels,
+Write canonical fixed enum values in evaluation data, not report display labels,
 emoji markers, shape markers, or case variants. For example, use `gap`, `high`,
 `verified`, `P1`, `addressed_by_recommendation`, and `very_high`.
 
@@ -473,12 +475,12 @@ the basis statement. When a gap or risk has enough evidence for condition and
 effect but not basis, use `basis.status: not_assessed` rather than guessing.
 
 Where the harness exposes a subagent capability, fan out independent collection
-and QC work by Area or Requirement concurrently. Where it does not, do the same
+and QC work by area or requirement concurrently. Where it does not, do the same
 coverage and QC serially. Subagents receive the resolved scope, relevant
-Requirements, secret-handling rule, source-as-data rule, and the instruction to
+requirements, secret-handling rule, source-as-data rule, and the instruction to
 return structured findings only. They do not write files, persist records,
 produce final ratings, or make roll-up judgments. Roll-up judgment and all
-authoritative Requirement, Factor, and Area ratings stay with the
+authoritative requirement, factor, and area ratings stay with the
 orchestrating skill.
 
 Run a QC phase after initial collection and before roll-up on every evaluation.
@@ -493,28 +495,28 @@ supports it:
   `statement`, evidence-backed `condition`, model-grounded `criteria`, basis
   posture that does not overclaim, rating-relevant `effect`, checkable evidence
   locators, and a type that matches the semantics above.
-- **Completeness sweep:** check that every in-scope Requirement reached a rated
-  or reasoned not-assessed state, re-examine every Requirement whose first pass
+- **Completeness sweep:** check that every in-scope requirement reached a rated
+  or reasoned not-assessed state, re-examine every requirement whose first pass
   produced only `strength` findings or no findings with an adversarial gap/risk
-  lens, and escalate any Requirement rated on a single weak observation for an
+  lens, and escalate any requirement rated on a single weak observation for an
   independent second look.
 
 Findings surfaced by the completeness sweep re-enter collection and then the
 verify prong before they can bind a rating. Stop the collection -> QC loop when
-the sweep surfaces no new in-scope findings and every in-scope Requirement has a
+the sweep surfaces no new in-scope findings and every in-scope requirement has a
 terminal evidentiary state, or after two re-collection rounds. If the bound is
 hit first, proceed to roll-up only with every unresolved zone reported as an
 explicit limitation.
 
-Factor and Area analysis must not synthesize findings. Rated Factor and Area
+Factor and area analysis must not synthesize findings. Rated factor and area
 analysis scopes must include non-empty `ratingDrivers` that cite lower-level
-Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
+requirement rating results, factor analysis results, or area analysis results
 through `inputRefs`. Use rationale, confidence, limits, and incomplete inputs for
 roll-up explanation. Use the Advice phase after roll-up for finding ranking,
 recommendation generation, finding coverage accounting, and recommendation
 ranking.
 
-Advice is required. Rank every persisted Requirement Finding, then produce one
+Advice is required. Rank every persisted requirement finding, then produce one
 or more recommendations. Recommendations stay quality-domain agnostic and use
 the modeled entity's quality bar and evidence, not a default software or product
 domain. A recommendation may be concrete work, or it may be a recommended review
@@ -577,7 +579,7 @@ Rules:
 
 ## Artifact contract
 
-The Evaluation data write contract is surfaced by
+The evaluation data write contract is surfaced by
 `qualitymd evaluation data kinds`, `qualitymd evaluation data schema [<kind>]`,
 `qualitymd evaluation data example <kind>`, and
 `qualitymd evaluation data set --dry-run`. Treat `data schema <kind>` as the

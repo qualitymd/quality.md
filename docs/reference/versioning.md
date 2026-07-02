@@ -118,10 +118,12 @@ agent discovers skills only at startup or caches loaded skill instructions.
 ## Specification version
 
 `SPECIFICATION.md` carries a specification version for the QUALITY.md document
-format, frontmatter schema, evaluation semantics, and required report semantics.
+format: document structure, model vocabulary, frontmatter schema, and model
+semantics. Conformance is a property of documents; the specification does not
+define conformance for evaluation or reporting behavior.
 
-The specification version changes when the meaning of conforming QUALITY.md
-documents or conforming evaluation/report behavior changes. Editorial fixes,
+The specification version changes when what a conforming QUALITY.md document
+is, or what it means, changes. Editorial fixes,
 clarifications that do not change conformance, and non-normative examples do not
 require a specification version change.
 

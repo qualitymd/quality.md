@@ -35,19 +35,19 @@ runtime-specific mechanism.
 `EvaluationFrame` **MUST** exist before root `AreaWork` begins.
 
 `AreaEvaluationFrame` **MUST** exist before local `RequirementWork`, local
-Factor work, or child Area work for that Area begins.
+factor work, or child area work for that area begins.
 
-`RequirementRatingResult`s **MUST** exist before a Factor node that depends on
-those direct Requirements can be analyzed.
+`RequirementRatingResult`s **MUST** exist before a factor node that depends on
+those direct requirements can be analyzed.
 
-Direct child `FactorAnalysisResult`s **MUST** exist before a parent Factor is
+Direct child `FactorAnalysisResult`s **MUST** exist before a parent factor is
 analyzed.
 
 Root `FactorAnalysisResult`s and direct child `AreaAnalysisResult`s **MUST**
-exist before an Area is analyzed.
+exist before an area is analyzed.
 
-All required in-scope Area, Factor, Requirement Assessment, Requirement Rating,
-Factor Analysis, Area Analysis, and Advice outputs **MUST** exist and be valid
+All required in-scope area, factor, requirement assessment, requirement rating,
+factor analysis, area analysis, and advice outputs **MUST** exist and be valid
 before `EvaluationOutputResult` and reports are generated.
 
 `FindingRankingResult` **MUST** exist before recommendation generation closes.
@@ -59,10 +59,10 @@ ranking **MUST** reference recommendations by `RecommendationResult.id`.
 `RecommendationRankingResult` **MUST** exist before
 `EvaluationOutputResult` and reports are generated.
 
-Report generation **MUST** require a valid `EvaluationManifest`, a valid Evaluation
-Frame, the analysis outputs required by `EvaluationManifest.plannedScope`, and the
-required Advice outputs. It **MUST NOT** select report scope from Evaluation
-Frame ordering.
+Report generation **MUST** require a valid `EvaluationManifest`, a valid evaluation
+frame, the analysis outputs required by `EvaluationManifest.plannedScope`, and the
+required advice outputs. It **MUST NOT** select report scope from evaluation
+frame ordering.
 
 ## Parallelism
 
@@ -74,8 +74,8 @@ sequential execution in model order.
 Parallel execution **MUST NOT** change ratings, report content, output ordering,
 data paths, or persisted payload shapes.
 
-Good v0 parallelism includes sibling Requirements, child Areas, and sibling
-Factors whose dependencies are ready.
+Good v0 parallelism includes sibling requirements, child areas, and sibling
+factors whose dependencies are ready.
 
 ## Persistence
 

@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
-title: Authoring Agent Harnessability
-description: Guidance for modeling Agent Harnessability as a model-wide factor.
+title: Authoring agent harnessability
+description: Guidance for modeling agent harnessability as a model-wide factor.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Agent Harnessability
+# Authoring agent harnessability
 
 Read this when:
 
-- creating, revising, reviewing, or evaluating the Agent Harnessability factor, its sub-factors, or its projection boundary.
+- creating, revising, reviewing, or evaluating the agent harnessability factor, its sub-factors, or its projection boundary.
 
 Depends on:
 
@@ -17,7 +17,7 @@ Depends on:
 
 ---
 
-## Agent Harnessability for agent-collaborated composite roots
+## Agent harnessability for agent-collaborated composite roots
 
 For an agent-collaborated composite root, propose **Agent Harnessability** as a
 model-wide umbrella factor, using `agent-harnessability` as the recommended
@@ -34,7 +34,7 @@ agent-harnessability:
     clear human direction, review, and accountability.
 ```
 
-Agent Harnessability is a deliberate umbrella: carry no requirements on the
+Agent harnessability is a deliberate umbrella: carry no requirements on the
 parent — its assessment lives in the sub-factors, and its rating comes from
 rolling those up, the same way a grouping area has no local rating. Decompose it
 into independently assessable sub-factors, each with its own non-overlapping
@@ -42,11 +42,11 @@ share. Name the quality the project exhibits, not the harness
 artifact itself: guides, sensors, sandboxes, scripts, and gates are evidence for
 the factor, not the factor.
 
-- **Do** include Agent Harnessability by default for an agent-collaborated
+- **Do** include agent harnessability by default for an agent-collaborated
   composite root. _A thin or absent harness is not a reason to drop the factor; it
   is a low rating and a finding, the same way no tests is not a reason to omit
   `testability`._
-- **Do** use these sub-factors as the Agent Harnessability decomposition,
+- **Do** use these sub-factors as the agent harnessability decomposition,
   adapting the example requirements to the entity's domain:
   - **agent-accessibility** — the degree to which decision-relevant knowledge,
     structure, intent, and observable behavior are present and intelligible in
@@ -114,13 +114,13 @@ the factor, not the factor.
     records without approval. Boundary: cede external threat posture to security
     where an area carries it; this confines the agent's own actions while working.
     Audit trails make consequential actions reviewable after the fact.
-- **Do** keep Agent Harnessability separate from the agent harness constituent.
-  _Agent Harnessability rates how each constituent equips an agent. The
+- **Do** keep agent harnessability separate from the agent harness constituent.
+  _Agent harnessability rates how each constituent equips an agent. The
   agent-harness area rates the checked-in, project-owned governing artifacts'
   own quality (see
   [Carry the recurring use-context constituents](model-structure.md#carry-the-recurring-use-context-constituents))._
 - **Do** treat an existing `harnessability` factor as stale legacy naming, not
-  current Agent Harnessability coverage. _When you are authoring or revising the
+  current agent harnessability coverage. _When you are authoring or revising the
   model, recommend renaming it to `agent-harnessability` /
   Agent Harnessability and adding any missing current sub-factors such as
   `continuity`._

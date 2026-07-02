@@ -35,25 +35,25 @@ when creating, populating, reviewing, or improving a QUALITY.md file.
 
 The entry guide **MUST** state that it conforms to `SPECIFICATION.md` and that the
 specification governs on conflict. It **MUST** define the two-layer QUALITY.md file
-shape, the core Model/Area/Source/Factor/Requirement/Assessment/Finding/Rating
-Scale vocabulary, the root model's key properties, strict name grammar for Area
-names, Factor names, and Rating Level IDs, and the recommended authoring order.
+shape, the core model/area/source/factor/requirement/assessment/finding/rating
+scale vocabulary, the root model's key properties, strict name grammar for area
+names, factor names, and rating level IDs, and the recommended authoring order.
 
 The entry guide **MUST** route authoring concerns to these child runtime guides:
 
 - `authoring/body.md` - Markdown body, unknowns, open questions, review provenance,
   stakeholder grounding, and sense of good.
-- `authoring/model-structure.md` - Areas, Sources, decomposition, traceability,
+- `authoring/model-structure.md` - areas, sources, decomposition, traceability,
   normative artifacts, constituent kinds, and recurring use-context constituents.
 - `authoring/factors.md` - factor naming, coverage, descriptions, stable-stakes
   factors, and sub-factors.
-- `authoring/requirements.md` - Requirement names and titles, Assessments, factor
+- `authoring/requirements.md` - requirement names and titles, assessments, factor
   connections, splitting/combining claims, and rating overrides.
-- `authoring/rating-scale.md` - Rating Scale design, criteria, required margin,
+- `authoring/rating-scale.md` - rating scale design, criteria, required margin,
   roll-up, veto requirements, and `not assessed` handling.
-- `authoring/agent-harnessability.md` - Agent Harnessability as a model-wide
+- `authoring/agent-harnessability.md` - agent harnessability as a model-wide
   factor.
-- `authoring/agent-harness.md` - the agent harness as a modeled Area/constituent.
+- `authoring/agent-harness.md` - the agent harness as a modeled area/constituent.
 - `authoring/quality-changelog.md` - meaningful model-change judgment and quality-changelog
   routing.
 
@@ -83,7 +83,7 @@ rules.
 The guide family **MUST** preserve existing authoring doctrine unless a Change Case
 explicitly changes it. Moving doctrine from the former monolithic guide to a child
 guide **MUST NOT** weaken domain agnosticism, model-by-default constituents,
-Agent Harnessability, agent-harness area modeling, projection boundaries,
+agent harnessability, agent-harness area modeling, projection boundaries,
 assessable requirements, or quality changelog judgment.
 
 ## Reading contract

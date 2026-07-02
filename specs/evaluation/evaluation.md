@@ -30,14 +30,14 @@ capitals.
 
 The previous evaluation workflow centered on record categories and report
 artifacts. Evaluation centers the actual judgment moves: frame before
-judging, assess evidence, rate the assessment, analyze Factors and Areas
+judging, assess evidence, rate the assessment, analyze factors and areas
 bottom-up, then project completed structured data into reports. This keeps the
 agent's reasoning protocol explicit while leaving mechanics such as persistence,
 validation, and report rendering to the CLI.
 
 ## Scope
 
-Evaluation covers full and scoped evaluations of a resolved QUALITY.md Model.
+Evaluation covers full and scoped evaluations of a resolved QUALITY.md model.
 It defines the protocol, persisted routine outputs, run data layout,
 orchestration rules, CLI responsibilities, and generated Markdown reports.
 
@@ -58,7 +58,7 @@ ambiguous for defensible judgment.
 Frames **MUST** be produced before their corresponding judgment routines.
 
 Structured routine outputs under `data/` **MUST** be the source of truth for
-Evaluation reports.
+evaluation reports.
 
 Reports **MUST** be deterministic projections over completed structured outputs.
 Reports **MUST NOT** introduce new findings, ratings, evidence, limits, analysis,
@@ -71,13 +71,13 @@ The agent or skill runtime **MUST** own judgment: evidence selection, assessment
 rating, confidence, synthesis, and stop decisions.
 
 Evaluation JSON **MUST** use canonical qualified model-reference strings for
-Areas, Factors, Requirements, and Rating Levels. Display values and unqualified
+areas, factors, requirements, and rating levels. Display values and unqualified
 references are for fixed-type human/input edges, not persisted identity inside
 routine JSON.
 
 `schemaVersion` **MUST** be treated as a payload-shape marker only. The current
-Evaluation data schema version is `3`. Evaluation does not define migrations,
-compatibility transforms, or mixed-version run support; older Evaluation runs
+evaluation data schema version is `3`. Evaluation does not define migrations,
+compatibility transforms, or mixed-version run support; older evaluation runs
 remain schema-incompatible historical data.
 
 Advice **MUST** be produced after analysis and before report generation. Advice

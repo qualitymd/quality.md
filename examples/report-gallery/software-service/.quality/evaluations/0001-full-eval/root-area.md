@@ -13,14 +13,14 @@ Area: [LedgerLite Service](root-area.md)
 
 ## Key details
 
-| Overall Rating | Local Rating | Confidence |
+| Overall rating | Local rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None |
 
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor breakdown](#area--factor-breakdown)
+- [Area / factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
 - [Limits and incomplete inputs](#limits-and-incomplete-inputs)
 - [Primary source data](#primary-source-data)
@@ -29,9 +29,9 @@ Area: [LedgerLite Service](root-area.md)
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-## Area / Factor breakdown
+## Area / factor breakdown
 
-| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
 | ↳ [▦ Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
@@ -50,7 +50,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
-| (no local Requirements) | — | — | — |
+| (no local requirements) | — | — | — |
 
 ## Limits and incomplete inputs
 

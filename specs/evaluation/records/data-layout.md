@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation data layout
-description: Run-folder data and generated report layout for Evaluation.
+description: Run-folder data and generated report layout for evaluation.
 tags: [evaluation, records, layout]
 timestamp: 2026-06-25T00:00:00Z
 ---
@@ -17,9 +17,9 @@ capitals.
 
 ## Data tree
 
-An Evaluation run **MUST** store structured data under `data/`.
+An evaluation run **MUST** store structured data under `data/`.
 
-The run **MUST** store the CLI-generated Evaluation manifest at:
+The run **MUST** store the CLI-generated evaluation manifest at:
 
 ```text
 data/evaluation-manifest.json
@@ -58,9 +58,9 @@ data/advice/recommendations/<recommendation-id>/recommendation-result.json
 `<recommendation-id>` is the `RecommendationResult.id`, such as
 `qrec_7h4km2p9`.
 
-Area data **MUST** live under `data/areas/` and mirror the evaluated Area tree.
+Area data **MUST** live under `data/areas/` and mirror the evaluated area tree.
 
-Each Area data folder **MUST** own:
+Each area data folder **MUST** own:
 
 - `area-evaluation-frame.json`
 - `area-analysis-frame.json`
@@ -80,54 +80,54 @@ Factor data folders **MUST** contain:
 - `factor-analysis-frame.json`
 - `factor-analysis-result.json`
 
-Nested Factors **MUST** recurse through nested `factors/` folders.
+Nested factors **MUST** recurse through nested `factors/` folders.
 
 ## Report tree
 
-The run-level Evaluation report **MUST** be written to:
+The run-level evaluation report **MUST** be written to:
 
 ```text
 report.md
 ```
 
-The run-level Findings report **MUST** be written to:
+The run-level findings report **MUST** be written to:
 
 ```text
 findings.md
 ```
 
-The root Area report **MUST** be written to the run root when generated:
+The root area report **MUST** be written to the run root when generated:
 
 ```text
 root-area.md
 ```
 
-Non-root Area reports **MUST** be written under:
+Non-root area reports **MUST** be written under:
 
 ```text
 areas/<area>/<area>-area.md
 ```
 
-Requirement reports **MUST** be written under the owning Area report folder:
+Requirement reports **MUST** be written under the owning area report folder:
 
 ```text
 requirements/<requirement>/<requirement>-requirement.md
 ```
 
-Factor reports **MUST** be written under the owning Area report folder:
+Factor reports **MUST** be written under the owning area report folder:
 
 ```text
 factors/<factor>/<factor>-factor.md
 ```
 
-Nested Factor reports **MUST** recurse through nested `factors/` folders and use
-the nested Factor's local structural ID segment in the filename:
+Nested factor reports **MUST** recurse through nested `factors/` folders and use
+the nested factor's local structural ID segment in the filename:
 
 ```text
 factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
 ```
 
-The run-level Recommendations report **MUST** be written to:
+The run-level recommendations report **MUST** be written to:
 
 ```text
 recommendations.md

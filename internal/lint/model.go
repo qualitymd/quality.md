@@ -49,10 +49,10 @@ func (s *runState) walkAreas(parent *areaRef, node *yaml.Node, base []PathSegmen
 	for key, value := range document.MapEntries(areas) {
 		path := appendPath(base, qschema.PropertyAreas, key.Value)
 		if key.Kind != yaml.ScalarNode || !validModelName(key.Value) {
-			s.add(RuleInvalidAreaName, "The area name `"+key.Value+"` is invalid; Area names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
+			s.add(RuleInvalidAreaName, "The area name `"+key.Value+"` is invalid; area names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
 		}
 		if key.Kind == yaml.ScalarNode && key.Value == "root" {
-			s.add(RuleReservedAreaName, "The area name `root` is reserved for the root Area reference and cannot be used as a child Area name.", s.loc(key, path, label(path)), nil)
+			s.add(RuleReservedAreaName, "The area name `root` is reserved for the root area reference and cannot be used as a child area name.", s.loc(key, path, label(path)), nil)
 		}
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The area `"+key.Value+"` has the wrong YAML shape; each area must be a map.")
@@ -77,7 +77,7 @@ func (s *runState) walkFactors(area *areaRef, parent *factorRef, node *yaml.Node
 	for key, value := range document.MapEntries(factors) {
 		path := appendPath(base, qschema.PropertyFactors, key.Value)
 		if key.Kind != yaml.ScalarNode || !validModelName(key.Value) {
-			s.add(RuleInvalidFactorName, "The factor name `"+key.Value+"` is invalid; Factor names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
+			s.add(RuleInvalidFactorName, "The factor name `"+key.Value+"` is invalid; factor names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
 		}
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The factor `"+key.Value+"` has the wrong YAML shape; each factor must be a map.")
@@ -101,7 +101,7 @@ func (s *runState) walkRequirements(area *areaRef, factor *factorRef, node *yaml
 	for key, value := range document.MapEntries(requirements) {
 		path := appendPath(base, qschema.PropertyRequirements, key.Value)
 		if key.Kind != yaml.ScalarNode || !validModelName(key.Value) {
-			s.add(RuleInvalidRequirementName, "The requirement name `"+key.Value+"` is invalid; Requirement names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
+			s.add(RuleInvalidRequirementName, "The requirement name `"+key.Value+"` is invalid; requirement names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
 		}
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The requirement `"+key.Value+"` has the wrong YAML shape; each requirement must be a map.")

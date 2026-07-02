@@ -1,4 +1,4 @@
-// Package evaluation owns QUALITY.md Evaluation run folders and data.
+// Package evaluation owns QUALITY.md evaluation run folders and data.
 package evaluation
 
 import (
@@ -35,13 +35,13 @@ type Options struct {
 	Model      string
 }
 
-// RunScope records the faithful user-requested Evaluation scope.
+// RunScope records the faithful user-requested evaluation scope.
 type RunScope struct {
 	AreaID       string   `json:"areaId,omitempty"`
 	FactorFilter []string `json:"factorFilter,omitempty"`
 }
 
-// PlannedRunScope records the normalized Evaluation scope used by deterministic
+// PlannedRunScope records the normalized evaluation scope used by deterministic
 // run consumers.
 type PlannedRunScope struct {
 	AreaID       string   `json:"areaId"`
@@ -101,23 +101,23 @@ type CreateRunReceipt struct {
 	NextActions []receipt.Action `json:"nextActions"`
 }
 
-// RatingReference returns the canonical typed model reference for a Rating
-// Level ID.
+// RatingReference returns the canonical typed model reference for a rating
+// level ID.
 func RatingReference(level string) string {
 	return "rating:" + level
 }
 
-// RatingDisplay returns the human-facing label for a Rating Level ID.
+// RatingDisplay returns the human-facing label for a rating level ID.
 func RatingDisplay(level string) string {
 	return level
 }
 
-// UnqualifiedRatingReference returns the fixed-type Rating Level reference.
+// UnqualifiedRatingReference returns the fixed-type rating level reference.
 func UnqualifiedRatingReference(level string) string {
 	return level
 }
 
-// RatingResult records an Evaluation report receipt rating verdict or
+// RatingResult records an evaluation report receipt rating verdict or
 // not-assessed state.
 type RatingResult struct {
 	Kind      RatingResultKind `json:"kind"`

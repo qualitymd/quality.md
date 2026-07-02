@@ -24,7 +24,7 @@ appear in all capitals.
 
 ## Purpose and routing
 
-`improve` is selected when the user asks to improve from an Evaluation result,
+`improve` is selected when the user asks to improve from an evaluation result,
 improve the model, improve a specific quality concern, apply or hand off a
 compatible recommendation artifact, or otherwise act on quality judgment.
 
@@ -38,9 +38,9 @@ an explicit stub boundary.
 
 - Evaluation result — latest or selected run, finding, candidate action, evidence
   limit, or model gap;
-- model — `QUALITY.md` body, structure, Areas, Factors, Requirements, Rating
-  Scale, coverage, clarity, or assessability;
-- concern — a named quality concern that is not clearly an Evaluation artifact,
+- model — `QUALITY.md` body, structure, areas, factors, requirements, rating
+  scale, coverage, clarity, or assessability;
+- concern — a named quality concern that is not clearly an evaluation artifact,
   recommendation artifact, or model element; and
 - recommendation — a compatible existing recommendation artifact or explicit
   recommendation ID.
@@ -56,7 +56,7 @@ recommended focus first and an explicit shortest answer path.
 before editing evaluated source, editing `QUALITY.md`, writing the quality changelog,
 creating an external issue, or updating tooling.
 
-`improve` **MUST NOT** create numbered Evaluation records or reports itself. If
+`improve` **MUST NOT** create numbered evaluation records or reports itself. If
 verification requires a fresh rating, it routes to `evaluate` for the affected
 scope.
 
@@ -87,14 +87,14 @@ For recommendation focus, `improve` **MUST** delegate to
 recommendation artifact exists. It **MUST NOT** synthesize a recommendation when
 no compatible artifact exists.
 
-For Evaluation-result focus without a compatible recommendation artifact,
+For evaluation-result focus without a compatible recommendation artifact,
 `improve` **SHOULD** help select a finding, candidate action, model gap, or work
 target, then either route to model-focused/direct improvement, recommend a scoped
 `evaluate`, or stop with the deferred deeper-workflow boundary.
 
 For concern focus, `improve` **SHOULD** confirm whether the user wants to improve
 the work, improve `QUALITY.md`, hand off an issue, or first run/review an
-Evaluation.
+evaluation.
 
 ## Completion criteria
 

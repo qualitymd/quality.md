@@ -103,7 +103,7 @@ const exampleReadme = `
 # Software service report gallery
 
 This gallery is a generated, illustrative QUALITY.md example for a fictional
-software service named LedgerLite. It exists to make Evaluation report design
+software service named LedgerLite. It exists to make evaluation report design
 easy to inspect without cutting a release or running a fresh /quality evaluate.
 
 Open the generated run report:
@@ -112,7 +112,7 @@ Open the generated run report:
 - [Findings](.quality/evaluations/0001-full-eval/findings.md)
 - [Recommendations](.quality/evaluations/0001-full-eval/recommendations.md)
 
-The generated Evaluation uses synthetic routine outputs. Findings, ratings,
+The generated evaluation uses synthetic routine outputs. Findings, ratings,
 roll-ups, recommendations, and synthetic-source:* evidence references are
 fictional and demonstrate report structure only; they are not an assessment of a
 real system. The concrete source system and source-code tree are intentionally
@@ -238,9 +238,9 @@ and exposes an agent harness for quality-management work.
 
 The example is intentionally software-specific so report design can exercise a
 familiar, non-trivial service shape. It is not a default QUALITY.md template and
-does not imply these Factors are universal defaults.
+does not imply these factors are universal defaults.
 
-The generated Evaluation report uses synthetic routine outputs and synthetic
+The generated evaluation report uses synthetic routine outputs and synthetic
 evidence references. The concrete source system is omitted.
 `
 

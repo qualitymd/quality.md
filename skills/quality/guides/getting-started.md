@@ -1,6 +1,6 @@
 ---
 type: Runtime Guide
-title: Getting Started with QUALITY.md
+title: Getting started with QUALITY.md
 description: First-run iteration guidance after setup leaves a valid QUALITY.md with important model gaps.
 ---
 
@@ -59,7 +59,7 @@ Check before moving on:
 Outcome: the rating levels can distinguish `unacceptable`, `minimum`, `target`,
 and `outstanding` for this root area.
 
-Use authoring guidance: [Rating Scale](authoring/rating-scale.md).
+Use authoring guidance: [Rating scale](authoring/rating-scale.md).
 
 Check before moving on:
 

@@ -56,7 +56,7 @@ requirement and assessment quality, and quality-loop maintenance signals.
 Non-goals: the checklist does not inspect root area source files, produce
 evaluation artifacts, rate the root area, fully audit every requirement, or
 replace the authoring and getting-started guides. It produces routing findings,
-not an Evaluation Report.
+not an evaluation report.
 
 ## Requirements
 
@@ -183,14 +183,14 @@ lack of distinct concerns, or genuinely not germane to a harness-less, throwaway
 or narrowly scoped entity.
 
 For an agent-collaborated composite root, the area-and-factor-shape check **MUST**
-flag missing Agent Harnessability coverage when Agent Harnessability or its
+flag missing agent harnessability coverage when agent harnessability or its
 sub-factors are absent from the model-wide factors without a clear not-germane
 boundary. It **MUST NOT** flag a non-agent-collaborated, harness-less, throwaway,
-or narrowly scoped entity where Agent Harnessability is not germane, and
+or narrowly scoped entity where agent harnessability is not germane, and
 **MUST NOT** treat a thin or absent harness as a reason to omit the factor. The
 check **MUST** treat an existing `harnessability` factor as stale legacy naming,
 not current coverage. It **MUST** report the gap and route model-authoring work
-to rename it to `agent-harnessability` / Agent Harnessability and add any missing
+to rename it to `agent-harnessability` / agent harnessability and add any missing
 current sub-factors such as `continuity`.
 
 The area-and-factor-shape check **MUST** flag an agent-collaborated composite root
@@ -198,15 +198,15 @@ whose germane agent-harness area is carried with only one or two thin factors, a
 route it to authoring. It **MUST** treat a thin harness area as a coverage gap, not
 as evidence that the harness is unimportant.
 
-The area-and-factor-shape check **MUST** flag an agent-harness Area defined or
+The area-and-factor-shape check **MUST** flag an agent-harness area defined or
 scoped as instructions only, missing the feedback half of the harness or
 project-owned runtime controls. It **MUST** route that finding to authoring and
-point toward defining the harness holistically, then scoping the Area to
+point toward defining the harness holistically, then scoping the area to
 checked-in steering and owned-control artifacts.
 
 The area-and-factor-shape check **MUST** flag project-owned runtime harness
 machinery that is present in the repo but unmodeled: neither in the agent-harness
-Area, nor given its own Area, nor explicitly out of scope. Runtime harness
+area, nor given its own area, nor explicitly out of scope. Runtime harness
 machinery includes hooks, tool/MCP definitions, sandbox or permission policy,
 orchestration config, and subagent config.
 
@@ -215,7 +215,7 @@ a software toolchain when the project's served domain is not software, and route
 them to authoring.
 
 The area-and-factor-shape check **MUST** flag a model that carries two same-rooted
-projections of one concern (e.g. an Agent Harnessability factor and an agent-harness
+projections of one concern (e.g. an agent harnessability factor and an agent-harness
 area) with no boundary note distinguishing them — neither a YAML comment nor a
 disambiguating description clause — and route it to authoring.
 
@@ -227,13 +227,13 @@ disambiguating description clause — and route it to authoring.
 > constituent a real coverage finding; the prior "earned expected defaults, do not
 > flag a missing one" let a deferral note pass maturity silently. — 0080
 >
-> Rationale: Agent Harnessability is the factor projection of the
+> Rationale: agent harnessability is the factor projection of the
 > agent-collaboration concern. A model that carries the agent harness as a
 > constituent but omits the model-wide factor can still miss whether every
 > constituent is legible, operable, verifiable, and bounded for agent work. — 0081,
 > refined by 0085
 >
-> Rationale: 0089 adds `continuity` to the current Agent Harnessability target
+> Rationale: 0089 adds `continuity` to the current agent harnessability target
 > shape. In early alpha, old six-sub-factor `harnessability` models are treated
 > as stale authoring inputs to correct, not compatibility coverage. 0089 also
 > closes two harness-area failure modes: a present but thinly factored

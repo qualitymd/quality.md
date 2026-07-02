@@ -1,6 +1,6 @@
 ---
 type: Runtime Resource
-title: Output Policy
+title: Output policy
 description: Policy for consuming and summarizing command output in /quality workflows.
 ---
 

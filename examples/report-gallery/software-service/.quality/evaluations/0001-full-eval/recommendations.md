@@ -11,7 +11,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 ## Key details
 
-| Recommendations | Highest Impact | Coverage |
+| Recommendations | Highest impact | Coverage |
 | --- | --- | --- |
 | 3 recommendations | ⬥ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
 
@@ -23,7 +23,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 ## Ranked recommendations
 
-| # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
+| # | Recommendation | Area / factors | Impact | Confidence | Reason | Ranking rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |

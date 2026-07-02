@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
-title: Authoring Requirements
+title: Authoring requirements
 description: Requirement names and titles, assessments, factor connections, claim splitting, and rating override guidance.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Requirements
+# Authoring requirements
 
 Read this when:
 
-- creating, revising, reviewing, or evaluating Requirements, Assessments, factor references, or rating overrides.
+- creating, revising, reviewing, or evaluating requirements, assessments, factor references, or rating overrides.
 
 Depends on:
 
@@ -20,7 +20,7 @@ Depends on:
 ## Requirement
 
 A **requirement** is an assessable quality expectation — the single unit the
-model is built to judge. Its map key is a stable **Requirement name** used for
+model is built to judge. Its map key is a stable **requirement name** used for
 identity and model references. Its `title` is the natural-language statement
 that should read well in reports. Its `assessment` produces **findings** —
 observations about the source — and those findings are rated together to yield
@@ -32,7 +32,7 @@ Every requirement must be connected to at least one factor:
 - **By placement** — declared under a factor or sub-factor. That factor is its
   **primary** factor and the requirement joins that factor's roll-up.
 - **By reference** — naming factors under `factors`. On a nested requirement
-  these are same-Area **secondary** factors (it appears in additional local
+  these are same-area **secondary** factors (it appears in additional local
   roll-ups). On a requirement placed directly under an area, `factors` is
   **required** and names factors declared on that area.
 
@@ -46,8 +46,8 @@ the area it sits on, and counts once in that area's local rating.
 | `title`       | Required                     | The human-facing requirement statement.                                    |
 | `description` | Optional                     | Extra explanation when the title alone is not enough.                      |
 | `assessment`  | Required                     | The means of assessing the source; produces the findings.                  |
-| `factors`     | Required for area-level reqs | same-Area factor references; secondary factors when nested under a factor. |
-| `ratings`     | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.             |
+| `factors`     | Required for area-level reqs | same-area factor references; secondary factors when nested under a factor. |
+| `ratings`     | Optional                     | Per-requirement criterion overrides, keyed by rating level ID.             |
 
 ### Working with requirements
 
@@ -229,7 +229,7 @@ model rarely needs it._
 
 - **Consider** a `ratings` override when a requirement has a natural measured
   threshold or a distinct qualitative spectrum (e.g. latency bands).
-- **Do** key overrides by existing Rating Level IDs and change _only_ the
+- **Do** key overrides by existing rating level IDs and change _only_ the
   `criterion`. **Avoid** touching a level's `description`, order, or `title` —
   those stay fixed across the model.
 - **Do** treat a measured override as a pair: the value you aim for (lands at

@@ -1,6 +1,6 @@
 # Evaluation
 
-Durable specifications for the Evaluation workflow, protocol, structured
+Durable specifications for the evaluation workflow, protocol, structured
 data, orchestration model, and generated report tree.
 
 # Concepts

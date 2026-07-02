@@ -5,6 +5,41 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Documentation
+
+- Model vocabulary now uses normal English capitalization across the
+  specification, docs, skill, and CLI output; capitalization no longer marks
+  terms of art.
+
+## v0.27.0 - 2026-07-02
+
+### Specification
+
+- QUALITY.md specification version is now `0.10 (Draft)`. The format
+  specification now defines document and Model semantics only: document
+  conformance, source resolution, Requirement scope, Factor connection, Rating
+  Scale semantics, extensions, and body semantics.
+- Evaluation methods, aggregation approaches, report formats, Advice, and
+  tool-specific process contracts are no longer normative format conformance
+  classes. The `/quality` skill evaluation method is now described as a
+  non-normative illustrative appendix in the format specification.
+
+### /quality skill
+
+- `/quality` evaluation specs now own the skill's evaluation process contract
+  directly while binding the skill's model reading to the format spec's Model
+  semantics.
+- `/quality` runtime prerequisites now route agents to the specification's
+  Model semantics section for source resolution, Requirement scope, Factor
+  connection, and Rating Scale meaning.
+
+### Documentation
+
+- Mintlify documentation now describes the specification as a document and Model
+  semantics contract rather than an evaluation/reporting conformance contract.
+- The Mintlify home page now adds FAQ context on quality-model lineage and why
+  agent-mediated evaluation makes tailored quality models more practical.
+
 ### Packaging
 
 - Hosted installer URLs now use Mintlify redirects to the GitHub-hosted
@@ -12,6 +47,19 @@ QUALITY.md specification.
   `/install.cmd` resolve in production.
 - The install smoke workflow now verifies the hosted installer URLs in addition
   to the repository checkout scripts.
+
+### Compatibility / migration
+
+- QUALITY.md specification version is now `0.10 (Draft)`. The specification no
+  longer defines evaluator or report-renderer conformance classes; evaluation
+  behavior belongs to the evaluating method, such as the `/quality` skill.
+- `/quality` skill version `0.27.0` requires the `qualitymd` CLI `0.27.x` line.
+
+Compatibility:
+
+- CLI: `v0.27.0`
+- QUALITY.md specification: `0.10 (Draft)`
+- /quality skill: `0.27.0`, requires `qualitymd >=0.27.0 <0.28.0`
 
 ## v0.26.3 - 2026-07-01
 

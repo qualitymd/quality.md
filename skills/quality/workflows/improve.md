@@ -1,6 +1,6 @@
 ---
 type: Runtime Workflow
-title: Improve Workflow
+title: Improve workflow
 description: Runtime workflow stub for improving work or QUALITY.md after confirming focus and mutation surface.
 ---
 
@@ -53,8 +53,8 @@ Confirm before mutation
    the user named a non-model evaluated-source improvement that can proceed
    safely without QUALITY.md context.
 3. Resolve focus from explicit user text first. Use:
-   - `model` for improving `QUALITY.md` structure, body, Areas, Factors,
-     Requirements, Rating Scale, coverage, clarity, or assessability;
+   - `model` for improving `QUALITY.md` structure, body, areas, factors,
+     requirements, rating scale, coverage, clarity, or assessability;
    - `recommendation` for a compatible existing recommendation artifact or
      explicit recommendation ID;
    - `evaluation` for improving from a latest or selected evaluation result,

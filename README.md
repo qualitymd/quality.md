@@ -75,9 +75,9 @@ gaps stay visible and addressable instead of compounding.
 > _[The Triple Debt of Software Development](https://arxiv.org/abs/2603.22106)_
 > (arXiv:2603.22106).
 
-### Evaluate Agent Harnessability and your agent harness
+### Evaluate agent harnessability and your agent harness
 
-**Agent Harnessability** names how accessible and operable a project is to an
+**Agent harnessability** names how accessible and operable a project is to an
 agent — whether its context is visible, its tasks specifiable, its checks
 runnable, and its agent's actions safely bounded.
 
@@ -124,7 +124,7 @@ bounded, operational, traceable, and neutral: a clear quality lens, grounded in
 the entity's needs and risks, assessable through requirements, and not confused
 with an implementation, workflow, tactic, or metric. The `/quality` skill applies
 this guidance when setting up or improving a model; see
-[Authoring Factors](skills/quality/guides/authoring/factors.md) for the detailed
+[Authoring factors](skills/quality/guides/authoring/factors.md) for the detailed
 guidance.
 
 [Install QUALITY.md](install.md), then run `/quality setup` with your coding agent
@@ -267,7 +267,7 @@ Areas can nest recursively. `ratingScale` exists only on the root model.
 | Requirement  | A specific quality expectation.                                |
 | Assessment   | The means of checking a requirement against an area source.    |
 | Finding      | An observation produced by an assessment.                      |
-| Rating Scale | The ordered model-wide scale used to rate results.             |
+| Rating scale | The ordered model-wide scale used to rate results.             |
 
 ## CLI quick reference
 
