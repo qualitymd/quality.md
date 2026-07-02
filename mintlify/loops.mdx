@@ -1,62 +1,39 @@
 ---
-title: Engineering Quality Loops
-description: How the Quality Loop Stack works and how to run your first loop on a real project.
+title: Engineering quality loops
+description: Continuously evaluate and improve project quality
 ---
 
-Before you start: [install and setup a QUALITY.md](/quickstart) for your project.
+> <p>
+>   **Note:** The `/quality` agent skill and `qualitymd` CLI can create a
+>   comprehensive quality evaluation with findings and actionable
+>   recommendations that are ideal for engineering a quality improvement loop
+>   based on how QUALITY.md models project quality.
+> </p>
+>
+> <p>
+>   While not part of the formal spec, the skill and CLI demonstrate how a tool
+>   or system can build on the QUALITY.md standard. Future models, agents, and
+>   AI assistants can become more capable of using QUALITY.md to guide,
+>   evaluate, and improve their work products.
+> </p>
+>
+> <p>
+>   The rest of this guide demonstrates how the quality evaluation created by
+>   the skill and CLI can be integrated into workflows or agentic control loops
+>   to help maintain and improve project quality.
+> </p>
 
-## The Quality Loop Stack
+## The quality loop
 
-{/* Keep the named-loop capitalization (Inner Loop, Middle Loop, Meta Loop, Outer Loop). */}
+### Basic form
 
-- **Discover** (∞)
-- **Learn** (≈) — improve by refining the quality model
-  and raising the bar, compounding learning and maximizing leverage.
-- **Generate** (≈ daily) — evaluate the quality of your project by generating quality ratings, assessment-based findings, and recommendations for your inner loops to act on.
-- **Iterate** (≈ hourly) — act on handoff-ready recommendations as you
-  work, with the model as shared context.
-
-> The three-loop framing and the term _middle loop_ draw on Annie Vella,
-> _[The Middle Loop](https://annievella.com/posts/the-middle-loop/)_. The
-> loop-engineering framing also draws on Latent Space,
-> _[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)_.
-
-## Run your first loop
-
-{/* TODO: Walk through running the loop on a real project end to end, harness-agnostic. Expand each step. */}
-
-You run the loop through the `/quality` skill, harness-agnostic. One pass
-through all four steps is your first loop.
-
-<Steps>
-  <Step title="Evaluate">
-    Run `/quality evaluate` to produce an evaluation report — quality ratings,
-    assessment findings, and recommendations across your project.
-  </Step>
-  <Step title="Review">
-    Read ratings, findings, and recommendations by area or factor. Decide what
-    matters now.
-  </Step>
-  <Step title="Act">
-    Implement or delegate handoff-ready recommendations to people, agents, or
-    other agent loops.
-  </Step>
-  <Step title="Improve">
-    Run `/quality improve` to refine `QUALITY.md` so the next loop starts from a
-    sharper model.
-  </Step>
-</Steps>
-
-Then run it again. The model you sharpen in _Improve_ is what your next loop
-reads from — that compounding is the point.
-
-## Next steps
-
-<Columns cols={2}>
-  <Card title="/quality agent skill" icon="sparkles" href="/skill">
-    The primary way you set up, evaluate, and improve a QUALITY.md.
-  </Card>
-  <Card title="Specification" icon="book-open" href="/specification">
-    Document structure, model vocabulary, and evaluation semantics.
-  </Card>
-</Columns>
+1. **Observe:** user and stakeholder needs, objectives, risks, internal and
+   external feedback, conversations, changes to the environment, etc.
+2. **Orient:** refine or correct QUALITY.md based on observations and an
+   assessment of previous recommendation quality: credibility, utility, and risk;
+   then evaluate quality with `/quality evaluate` to produce a comprehensive
+   quality evaluation report with verifiable improvement recommendations for
+   consideration.
+3. **Decide:** determine recommendations that are ready for handoff or
+   implementation.
+4. **Act:** hand off or implement actionable recommendations.
