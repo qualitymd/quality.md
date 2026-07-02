@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release tag/version for GitHub and npm installs, or latest"
+        description: "Release tag/version for GitHub, npm, pnpm, and Go installs, or latest"
         required: true
         default: "latest"
       channel:
@@ -16,6 +16,8 @@ on:
           - all
           - github
           - npm
+          - pnpm
+          - go
           - homebrew
 
 permissions:
@@ -144,6 +146,118 @@ jobs:
           npm install --global --prefix $prefix $package
           & (Join-Path $prefix "qualitymd.cmd") --version
           & (Join-Path $prefix "qualitymd.cmd") lint --help | Out-Null
+
+  pnpm:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'pnpm' }}
+    name: pnpm (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install pnpm package
+        if: ${{ runner.os != 'Windows' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PNPM_HOME="$RUNNER_TEMP/pnpm-global"
+          mkdir -p "$PNPM_HOME"
+          export PATH="$PNPM_HOME:$PATH"
+          work_dir="$RUNNER_TEMP/pnpm-workspace"
+          mkdir -p "$work_dir"
+          version="${{ inputs.version }}"
+          package="quality.md@latest"
+          if [ "$version" != "latest" ]; then
+            package="quality.md@${version#v}"
+          fi
+
+          npm install --global pnpm@latest
+          pnpm config set global-bin-dir "$PNPM_HOME"
+          cd "$work_dir"
+          pnpm add --global "$package"
+          "$PNPM_HOME/qualitymd" --version
+          "$PNPM_HOME/qualitymd" lint --help >/dev/null
+
+      - name: Install pnpm package
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $env:PNPM_HOME = Join-Path $env:RUNNER_TEMP "pnpm-global"
+          New-Item -ItemType Directory -Force -Path $env:PNPM_HOME | Out-Null
+          $env:Path = "$env:PNPM_HOME;$env:Path"
+          $workDir = Join-Path $env:RUNNER_TEMP "pnpm-workspace"
+          New-Item -ItemType Directory -Force -Path $workDir | Out-Null
+          $package = "quality.md@latest"
+          if ("${{ inputs.version }}" -ne "latest") {
+            $pnpmVersion = "${{ inputs.version }}".TrimStart("v")
+            $package = "quality.md@$pnpmVersion"
+          }
+
+          npm install --global pnpm@latest
+          pnpm config set global-bin-dir $env:PNPM_HOME
+          Set-Location $workDir
+          pnpm add --global $package
+          & (Join-Path $env:PNPM_HOME "qualitymd.cmd") --version
+          & (Join-Path $env:PNPM_HOME "qualitymd.cmd") lint --help | Out-Null
+
+  go:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'go' }}
+    name: Go install (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Install Go module
+        if: ${{ runner.os != 'Windows' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          install_bin="$RUNNER_TEMP/go-bin"
+          mkdir -p "$install_bin"
+          version="${{ inputs.version }}"
+          module="github.com/qualitymd/quality.md/cmd/qualitymd@latest"
+          if [ "$version" != "latest" ]; then
+            module="github.com/qualitymd/quality.md/cmd/qualitymd@$version"
+          fi
+
+          GOBIN="$install_bin" go install "$module"
+          "$install_bin/qualitymd" --version
+          "$install_bin/qualitymd" lint --help >/dev/null
+
+      - name: Install Go module
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $installBin = Join-Path $env:RUNNER_TEMP "go-bin"
+          New-Item -ItemType Directory -Force -Path $installBin | Out-Null
+          $env:GOBIN = $installBin
+          $module = "github.com/qualitymd/quality.md/cmd/qualitymd@latest"
+          if ("${{ inputs.version }}" -ne "latest") {
+            $module = "github.com/qualitymd/quality.md/cmd/qualitymd@${{ inputs.version }}"
+          }
+
+          go install $module
+          & (Join-Path $installBin "qualitymd.exe") --version
+          & (Join-Path $installBin "qualitymd.exe") lint --help | Out-Null
 
   homebrew:
     if: ${{ inputs.channel == 'all' || inputs.channel == 'homebrew' }}

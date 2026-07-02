@@ -5,11 +5,36 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.27.1 - 2026-07-02
+
 ### Documentation
 
 - Model vocabulary now uses normal English capitalization across the
   specification, docs, skill, and CLI output; capitalization no longer marks
   terms of art.
+
+### /quality skill
+
+- `/quality` skill metadata now declares version `0.27.1` for the patched
+  `qualitymd` `0.27.x` line.
+
+### Packaging
+
+- The install smoke workflow now verifies every CLI install method documented on
+  the Mintlify quickstart: hosted installers, npm, pnpm, Homebrew, and Go source
+  installs.
+
+### Compatibility / migration
+
+- No QUALITY.md specification version change; the specification remains
+  `0.10 (Draft)`.
+- `/quality` skill version `0.27.1` requires the `qualitymd` CLI `0.27.x` line.
+
+Compatibility:
+
+- CLI: `v0.27.1`
+- QUALITY.md specification: `0.10 (Draft)`
+- /quality skill: `0.27.1`, requires `qualitymd >=0.27.0 <0.28.0`
 
 ## v0.27.0 - 2026-07-02
 
