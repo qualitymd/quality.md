@@ -1,13 +1,16 @@
 {
   "derivedContext": {
-    "scope": "Synthetic gallery area frame."
+    "scope": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair."
   },
   "inputs": {
     "localRequirementIds": [
-      "requirement:agent-harness::evaluation-entrypoint"
+      "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
     ],
     "rootFactorIds": [
-      "factor:agent-harness::agent-accessibility"
+      "factor:agent-harness::completeness",
+      "factor:agent-harness::coherence",
+      "factor:agent-harness::currentness",
+      "factor:agent-harness::assessability"
     ],
     "sourceRefs": [
       "synthetic-source:agent-harness"

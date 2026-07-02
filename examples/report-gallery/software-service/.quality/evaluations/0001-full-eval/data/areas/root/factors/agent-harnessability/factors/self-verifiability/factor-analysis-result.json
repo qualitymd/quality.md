@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/self-verifiability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "All three recorded sensors are deterministic and their failures name the violated expectation.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "The recorded sensors are deterministic and their failures carry remediation.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "All three recorded sensors are deterministic and their failures name the violated expectation.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "The recorded sensors are deterministic and their failures carry remediation.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

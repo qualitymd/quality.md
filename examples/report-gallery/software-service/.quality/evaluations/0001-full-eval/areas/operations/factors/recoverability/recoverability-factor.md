@@ -17,7 +17,7 @@ Factor: [Recoverability](recoverability-factor.md)
 
 | Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low |
+| ⛔ Blocked | ⛔ Blocked | ⛔ Blocked / ⛔ Blocked | ⚪ None / ⚪ None |
 
 ## Contents
 
@@ -29,13 +29,13 @@ Factor: [Recoverability](recoverability-factor.md)
 
 ## Summary
 
-Recoverability follows its direct requirement signal.
+Drill ownership records contradict each other; the factor awaits reconciled evidence.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
-| [recovery drills have current owners](../../requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed |
+| [recovery drills have current owners and recent practice records](../../requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | ⚪ Not Rated | ⚪ Not Assessed |
 
 ## Sub-factors
 
@@ -47,8 +47,8 @@ Recoverability follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| ⚠️ Evaluation Limits | conflicting-ownership-records | The factor cannot be analyzed until ownership records are reconciled. |
+| ⚠️ Evaluation Limits | conflicting-ownership-records | The factor cannot be analyzed until ownership records are reconciled. |
 
 ## Primary source data
 

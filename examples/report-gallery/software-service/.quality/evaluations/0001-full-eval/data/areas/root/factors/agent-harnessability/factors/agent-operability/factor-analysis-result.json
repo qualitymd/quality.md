@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/agent-operability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The telemetry read credential needed for latency checks is documented only in the private wiki.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recorded setup works except for one credential documented outside agent reach.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The telemetry read credential needed for latency checks is documented only in the private wiki.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recorded setup works except for one credential documented outside agent reach.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -1,0 +1,49 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "p99 at or under 200 ms over the window.",
+        "ratingLevelId": "rating:outstanding"
+      },
+      {
+        "criterion": "p99 at or under 300 ms over the window.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "p99 at or under 500 ms over the window.",
+        "ratingLevelId": "rating:minimum"
+      },
+      {
+        "criterion": "p99 above 500 ms over the window.",
+        "ratingLevelId": "rating:unacceptable"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Where does mutation p99 land against the rating bands over the representative window?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:telemetry/latency-rollup"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Where does mutation p99 land against the rating bands over the representative window?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:api::performance"
+    ],
+    "requirementId": "requirement:api::p99-latency-within-budget"
+  }
+}

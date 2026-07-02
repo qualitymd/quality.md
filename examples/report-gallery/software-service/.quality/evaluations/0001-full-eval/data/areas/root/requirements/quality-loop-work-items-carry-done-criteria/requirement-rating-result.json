@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The twelve most recent tracker handoffs were read directly.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "Nine of twelve sampled handoffs omit done criteria."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Every sampled handoff states a scoped goal."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Most quality-loop handoffs omit done criteria and the confirming sensor.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-001]",
+          "subject": {
+            "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Goals are stated, so work is startable, but missing done criteria leave completion a judgment call — short of target.",
+  "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria",
+  "schemaVersion": 3,
+  "status": "rated"
+}

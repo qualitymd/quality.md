@@ -4,61 +4,97 @@
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[gap-001]",
+        "selector": "findings[gap-004]",
         "subject": {
           "requirementId": "requirement:api::idempotent-mutations"
         }
       },
       "rank": 1,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "rationale": "Unspecified interrupted-write replay on a money-moving API is the highest-exposure gap, exercised daily by real replay traffic.",
       "tier": "P1"
     },
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[strength-001]",
+        "selector": "findings[risk-002]",
         "subject": {
-          "requirementId": "requirement:api::predictable-error-contracts"
+          "requirementId": "requirement:persistence::migration-rollback"
         }
       },
       "rank": 2,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "rationale": "An unrehearsed rollback over freshly partitioned ledger tables is the failure mode two past incidents already demonstrated.",
       "tier": "P1"
     },
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[strength-002]",
+        "selector": "findings[gap-003]",
         "subject": {
-          "requirementId": "requirement:persistence::balance-invariants"
+          "requirementId": "requirement:root::standards-gate-nonconforming-changes"
         }
       },
       "rank": 3,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "rationale": "Advisory merge gates let the two strongest sensors be ignored under pressure.",
       "tier": "P2"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-005]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+        }
+      },
+      "rank": 4,
+      "rationale": "Two endpoints with silent replay semantics share a root cause and a fix with the P1 replay gap.",
+      "tier": "P2"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-003]",
+        "subject": {
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      },
+      "rank": 5,
+      "rationale": "Missing evidence on drill ownership blocks the recoverability judgment entirely; restoring assessability is cheap.",
+      "tier": "P2"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-001]",
+        "subject": {
+          "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+        }
+      },
+      "rank": 6,
+      "rationale": "Missing done criteria degrade every agent handoff, but each instance is recoverable.",
+      "tier": "P3"
     },
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
         "selector": "findings[risk-001]",
         "subject": {
-          "requirementId": "requirement:persistence::migration-rollback"
+          "requirementId": "requirement:root::handoffs-survive-session-loss"
         }
       },
-      "rank": 4,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
-      "tier": "P1"
+      "rank": 7,
+      "rationale": "Chat-bound progress records only hurt when an interruption lands mid-effort.",
+      "tier": "P3"
     },
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[strength-003]",
+        "selector": "findings[gap-006]",
         "subject": {
-          "requirementId": "requirement:operations::customer-impact-telemetry"
+          "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
         }
       },
-      "rank": 5,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "rank": 8,
+      "rationale": "Stale body context misdirects the next evaluation but does not affect the service itself.",
       "tier": "P3"
     },
     {
@@ -66,26 +102,158 @@
         "kind": "RequirementAssessmentResult",
         "selector": "findings[gap-002]",
         "subject": {
-          "requirementId": "requirement:operations::recovery-drill-ownership"
+          "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
         }
       },
-      "rank": 6,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
-      "tier": "P1"
+      "rank": 9,
+      "rationale": "One wiki-bound credential is a small, well-understood setup snag.",
+      "tier": "P3"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-004]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      },
+      "rank": 10,
+      "rationale": "The stale sensor command name is a one-line catalog fix.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-001]",
+        "subject": {
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      },
+      "rank": 11,
+      "rationale": "Replay-volume context informs the P1 gap's severity; no separate action.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-002]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      },
+      "rank": 12,
+      "rationale": "The deprecated field is drift-in-waiting worth watching, not acting on yet.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-007]",
+        "subject": {
+          "requirementId": "requirement:persistence::balance-invariants"
+        }
+      },
+      "rank": 13,
+      "rationale": "Outstanding balance integrity is the evaluation's anchor strength.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-002]",
+        "subject": {
+          "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+        }
+      },
+      "rank": 14,
+      "rationale": "Remediation-bearing sensors underpin agent self-verification.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-003]",
+        "subject": {
+          "requirementId": "requirement:root::consequential-actions-require-approval"
+        }
+      },
+      "rank": 15,
+      "rationale": "Containment gates keep agent autonomy safe on consequential actions.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-001]",
+        "subject": {
+          "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+        }
+      },
+      "rank": 16,
+      "rationale": "The entry point makes the rest of the harness reachable.",
+      "tier": "P4"
     },
     {
       "findingRef": {
         "kind": "RequirementAssessmentResult",
         "selector": "findings[strength-004]",
         "subject": {
-          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+          "requirementId": "requirement:api::predictable-error-contracts"
         }
       },
-      "rank": 7,
-      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
-      "tier": "P3"
+      "rank": 17,
+      "rationale": "Stable error contracts support integrator trust.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-005]",
+        "subject": {
+          "requirementId": "requirement:api::p99-latency-within-budget"
+        }
+      },
+      "rank": 18,
+      "rationale": "Latency sits inside the recalibrated band.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-006]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      },
+      "rank": 19,
+      "rationale": "Contract-to-behavior conformance holds where specified.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-008]",
+        "subject": {
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        }
+      },
+      "rank": 20,
+      "rationale": "Dashboards answer customer impact directly.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-009]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      },
+      "rank": 21,
+      "rationale": "Harness coverage and coherence hold up under inspection.",
+      "tier": "P4"
     }
   ],
-  "rationale": "Synthetic findings are ranked to exercise report tables and recommendation traceability.",
+  "rationale": "Ranked by exposure of the money path first, then by what blocks judgment, then by agent-workflow drag; strengths anchor the tail.",
   "schemaVersion": 3
 }

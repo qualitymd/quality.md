@@ -1,0 +1,43 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Policy and deploy configuration were inspected; the approval gates are declarative and current.",
+  "evidenceSummary": "Sandbox policy and deploy configuration put money movement and production schema changes behind named approval gates.",
+  "factors": [
+    "factor:root::agent-harnessability/containment-of-action"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The allowlist and pipeline approval rules were read directly and match the recorded policy.",
+        "status": "verified"
+      },
+      "condition": "The sandbox allowlist excludes payment execution and production migration commands, and the deploy pipeline requires a named approver for both.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Unattended runs cannot move money, change production schemas, or escalate permissions without an approval gate.",
+          "ratingLevelId": "rating:target",
+          "requirementId": "requirement:root::consequential-actions-require-approval"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Agent autonomy on routine work does not expose the consequential actions, supporting the target containment rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/sandbox-policy",
+          "statement": "The policy denies payment-execution and migration commands to unattended sessions; the deploy config lists required approvers for both action classes."
+        }
+      ],
+      "id": "strength-003",
+      "statement": "Money movement and production schema changes are behind declarative approval gates.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::consequential-actions-require-approval",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Sandbox policy and deploy configuration put money movement and production schema changes behind named approval gates."
+}

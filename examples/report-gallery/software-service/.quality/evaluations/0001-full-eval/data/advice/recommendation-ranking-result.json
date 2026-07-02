@@ -4,37 +4,85 @@
       "disposition": "addressed_by_recommendation",
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[gap-001]",
+        "selector": "findings[gap-004]",
         "subject": {
           "requirementId": "requirement:api::idempotent-mutations"
         }
       },
-      "rationale": "The idempotency recommendation directly addresses this gap.",
+      "rationale": "Addressed by the traced recommendation.",
       "recommendationRefs": [
-        "qrec_gallery1"
+        "qrec_replaycontract"
       ]
     },
     {
-      "disposition": "not_advice_driving",
+      "disposition": "addressed_by_recommendation",
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[strength-001]",
+        "selector": "findings[risk-002]",
         "subject": {
-          "requirementId": "requirement:api::predictable-error-contracts"
+          "requirementId": "requirement:persistence::migration-rollback"
         }
       },
-      "rationale": "The strength supports the rating but does not require follow-up advice."
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_rollbackrehearsal"
+      ]
     },
     {
-      "disposition": "not_advice_driving",
+      "disposition": "addressed_by_recommendation",
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[strength-002]",
+        "selector": "findings[gap-003]",
         "subject": {
-          "requirementId": "requirement:persistence::balance-invariants"
+          "requirementId": "requirement:root::standards-gate-nonconforming-changes"
         }
       },
-      "rationale": "The strength supports the rating but does not require follow-up advice."
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_gatesensors"
+      ]
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-005]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+        }
+      },
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_replaycontract"
+      ]
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-003]",
+        "subject": {
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      },
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_drillownership"
+      ]
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-001]",
+        "subject": {
+          "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+        }
+      },
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_durablehandoffs"
+      ]
     },
     {
       "disposition": "addressed_by_recommendation",
@@ -42,13 +90,93 @@
         "kind": "RequirementAssessmentResult",
         "selector": "findings[risk-001]",
         "subject": {
-          "requirementId": "requirement:persistence::migration-rollback"
+          "requirementId": "requirement:root::handoffs-survive-session-loss"
         }
       },
-      "rationale": "The rollback rehearsal recommendation directly addresses this risk.",
+      "rationale": "Addressed by the traced recommendation.",
       "recommendationRefs": [
-        "qrec_gallery2"
+        "qrec_durablehandoffs"
       ]
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-006]",
+        "subject": {
+          "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+        }
+      },
+      "rationale": "Addressed by the traced recommendation.",
+      "recommendationRefs": [
+        "qrec_refreshmodelbody"
+      ]
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-002]",
+        "subject": {
+          "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+        }
+      },
+      "rationale": "One wiki-bound credential is a small, well-understood setup snag."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-004]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      },
+      "rationale": "The stale sensor command name is a one-line catalog fix."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-001]",
+        "subject": {
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      },
+      "rationale": "Replay-volume context informs the P1 gap's severity; no separate action."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-002]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      },
+      "rationale": "The deprecated field is drift-in-waiting worth watching, not acting on yet."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-007]",
+        "subject": {
+          "requirementId": "requirement:persistence::balance-invariants"
+        }
+      },
+      "rationale": "Outstanding balance integrity is the evaluation's anchor strength."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-002]",
+        "subject": {
+          "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+        }
+      },
+      "rationale": "Remediation-bearing sensors underpin agent self-verification."
     },
     {
       "disposition": "not_advice_driving",
@@ -56,24 +184,21 @@
         "kind": "RequirementAssessmentResult",
         "selector": "findings[strength-003]",
         "subject": {
-          "requirementId": "requirement:operations::customer-impact-telemetry"
+          "requirementId": "requirement:root::consequential-actions-require-approval"
         }
       },
-      "rationale": "The strength supports the rating but does not require follow-up advice."
+      "rationale": "Containment gates keep agent autonomy safe on consequential actions."
     },
     {
-      "disposition": "addressed_by_recommendation",
+      "disposition": "not_advice_driving",
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[gap-002]",
+        "selector": "findings[strength-001]",
         "subject": {
-          "requirementId": "requirement:operations::recovery-drill-ownership"
+          "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
         }
       },
-      "rationale": "The ownership recommendation resolves this gap.",
-      "recommendationRefs": [
-        "qrec_gallery3"
-      ]
+      "rationale": "The entry point makes the rest of the harness reachable."
     },
     {
       "disposition": "not_advice_driving",
@@ -81,36 +206,101 @@
         "kind": "RequirementAssessmentResult",
         "selector": "findings[strength-004]",
         "subject": {
-          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+          "requirementId": "requirement:api::predictable-error-contracts"
         }
       },
-      "rationale": "The strength supports the rating but does not require follow-up advice."
+      "rationale": "Stable error contracts support integrator trust."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-005]",
+        "subject": {
+          "requirementId": "requirement:api::p99-latency-within-budget"
+        }
+      },
+      "rationale": "Latency sits inside the recalibrated band."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-006]",
+        "subject": {
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      },
+      "rationale": "Contract-to-behavior conformance holds where specified."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-008]",
+        "subject": {
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        }
+      },
+      "rationale": "Dashboards answer customer impact directly."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-009]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      },
+      "rationale": "Harness coverage and coherence hold up under inspection."
     }
   ],
   "kind": "RecommendationRankingResult",
   "orderedRecommendations": [
     {
-      "confidence": "medium",
+      "confidence": "high",
       "impact": "high",
       "rank": 1,
-      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "qrec_gallery1"
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_replaycontract"
     },
     {
       "confidence": "medium",
       "impact": "high",
       "rank": 2,
-      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "qrec_gallery2"
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_rollbackrehearsal"
     },
     {
-      "confidence": "low",
-      "impact": "medium",
+      "confidence": "medium",
+      "impact": "high",
       "rank": 3,
-      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "qrec_gallery3"
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_gatesensors"
+    },
+    {
+      "confidence": "high",
+      "impact": "medium",
+      "rank": 4,
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_drillownership"
+    },
+    {
+      "confidence": "medium",
+      "impact": "medium",
+      "rank": 5,
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_durablehandoffs"
+    },
+    {
+      "confidence": "high",
+      "impact": "low",
+      "rank": 6,
+      "rationale": "Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements.",
+      "recommendationRef": "qrec_refreshmodelbody"
     }
   ],
-  "rationale": "Synthetic recommendations focus on the highest-value gaps, risks, and unknowns.",
+  "rationale": "Recommendations target the findings that hold money-touching areas below the required margin, restore blocked judgment, and harden the agent loop.",
   "schemaVersion": 3
 }

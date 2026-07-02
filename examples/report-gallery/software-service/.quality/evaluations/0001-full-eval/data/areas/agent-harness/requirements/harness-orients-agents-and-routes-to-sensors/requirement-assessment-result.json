@@ -1,0 +1,75 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Every harness artifact was read and every catalog command executed.",
+  "evidenceSummary": "The entry point, routed guidance, and sensor catalog cover setup through handoff and agree with the contract and runbooks; one sensor command name is stale.",
+  "factors": [
+    "factor:agent-harness::completeness",
+    "factor:agent-harness::coherence",
+    "factor:agent-harness::currentness",
+    "factor:agent-harness::assessability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "All harness artifacts were read; routed references were followed to their targets.",
+        "status": "verified"
+      },
+      "condition": "The entry point, routed guides, and sensor catalog address setup, scoped work, verification, and handoff, and spot-checks against the contract and runbooks found no contradictions.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Harness artifacts cover setup, scoped work, verification, and handoff; agree with the contract and runbooks; and route to sensors that run as recorded.",
+          "ratingLevelId": "rating:target",
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Agents get complete, coherent steering, supporting the target rating across the harness factors."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness",
+          "statement": "The lifecycle coverage table maps each work phase to a harness artifact; contradiction spot-checks across contract and runbook references came back clean."
+        }
+      ],
+      "id": "strength-009",
+      "statement": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
+      "type": "strength"
+    },
+    {
+      "basis": {
+        "statement": "Both the recorded and current command names were executed.",
+        "status": "verified"
+      },
+      "condition": "The catalog records the pre-rename command; the current command name differs, and the old name fails with a not-found error rather than a redirect.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Harness artifacts cover setup, scoped work, verification, and handoff; agree with the contract and runbooks; and route to sensors that run as recorded.",
+          "ratingLevelId": "rating:target",
+          "rationale": "A stale command turns a routed sensor into a dead end for a fresh session.",
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "informational",
+        "statement": "A fresh agent following the catalog hits a not-found error on the invariant suite until it discovers the rename."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/sensor-catalog",
+          "statement": "The catalog entry's command fails with not-found; the renamed command runs the suite successfully."
+        }
+      ],
+      "id": "note-004",
+      "statement": "The sensor catalog's invariant-suite command name is one rename behind.",
+      "type": "note"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The entry point, routed guidance, and sensor catalog cover setup through handoff and agree with the contract and runbooks; one sensor command name is stale."
+}

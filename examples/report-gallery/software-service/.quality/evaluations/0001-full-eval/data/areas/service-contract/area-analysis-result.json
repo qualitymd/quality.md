@@ -1,0 +1,73 @@
+{
+  "areaId": "area:service-contract",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Completeness: Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::completeness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Consistency: Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::consistency"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The contract matches shipped behavior where it speaks; two mutation endpoints without replay semantics cap completeness.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Completeness: Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::completeness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Consistency: Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::consistency"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The contract matches shipped behavior where it speaks; two mutation endpoints without replay semantics cap completeness.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

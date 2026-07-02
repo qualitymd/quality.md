@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Contract tests, the invariant suite, and lint block nonconforming merges or route them through reviewable exceptions.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do the recorded sensors actually gate nonconforming changes?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:ci/merge-pipeline"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do the recorded sensors actually gate nonconforming changes?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/enforcement-of-standards"
+    ],
+    "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+  }
+}

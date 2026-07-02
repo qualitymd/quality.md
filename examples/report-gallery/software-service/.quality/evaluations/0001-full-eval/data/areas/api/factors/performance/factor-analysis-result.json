@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:api::performance",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Mutation p99 measured 262 ms over the representative four-week window.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::p99-latency-within-budget"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Mutation p99 measured 262 ms over the representative four-week window.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::p99-latency-within-budget"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

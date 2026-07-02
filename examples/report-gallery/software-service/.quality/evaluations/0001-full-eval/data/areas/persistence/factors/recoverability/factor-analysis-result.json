@@ -3,17 +3,9 @@
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+        "description": "Rollback steps have not been rehearsed since the two most recent schema migrations landed.",
         "effect": "constrains target",
         "inputRefs": [
           {
@@ -26,22 +18,14 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Recoverability follows its direct requirement signal.",
+    "rationale": "Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+        "description": "Rollback steps have not been rehearsed since the two most recent schema migrations landed.",
         "effect": "constrains target",
         "inputRefs": [
           {
@@ -54,7 +38,7 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Recoverability follows its direct requirement signal.",
+    "rationale": "Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
     "status": "analyzed"
   },
   "schemaVersion": 3

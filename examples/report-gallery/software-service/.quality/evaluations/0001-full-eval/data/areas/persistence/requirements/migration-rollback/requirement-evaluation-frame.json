@@ -2,18 +2,18 @@
   "derivedContext": {
     "appliedRatingCriteria": [
       {
-        "criterion": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.",
+        "criterion": "The most recent rollback rehearsal is newer than the latest schema change.",
         "ratingLevelId": "rating:target"
       },
       {
-        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
         "ratingLevelId": "rating:minimum"
       }
     ],
     "evidenceTargets": [
       {
-        "id": "synthetic-evidence",
-        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "id": "primary-evidence",
+        "question": "Is the rollback path rehearsed against the current schema?",
         "required": true,
         "sourceRefs": [
           "synthetic-source:persistence/migration-runbook"
@@ -28,7 +28,7 @@
       "rating:minimum",
       "rating:unacceptable"
     ],
-    "requirementAssessmentBasis": "Synthetic gallery evidence."
+    "requirementAssessmentBasis": "Is the rollback path rehearsed against the current schema?"
   },
   "kind": "RequirementEvaluationFrame",
   "schemaVersion": 3,

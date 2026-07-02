@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The entry point and its routed guidance were walked end to end from a clean session.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "Every routed destination resolved and matched its description."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The entry point exists and routes."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The agent entry point reaches the contract, runbooks, and sensor catalog in one hop each.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-001]",
+          "subject": {
+            "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "A fresh session reached the service purpose, contract, runbooks, and sensors without private context, meeting the target bar.",
+  "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point",
+  "schemaVersion": 3,
+  "status": "rated"
+}

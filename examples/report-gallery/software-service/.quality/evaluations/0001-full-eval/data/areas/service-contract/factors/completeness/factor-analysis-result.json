@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:service-contract::completeness",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Two mutation endpoints have no replay semantics in the contract.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Two mutation endpoints have no replay semantics in the contract.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -3,17 +3,9 @@
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
     "confidence": "high",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Common caller error cases share a documented response shape.",
+        "description": "Error responses follow one documented envelope across all sampled failure modes.",
         "effect": "supports target",
         "inputRefs": [
           {
@@ -26,22 +18,14 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Operability follows its direct requirement signal.",
+    "rationale": "Error responses follow one documented envelope callers can branch on.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "high",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Common caller error cases share a documented response shape.",
+        "description": "Error responses follow one documented envelope across all sampled failure modes.",
         "effect": "supports target",
         "inputRefs": [
           {
@@ -54,7 +38,7 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Operability follows its direct requirement signal.",
+    "rationale": "Error responses follow one documented envelope callers can branch on.",
     "status": "analyzed"
   },
   "schemaVersion": 3

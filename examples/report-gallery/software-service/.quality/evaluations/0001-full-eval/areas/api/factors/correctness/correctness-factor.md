@@ -29,7 +29,7 @@ Factor: [Correctness](correctness-factor.md)
 
 ## Summary
 
-Correctness follows its direct requirement signal.
+Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.
 
 ## Requirements
 
@@ -47,8 +47,7 @@ Correctness follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 

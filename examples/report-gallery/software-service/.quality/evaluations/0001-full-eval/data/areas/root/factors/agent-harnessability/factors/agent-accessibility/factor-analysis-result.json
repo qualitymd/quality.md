@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/agent-accessibility",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The agent entry point reaches the contract, runbooks, and sensor catalog in one hop each.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "A fresh agent reaches decision-relevant context from the stable entry point.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The agent entry point reaches the contract, runbooks, and sensor catalog in one hop each.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "A fresh agent reaches decision-relevant context from the stable entry point.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -1,0 +1,109 @@
+{
+  "factorId": "factor:root::agent-harnessability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "none",
+    "status": "empty",
+    "statusReason": "The umbrella factor carries no direct requirements; its rating comes from sub-factor roll-up."
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Agent Accessibility: A fresh agent reaches decision-relevant context from the stable entry point.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/agent-accessibility"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Task Specifiability: Handoffs scope the work but mostly omit done criteria and the confirming sensor.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/task-specifiability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Agent Operability: Recorded setup works except for one credential documented outside agent reach.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/agent-operability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Continuity: In-flight work mostly lives in chat scrollback rather than durable progress records.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/continuity"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Self-Verifiability: The recorded sensors are deterministic and their failures carry remediation.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/self-verifiability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Enforcement of Standards: Lint gates merges, but the contract and invariant sensors remain advisory.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/enforcement-of-standards"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Containment of Action: Money movement and schema changes sit behind declarative approval gates.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability/containment-of-action"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Sensors, accessibility, and containment equip agents well, but handoff records, done criteria, and advisory merge gates hold the equipping capability at minimum.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

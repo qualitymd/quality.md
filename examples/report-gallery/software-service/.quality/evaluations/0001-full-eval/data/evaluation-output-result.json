@@ -14,16 +14,200 @@
         }
       },
       "areaId": "area:root",
-      "factorAnalysisRefs": [],
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:root::agent-harnessability"
+          }
+        }
+      ],
       "reportRefs": [
         {
           "areaId": "area:root",
           "kind": "area",
           "path": "root-area.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/agent-harnessability-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/agent-accessibility",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/agent-accessibility/agent-accessibility-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/agent-operability",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/containment-of-action",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/containment-of-action/containment-of-action-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/continuity",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/continuity/continuity-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/enforcement-of-standards",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/self-verifiability",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/self-verifiability/self-verifiability-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "factorId": "factor:root::agent-harnessability/task-specifiability",
+          "kind": "factor",
+          "path": "factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/a-fresh-session-reaches-a-ready-to-work-environment/a-fresh-session-reaches-a-ready-to-work-environment-requirement.md",
+          "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/agents-reach-service-context-from-a-stable-entry-point/agents-reach-service-context-from-a-stable-entry-point-requirement.md",
+          "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/consequential-actions-require-approval/consequential-actions-require-approval-requirement.md",
+          "requirementId": "requirement:root::consequential-actions-require-approval"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/handoffs-survive-session-loss/handoffs-survive-session-loss-requirement.md",
+          "requirementId": "requirement:root::handoffs-survive-session-loss"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/quality-loop-work-items-carry-done-criteria/quality-loop-work-items-carry-done-criteria-requirement.md",
+          "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/sensors-return-pass-fail-with-remediation/sensors-return-pass-fail-with-remediation-requirement.md",
+          "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+        },
+        {
+          "areaId": "area:root",
+          "kind": "requirement",
+          "path": "requirements/standards-gate-nonconforming-changes/standards-gate-nonconforming-changes-requirement.md",
+          "requirementId": "requirement:root::standards-gate-nonconforming-changes"
         }
       ],
-      "requirementAssessmentRefs": [],
-      "requirementRatingRefs": []
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::consequential-actions-require-approval"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::handoffs-survive-session-loss"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::consequential-actions-require-approval"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::handoffs-survive-session-loss"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+          }
+        }
+      ]
     },
     {
       "areaAnalysisResultRef": {
@@ -44,7 +228,28 @@
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
-            "factorId": "factor:agent-harness::agent-accessibility"
+            "factorId": "factor:agent-harness::assessability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:agent-harness::coherence"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:agent-harness::completeness"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:agent-harness::currentness"
           }
         }
       ],
@@ -56,22 +261,40 @@
         },
         {
           "areaId": "area:agent-harness",
-          "factorId": "factor:agent-harness::agent-accessibility",
+          "factorId": "factor:agent-harness::assessability",
           "kind": "factor",
-          "path": "areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md"
+          "path": "areas/agent-harness/factors/assessability/assessability-factor.md"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "factorId": "factor:agent-harness::coherence",
+          "kind": "factor",
+          "path": "areas/agent-harness/factors/coherence/coherence-factor.md"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "factorId": "factor:agent-harness::completeness",
+          "kind": "factor",
+          "path": "areas/agent-harness/factors/completeness/completeness-factor.md"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "factorId": "factor:agent-harness::currentness",
+          "kind": "factor",
+          "path": "areas/agent-harness/factors/currentness/currentness-factor.md"
         },
         {
           "areaId": "area:agent-harness",
           "kind": "requirement",
-          "path": "areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md",
-          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+          "path": "areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md",
+          "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
         }
       ],
       "requirementAssessmentRefs": [
         {
           "kind": "RequirementAssessmentResult",
           "subject": {
-            "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+            "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
           }
         }
       ],
@@ -79,7 +302,7 @@
         {
           "kind": "RequirementRatingResult",
           "subject": {
-            "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+            "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
           }
         }
       ]
@@ -112,6 +335,13 @@
           "subject": {
             "factorId": "factor:api::operability"
           }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::performance"
+          }
         }
       ],
       "reportRefs": [
@@ -134,9 +364,21 @@
         },
         {
           "areaId": "area:api",
+          "factorId": "factor:api::performance",
+          "kind": "factor",
+          "path": "areas/api/factors/performance/performance-factor.md"
+        },
+        {
+          "areaId": "area:api",
           "kind": "requirement",
           "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
           "requirementId": "requirement:api::idempotent-mutations"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/p99-latency-within-budget/p99-latency-within-budget-requirement.md",
+          "requirementId": "requirement:api::p99-latency-within-budget"
         },
         {
           "areaId": "area:api",
@@ -155,6 +397,12 @@
         {
           "kind": "RequirementAssessmentResult",
           "subject": {
+            "requirementId": "requirement:api::p99-latency-within-budget"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
             "requirementId": "requirement:api::predictable-error-contracts"
           }
         }
@@ -164,6 +412,12 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:api::idempotent-mutations"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::p99-latency-within-budget"
           }
         },
         {
@@ -353,6 +607,181 @@
           }
         }
       ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:quality-md"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:quality-md"
+        }
+      },
+      "areaId": "area:quality-md",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:quality-md::context-grounding"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:quality-md::evaluability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:quality-md::lifecycle-maintenance"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:quality-md",
+          "kind": "area",
+          "path": "areas/quality-md/quality-md-area.md"
+        },
+        {
+          "areaId": "area:quality-md",
+          "factorId": "factor:quality-md::context-grounding",
+          "kind": "factor",
+          "path": "areas/quality-md/factors/context-grounding/context-grounding-factor.md"
+        },
+        {
+          "areaId": "area:quality-md",
+          "factorId": "factor:quality-md::evaluability",
+          "kind": "factor",
+          "path": "areas/quality-md/factors/evaluability/evaluability-factor.md"
+        },
+        {
+          "areaId": "area:quality-md",
+          "factorId": "factor:quality-md::lifecycle-maintenance",
+          "kind": "factor",
+          "path": "areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md"
+        },
+        {
+          "areaId": "area:quality-md",
+          "kind": "requirement",
+          "path": "areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md",
+          "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+          }
+        }
+      ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:service-contract"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:service-contract"
+        }
+      },
+      "areaId": "area:service-contract",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:service-contract::completeness"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:service-contract::consistency"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:service-contract",
+          "kind": "area",
+          "path": "areas/service-contract/service-contract-area.md"
+        },
+        {
+          "areaId": "area:service-contract",
+          "factorId": "factor:service-contract::completeness",
+          "kind": "factor",
+          "path": "areas/service-contract/factors/completeness/completeness-factor.md"
+        },
+        {
+          "areaId": "area:service-contract",
+          "factorId": "factor:service-contract::consistency",
+          "kind": "factor",
+          "path": "areas/service-contract/factors/consistency/consistency-factor.md"
+        },
+        {
+          "areaId": "area:service-contract",
+          "kind": "requirement",
+          "path": "areas/service-contract/requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md",
+          "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+        },
+        {
+          "areaId": "area:service-contract",
+          "kind": "requirement",
+          "path": "areas/service-contract/requirements/contract-matches-shipped-behavior/contract-matches-shipped-behavior-requirement.md",
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+          }
+        }
+      ]
     }
   ],
   "kind": "EvaluationOutputResult",
@@ -387,10 +816,86 @@
       "path": "areas/persistence/persistence-area.md"
     },
     {
-      "areaId": "area:agent-harness",
-      "factorId": "factor:agent-harness::agent-accessibility",
+      "areaId": "area:quality-md",
+      "kind": "area",
+      "path": "areas/quality-md/quality-md-area.md"
+    },
+    {
+      "areaId": "area:service-contract",
+      "kind": "area",
+      "path": "areas/service-contract/service-contract-area.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability",
       "kind": "factor",
-      "path": "areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md"
+      "path": "factors/agent-harnessability/agent-harnessability-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/agent-accessibility",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/agent-accessibility/agent-accessibility-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/agent-operability",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/containment-of-action",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/containment-of-action/containment-of-action-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/continuity",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/continuity/continuity-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/enforcement-of-standards",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/self-verifiability",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/self-verifiability/self-verifiability-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "factorId": "factor:root::agent-harnessability/task-specifiability",
+      "kind": "factor",
+      "path": "factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "factorId": "factor:agent-harness::assessability",
+      "kind": "factor",
+      "path": "areas/agent-harness/factors/assessability/assessability-factor.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "factorId": "factor:agent-harness::coherence",
+      "kind": "factor",
+      "path": "areas/agent-harness/factors/coherence/coherence-factor.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "factorId": "factor:agent-harness::completeness",
+      "kind": "factor",
+      "path": "areas/agent-harness/factors/completeness/completeness-factor.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "factorId": "factor:agent-harness::currentness",
+      "kind": "factor",
+      "path": "areas/agent-harness/factors/currentness/currentness-factor.md"
     },
     {
       "areaId": "area:api",
@@ -403,6 +908,12 @@
       "factorId": "factor:api::operability",
       "kind": "factor",
       "path": "areas/api/factors/operability/operability-factor.md"
+    },
+    {
+      "areaId": "area:api",
+      "factorId": "factor:api::performance",
+      "kind": "factor",
+      "path": "areas/api/factors/performance/performance-factor.md"
     },
     {
       "areaId": "area:operations",
@@ -429,16 +940,94 @@
       "path": "areas/persistence/factors/recoverability/recoverability-factor.md"
     },
     {
+      "areaId": "area:quality-md",
+      "factorId": "factor:quality-md::context-grounding",
+      "kind": "factor",
+      "path": "areas/quality-md/factors/context-grounding/context-grounding-factor.md"
+    },
+    {
+      "areaId": "area:quality-md",
+      "factorId": "factor:quality-md::evaluability",
+      "kind": "factor",
+      "path": "areas/quality-md/factors/evaluability/evaluability-factor.md"
+    },
+    {
+      "areaId": "area:quality-md",
+      "factorId": "factor:quality-md::lifecycle-maintenance",
+      "kind": "factor",
+      "path": "areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md"
+    },
+    {
+      "areaId": "area:service-contract",
+      "factorId": "factor:service-contract::completeness",
+      "kind": "factor",
+      "path": "areas/service-contract/factors/completeness/completeness-factor.md"
+    },
+    {
+      "areaId": "area:service-contract",
+      "factorId": "factor:service-contract::consistency",
+      "kind": "factor",
+      "path": "areas/service-contract/factors/consistency/consistency-factor.md"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/a-fresh-session-reaches-a-ready-to-work-environment/a-fresh-session-reaches-a-ready-to-work-environment-requirement.md",
+      "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/agents-reach-service-context-from-a-stable-entry-point/agents-reach-service-context-from-a-stable-entry-point-requirement.md",
+      "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/consequential-actions-require-approval/consequential-actions-require-approval-requirement.md",
+      "requirementId": "requirement:root::consequential-actions-require-approval"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/handoffs-survive-session-loss/handoffs-survive-session-loss-requirement.md",
+      "requirementId": "requirement:root::handoffs-survive-session-loss"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/quality-loop-work-items-carry-done-criteria/quality-loop-work-items-carry-done-criteria-requirement.md",
+      "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/sensors-return-pass-fail-with-remediation/sensors-return-pass-fail-with-remediation-requirement.md",
+      "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "requirement",
+      "path": "requirements/standards-gate-nonconforming-changes/standards-gate-nonconforming-changes-requirement.md",
+      "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+    },
+    {
       "areaId": "area:agent-harness",
       "kind": "requirement",
-      "path": "areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md",
-      "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+      "path": "areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md",
+      "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
     },
     {
       "areaId": "area:api",
       "kind": "requirement",
       "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
       "requirementId": "requirement:api::idempotent-mutations"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/p99-latency-within-budget/p99-latency-within-budget-requirement.md",
+      "requirementId": "requirement:api::p99-latency-within-budget"
     },
     {
       "areaId": "area:api",
@@ -471,6 +1060,24 @@
       "requirementId": "requirement:persistence::migration-rollback"
     },
     {
+      "areaId": "area:quality-md",
+      "kind": "requirement",
+      "path": "areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md",
+      "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+    },
+    {
+      "areaId": "area:service-contract",
+      "kind": "requirement",
+      "path": "areas/service-contract/requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md",
+      "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+    },
+    {
+      "areaId": "area:service-contract",
+      "kind": "requirement",
+      "path": "areas/service-contract/requirements/contract-matches-shipped-behavior/contract-matches-shipped-behavior-requirement.md",
+      "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+    },
+    {
       "kind": "findings",
       "path": "findings.md"
     },
@@ -480,18 +1087,33 @@
     },
     {
       "kind": "recommendation",
-      "path": "recommendations/001-tighten-the-idempotency-replay-contract.md",
-      "recommendationId": "qrec_gallery1"
+      "path": "recommendations/001-specify-and-test-replay-semantics-for-interrupted-mutations.md",
+      "recommendationId": "qrec_replaycontract"
     },
     {
       "kind": "recommendation",
-      "path": "recommendations/002-rehearse-migration-rollback-after-schema-changes.md",
-      "recommendationId": "qrec_gallery2"
+      "path": "recommendations/002-rehearse-migration-rollback-against-the-current-schema.md",
+      "recommendationId": "qrec_rollbackrehearsal"
     },
     {
       "kind": "recommendation",
-      "path": "recommendations/003-assign-a-current-recovery-drill-owner.md",
-      "recommendationId": "qrec_gallery3"
+      "path": "recommendations/003-make-the-contract-test-and-invariant-sensors-required-at-merge.md",
+      "recommendationId": "qrec_gatesensors"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/004-reconcile-recovery-drill-ownership-and-restore-assessability.md",
+      "recommendationId": "qrec_drillownership"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/005-record-done-criteria-and-progress-in-durable-handoff-notes.md",
+      "recommendationId": "qrec_durablehandoffs"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/006-refresh-the-model-body-s-unknowns-and-open-questions.md",
+      "recommendationId": "qrec_refreshmodelbody"
     }
   ],
   "rootAreaAnalysisRef": {

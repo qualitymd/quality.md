@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Each recorded sensor returns deterministic pass/fail and failures name the violated expectation.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Can an agent confirm its own work through the recorded sensors?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/sensor-catalog"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Can an agent confirm its own work through the recorded sensors?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/self-verifiability"
+    ],
+    "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+  }
+}

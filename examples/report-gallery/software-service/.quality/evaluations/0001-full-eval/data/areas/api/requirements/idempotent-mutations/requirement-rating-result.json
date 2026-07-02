@@ -1,27 +1,27 @@
 {
   "confidence": "medium",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "confidenceReason": "The contract-test suite and contract were compared directly; interrupted-write behavior is untested, so its risk is inferred.",
   "criteriaResults": [
     {
       "matched": false,
       "ratingLevelId": "rating:target",
-      "rationale": "Mutation endpoints should meet the target correctness bar with retry behavior a maintainer can verify."
+      "rationale": "Interrupted-write replay has no contract clause and no test."
     },
     {
       "matched": true,
       "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
+      "rationale": "Duplicate-key replay is specified and its tests pass."
     }
   ],
   "kind": "RequirementRatingResult",
   "ratingDrivers": [
     {
-      "description": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+      "description": "Replay behavior after an interrupted write is unspecified and untested.",
       "effect": "constrains target",
       "inputRefs": [
         {
           "kind": "RequirementAssessmentResult",
-          "selector": "findings[gap-001]",
+          "selector": "findings[gap-004]",
           "subject": {
             "requirementId": "requirement:api::idempotent-mutations"
           }
@@ -31,7 +31,7 @@
     }
   ],
   "ratingLevelId": "rating:minimum",
-  "rationale": "The finding leaves retry semantics below target while preserving a usable minimum contract.",
+  "rationale": "Straightforward duplicate retries are safe and proven, but the interrupted-write replay path is unspecified, leaving the requirement short of target.",
   "requirementId": "requirement:api::idempotent-mutations",
   "schemaVersion": 3,
   "status": "rated"

@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/containment-of-action",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Money movement and production schema changes are behind declarative approval gates.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::consequential-actions-require-approval"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Money movement and schema changes sit behind declarative approval gates.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Money movement and production schema changes are behind declarative approval gates.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::consequential-actions-require-approval"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Money movement and schema changes sit behind declarative approval gates.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

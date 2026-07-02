@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The merge pipeline configuration was inspected directly.",
+  "evidenceSummary": "Lint gates merges; the contract tests and invariant suite run on merge but are advisory.",
+  "factors": [
+    "factor:root::agent-harnessability/enforcement-of-standards"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Pipeline configuration and the two failing-but-merged runs were inspected.",
+        "status": "verified"
+      },
+      "condition": "The merge pipeline marks both sensor jobs as non-required; two merged changes in the sampled month had a failing contract-test run.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Contract tests, the invariant suite, and lint block nonconforming merges or route them through reviewable exceptions.",
+          "ratingLevelId": "rating:target",
+          "rationale": "An advisory sensor protects nothing when the pressure is on; the gate is what makes the standard hold regardless of who is merging.",
+          "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "Contract conformance depends on reviewer diligence rather than the gate, constraining enforcement to minimum."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:ci/merge-pipeline",
+          "statement": "The pipeline config lists lint as required and the contract-test and invariant jobs as informational; merge history shows two failing contract-test runs that merged."
+        }
+      ],
+      "id": "gap-003",
+      "severity": "medium",
+      "statement": "Contract tests and the invariant suite run at merge time but cannot block a merge.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::standards-gate-nonconforming-changes",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Lint gates merges; the contract tests and invariant suite run on merge but are advisory."
+}

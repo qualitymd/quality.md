@@ -1,0 +1,42 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Every specified contract clause matches shipped handler behavior in the latest contract-test run.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does shipped handler behavior match every clause the contract specifies?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:service-contract",
+          "synthetic-source:api/contract-tests"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does shipped handler behavior match every clause the contract specifies?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:service-contract::consistency"
+    ],
+    "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+  }
+}

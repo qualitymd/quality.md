@@ -29,7 +29,7 @@ Factor: [Operability](operability-factor.md)
 
 ## Summary
 
-Operability follows its direct requirement signal.
+Error responses follow one documented envelope callers can branch on.
 
 ## Requirements
 
@@ -47,8 +47,7 @@ Operability follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 

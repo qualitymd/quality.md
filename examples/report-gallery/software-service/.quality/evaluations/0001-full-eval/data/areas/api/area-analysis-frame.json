@@ -1,6 +1,6 @@
 {
   "derivedContext": {
-    "synthesisGuidanceRef": "synthetic-gallery-area-rollup"
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
   },
   "inputs": {
     "factorAnalysisRefs": [
@@ -16,6 +16,13 @@
         "selector": "localAndDescendantAnalysis",
         "subject": {
           "factorId": "factor:api::operability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:api::performance"
         }
       }
     ]

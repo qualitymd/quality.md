@@ -1,13 +1,27 @@
 {
   "derivedContext": {
-    "scope": "Synthetic gallery area frame."
+    "scope": "The composite root: model-wide agent harnessability requirements plus six constituent areas."
   },
   "inputs": {
     "childAreaIds": [
       "area:api",
+      "area:service-contract",
       "area:persistence",
       "area:operations",
-      "area:agent-harness"
+      "area:agent-harness",
+      "area:quality-md"
+    ],
+    "localRequirementIds": [
+      "requirement:root::agents-reach-service-context-from-a-stable-entry-point",
+      "requirement:root::quality-loop-work-items-carry-done-criteria",
+      "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment",
+      "requirement:root::handoffs-survive-session-loss",
+      "requirement:root::sensors-return-pass-fail-with-remediation",
+      "requirement:root::standards-gate-nonconforming-changes",
+      "requirement:root::consequential-actions-require-approval"
+    ],
+    "rootFactorIds": [
+      "factor:root::agent-harnessability"
     ],
     "sourceRefs": [
       "synthetic-source:ledgerlite-service"

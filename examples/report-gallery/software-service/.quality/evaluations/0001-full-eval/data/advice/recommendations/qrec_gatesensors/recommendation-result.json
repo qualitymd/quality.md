@@ -1,0 +1,21 @@
+{
+  "background": "Both sensors already run on every merge and their failures carry remediation, but they cannot block a merge; two failing contract-test runs merged in the sampled month. The sensors are trustworthy enough to gate on.",
+  "confidence": "medium",
+  "description": "Change the merge pipeline to mark the contract-test and invariant-suite jobs as required, with a reviewable exception path for genuinely unrelated failures.",
+  "doneCriterion": "The merge pipeline lists both jobs as required, and a nonconforming test change is demonstrably blocked or routed through the recorded exception path.",
+  "expectedValue": "Contract conformance and ledger invariants hold regardless of reviewer attention, converting the two strongest sensors from advisory signals into enforced standards.",
+  "id": "qrec_gatesensors",
+  "impact": "high",
+  "kind": "RecommendationResult",
+  "schemaVersion": 3,
+  "title": "Make the contract-test and invariant sensors required at merge",
+  "traceRefs": [
+    {
+      "kind": "RequirementAssessmentResult",
+      "selector": "findings[gap-003]",
+      "subject": {
+        "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+      }
+    }
+  ]
+}

@@ -1,15 +1,15 @@
 ---
 type: Requirement Evaluation Report
-title: "Requirement: migrations have rehearsed rollback paths"
+title: "Requirement: migrations have rollback paths rehearsed against the current schema"
 ---
 
-# Requirement: migrations have rehearsed rollback paths
+# Requirement: migrations have rollback paths rehearsed against the current schema
 
 > **Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger persistence](../../persistence-area.md)
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
@@ -29,38 +29,38 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
 ## Summary
 
-Rollback instructions are present, but the rehearsal signal is stale.
+The runbook has rollback steps, but the last rehearsal predates the two most recent schema migrations.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
+| `risk-002` | Rollback steps have not been rehearsed since the two most recent schema migrations landed. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | A failed release over the partitioned tables could not be confidently rolled back, constraining recoverability to minimum. | 🟡 Plausible: The staleness is verified; that the steps would fail is projected from the incidents that motivated the tightened criterion. |
 
 ## Finding details
 
-<a id="finding-risk-001"></a>
+<a id="finding-risk-002"></a>
 
-### risk-001 Rollback guidance exists, but rehearsal evidence is stale.
+### risk-002 Rollback steps have not been rehearsed since the two most recent schema migrations landed.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 2 / 21 | 🔴 P1 Highest | An unrehearsed rollback over freshly partitioned ledger tables is the failure mode two past incidents already demonstrated. |
 
 #### Condition
 
-The synthetic migration runbook names rollback steps, but the last recorded rehearsal predates two schema changes.
+The runbook's rehearsal record is dated before migrations 041 (ledger partitioning) and 042 (currency precision), both of which touch tables the rollback steps reorganize.
 
 #### Criteria
 
-- `requirement:persistence::migration-rollback / rating:target`: Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:persistence::migration-rollback / rating:target`: The most recent rollback rehearsal is newer than the latest schema change.
+  Rationale: The criterion was tightened to rehearsal recency after two incidents where documented steps failed against drifted schemas.
 
 #### Basis
 
 Status: 🟡 Plausible
 
-Stale rehearsal evidence plausibly misses drift in newer migration behavior.
+The staleness is verified; that the steps would fail is projected from the incidents that motivated the tightened criterion.
 
 ##### Basis evidence
 
@@ -68,14 +68,13 @@ Stale rehearsal evidence plausibly misses drift in newer migration behavior.
 
 #### Effect
 
-The finding constrains recoverability to minimum until rollback rehearsal is refreshed.
+A failed release over the partitioned tables could not be confidently rolled back, constraining recoverability to minimum.
 
 Rating effect: constrains target
 
 #### Evidence
 
-- `synthetic-source:persistence/migration-runbook`: The synthetic runbook contains rollback steps and a rehearsal note older than the latest two migrations.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:persistence/migration-runbook`: The runbook rehearsal log's latest entry predates the migration history's entries for 041 and 042.
 
 ## Unknowns and missing evidence
 

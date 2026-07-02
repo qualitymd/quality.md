@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/task-specifiability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Most quality-loop handoffs omit done criteria and the confirming sensor.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Handoffs scope the work but mostly omit done criteria and the confirming sensor.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Most quality-loop handoffs omit done criteria and the confirming sensor.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Handoffs scope the work but mostly omit done criteria and the confirming sensor.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

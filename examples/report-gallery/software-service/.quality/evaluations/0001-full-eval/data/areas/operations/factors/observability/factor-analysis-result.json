@@ -3,17 +3,9 @@
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Health dashboards connect service errors to failed customer actions.",
+        "description": "Health dashboards express failed customer actions, not just service symptoms.",
         "effect": "supports target",
         "inputRefs": [
           {
@@ -26,22 +18,14 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Observability follows its direct requirement signal.",
+    "rationale": "Dashboards-as-code express customer impact and match what is deployed.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Health dashboards connect service errors to failed customer actions.",
+        "description": "Health dashboards express failed customer actions, not just service symptoms.",
         "effect": "supports target",
         "inputRefs": [
           {
@@ -54,7 +38,7 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Observability follows its direct requirement signal.",
+    "rationale": "Dashboards-as-code express customer impact and match what is deployed.",
     "status": "analyzed"
   },
   "schemaVersion": 3

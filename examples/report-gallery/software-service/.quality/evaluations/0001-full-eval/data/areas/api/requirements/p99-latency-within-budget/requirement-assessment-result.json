@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The telemetry rollup covers the full window with no gaps; the band boundaries are unambiguous.",
+  "evidenceSummary": "The four-week telemetry window puts mutation p99 at 262 ms, inside the 300 ms target band.",
+  "factors": [
+    "factor:api::performance"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The rollup query was run against the recorded window with no missing weeks.",
+        "status": "verified"
+      },
+      "condition": "The rollup query across all mutation endpoints reports p99 between 248 ms and 276 ms week over week, aggregating to 262 ms.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "p99 at or under 300 ms over the window.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The band was recalibrated to 300 ms after the caching work landed; the measurement tests the new floor.",
+          "requirementId": "requirement:api::p99-latency-within-budget"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Latency sits comfortably inside the recalibrated target band, supporting the target performance rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:telemetry/latency-rollup",
+          "statement": "Weekly p99 values of 248, 259, 276, and 264 ms across the window; no week exceeded the target band."
+        }
+      ],
+      "id": "strength-005",
+      "statement": "Mutation p99 measured 262 ms over the representative four-week window.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::p99-latency-within-budget",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The four-week telemetry window puts mutation p99 at 262 ms, inside the 300 ms target band."
+}

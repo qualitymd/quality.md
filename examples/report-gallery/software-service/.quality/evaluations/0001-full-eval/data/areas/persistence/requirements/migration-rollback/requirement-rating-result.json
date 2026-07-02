@@ -1,27 +1,27 @@
 {
   "confidence": "medium",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "confidenceReason": "The rehearsal record and migration history are unambiguous; whether the steps still work is untested inference.",
   "criteriaResults": [
     {
       "matched": false,
       "ratingLevelId": "rating:target",
-      "rationale": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence."
+      "rationale": "The last rehearsal predates migrations 041 and 042."
     },
     {
       "matched": true,
       "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
+      "rationale": "Documented rollback steps exist and matched the schema when last rehearsed."
     }
   ],
   "kind": "RequirementRatingResult",
   "ratingDrivers": [
     {
-      "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+      "description": "Rollback steps have not been rehearsed since the two most recent schema migrations landed.",
       "effect": "constrains target",
       "inputRefs": [
         {
           "kind": "RequirementAssessmentResult",
-          "selector": "findings[risk-001]",
+          "selector": "findings[risk-002]",
           "subject": {
             "requirementId": "requirement:persistence::migration-rollback"
           }
@@ -31,7 +31,7 @@
     }
   ],
   "ratingLevelId": "rating:minimum",
-  "rationale": "The runbook keeps the requirement above unacceptable, but stale rehearsal evidence misses the target bar.",
+  "rationale": "Rollback guidance exists and once worked, but it has not been rehearsed against the current schema, so recoverability rests on hope at exactly the migrations most likely to need it.",
   "requirementId": "requirement:persistence::migration-rollback",
   "schemaVersion": 3,
   "status": "rated"

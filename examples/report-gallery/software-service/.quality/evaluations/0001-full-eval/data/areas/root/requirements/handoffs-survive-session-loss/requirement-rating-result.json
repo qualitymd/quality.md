@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Four recent multi-session efforts were traced; chat history could not be inspected directly, only its artifacts.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "Three of four recent efforts left no durable progress record."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Completed work landed with reviewable artifacts."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "In-flight decisions live in chat scrollback and would not survive a cold handoff.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[risk-001]",
+          "subject": {
+            "requirementId": "requirement:root::handoffs-survive-session-loss"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Work does resume today because the same people restart it, but the record trail would not survive a cold handoff — below target, above the floor.",
+  "requirementId": "requirement:root::handoffs-survive-session-loss",
+  "schemaVersion": 3,
+  "status": "rated"
+}

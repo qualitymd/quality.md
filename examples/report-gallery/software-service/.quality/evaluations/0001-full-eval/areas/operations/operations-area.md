@@ -15,7 +15,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 
 | Overall rating | Local rating | Confidence |
 | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
+| 🔵 Target | 🔵 Target | 🟡 Low / 🟡 Low |
 
 ## Contents
 
@@ -27,29 +27,31 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 
 ## Summary
 
-Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
+Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.
 
 ## Area / factor breakdown
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| **[▦ Operations](operations-area.md)** | 🔵 Target | 🔵 Target | 2 | 1 |
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 1 | 1 |
 
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [health signals explain customer impact](requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed | [observability](factors/observability/observability-factor.md) |
-| [recovery drills have current owners](requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
+| [recovery drills have current owners and recent practice records](requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | ⚪ Not Rated | ⚪ Not Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
 
 ## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| 🧩 Incomplete Inputs | reconciled-ownership-records | Until then the area's recoverability contributes no rating signal. |
+| ⚠️ Evaluation Limits | drill-ownership-unassessed | The area rating reflects observability evidence only; recoverability is missing, not weak. |
+| 🧩 Incomplete Inputs | reconciled-ownership-records | Until then the area's recoverability contributes no rating signal. |
+| ⚠️ Evaluation Limits | drill-ownership-unassessed | The area rating reflects observability evidence only; recoverability is missing, not weak. |
 
 ## Primary source data
 

@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "In-flight efforts keep durable records of decisions, remaining work, and verification status.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Would in-flight work survive losing the current session and its chat history?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:tracker/in-flight-work"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Would in-flight work survive losing the current session and its chat history?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/continuity"
+    ],
+    "requirementId": "requirement:root::handoffs-survive-session-loss"
+  }
+}

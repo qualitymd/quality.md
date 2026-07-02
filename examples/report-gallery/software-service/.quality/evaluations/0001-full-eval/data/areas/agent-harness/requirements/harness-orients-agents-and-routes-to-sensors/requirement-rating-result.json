@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Every harness artifact was read and every catalog command executed.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "Coverage, coherence, and runnable sensors all held; the stale name is noted."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The harness exists and routes correctly."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-009]",
+          "subject": {
+            "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The harness covers the work lifecycle, contradicts none of the material it routes to, and its sensors run — one stale command name is a blemish, not a bar failure.",
+  "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The endpoint index makes the population countable; each entry was checked.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "Two of fourteen indexed mutation endpoints lack replay semantics."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Twelve endpoints are fully specified and the absences are countable."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Two mutation endpoints have no replay semantics in the contract.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-005]",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The contract covers most of the population, but two endpoints with undefined replay semantics are exactly the absences the completeness bar exists to catch.",
+  "requirementId": "requirement:service-contract::contract-covers-mutation-semantics",
+  "schemaVersion": 3,
+  "status": "rated"
+}

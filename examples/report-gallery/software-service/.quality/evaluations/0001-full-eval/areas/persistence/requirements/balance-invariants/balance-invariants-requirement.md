@@ -9,7 +9,7 @@ title: "Requirement: ledger mutations preserve balance invariants"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger persistence](../../persistence-area.md)
 
 Factors: [integrity](../../factors/integrity/integrity-factor.md)
 
@@ -17,7 +17,7 @@ Factors: [integrity](../../factors/integrity/integrity-factor.md)
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
-| 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
+| 🟢 Outstanding | ✅ Assessed | 🟢 High / 🟢 High |
 
 ## Contents
 
@@ -29,38 +29,38 @@ Factors: [integrity](../../factors/integrity/integrity-factor.md)
 
 ## Summary
 
-The sampled persistence evidence supports balance preservation.
+The property-based suite passes across all mutation paths and the nightly reconciliation sensor shows zero unexplained drift over the window.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-002` | Ledger mutation checks preserve balance invariants in the sampled paths. | 💪 Strength | — | 🟢 High | The finding supports the target integrity rating for ledger persistence. | ✅ Verified: The synthetic test matrix includes both success and failure paths for balance preservation. |
+| `strength-007` | Balance invariants hold across every tested mutation path with zero reconciliation drift. | 💪 Strength | — | 🟢 High | The failure the model most exists to prevent shows no signal on either sensor, supporting an outstanding integrity rating. | ✅ Verified: Suite results and the reconciliation drift report were both read for the window. |
 
 ## Finding details
 
-<a id="finding-strength-002"></a>
+<a id="finding-strength-007"></a>
 
-### strength-002 Ledger mutation checks preserve balance invariants in the sampled paths.
+### strength-007 Balance invariants hold across every tested mutation path with zero reconciliation drift.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 3 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 13 / 21 | ⚪ P4 Low | Outstanding balance integrity is the evaluation's anchor strength. |
 
 #### Condition
 
-Synthetic mutation tests cover debit, credit, failed write, and reconciliation paths.
+The property-based suite passes for debit, credit, failed-write, and interleaved concurrent reversal paths, and the nightly reconciliation report shows zero unexplained drift for the four-week window.
 
 #### Criteria
 
-- `requirement:persistence::balance-invariants / rating:target`: Ledger mutation evidence should meet the target integrity bar.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:persistence::balance-invariants / rating:outstanding`: Invariant and reconciliation sensors pass over the window with coverage beyond the required mutation paths.
+  Rationale: This is the model's veto requirement; the sharpened unacceptable band is why two independent sensors are consulted.
 
 #### Basis
 
 Status: ✅ Verified
 
-The synthetic test matrix includes both success and failure paths for balance preservation.
+Suite results and the reconciliation drift report were both read for the window.
 
 ##### Basis evidence
 
@@ -68,14 +68,13 @@ The synthetic test matrix includes both success and failure paths for balance pr
 
 #### Effect
 
-The finding supports the target integrity rating for ledger persistence.
+The failure the model most exists to prevent shows no signal on either sensor, supporting an outstanding integrity rating.
 
-Rating effect: supports target
+Rating effect: supports outstanding
 
 #### Evidence
 
-- `synthetic-source:persistence/balance-tests`: The synthetic tests assert balanced entries after successful writes and no balance movement after failed writes.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:persistence/reconciliation`: The drift report reads zero unexplained cents across all accounts for the window; the suite's concurrent-reversal properties passed 10,000 generated cases.
 
 ## Unknowns and missing evidence
 

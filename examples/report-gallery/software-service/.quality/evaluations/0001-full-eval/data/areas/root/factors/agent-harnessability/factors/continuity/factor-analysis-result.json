@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:root::agent-harnessability/continuity",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "In-flight decisions live in chat scrollback and would not survive a cold handoff.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::handoffs-survive-session-loss"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "In-flight work mostly lives in chat scrollback rather than durable progress records.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "In-flight decisions live in chat scrollback and would not survive a cold handoff.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::handoffs-survive-session-loss"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "In-flight work mostly lives in chat scrollback rather than durable progress records.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

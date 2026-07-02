@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Unattended runs cannot move money, change production schemas, or escalate permissions without an approval gate.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Can an unattended agent run take a consequential action without approval?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/sandbox-policy"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Can an unattended agent run take a consequential action without approval?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/containment-of-action"
+    ],
+    "requirementId": "requirement:root::consequential-actions-require-approval"
+  }
+}

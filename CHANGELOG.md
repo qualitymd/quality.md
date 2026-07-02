@@ -5,6 +5,16 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Documentation
+
+- The LedgerLite report gallery is now an authoring exemplar: the example
+  QUALITY.md demonstrates the authoring guide family (full body sections with
+  unknowns and review provenance, a model-wide agent harnessability factor with
+  seven sub-factors, a normative service-contract area, a veto requirement, a
+  measured rating override, and sensor-grounded assessments), and its generated
+  evaluation includes all four finding types, a not-assessed result, and a
+  synthetic quality changelog showing how the model matured.
+
 ## v0.27.1 - 2026-07-02
 
 ### Documentation

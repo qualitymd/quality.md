@@ -1,0 +1,23 @@
+{
+  "derivedContext": {
+    "scope": "The contract matches shipped behavior where it speaks; two mutation endpoints without replay semantics cap completeness."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:service-contract::contract-covers-mutation-semantics",
+      "requirement:service-contract::contract-matches-shipped-behavior"
+    ],
+    "rootFactorIds": [
+      "factor:service-contract::completeness",
+      "factor:service-contract::consistency"
+    ],
+    "sourceRefs": [
+      "synthetic-source:service-contract"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:service-contract"
+  }
+}

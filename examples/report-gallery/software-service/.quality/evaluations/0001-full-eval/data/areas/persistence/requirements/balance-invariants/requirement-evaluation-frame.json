@@ -2,21 +2,30 @@
   "derivedContext": {
     "appliedRatingCriteria": [
       {
-        "criterion": "Ledger mutation evidence should meet the target integrity bar.",
+        "criterion": "Invariant and reconciliation sensors pass over the window with coverage beyond the required mutation paths.",
+        "ratingLevelId": "rating:outstanding"
+      },
+      {
+        "criterion": "Invariant tests pass across debit, credit, failed-write, and concurrent paths, and reconciliation shows no unexplained drift.",
         "ratingLevelId": "rating:target"
       },
       {
-        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
         "ratingLevelId": "rating:minimum"
+      },
+      {
+        "criterion": "Any reproducible invariant violation or unexplained reconciliation drift, however small.",
+        "ratingLevelId": "rating:unacceptable"
       }
     ],
     "evidenceTargets": [
       {
-        "id": "synthetic-evidence",
-        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "id": "primary-evidence",
+        "question": "Do the invariant and reconciliation sensors show balance preservation across all mutation paths?",
         "required": true,
         "sourceRefs": [
-          "synthetic-source:persistence/balance-tests"
+          "synthetic-source:persistence/invariant-suite",
+          "synthetic-source:persistence/reconciliation"
         ]
       }
     ]
@@ -28,7 +37,7 @@
       "rating:minimum",
       "rating:unacceptable"
     ],
-    "requirementAssessmentBasis": "Synthetic gallery evidence."
+    "requirementAssessmentBasis": "Do the invariant and reconciliation sensors show balance preservation across all mutation paths?"
   },
   "kind": "RequirementEvaluationFrame",
   "schemaVersion": 3,

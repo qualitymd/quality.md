@@ -1,27 +1,27 @@
 {
   "confidence": "high",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "confidenceReason": "The handler matrix was compared against the contract envelope for every endpoint in the index.",
   "criteriaResults": [
     {
       "matched": true,
       "ratingLevelId": "rating:target",
-      "rationale": "Error contracts should meet the target bar with evidence a maintainer can verify."
+      "rationale": "Handlers and contract agree across the endpoint index."
     },
     {
       "matched": true,
       "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
+      "rationale": "An error envelope exists and is documented."
     }
   ],
   "kind": "RequirementRatingResult",
   "ratingDrivers": [
     {
-      "description": "Common caller error cases share a documented response shape.",
+      "description": "Error responses follow one documented envelope across all sampled failure modes.",
       "effect": "supports target",
       "inputRefs": [
         {
           "kind": "RequirementAssessmentResult",
-          "selector": "findings[strength-001]",
+          "selector": "findings[strength-004]",
           "subject": {
             "requirementId": "requirement:api::predictable-error-contracts"
           }
@@ -31,7 +31,7 @@
     }
   ],
   "ratingLevelId": "rating:target",
-  "rationale": "The sampled error behavior meets the target operability criterion.",
+  "rationale": "Every sampled failure mode returns the documented envelope with a stable code and retryable flag, meeting the target bar.",
   "requirementId": "requirement:api::predictable-error-contracts",
   "schemaVersion": 3,
   "status": "rated"

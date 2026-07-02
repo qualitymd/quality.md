@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Sampled handoffs state goals, non-goals, done criteria, and the sensor that confirms completion.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do quality-loop handoffs give an agent explicit success and done criteria?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:tracker/quality-loop-handoffs"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do quality-loop handoffs give an agent explicit success and done criteria?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/task-specifiability"
+    ],
+    "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+  }
+}

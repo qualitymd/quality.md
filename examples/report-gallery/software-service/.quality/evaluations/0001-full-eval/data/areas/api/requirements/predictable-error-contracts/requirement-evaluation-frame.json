@@ -2,21 +2,22 @@
   "derivedContext": {
     "appliedRatingCriteria": [
       {
-        "criterion": "Error contracts should meet the target bar with evidence a maintainer can verify.",
+        "criterion": "Common failure modes return the contract's error envelope with stable codes callers can branch on.",
         "ratingLevelId": "rating:target"
       },
       {
-        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
         "ratingLevelId": "rating:minimum"
       }
     ],
     "evidenceTargets": [
       {
-        "id": "synthetic-evidence",
-        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "id": "primary-evidence",
+        "question": "Do error responses match the contract envelope across common failure modes?",
         "required": true,
         "sourceRefs": [
-          "synthetic-source:api/error-contracts"
+          "synthetic-source:service-contract",
+          "synthetic-source:api/handler-matrix"
         ]
       }
     ]
@@ -28,7 +29,7 @@
       "rating:minimum",
       "rating:unacceptable"
     ],
-    "requirementAssessmentBasis": "Synthetic gallery evidence."
+    "requirementAssessmentBasis": "Do error responses match the contract envelope across common failure modes?"
   },
   "kind": "RequirementEvaluationFrame",
   "schemaVersion": 3,

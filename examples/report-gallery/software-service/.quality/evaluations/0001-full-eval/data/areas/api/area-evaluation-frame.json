@@ -1,15 +1,17 @@
 {
   "derivedContext": {
-    "scope": "Synthetic gallery area frame."
+    "scope": "Error contracts and latency meet target, but unspecified interrupted-write replay holds the API at minimum."
   },
   "inputs": {
     "localRequirementIds": [
       "requirement:api::idempotent-mutations",
-      "requirement:api::predictable-error-contracts"
+      "requirement:api::predictable-error-contracts",
+      "requirement:api::p99-latency-within-budget"
     ],
     "rootFactorIds": [
       "factor:api::correctness",
-      "factor:api::operability"
+      "factor:api::operability",
+      "factor:api::performance"
     ],
     "sourceRefs": [
       "synthetic-source:api"

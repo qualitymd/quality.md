@@ -3,18 +3,24 @@
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
     "confidence": "low",
-    "confidenceReason": "Synthetic report-gallery judgment.",
     "evaluationLimits": [
       {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
+        "description": "Recovery drill ownership is not assessed because its records conflict.",
+        "id": "drill-ownership-unassessed",
+        "impact": "The area rating reflects observability evidence only; recoverability is missing, not weak."
+      }
+    ],
+    "incompleteInputs": [
+      {
+        "description": "A reconciled owner record and a post-reorg drill entry are needed before recoverability can be judged.",
+        "id": "reconciled-ownership-records",
+        "impact": "Until then the area's recoverability contributes no rating signal."
       }
     ],
     "ratingDrivers": [
       {
-        "description": "Observability is driven by health signals explain customer impact.",
-        "effect": "supports target",
+        "description": "Observability: Dashboards-as-code express customer impact and match what is deployed.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -26,8 +32,8 @@
         ]
       },
       {
-        "description": "Recoverability is driven by recovery drills have current owners.",
-        "effect": "constrains target",
+        "description": "Recoverability: Drill ownership records contradict each other; the factor awaits reconciled evidence.",
+        "effect": "blocked; contributes missing evidence",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -39,24 +45,30 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:minimum",
-    "rationale": "Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.",
+    "ratingLevelId": "rating:target",
+    "rationale": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "low",
-    "confidenceReason": "Synthetic report-gallery judgment.",
     "evaluationLimits": [
       {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
+        "description": "Recovery drill ownership is not assessed because its records conflict.",
+        "id": "drill-ownership-unassessed",
+        "impact": "The area rating reflects observability evidence only; recoverability is missing, not weak."
+      }
+    ],
+    "incompleteInputs": [
+      {
+        "description": "A reconciled owner record and a post-reorg drill entry are needed before recoverability can be judged.",
+        "id": "reconciled-ownership-records",
+        "impact": "Until then the area's recoverability contributes no rating signal."
       }
     ],
     "ratingDrivers": [
       {
-        "description": "Observability is driven by health signals explain customer impact.",
-        "effect": "supports target",
+        "description": "Observability: Dashboards-as-code express customer impact and match what is deployed.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -68,8 +80,8 @@
         ]
       },
       {
-        "description": "Recoverability is driven by recovery drills have current owners.",
-        "effect": "constrains target",
+        "description": "Recoverability: Drill ownership records contradict each other; the factor awaits reconciled evidence.",
+        "effect": "blocked; contributes missing evidence",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -81,8 +93,8 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:minimum",
-    "rationale": "Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.",
+    "ratingLevelId": "rating:target",
+    "rationale": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
     "status": "analyzed"
   },
   "schemaVersion": 3

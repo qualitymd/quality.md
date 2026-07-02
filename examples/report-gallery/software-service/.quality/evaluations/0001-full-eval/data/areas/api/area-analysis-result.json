@@ -3,18 +3,10 @@
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Correctness is driven by mutation endpoints are idempotent under retry.",
-        "effect": "constrains target",
+        "description": "Correctness: Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -26,8 +18,8 @@
         ]
       },
       {
-        "description": "Operability is driven by error responses are predictable for callers.",
-        "effect": "supports target",
+        "description": "Operability: Error responses follow one documented envelope callers can branch on.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -37,26 +29,31 @@
             }
           }
         ]
+      },
+      {
+        "description": "Performance: Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::performance"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "The API has predictable errors, but idempotency retry semantics need a tighter contract.",
+    "rationale": "Error contracts and latency meet target, but unspecified interrupted-write replay holds the API at minimum.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Correctness is driven by mutation endpoints are idempotent under retry.",
-        "effect": "constrains target",
+        "description": "Correctness: Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -68,8 +65,8 @@
         ]
       },
       {
-        "description": "Operability is driven by error responses are predictable for callers.",
-        "effect": "supports target",
+        "description": "Operability: Error responses follow one documented envelope callers can branch on.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -79,10 +76,23 @@
             }
           }
         ]
+      },
+      {
+        "description": "Performance: Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::performance"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "The API has predictable errors, but idempotency retry semantics need a tighter contract.",
+    "rationale": "Error contracts and latency meet target, but unspecified interrupted-write replay holds the API at minimum.",
     "status": "analyzed"
   },
   "schemaVersion": 3

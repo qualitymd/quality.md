@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Each sensor was run to both pass and forced-fail outcomes.",
+  "evidenceSummary": "The contract tests, invariant suite, and lint all run from the recorded commands and fail with the violated expectation named.",
+  "factors": [
+    "factor:root::agent-harnessability/self-verifiability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Pass and forced-fail runs were executed for each sensor.",
+        "status": "verified"
+      },
+      "condition": "The contract tests, ledger invariant suite, and lint each ran from the catalog command to a pass, and a seeded defect produced a failure naming the broken expectation and its location.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Each recorded sensor returns deterministic pass/fail and failures name the violated expectation.",
+          "ratingLevelId": "rating:target",
+          "rationale": "Remediation-bearing failures are what let an agent fix its own work without a human interpreting the output.",
+          "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Agents can close their own verify loop, which supports the target self-verifiability rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/sensor-catalog",
+          "statement": "Sensor catalog commands ran as recorded; the seeded invariant defect failed with the invariant name, the offending entry pair, and the suite file to consult."
+        }
+      ],
+      "id": "strength-002",
+      "statement": "All three recorded sensors are deterministic and their failures name the violated expectation.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The contract tests, invariant suite, and lint all run from the recorded commands and fail with the violated expectation named."
+}

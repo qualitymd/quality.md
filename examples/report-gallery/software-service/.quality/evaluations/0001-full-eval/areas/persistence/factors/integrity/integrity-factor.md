@@ -9,7 +9,7 @@ title: "Factor: Integrity"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger persistence](../../persistence-area.md)
 
 Factor: [Integrity](integrity-factor.md)
 
@@ -17,7 +17,7 @@ Factor: [Integrity](integrity-factor.md)
 
 | Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
+| 🟢 Outstanding | 🟢 Outstanding | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
 ## Contents
 
@@ -29,13 +29,13 @@ Factor: [Integrity](integrity-factor.md)
 
 ## Summary
 
-Integrity follows its direct requirement signal.
+Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
-| [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed |
+| [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🟢 Outstanding | ✅ Assessed |
 
 ## Sub-factors
 
@@ -47,8 +47,7 @@ Integrity follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 

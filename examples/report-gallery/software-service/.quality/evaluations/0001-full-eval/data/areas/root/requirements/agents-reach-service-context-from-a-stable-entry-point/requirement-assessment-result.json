@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The entry point and its routed guidance were walked end to end from a clean session.",
+  "evidenceSummary": "The entry point routes a fresh agent to the contract, runbooks, and sensor catalog in one hop each.",
+  "factors": [
+    "factor:root::agent-harnessability/agent-accessibility"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The walk-through from a clean checkout reached every routed destination.",
+        "status": "verified"
+      },
+      "condition": "Each routed link resolved from a clean session, and the entry point stays under a page while linking deeper material.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "A fresh agent reaches service purpose, contract, runbooks, and sensors from the entry point without private context.",
+          "ratingLevelId": "rating:target",
+          "rationale": "Reachability from a cold start is the accessibility bar the model sets.",
+          "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Agents can orient without tribal knowledge, which supports the target accessibility rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/entry-point",
+          "statement": "The entry point names the service purpose and links the contract, runbooks, and sensor catalog; all links resolved."
+        }
+      ],
+      "id": "strength-001",
+      "statement": "The agent entry point reaches the contract, runbooks, and sensor catalog in one hop each.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The entry point routes a fresh agent to the contract, runbooks, and sensor catalog in one hop each."
+}

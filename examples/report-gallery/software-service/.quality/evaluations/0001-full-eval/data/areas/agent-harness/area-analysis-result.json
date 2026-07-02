@@ -3,60 +3,122 @@
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
     "confidence": "high",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Agent Accessibility is driven by agent guidance routes quality evaluation work.",
-        "effect": "supports target",
+        "description": "Completeness: Harness artifacts cover setup, scoped work, verification, and handoff.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:agent-harness::agent-accessibility"
+              "factorId": "factor:agent-harness::completeness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Coherence: Guidance agrees with the contract and runbooks it routes to.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::coherence"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Currentness: Guidance matches the current layout except one stale sensor command name.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::currentness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Assessability: Harness quality is checkable through inspectable artifacts and runnable sensors.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::assessability"
             }
           }
         ]
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Agent guidance exposes the quality evaluation entry point clearly.",
+    "rationale": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "high",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Agent Accessibility is driven by agent guidance routes quality evaluation work.",
-        "effect": "supports target",
+        "description": "Completeness: Harness artifacts cover setup, scoped work, verification, and handoff.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:agent-harness::agent-accessibility"
+              "factorId": "factor:agent-harness::completeness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Coherence: Guidance agrees with the contract and runbooks it routes to.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::coherence"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Currentness: Guidance matches the current layout except one stale sensor command name.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::currentness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Assessability: Harness quality is checkable through inspectable artifacts and runnable sensors.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::assessability"
             }
           }
         ]
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Agent guidance exposes the quality evaluation entry point clearly.",
+    "rationale": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
     "status": "analyzed"
   },
   "schemaVersion": 3

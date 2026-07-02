@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The setup path was followed once from a clean checkout; the credential gap was confirmed against the recorded materials.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The telemetry read credential is recorded only in the private wiki."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Build and sensor steps are recorded and worked from a clean checkout."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The telemetry read credential needed for latency checks is documented only in the private wiki.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-002]",
+          "subject": {
+            "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Setup works when the credential is already present, but a fresh session stalls on agent-inaccessible documentation, so the requirement sits at minimum.",
+  "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment",
+  "schemaVersion": 3,
+  "status": "rated"
+}

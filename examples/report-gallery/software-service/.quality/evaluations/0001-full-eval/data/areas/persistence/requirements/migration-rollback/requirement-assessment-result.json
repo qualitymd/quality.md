@@ -1,47 +1,39 @@
 {
   "confidence": "medium",
-  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
-  "evaluationLimits": [
-    {
-      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
-      "id": "synthetic-source",
-      "impact": "The finding demonstrates report structure, not a verifiable source claim."
-    }
-  ],
-  "evidenceSummary": "Rollback instructions are present, but the rehearsal signal is stale.",
+  "confidenceReason": "The rehearsal record and migration history are unambiguous; whether the steps still work is untested inference.",
+  "evidenceSummary": "The runbook has rollback steps, but the last rehearsal predates the two most recent schema migrations.",
   "factors": [
     "factor:persistence::recoverability"
   ],
   "findings": [
     {
       "basis": {
-        "statement": "Stale rehearsal evidence plausibly misses drift in newer migration behavior.",
+        "statement": "The staleness is verified; that the steps would fail is projected from the incidents that motivated the tightened criterion.",
         "status": "plausible"
       },
-      "condition": "The synthetic migration runbook names rollback steps, but the last recorded rehearsal predates two schema changes.",
+      "condition": "The runbook's rehearsal record is dated before migrations 041 (ledger partitioning) and 042 (currency precision), both of which touch tables the rollback steps reorganize.",
       "confidence": "medium",
       "criteria": [
         {
-          "criterion": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.",
+          "criterion": "The most recent rollback rehearsal is newer than the latest schema change.",
           "ratingLevelId": "rating:target",
-          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "rationale": "The criterion was tightened to rehearsal recency after two incidents where documented steps failed against drifted schemas.",
           "requirementId": "requirement:persistence::migration-rollback"
         }
       ],
       "effect": {
         "ratingEffect": "constrains target",
-        "statement": "The finding constrains recoverability to minimum until rollback rehearsal is refreshed."
+        "statement": "A failed release over the partitioned tables could not be confidently rolled back, constraining recoverability to minimum."
       },
       "evidence": [
         {
-          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
           "sourceRef": "synthetic-source:persistence/migration-runbook",
-          "statement": "The synthetic runbook contains rollback steps and a rehearsal note older than the latest two migrations."
+          "statement": "The runbook rehearsal log's latest entry predates the migration history's entries for 041 and 042."
         }
       ],
-      "id": "risk-001",
+      "id": "risk-002",
       "severity": "medium",
-      "statement": "Rollback guidance exists, but rehearsal evidence is stale.",
+      "statement": "Rollback steps have not been rehearsed since the two most recent schema migrations landed.",
       "type": "risk"
     }
   ],
@@ -49,5 +41,5 @@
   "requirementId": "requirement:persistence::migration-rollback",
   "schemaVersion": 3,
   "status": "assessed",
-  "summary": "Rollback instructions are present, but the rehearsal signal is stale."
+  "summary": "The runbook has rollback steps, but the last rehearsal predates the two most recent schema migrations."
 }

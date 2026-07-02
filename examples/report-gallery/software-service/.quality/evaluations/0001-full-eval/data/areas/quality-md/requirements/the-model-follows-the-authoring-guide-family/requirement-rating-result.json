@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The model file and quality changelog are fully inspectable.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The body's unknowns and open questions predate the service-contract area."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Structure, assessability, and changelog practice follow the guides."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The body's unknowns and open questions have not been revisited since the service-contract area was added.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-006]",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Structure and evaluability meet the guides, but the body's judgment context has drifted from the current model, and a stale body misleads the next evaluator — minimum until refreshed.",
+  "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family",
+  "schemaVersion": 3,
+  "status": "rated"
+}

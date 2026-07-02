@@ -3,17 +3,9 @@
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+        "description": "Replay behavior after an interrupted write is unspecified and untested.",
         "effect": "constrains target",
         "inputRefs": [
           {
@@ -26,22 +18,14 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Correctness follows its direct requirement signal.",
+    "rationale": "Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+        "description": "Replay behavior after an interrupted write is unspecified and untested.",
         "effect": "constrains target",
         "inputRefs": [
           {
@@ -54,7 +38,7 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Correctness follows its direct requirement signal.",
+    "rationale": "Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
     "status": "analyzed"
   },
   "schemaVersion": 3

@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "A fresh session reaches build, sensors, and required access from agent-accessible recorded materials alone.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does the recorded setup take a fresh session to a ready-to-work environment?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/setup"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does the recorded setup take a fresh session to a ready-to-work environment?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/agent-operability"
+    ],
+    "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+  }
+}

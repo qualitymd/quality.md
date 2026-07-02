@@ -29,38 +29,37 @@ Factors: [operability](../../factors/operability/operability-factor.md)
 
 ## Summary
 
-The error contract is consistent across the sampled API cases.
+Validation, authorization, and conflict responses all use the contract's error envelope, and handlers match it.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-001` | Common caller error cases share a documented response shape. | 💪 Strength | — | 🟢 High | The finding supports the target operability rating for caller-facing errors. | ✅ Verified: The synthetic handler matrix and API reference agree on the error envelope fields. |
+| `strength-004` | Error responses follow one documented envelope across all sampled failure modes. | 💪 Strength | — | 🟢 High | Callers can branch on stable error codes, supporting the target operability rating. | ✅ Verified: The handler matrix and contract envelope were compared endpoint by endpoint. |
 
 ## Finding details
 
-<a id="finding-strength-001"></a>
+<a id="finding-strength-004"></a>
 
-### strength-001 Common caller error cases share a documented response shape.
+### strength-004 Error responses follow one documented envelope across all sampled failure modes.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 2 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 17 / 21 | ⚪ P4 Low | Stable error contracts support integrator trust. |
 
 #### Condition
 
-Validation, authorization, and conflict responses use the same synthetic error envelope.
+Validation, authorization, and conflict cases for every endpoint in the contract index return the envelope's code, message, and retryable fields.
 
 #### Criteria
 
-- `requirement:api::predictable-error-contracts / rating:target`: Error contracts should meet the target bar with evidence a maintainer can verify.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:api::predictable-error-contracts / rating:target`: Common failure modes return the contract's error envelope with stable codes callers can branch on.
 
 #### Basis
 
 Status: ✅ Verified
 
-The synthetic handler matrix and API reference agree on the error envelope fields.
+The handler matrix and contract envelope were compared endpoint by endpoint.
 
 ##### Basis evidence
 
@@ -68,14 +67,13 @@ The synthetic handler matrix and API reference agree on the error envelope field
 
 #### Effect
 
-The finding supports the target operability rating for caller-facing errors.
+Callers can branch on stable error codes, supporting the target operability rating.
 
 Rating effect: supports target
 
 #### Evidence
 
-- `synthetic-source:api/error-contracts`: The synthetic error matrix maps common failure modes to a stable code, message, and retryable flag.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:api/handler-matrix`: The matrix maps each failure mode to the envelope fields; no handler deviates from the documented codes.
 
 ## Unknowns and missing evidence
 

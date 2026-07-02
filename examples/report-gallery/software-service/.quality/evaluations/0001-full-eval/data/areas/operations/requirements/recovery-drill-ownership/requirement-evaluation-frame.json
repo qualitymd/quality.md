@@ -2,21 +2,22 @@
   "derivedContext": {
     "appliedRatingCriteria": [
       {
-        "criterion": "Recovery drills should meet the target recoverability bar with current named ownership.",
+        "criterion": "The calendar and playbook agree on the current drill owner and a drill record exists within the last quarter.",
         "ratingLevelId": "rating:target"
       },
       {
-        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
         "ratingLevelId": "rating:minimum"
       }
     ],
     "evidenceTargets": [
       {
-        "id": "synthetic-evidence",
-        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "id": "primary-evidence",
+        "question": "Who currently owns recovery drills, and when was the last practice?",
         "required": true,
         "sourceRefs": [
-          "synthetic-source:operations/recovery-calendar"
+          "synthetic-source:operations/recovery-calendar",
+          "synthetic-source:operations/incident-playbook"
         ]
       }
     ]
@@ -28,7 +29,7 @@
       "rating:minimum",
       "rating:unacceptable"
     ],
-    "requirementAssessmentBasis": "Synthetic gallery evidence."
+    "requirementAssessmentBasis": "Who currently owns recovery drills, and when was the last practice?"
   },
   "kind": "RequirementEvaluationFrame",
   "schemaVersion": 3,

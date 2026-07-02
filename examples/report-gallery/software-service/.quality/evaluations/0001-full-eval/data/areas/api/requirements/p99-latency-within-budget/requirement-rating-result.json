@@ -1,0 +1,43 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The telemetry rollup covers the full window with no gaps; the band boundaries are unambiguous.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:outstanding",
+      "rationale": "262 ms is above the 200 ms outstanding band."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "262 ms is inside the 300 ms target band."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "262 ms is inside the 500 ms floor."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Mutation p99 measured 262 ms over the representative four-week window.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-005]",
+          "subject": {
+            "requirementId": "requirement:api::p99-latency-within-budget"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Measured p99 of 262 ms lands inside the 300 ms target band but above the 200 ms outstanding band.",
+  "requirementId": "requirement:api::p99-latency-within-budget",
+  "schemaVersion": 3,
+  "status": "rated"
+}

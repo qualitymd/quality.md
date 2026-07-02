@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Body context, factor traceability, requirement assessability, and changelog practice match the authoring guide family with current unknowns and open questions.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does the model artifact follow the authoring guide family it cites?",
+        "required": true,
+        "sourceRefs": [
+          "./QUALITY.md"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does the model artifact follow the authoring guide family it cites?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:quality-md::context-grounding",
+      "factor:quality-md::evaluability",
+      "factor:quality-md::lifecycle-maintenance"
+    ],
+    "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+  }
+}

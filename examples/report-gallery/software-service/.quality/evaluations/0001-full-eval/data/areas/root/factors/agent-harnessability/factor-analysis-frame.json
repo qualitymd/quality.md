@@ -1,0 +1,63 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "childFactorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/agent-accessibility"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/task-specifiability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/agent-operability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/continuity"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/self-verifiability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/enforcement-of-standards"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability/containment-of-action"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:root::agent-harnessability"
+  }
+}

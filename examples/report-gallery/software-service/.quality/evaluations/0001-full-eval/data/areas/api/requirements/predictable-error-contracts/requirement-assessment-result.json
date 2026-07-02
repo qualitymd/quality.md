@@ -1,46 +1,37 @@
 {
   "confidence": "high",
-  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
-  "evaluationLimits": [
-    {
-      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
-      "id": "synthetic-source",
-      "impact": "The finding demonstrates report structure, not a verifiable source claim."
-    }
-  ],
-  "evidenceSummary": "The error contract is consistent across the sampled API cases.",
+  "confidenceReason": "The handler matrix was compared against the contract envelope for every endpoint in the index.",
+  "evidenceSummary": "Validation, authorization, and conflict responses all use the contract's error envelope, and handlers match it.",
   "factors": [
     "factor:api::operability"
   ],
   "findings": [
     {
       "basis": {
-        "statement": "The synthetic handler matrix and API reference agree on the error envelope fields.",
+        "statement": "The handler matrix and contract envelope were compared endpoint by endpoint.",
         "status": "verified"
       },
-      "condition": "Validation, authorization, and conflict responses use the same synthetic error envelope.",
+      "condition": "Validation, authorization, and conflict cases for every endpoint in the contract index return the envelope's code, message, and retryable fields.",
       "confidence": "high",
       "criteria": [
         {
-          "criterion": "Error contracts should meet the target bar with evidence a maintainer can verify.",
+          "criterion": "Common failure modes return the contract's error envelope with stable codes callers can branch on.",
           "ratingLevelId": "rating:target",
-          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
           "requirementId": "requirement:api::predictable-error-contracts"
         }
       ],
       "effect": {
         "ratingEffect": "supports target",
-        "statement": "The finding supports the target operability rating for caller-facing errors."
+        "statement": "Callers can branch on stable error codes, supporting the target operability rating."
       },
       "evidence": [
         {
-          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
-          "sourceRef": "synthetic-source:api/error-contracts",
-          "statement": "The synthetic error matrix maps common failure modes to a stable code, message, and retryable flag."
+          "sourceRef": "synthetic-source:api/handler-matrix",
+          "statement": "The matrix maps each failure mode to the envelope fields; no handler deviates from the documented codes."
         }
       ],
-      "id": "strength-001",
-      "statement": "Common caller error cases share a documented response shape.",
+      "id": "strength-004",
+      "statement": "Error responses follow one documented envelope across all sampled failure modes.",
       "type": "strength"
     }
   ],
@@ -48,5 +39,5 @@
   "requirementId": "requirement:api::predictable-error-contracts",
   "schemaVersion": 3,
   "status": "assessed",
-  "summary": "The error contract is consistent across the sampled API cases."
+  "summary": "Validation, authorization, and conflict responses all use the contract's error envelope, and handlers match it."
 }

@@ -1,0 +1,44 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The setup path was followed once from a clean checkout; the credential gap was confirmed against the recorded materials.",
+  "evidenceSummary": "Recorded setup builds the service and runs the sensors; one required credential is documented only in the private wiki.",
+  "factors": [
+    "factor:root::agent-harnessability/agent-operability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The setup walk-through stalled at the credential step; every other step completed from recorded materials.",
+        "status": "verified"
+      },
+      "condition": "The recorded setup covers build and sensors, but the step granting telemetry read access points at a wiki page agents cannot reach.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "A fresh session reaches build, sensors, and required access from agent-accessible recorded materials alone.",
+          "ratingLevelId": "rating:target",
+          "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "Latency verification needs a human hand-off in an otherwise self-serve setup, constraining operability to minimum."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/setup",
+          "statement": "The setup document's access section links the private wiki for the telemetry credential; no agent-accessible copy exists."
+        }
+      ],
+      "id": "gap-002",
+      "severity": "low",
+      "statement": "The telemetry read credential needed for latency checks is documented only in the private wiki.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::a-fresh-session-reaches-a-ready-to-work-environment",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Recorded setup builds the service and runs the sensors; one required credential is documented only in the private wiki."
+}

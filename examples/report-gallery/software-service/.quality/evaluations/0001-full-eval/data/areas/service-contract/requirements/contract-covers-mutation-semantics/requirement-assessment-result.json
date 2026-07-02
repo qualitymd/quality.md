@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The endpoint index makes the population countable; each entry was checked.",
+  "evidenceSummary": "Twelve of fourteen mutation endpoints have complete semantics; two lack replay clauses.",
+  "factors": [
+    "factor:service-contract::completeness"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "All fourteen indexed endpoints were checked clause by clause.",
+        "status": "verified"
+      },
+      "condition": "The reversal and adjustment endpoints appear in the contract's endpoint index with request and response shapes but no retry or idempotency clauses.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Every endpoint in the contract's index defines retry, idempotency, and error semantics.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The index is the population, so the totality claim is checkable and the absences are exact.",
+          "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "Integrators retrying reversals or adjustments are working from silence, which constrains completeness to minimum."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:service-contract",
+          "statement": "The reversal and adjustment entries end at the response shape; the other twelve entries carry retry, idempotency, and error clauses."
+        }
+      ],
+      "id": "gap-005",
+      "severity": "medium",
+      "statement": "Two mutation endpoints have no replay semantics in the contract.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:service-contract::contract-covers-mutation-semantics",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Twelve of fourteen mutation endpoints have complete semantics; two lack replay clauses."
+}

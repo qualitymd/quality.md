@@ -27,29 +27,30 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 ## Summary
 
-The API has predictable errors, but idempotency retry semantics need a tighter contract.
+Error contracts and latency meet target, but unspecified interrupted-write replay holds the API at minimum.
 
 ## Area / factor breakdown
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
+| ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [□ Performance](factors/performance/performance-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [mutation endpoints are idempotent under retry](requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed | [correctness](factors/correctness/correctness-factor.md) |
+| [p99 mutation latency stays within budget](requirements/p99-latency-within-budget/p99-latency-within-budget-requirement.md) | 🔵 Target | ✅ Assessed | [performance](factors/performance/performance-factor.md) |
 | [error responses are predictable for callers](requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed | [operability](factors/operability/operability-factor.md) |
 
 ## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 
@@ -59,6 +60,8 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json](../../data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json)
+- [data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json](../../data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
 

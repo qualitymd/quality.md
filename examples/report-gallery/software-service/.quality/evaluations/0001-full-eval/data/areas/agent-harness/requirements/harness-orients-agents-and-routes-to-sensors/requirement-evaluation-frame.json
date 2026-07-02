@@ -1,0 +1,44 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Harness artifacts cover setup, scoped work, verification, and handoff; agree with the contract and runbooks; and route to sensors that run as recorded.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do the checked-in harness artifacts orient an agent and route to sensors that actually run?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do the checked-in harness artifacts orient an agent and route to sensors that actually run?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:agent-harness::completeness",
+      "factor:agent-harness::coherence",
+      "factor:agent-harness::currentness",
+      "factor:agent-harness::assessability"
+    ],
+    "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+  }
+}

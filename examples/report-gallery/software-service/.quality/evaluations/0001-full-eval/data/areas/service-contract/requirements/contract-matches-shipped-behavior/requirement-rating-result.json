@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The latest contract-test sensor run and handler matrix cover every specified clause.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "No specified clause diverges from shipped behavior."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Divergences, where historical, were resolved in the contract's favor."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Shipped behavior matches every specified contract clause in the latest sensor run.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-006]",
+          "subject": {
+            "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Every specified clause matches shipped behavior in the latest sensor run; the deprecated-field remainder is noted but does not contradict a clause.",
+  "requirementId": "requirement:service-contract::contract-matches-shipped-behavior",
+  "schemaVersion": 3,
+  "status": "rated"
+}

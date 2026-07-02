@@ -3,18 +3,10 @@
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Integrity is driven by ledger mutations preserve balance invariants.",
-        "effect": "supports target",
+        "description": "Integrity: Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.",
+        "effect": "rates outstanding",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -26,8 +18,8 @@
         ]
       },
       {
-        "description": "Recoverability is driven by migrations have rehearsed rollback paths.",
-        "effect": "constrains target",
+        "description": "Recoverability: Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -40,23 +32,15 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Ledger integrity is well covered, while rollback rehearsal evidence is stale.",
+    "rationale": "Balance integrity is outstanding on two independent sensors; unrehearsed rollback against the current schema caps the area at minimum.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
-    "evaluationLimits": [
-      {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
-      }
-    ],
     "ratingDrivers": [
       {
-        "description": "Integrity is driven by ledger mutations preserve balance invariants.",
-        "effect": "supports target",
+        "description": "Integrity: Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.",
+        "effect": "rates outstanding",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -68,8 +52,8 @@
         ]
       },
       {
-        "description": "Recoverability is driven by migrations have rehearsed rollback paths.",
-        "effect": "constrains target",
+        "description": "Recoverability: Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -82,7 +66,7 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Ledger integrity is well covered, while rollback rehearsal evidence is stale.",
+    "rationale": "Balance integrity is outstanding on two independent sensors; unrehearsed rollback against the current schema caps the area at minimum.",
     "status": "analyzed"
   },
   "schemaVersion": 3

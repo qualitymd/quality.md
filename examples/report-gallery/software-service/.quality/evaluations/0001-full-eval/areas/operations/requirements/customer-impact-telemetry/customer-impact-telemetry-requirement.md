@@ -29,38 +29,37 @@ Factors: [observability](../../factors/observability/observability-factor.md)
 
 ## Summary
 
-The sampled telemetry explains customer impact for core failure modes.
+Dashboards-as-code map service symptoms to failed customer actions, and the deployed dashboards match the definitions.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-003` | Health dashboards connect service errors to failed customer actions. | 💪 Strength | — | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
+| `strength-008` | Health dashboards express failed customer actions, not just service symptoms. | 💪 Strength | — | 🔵 Medium | Operators can answer "who is hurt" directly from the dashboards, supporting the target observability rating. | ✅ Verified: The definitions were diffed against the deployed dashboards; the panel inventory was walked class by class. |
 
 ## Finding details
 
-<a id="finding-strength-003"></a>
+<a id="finding-strength-008"></a>
 
-### strength-003 Health dashboards connect service errors to failed customer actions.
+### strength-008 Health dashboards express failed customer actions, not just service symptoms.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 5 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 20 / 21 | ⚪ P4 Low | Dashboards answer customer impact directly. |
 
 #### Condition
 
-Synthetic dashboards include failed ledger mutations, retry exhaustion, and queue delay panels.
+The committed definitions include failed-mutation, retry-exhaustion, and queue-delay panels each denominated in affected customer actions, and the deployed dashboards match the definitions.
 
 #### Criteria
 
-- `requirement:operations::customer-impact-telemetry / rating:target`: Operational signals should meet the target observability bar by explaining customer impact.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:operations::customer-impact-telemetry / rating:target`: Committed dashboard definitions map symptom classes to failed customer actions and match what is deployed.
 
 #### Basis
 
 Status: ✅ Verified
 
-The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions.
+The definitions were diffed against the deployed dashboards; the panel inventory was walked class by class.
 
 ##### Basis evidence
 
@@ -68,14 +67,13 @@ The synthetic dashboard inventory maps technical symptoms to customer-visible fa
 
 #### Effect
 
-The finding supports the target observability rating.
+Operators can answer "who is hurt" directly from the dashboards, supporting the target observability rating.
 
 Rating effect: supports target
 
 #### Evidence
 
-- `synthetic-source:operations/customer-impact-dashboard`: The synthetic dashboard inventory includes panels for failed customer mutations and retry exhaustion.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:operations/dashboards-as-code`: Panel definitions express failure counts as failed customer actions per minute; the deployment diff is empty.
 
 ## Unknowns and missing evidence
 

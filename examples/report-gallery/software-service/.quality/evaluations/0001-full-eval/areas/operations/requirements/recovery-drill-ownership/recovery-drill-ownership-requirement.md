@@ -1,9 +1,9 @@
 ---
 type: Requirement Evaluation Report
-title: "Requirement: recovery drills have current owners"
+title: "Requirement: recovery drills have current owners and recent practice records"
 ---
 
-# Requirement: recovery drills have current owners
+# Requirement: recovery drills have current owners and recent practice records
 
 > **Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
@@ -17,7 +17,7 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
-| 🟡 Minimum | ✅ Assessed | 🟡 Low / 🟡 Low |
+| ⚪ Not Rated | ⚪ Not Assessed | ⚪ None / ⚪ None |
 
 ## Contents
 
@@ -29,38 +29,38 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
 ## Summary
 
-Recovery ownership is visible but ambiguous across the sampled records.
+Ownership records conflict; the requirement could not be assessed from the available material.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `gap-002` | The current owner for ledger recovery drills is ambiguous. | 🚩 Gap | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
+| `note-003` | Recovery drill ownership records contradict each other. | ℹ️ Note | — | 🟡 Low | The requirement is recorded as not assessed; restoring assessability is the actionable next step. | ⚪ Not Assessed: The records conflict, so neither can serve as the basis for a judgment. |
 
 ## Finding details
 
-<a id="finding-gap-002"></a>
+<a id="finding-note-003"></a>
 
-### gap-002 The current owner for ledger recovery drills is ambiguous.
+### note-003 Recovery drill ownership records contradict each other.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 6 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 5 / 21 | 🟠 P2 High | Missing evidence on drill ownership blocks the recoverability judgment entirely; restoring assessability is cheap. |
 
 #### Condition
 
-The synthetic recovery calendar names a team, while the incident playbook names a former individual owner.
+The calendar's owner field names the platform team; the playbook's escalation section names an engineer who left the rotation in the spring reorg; no drill record exists after the reorg.
 
 #### Criteria
 
-- `requirement:operations::recovery-drill-ownership / rating:target`: Recovery drills should meet the target recoverability bar with current named ownership.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:operations::recovery-drill-ownership / rating:target`: The calendar and playbook agree on the current drill owner and a drill record exists within the last quarter.
+  Rationale: The contradiction itself is the observation; it blocks assessment rather than failing it.
 
 #### Basis
 
 Status: ⚪ Not Assessed
 
-The available synthetic records conflict, so current ownership cannot be verified.
+The records conflict, so neither can serve as the basis for a judgment.
 
 ##### Basis evidence
 
@@ -68,20 +68,19 @@ The available synthetic records conflict, so current ownership cannot be verifie
 
 #### Effect
 
-The finding limits confidence and constrains the requirement to minimum.
+The requirement is recorded as not assessed; restoring assessability is the actionable next step.
 
-Rating effect: constrains target
+Rating effect: blocks rating
 
 #### Evidence
 
-- `synthetic-source:operations/recovery-calendar`: The synthetic calendar and playbook disagree about who owns the next recovery drill.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:operations/recovery-calendar`: The calendar and playbook disagree on the owner, and the drill log's latest entry predates the reorg.
 
 ## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
-| (none recorded) | — |
+| 🔎 Missing Evidence | The recovery calendar names the platform team while the incident playbook names a former individual owner; neither record postdates the reorg. |
 
 ## Primary source data
 

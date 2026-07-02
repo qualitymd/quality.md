@@ -1,0 +1,21 @@
+{
+  "background": "The ownership requirement could not be assessed because the calendar and playbook contradict each other and no drill record postdates the reorg. The blocker is record reconciliation, not drill quality.",
+  "confidence": "high",
+  "description": "Agree the current drill owner, update the recovery calendar and incident playbook to name the same owner, and schedule the next drill so a post-reorg record exists.",
+  "doneCriterion": "The calendar and playbook name the same current owner, and the drill log contains a post-reorg entry or a scheduled date.",
+  "expectedValue": "The recoverability factor becomes assessable again, and the next evaluation can rate drill practice on evidence instead of recording missing evidence.",
+  "id": "qrec_drillownership",
+  "impact": "medium",
+  "kind": "RecommendationResult",
+  "schemaVersion": 3,
+  "title": "Reconcile recovery drill ownership and restore assessability",
+  "traceRefs": [
+    {
+      "kind": "RequirementAssessmentResult",
+      "selector": "findings[note-003]",
+      "subject": {
+        "requirementId": "requirement:operations::recovery-drill-ownership"
+      }
+    }
+  ]
+}

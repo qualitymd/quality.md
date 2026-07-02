@@ -1,0 +1,99 @@
+{
+  "areaId": "area:quality-md",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Context Grounding: The body's unknowns and open questions have drifted behind the model's own changes.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::context-grounding"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Evaluability: Requirements are assessable from recorded evidence; the stale body context caps the shared requirement's rating.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::evaluability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Lifecycle Maintenance: The changelog records why the model changed; the body has not kept pace with those changes.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::lifecycle-maintenance"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Context Grounding: The body's unknowns and open questions have drifted behind the model's own changes.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::context-grounding"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Evaluability: Requirements are assessable from recorded evidence; the stale body context caps the shared requirement's rating.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::evaluability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Lifecycle Maintenance: The changelog records why the model changed; the body has not kept pace with those changes.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:quality-md::lifecycle-maintenance"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

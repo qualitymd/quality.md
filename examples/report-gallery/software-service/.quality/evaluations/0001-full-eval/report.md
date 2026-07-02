@@ -13,13 +13,13 @@ run: 0001-full-eval
 
 ## Summary
 
-LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
+LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.
 
 ## Key details
 
 | Overall rating | Confidence | Scope | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 7 total | 3 total |
+| 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 21 total | 6 total |
 
 ## Contents
 
@@ -32,42 +32,67 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
-| ↳ [▦ Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ [□ Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | 🟡 Minimum | 21 | 6 |
+| ↳ [□ Agent Harnessability](factors/agent-harnessability/agent-harnessability-factor.md) | 🟡 Minimum | ⬜ Empty | 7 | 2 |
+| ↳ ↳ [□ Agent Accessibility](factors/agent-harnessability/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Agent Operability](factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Containment of Action](factors/agent-harnessability/factors/containment-of-action/containment-of-action-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Self-Verifiability](factors/agent-harnessability/factors/self-verifiability/self-verifiability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [▦ Agent harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Coherence](areas/agent-harness/factors/coherence/coherence-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Completeness](areas/agent-harness/factors/completeness/completeness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Currentness](areas/agent-harness/factors/currentness/currentness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
+| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [▦ Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Performance](areas/api/factors/performance/performance-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Operations](areas/operations/operations-area.md) | 🔵 Target | 🔵 Target | 2 | 1 |
 | ↳ ↳ [□ Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ Ledger Persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 1 | 1 |
+| ↳ [▦ Ledger persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [▦ LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [▦ Service contract](areas/service-contract/service-contract-area.md) | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
+| ↳ ↳ [□ Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Consistency](areas/service-contract/factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
 
 ## Top findings
 
-**Full findings report:** [findings.md](findings.md) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
+**Full findings report:** [findings.md](findings.md) (21 total: 🚩 6 Gaps: 🔴 1 High, 🟡 4 Medium, 🔵 1 Low; ⚠️ 2 Risks: 🟡 2 Medium; 💪 9 Strengths; ℹ️ 4 Notes)
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
-| 1 | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-001) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🚩 Gap | 🔴 High |
-| 2 | [Common caller error cases share a documented response shape.](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md#finding-strength-001) | [Public API](areas/api/api-area.md) | [Operability](areas/api/factors/operability/operability-factor.md) | 💪 Strength | — |
-| 3 | [Ledger mutation checks preserve balance invariants in the sampled paths.](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md#finding-strength-002) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 💪 Strength | — |
-| 4 | [Rollback guidance exists, but rehearsal evidence is stale.](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md#finding-risk-001) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⚠️ Risk | 🟡 Medium |
-| 5 | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | 💪 Strength | — |
-| 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-gap-002) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🚩 Gap | 🟡 Medium |
-| 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 💪 Strength | — |
+| 1 | [Replay behavior after an interrupted write is unspecified and untested.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-004) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🚩 Gap | 🔴 High |
+| 2 | [Rollback steps have not been rehearsed since the two most recent schema migrations landed.](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md#finding-risk-002) | [Ledger persistence](areas/persistence/persistence-area.md) | [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⚠️ Risk | 🟡 Medium |
+| 3 | [Contract tests and the invariant suite run at merge time but cannot block a merge.](requirements/standards-gate-nonconforming-changes/standards-gate-nonconforming-changes-requirement.md#finding-gap-003) | [LedgerLite Service](root-area.md) | [Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | 🚩 Gap | 🟡 Medium |
+| 4 | [Two mutation endpoints have no replay semantics in the contract.](areas/service-contract/requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md#finding-gap-005) | [Service contract](areas/service-contract/service-contract-area.md) | [Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🚩 Gap | 🟡 Medium |
+| 5 | [Recovery drill ownership records contradict each other.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-note-003) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ℹ️ Note | — |
+| 6 | [Most quality-loop handoffs omit done criteria and the confirming sensor.](requirements/quality-loop-work-items-carry-done-criteria/quality-loop-work-items-carry-done-criteria-requirement.md#finding-gap-001) | [LedgerLite Service](root-area.md) | [Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md) | 🚩 Gap | 🟡 Medium |
+| 7 | [In-flight decisions live in chat scrollback and would not survive a cold handoff.](requirements/handoffs-survive-session-loss/handoffs-survive-session-loss-requirement.md#finding-risk-001) | [LedgerLite Service](root-area.md) | [Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | ⚠️ Risk | 🟡 Medium |
+| 8 | [The body's unknowns and open questions have not been revisited since the service-contract area was added.](areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md#finding-gap-006) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | [Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md), [Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md), [Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🚩 Gap | 🟡 Medium |
+| 9 | [The telemetry read credential needed for latency checks is documented only in the private wiki.](requirements/a-fresh-session-reaches-a-ready-to-work-environment/a-fresh-session-reaches-a-ready-to-work-environment-requirement.md#finding-gap-002) | [LedgerLite Service](root-area.md) | [Agent Operability](factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md) | 🚩 Gap | 🔵 Low |
+| 10 | [The sensor catalog's invariant-suite command name is one rename behind.](areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md#finding-note-004) | [Agent harness](areas/agent-harness/agent-harness-area.md) | [Completeness](areas/agent-harness/factors/completeness/completeness-factor.md), [Coherence](areas/agent-harness/factors/coherence/coherence-factor.md), [Currentness](areas/agent-harness/factors/currentness/currentness-factor.md), [Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | ℹ️ Note | — |
 
 ## Top recommendations
 
-**Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 2 High, ● 1 Medium)
+**Full recommendations report:** [recommendations.md](recommendations.md) (6 total; impact: ⬥ 3 High, ● 2 Medium, ○ 1 Low)
 
 | # | Recommendation | Area / factors | Impact | Confidence | Reason |
 | --- | --- | --- | --- | --- | --- |
-| 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
-| 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. |
-| 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. |
+| 1 | [Specify and test replay semantics for interrupted mutations](recommendations/001-specify-and-test-replay-semantics-for-interrupted-mutations.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md); [Service contract](areas/service-contract/service-contract-area.md) / [Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | ⬥ High | 🟢 High | Integrators and agents can verify retry behavior from the contract and its sensor instead of inferring undocumented recovery semantics; the API correctness and contract completeness ratings can reach target. |
+| 2 | [Rehearse migration rollback against the current schema](recommendations/002-rehearse-migration-rollback-against-the-current-schema.md) | [Ledger persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against the schema they would actually run on, and the recoverability rating can return to target. |
+| 3 | [Make the contract-test and invariant sensors required at merge](recommendations/003-make-the-contract-test-and-invariant-sensors-required-at-merge.md) | [LedgerLite Service](root-area.md) / [Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | ⬥ High | 🔵 Medium | Contract conformance and ledger invariants hold regardless of reviewer attention, converting the two strongest sensors from advisory signals into enforced standards. |
+| 4 | [Reconcile recovery drill ownership and restore assessability](recommendations/004-reconcile-recovery-drill-ownership-and-restore-assessability.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟢 High | The recoverability factor becomes assessable again, and the next evaluation can rate drill practice on evidence instead of recording missing evidence. |
+| 5 | [Record done criteria and progress in durable handoff notes](recommendations/005-record-done-criteria-and-progress-in-durable-handoff-notes.md) | [LedgerLite Service](root-area.md) / [Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md), [Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | ● Medium | 🔵 Medium | Agents can declare completion against criteria and resume interrupted work from records, lifting task specifiability and continuity toward target. |
+| 6 | [Refresh the model body's unknowns and open questions](recommendations/006-refresh-the-model-body-s-unknowns-and-open-questions.md) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) / [Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md), [Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md), [Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | ○ Low | 🟢 High | Evaluations start from current judgment context, and the QUALITY.md self-check can return to target. |
 
 ## Primary source data
 

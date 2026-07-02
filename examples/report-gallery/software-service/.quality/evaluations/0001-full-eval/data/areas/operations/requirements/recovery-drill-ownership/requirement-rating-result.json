@@ -1,38 +1,17 @@
 {
-  "confidence": "low",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
-  "criteriaResults": [
-    {
-      "matched": false,
-      "ratingLevelId": "rating:target",
-      "rationale": "Recovery drills should meet the target recoverability bar with current named ownership."
-    },
-    {
-      "matched": true,
-      "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
-    }
-  ],
+  "confidence": "none",
+  "confidenceReason": "The conflicting records cannot support a judgment either way.",
   "kind": "RequirementRatingResult",
-  "ratingDrivers": [
+  "missingEvidence": [
     {
-      "description": "The current owner for ledger recovery drills is ambiguous.",
-      "effect": "constrains target",
-      "inputRefs": [
-        {
-          "kind": "RequirementAssessmentResult",
-          "selector": "findings[gap-002]",
-          "subject": {
-            "requirementId": "requirement:operations::recovery-drill-ownership"
-          }
-        }
-      ],
-      "ratingLevelId": "rating:minimum"
+      "description": "The recovery calendar names the platform team while the incident playbook names a former individual owner; neither record postdates the reorg.",
+      "id": "conflicting-ownership-records",
+      "impact": "Current ownership and drill recency cannot be verified until the records are reconciled."
     }
   ],
-  "ratingLevelId": "rating:minimum",
-  "rationale": "The requirement remains usable because recovery practice exists, but ownership ambiguity misses target.",
+  "rationale": "Not assessed is recorded rather than a low rating: the evidence is missing, not failing.",
   "requirementId": "requirement:operations::recovery-drill-ownership",
   "schemaVersion": 3,
-  "status": "rated"
+  "status": "not_rated",
+  "statusReason": "The recovery calendar and the incident playbook name different current owners, and no drill record exists after the ownership change, so current ownership could not be established from the available records."
 }

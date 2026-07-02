@@ -1,5 +1,38 @@
 # Changes update log
 
+## 2026-07-02
+
+- **In-Review**: Completed implementation for
+  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md).
+  The generator now embeds the exemplar `QUALITY.md`, README, and a synthetic
+  quality changelog from content files, builds the expanded evaluation (18
+  requirements across a composite root, all four finding types, a not-assessed
+  result, six ranked recommendations) through the real pipeline at the stable
+  `0001-full-eval` path, and regenerates byte-stably. `CHANGELOG.md` notes the
+  gallery upgrade under Unreleased.
+
+- **In-Progress**: Advanced
+  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md).
+  Spec and design are settled; implementation begins on the generator
+  restructure and exemplar content.
+
+- **Design**: Added the
+  [design doc](0190-report-gallery-exemplar/design.md) for 0190: embedded
+  content files via `go:embed`, generalized payload tables (multi-factor,
+  multi-finding, not-assessed, umbrella-factor roll-up), and generator-owned
+  changelog emission, keeping the byte-stable regeneration gate.
+
+- **Draft**: Created
+  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md)
+  with its [functional spec](0190-report-gallery-exemplar/spec.md). The case
+  expands the LedgerLite gallery into a best-practice QUALITY.md exemplar — full
+  body sections with unknowns and review provenance, model-wide
+  agent-harnessability with seven sub-factors, a normative service-contract
+  area, a veto requirement, a measured rating override, sensor-grounded
+  assessments, a not-assessed result, a synthetic quality changelog, and
+  realistic finding/recommendation copy — regenerated at the stable
+  `0001-full-eval` path. Updated the bundle [index](index.md).
+
 ## 2026-06-30
 
 - **Done**: Implemented and archived

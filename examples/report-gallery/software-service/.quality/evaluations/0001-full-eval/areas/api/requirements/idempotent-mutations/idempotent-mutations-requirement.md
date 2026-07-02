@@ -29,38 +29,39 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 
 ## Summary
 
-The idempotency contract is present but incomplete for retry recovery.
+Duplicate-key replay is specified and tested; replay after an interrupted write is neither specified nor tested.
 
 ## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `gap-001` | Mutation retry behavior is not fully specified for duplicate idempotency keys. | 🚩 Gap | 🔴 High | 🔵 Medium | The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics. | ✅ Verified: The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior. |
+| `gap-004` | Replay behavior after an interrupted write is unspecified and untested. | 🚩 Gap | 🔴 High | 🔵 Medium | Integrators cannot know whether an interrupted-write retry double-posts, which constrains correctness to minimum. | ✅ Verified: The contract's retry section and the contract-test case list were both searched; the interrupted-write case appears in neither. |
+| `note-001` | Replay traffic is a meaningful share of mutation volume. | ℹ️ Note | — | 🟢 High | The unspecified replay path is exercised daily, not theoretically. | ✅ Verified: The telemetry rollup for the window was queried directly. |
 
 ## Finding details
 
-<a id="finding-gap-001"></a>
+<a id="finding-gap-004"></a>
 
-### gap-001 Mutation retry behavior is not fully specified for duplicate idempotency keys.
+### gap-004 Replay behavior after an interrupted write is unspecified and untested.
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 1 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 1 / 21 | 🔴 P1 Highest | Unspecified interrupted-write replay on a money-moving API is the highest-exposure gap, exercised daily by real replay traffic. |
 
 #### Condition
 
-The synthetic API contract describes idempotency keys, but replayed requests do not have a documented response contract for partial-write recovery.
+The contract defines duplicate-key replay, and the contract tests cover it; neither addresses a retry that arrives after a write failed mid-transaction.
 
 #### Criteria
 
-- `requirement:api::idempotent-mutations / rating:target`: Mutation endpoints should meet the target correctness bar with retry behavior a maintainer can verify.
-  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+- `requirement:api::idempotent-mutations / rating:target`: Contract tests prove duplicate, replayed, and interrupted-write retries produce exactly-once ledger effects.
+  Rationale: Interrupted writes are exactly the case integrators retry hardest against.
 
 #### Basis
 
 Status: ✅ Verified
 
-The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior.
+The contract's retry section and the contract-test case list were both searched; the interrupted-write case appears in neither.
 
 ##### Basis evidence
 
@@ -68,14 +69,50 @@ The synthetic contract excerpt names idempotency keys but omits partial-write re
 
 #### Effect
 
-The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics.
+Integrators cannot know whether an interrupted-write retry double-posts, which constrains correctness to minimum.
 
 Rating effect: constrains target
 
 #### Evidence
 
-- `synthetic-source:api/idempotency-contract`: The synthetic contract covers idempotency-key presence and duplicate detection, but not partial-write replay outcomes.
-  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+- `synthetic-source:service-contract`: The retry section defines duplicate-key semantics only; the contract-test suite has no interrupted-write replay case.
+
+<a id="finding-note-001"></a>
+
+### note-001 Replay traffic is a meaningful share of mutation volume.
+
+| Advice rank | Tier | Ranking rationale |
+| --- | --- | --- |
+| 11 / 21 | ⚪ P4 Low | Replay-volume context informs the P1 gap's severity; no separate action. |
+
+#### Condition
+
+The four-week telemetry window shows about 4% of mutation requests carrying a previously seen idempotency key.
+
+#### Criteria
+
+- `requirement:api::idempotent-mutations / rating:target`: Contract tests prove duplicate, replayed, and interrupted-write retries produce exactly-once ledger effects.
+  Rationale: Volume context sizes how often the unspecified path is exercised.
+
+#### Basis
+
+Status: ✅ Verified
+
+The telemetry rollup for the window was queried directly.
+
+##### Basis evidence
+
+(none recorded)
+
+#### Effect
+
+The unspecified replay path is exercised daily, not theoretically.
+
+Rating effect: informs severity
+
+#### Evidence
+
+- `synthetic-source:telemetry/mutation-replays`: The replay-rate panel reports 3.8-4.3% of mutation requests reusing an idempotency key across the window.
 
 ## Unknowns and missing evidence
 

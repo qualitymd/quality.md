@@ -2,24 +2,52 @@
   "areaId": "area:root",
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
-    "confidence": "none",
-    "status": "empty",
-    "statusReason": "The root area has no direct local requirements in this illustrative model."
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Agent Harnessability sub-factor roll-up over the root's own requirements.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Agent equipping is strong on sensors, accessibility, and containment, but handoff records, done criteria, and advisory merge gates sit below target.",
+    "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "medium",
-    "confidenceReason": "Synthetic report-gallery judgment.",
     "evaluationLimits": [
       {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
+        "description": "The body requires money-touching areas (api, service-contract, persistence) to land at target or better; all three sit at minimum.",
+        "id": "below-required-margin",
+        "impact": "Read the overall minimum as a stop-and-fix signal per the model's required margin, not as an acceptable steady state."
       }
     ],
     "ratingDrivers": [
       {
-        "description": "api area contributes to the full service roll-up.",
-        "effect": "contributes to minimum",
+        "description": "Agent Harnessability: Sensors, accessibility, and containment equip agents well, but handoff records, done criteria, and advisory merge gates hold the equipping capability at minimum.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::agent-harnessability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Error contracts and latency meet target, but unspecified interrupted-write replay holds the API at minimum.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -31,8 +59,21 @@
         ]
       },
       {
-        "description": "persistence area contributes to the full service roll-up.",
-        "effect": "contributes to minimum",
+        "description": "The contract matches shipped behavior where it speaks; two mutation endpoints without replay semantics cap completeness.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:service-contract"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Balance integrity is outstanding on two independent sensors; unrehearsed rollback against the current schema caps the area at minimum.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -44,8 +85,8 @@
         ]
       },
       {
-        "description": "operations area contributes to the full service roll-up.",
-        "effect": "contributes to minimum",
+        "description": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -57,8 +98,8 @@
         ]
       },
       {
-        "description": "agent-harness area contributes to the full service roll-up.",
-        "effect": "contributes to minimum",
+        "description": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
+        "effect": "rates target",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -68,10 +109,23 @@
             }
           }
         ]
+      },
+      {
+        "description": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:quality-md"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.",
+    "rationale": "LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.",
     "status": "analyzed"
   },
   "schemaVersion": 3

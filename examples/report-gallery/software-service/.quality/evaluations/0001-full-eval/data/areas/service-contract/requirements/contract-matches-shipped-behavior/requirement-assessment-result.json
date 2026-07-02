@@ -1,0 +1,72 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The latest contract-test sensor run and handler matrix cover every specified clause.",
+  "evidenceSummary": "Where the contract speaks, handlers agree; one deprecated response field still ships that the contract no longer documents.",
+  "factors": [
+    "factor:service-contract::consistency"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The sensor run report was read alongside the clause list; coverage is one test per clause.",
+        "status": "verified"
+      },
+      "condition": "The contract-test suite exercises each specified clause against the running service and passed in full on the most recent run.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Every specified contract clause matches shipped handler behavior in the latest contract-test run.",
+          "ratingLevelId": "rating:target",
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "Judgments made against the contract hold for the shipped service, supporting the target consistency rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/contract-tests",
+          "statement": "The latest run reports all clause-mapped cases passing; the suite's clause coverage table shows no unmapped clause."
+        }
+      ],
+      "id": "strength-006",
+      "statement": "Shipped behavior matches every specified contract clause in the latest sensor run.",
+      "type": "strength"
+    },
+    {
+      "basis": {
+        "statement": "Response samples and the contract revision history were compared.",
+        "status": "verified"
+      },
+      "condition": "Mutation responses include balance_after, removed from the contract in the v1.4 revision; two integrators are known to still read it.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Every specified contract clause matches shipped handler behavior in the latest contract-test run.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The field contradicts no clause, but undocumented shipped behavior is drift in the making.",
+          "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "informational",
+        "statement": "Silent behavior outside the contract invites accidental breakage when the field is eventually removed."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/handler-matrix",
+          "statement": "Response samples carry balance_after; the contract's changelog shows its documentation removed in v1.4 without a removal plan for the field itself."
+        }
+      ],
+      "id": "note-002",
+      "statement": "The deprecated balance_after field still ships but is no longer documented.",
+      "type": "note"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:service-contract::contract-matches-shipped-behavior",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Where the contract speaks, handlers agree; one deprecated response field still ships that the contract no longer documents."
+}

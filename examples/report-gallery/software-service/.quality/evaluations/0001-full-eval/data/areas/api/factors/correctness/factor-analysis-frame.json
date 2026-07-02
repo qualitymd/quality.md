@@ -1,6 +1,6 @@
 {
   "derivedContext": {
-    "synthesisGuidanceRef": "synthetic-gallery-factor-rollup"
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
   },
   "inputs": {
     "directRequirementRatingRefs": [

@@ -1,0 +1,21 @@
+{
+  "background": "The rollback steps have not been rehearsed since the partitioning and currency-precision migrations landed, and the criterion was tightened to rehearsal recency precisely because documented-but-unrehearsed steps failed in two past incidents.",
+  "confidence": "medium",
+  "description": "Run the runbook's rollback path against a copy of the current schema — including migrations 041 and 042 — and record the rehearsal with date, schema version, and any step corrections.",
+  "doneCriterion": "The runbook's rehearsal log contains an entry newer than migration 042 with the rehearsed steps matching the current runbook text.",
+  "expectedValue": "Release risk drops because rollback instructions are proven against the schema they would actually run on, and the recoverability rating can return to target.",
+  "id": "qrec_rollbackrehearsal",
+  "impact": "high",
+  "kind": "RecommendationResult",
+  "schemaVersion": 3,
+  "title": "Rehearse migration rollback against the current schema",
+  "traceRefs": [
+    {
+      "kind": "RequirementAssessmentResult",
+      "selector": "findings[risk-002]",
+      "subject": {
+        "requirementId": "requirement:persistence::migration-rollback"
+      }
+    }
+  ]
+}

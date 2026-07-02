@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:agent-harness::completeness",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Harness artifacts cover setup, scoped work, verification, and handoff.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Harness artifacts cover setup, scoped work, verification, and handoff.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

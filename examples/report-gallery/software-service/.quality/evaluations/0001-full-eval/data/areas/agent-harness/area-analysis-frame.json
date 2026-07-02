@@ -1,6 +1,6 @@
 {
   "derivedContext": {
-    "synthesisGuidanceRef": "synthetic-gallery-area-rollup"
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
   },
   "inputs": {
     "factorAnalysisRefs": [
@@ -8,7 +8,28 @@
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
-          "factorId": "factor:agent-harness::agent-accessibility"
+          "factorId": "factor:agent-harness::completeness"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:agent-harness::coherence"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:agent-harness::currentness"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:agent-harness::assessability"
         }
       }
     ]

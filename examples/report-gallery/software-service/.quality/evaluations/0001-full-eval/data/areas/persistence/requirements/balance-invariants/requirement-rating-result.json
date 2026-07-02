@@ -1,37 +1,42 @@
 {
   "confidence": "high",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "confidenceReason": "Two independent sensors — the invariant suite and the reconciliation job — agree over the full window.",
   "criteriaResults": [
     {
       "matched": true,
+      "ratingLevelId": "rating:outstanding",
+      "rationale": "Coverage extends to interleaved concurrent reversals; drift is zero, not merely explained."
+    },
+    {
+      "matched": true,
       "ratingLevelId": "rating:target",
-      "rationale": "Ledger mutation evidence should meet the target integrity bar."
+      "rationale": "All required paths pass and reconciliation is clean."
     },
     {
       "matched": true,
       "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
+      "rationale": "Exceeded."
     }
   ],
   "kind": "RequirementRatingResult",
   "ratingDrivers": [
     {
-      "description": "Ledger mutation checks preserve balance invariants in the sampled paths.",
-      "effect": "supports target",
+      "description": "Balance invariants hold across every tested mutation path with zero reconciliation drift.",
+      "effect": "supports outstanding",
       "inputRefs": [
         {
           "kind": "RequirementAssessmentResult",
-          "selector": "findings[strength-002]",
+          "selector": "findings[strength-007]",
           "subject": {
             "requirementId": "requirement:persistence::balance-invariants"
           }
         }
       ],
-      "ratingLevelId": "rating:target"
+      "ratingLevelId": "rating:outstanding"
     }
   ],
-  "ratingLevelId": "rating:target",
-  "rationale": "The invariant tests satisfy the target integrity criterion for the sampled paths.",
+  "ratingLevelId": "rating:outstanding",
+  "rationale": "Both sensors pass with margin: the property suite covers concurrent and failure paths beyond the required cases, and reconciliation drift is zero across the window, exceeding the target bar.",
   "requirementId": "requirement:persistence::balance-invariants",
   "schemaVersion": 3,
   "status": "rated"

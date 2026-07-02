@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:service-contract::consistency",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Shipped behavior matches every specified contract clause in the latest sensor run.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Shipped behavior matches every specified contract clause in the latest sensor run.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

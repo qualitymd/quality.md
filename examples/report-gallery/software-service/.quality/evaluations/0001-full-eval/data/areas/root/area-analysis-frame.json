@@ -1,12 +1,6 @@
 {
   "derivedContext": {
-    "expectedEvaluationLimits": [
-      {
-        "description": "The full-service roll-up is based on synthetic routine outputs.",
-        "id": "synthetic-source-omitted"
-      }
-    ],
-    "synthesisGuidanceRef": "synthetic-gallery-root-rollup"
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
   },
   "inputs": {
     "childAreaAnalysisRefs": [
@@ -15,6 +9,13 @@
         "selector": "localAndDescendantAnalysis",
         "subject": {
           "areaId": "area:api"
+        }
+      },
+      {
+        "kind": "AreaAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "areaId": "area:service-contract"
         }
       },
       {
@@ -36,6 +37,22 @@
         "selector": "localAndDescendantAnalysis",
         "subject": {
           "areaId": "area:agent-harness"
+        }
+      },
+      {
+        "kind": "AreaAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "areaId": "area:quality-md"
+        }
+      }
+    ],
+    "factorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:root::agent-harnessability"
         }
       }
     ]

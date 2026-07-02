@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "A fresh agent reaches service purpose, contract, runbooks, and sensors from the entry point without private context.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Can a fresh agent session reach decision-relevant service context from the recorded entry point?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/entry-point"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Can a fresh agent session reach decision-relevant service context from the recorded entry point?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:root::agent-harnessability/agent-accessibility"
+    ],
+    "requirementId": "requirement:root::agents-reach-service-context-from-a-stable-entry-point"
+  }
+}

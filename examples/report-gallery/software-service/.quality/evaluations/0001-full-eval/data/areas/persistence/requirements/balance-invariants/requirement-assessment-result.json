@@ -1,46 +1,38 @@
 {
   "confidence": "high",
-  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
-  "evaluationLimits": [
-    {
-      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
-      "id": "synthetic-source",
-      "impact": "The finding demonstrates report structure, not a verifiable source claim."
-    }
-  ],
-  "evidenceSummary": "The sampled persistence evidence supports balance preservation.",
+  "confidenceReason": "Two independent sensors — the invariant suite and the reconciliation job — agree over the full window.",
+  "evidenceSummary": "The property-based suite passes across all mutation paths and the nightly reconciliation sensor shows zero unexplained drift over the window.",
   "factors": [
     "factor:persistence::integrity"
   ],
   "findings": [
     {
       "basis": {
-        "statement": "The synthetic test matrix includes both success and failure paths for balance preservation.",
+        "statement": "Suite results and the reconciliation drift report were both read for the window.",
         "status": "verified"
       },
-      "condition": "Synthetic mutation tests cover debit, credit, failed write, and reconciliation paths.",
+      "condition": "The property-based suite passes for debit, credit, failed-write, and interleaved concurrent reversal paths, and the nightly reconciliation report shows zero unexplained drift for the four-week window.",
       "confidence": "high",
       "criteria": [
         {
-          "criterion": "Ledger mutation evidence should meet the target integrity bar.",
-          "ratingLevelId": "rating:target",
-          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "criterion": "Invariant and reconciliation sensors pass over the window with coverage beyond the required mutation paths.",
+          "ratingLevelId": "rating:outstanding",
+          "rationale": "This is the model's veto requirement; the sharpened unacceptable band is why two independent sensors are consulted.",
           "requirementId": "requirement:persistence::balance-invariants"
         }
       ],
       "effect": {
-        "ratingEffect": "supports target",
-        "statement": "The finding supports the target integrity rating for ledger persistence."
+        "ratingEffect": "supports outstanding",
+        "statement": "The failure the model most exists to prevent shows no signal on either sensor, supporting an outstanding integrity rating."
       },
       "evidence": [
         {
-          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
-          "sourceRef": "synthetic-source:persistence/balance-tests",
-          "statement": "The synthetic tests assert balanced entries after successful writes and no balance movement after failed writes."
+          "sourceRef": "synthetic-source:persistence/reconciliation",
+          "statement": "The drift report reads zero unexplained cents across all accounts for the window; the suite's concurrent-reversal properties passed 10,000 generated cases."
         }
       ],
-      "id": "strength-002",
-      "statement": "Ledger mutation checks preserve balance invariants in the sampled paths.",
+      "id": "strength-007",
+      "statement": "Balance invariants hold across every tested mutation path with zero reconciliation drift.",
       "type": "strength"
     }
   ],
@@ -48,5 +40,5 @@
   "requirementId": "requirement:persistence::balance-invariants",
   "schemaVersion": 3,
   "status": "assessed",
-  "summary": "The sampled persistence evidence supports balance preservation."
+  "summary": "The property-based suite passes across all mutation paths and the nightly reconciliation sensor shows zero unexplained drift over the window."
 }

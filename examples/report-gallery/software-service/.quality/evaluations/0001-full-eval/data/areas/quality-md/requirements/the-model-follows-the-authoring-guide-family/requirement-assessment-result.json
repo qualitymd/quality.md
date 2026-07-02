@@ -1,0 +1,47 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The model file and quality changelog are fully inspectable.",
+  "evidenceSummary": "The model's structure, traceability, and changelog follow the guides; the body's unknowns and open questions have not kept up with the model's own changes.",
+  "factors": [
+    "factor:quality-md::context-grounding",
+    "factor:quality-md::evaluability",
+    "factor:quality-md::lifecycle-maintenance"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The body's section dates and the changelog's area-addition entry were compared.",
+        "status": "verified"
+      },
+      "condition": "The Risks section still carries the pre-contract open question about error-envelope deprecation as unresolved even though the contract area now owns it, and the Needs unknowns omit the new integrator-retry blind spot the idempotency work surfaced.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Body context, factor traceability, requirement assessability, and changelog practice match the authoring guide family with current unknowns and open questions.",
+          "ratingLevelId": "rating:target",
+          "rationale": "Unknowns are judgment context; stale ones misdirect the next evaluation's attention.",
+          "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The next evaluator inherits judgment context that no longer matches the model, constraining context grounding to minimum."
+      },
+      "evidence": [
+        {
+          "sourceRef": "./QUALITY.md",
+          "statement": "The Risks open question predates the contract area's changelog entry; no body section's review line postdates it."
+        }
+      ],
+      "id": "gap-006",
+      "severity": "medium",
+      "statement": "The body's unknowns and open questions have not been revisited since the service-contract area was added.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The model's structure, traceability, and changelog follow the guides; the body's unknowns and open questions have not kept up with the model's own changes."
+}

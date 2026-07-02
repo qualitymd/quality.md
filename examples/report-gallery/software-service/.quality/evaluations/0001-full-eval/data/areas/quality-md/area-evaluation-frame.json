@@ -1,0 +1,23 @@
+{
+  "derivedContext": {
+    "scope": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+    ],
+    "rootFactorIds": [
+      "factor:quality-md::context-grounding",
+      "factor:quality-md::evaluability",
+      "factor:quality-md::lifecycle-maintenance"
+    ],
+    "sourceRefs": [
+      "./QUALITY.md"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:quality-md"
+  }
+}

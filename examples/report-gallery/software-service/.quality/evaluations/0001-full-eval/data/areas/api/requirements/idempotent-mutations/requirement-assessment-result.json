@@ -1,53 +1,74 @@
 {
   "confidence": "medium",
-  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
-  "evaluationLimits": [
-    {
-      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
-      "id": "synthetic-source",
-      "impact": "The finding demonstrates report structure, not a verifiable source claim."
-    }
-  ],
-  "evidenceSummary": "The idempotency contract is present but incomplete for retry recovery.",
+  "confidenceReason": "The contract-test suite and contract were compared directly; interrupted-write behavior is untested, so its risk is inferred.",
+  "evidenceSummary": "Duplicate-key replay is specified and tested; replay after an interrupted write is neither specified nor tested.",
   "factors": [
     "factor:api::correctness"
   ],
   "findings": [
     {
       "basis": {
-        "statement": "The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior.",
+        "statement": "The contract's retry section and the contract-test case list were both searched; the interrupted-write case appears in neither.",
         "status": "verified"
       },
-      "condition": "The synthetic API contract describes idempotency keys, but replayed requests do not have a documented response contract for partial-write recovery.",
+      "condition": "The contract defines duplicate-key replay, and the contract tests cover it; neither addresses a retry that arrives after a write failed mid-transaction.",
       "confidence": "medium",
       "criteria": [
         {
-          "criterion": "Mutation endpoints should meet the target correctness bar with retry behavior a maintainer can verify.",
+          "criterion": "Contract tests prove duplicate, replayed, and interrupted-write retries produce exactly-once ledger effects.",
           "ratingLevelId": "rating:target",
-          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "rationale": "Interrupted writes are exactly the case integrators retry hardest against.",
           "requirementId": "requirement:api::idempotent-mutations"
         }
       ],
       "effect": {
         "ratingEffect": "constrains target",
-        "statement": "The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics."
+        "statement": "Integrators cannot know whether an interrupted-write retry double-posts, which constrains correctness to minimum."
       },
       "evidence": [
         {
-          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
-          "sourceRef": "synthetic-source:api/idempotency-contract",
-          "statement": "The synthetic contract covers idempotency-key presence and duplicate detection, but not partial-write replay outcomes."
+          "sourceRef": "synthetic-source:service-contract",
+          "statement": "The retry section defines duplicate-key semantics only; the contract-test suite has no interrupted-write replay case."
         }
       ],
-      "id": "gap-001",
+      "id": "gap-004",
       "severity": "high",
-      "statement": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+      "statement": "Replay behavior after an interrupted write is unspecified and untested.",
       "type": "gap"
+    },
+    {
+      "basis": {
+        "statement": "The telemetry rollup for the window was queried directly.",
+        "status": "verified"
+      },
+      "condition": "The four-week telemetry window shows about 4% of mutation requests carrying a previously seen idempotency key.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Contract tests prove duplicate, replayed, and interrupted-write retries produce exactly-once ledger effects.",
+          "ratingLevelId": "rating:target",
+          "rationale": "Volume context sizes how often the unspecified path is exercised.",
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "informs severity",
+        "statement": "The unspecified replay path is exercised daily, not theoretically."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:telemetry/mutation-replays",
+          "statement": "The replay-rate panel reports 3.8-4.3% of mutation requests reusing an idempotency key across the window."
+        }
+      ],
+      "id": "note-001",
+      "statement": "Replay traffic is a meaningful share of mutation volume.",
+      "type": "note"
     }
   ],
   "kind": "RequirementAssessmentResult",
   "requirementId": "requirement:api::idempotent-mutations",
   "schemaVersion": 3,
   "status": "assessed",
-  "summary": "The idempotency contract is present but incomplete for retry recovery."
+  "summary": "Duplicate-key replay is specified and tested; replay after an interrupted write is neither specified nor tested."
 }

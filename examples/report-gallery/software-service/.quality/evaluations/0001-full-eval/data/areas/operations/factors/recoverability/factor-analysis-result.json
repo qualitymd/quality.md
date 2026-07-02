@@ -2,60 +2,30 @@
   "factorId": "factor:operations::recoverability",
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
-    "confidence": "low",
-    "confidenceReason": "Synthetic report-gallery judgment.",
+    "confidence": "none",
     "evaluationLimits": [
       {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
+        "description": "The recovery calendar and incident playbook name different current owners.",
+        "id": "conflicting-ownership-records",
+        "impact": "The factor cannot be analyzed until ownership records are reconciled."
       }
     ],
-    "ratingDrivers": [
-      {
-        "description": "The current owner for ledger recovery drills is ambiguous.",
-        "effect": "constrains target",
-        "inputRefs": [
-          {
-            "kind": "RequirementRatingResult",
-            "subject": {
-              "requirementId": "requirement:operations::recovery-drill-ownership"
-            }
-          }
-        ]
-      }
-    ],
-    "ratingLevelId": "rating:minimum",
-    "rationale": "Recoverability follows its direct requirement signal.",
-    "status": "analyzed"
+    "rationale": "Drill ownership records contradict each other; the factor awaits reconciled evidence.",
+    "status": "blocked",
+    "statusReason": "The factor's only requirement is not assessed: recovery-ownership records conflict, so no judgment could be formed."
   },
   "localAndDescendantAnalysis": {
-    "confidence": "low",
-    "confidenceReason": "Synthetic report-gallery judgment.",
+    "confidence": "none",
     "evaluationLimits": [
       {
-        "description": "This analysis is generated from synthetic routine outputs.",
-        "id": "synthetic-evaluation",
-        "impact": "Use for report design and example browsing only."
+        "description": "The recovery calendar and incident playbook name different current owners.",
+        "id": "conflicting-ownership-records",
+        "impact": "The factor cannot be analyzed until ownership records are reconciled."
       }
     ],
-    "ratingDrivers": [
-      {
-        "description": "The current owner for ledger recovery drills is ambiguous.",
-        "effect": "constrains target",
-        "inputRefs": [
-          {
-            "kind": "RequirementRatingResult",
-            "subject": {
-              "requirementId": "requirement:operations::recovery-drill-ownership"
-            }
-          }
-        ]
-      }
-    ],
-    "ratingLevelId": "rating:minimum",
-    "rationale": "Recoverability follows its direct requirement signal.",
-    "status": "analyzed"
+    "rationale": "Drill ownership records contradict each other; the factor awaits reconciled evidence.",
+    "status": "blocked",
+    "statusReason": "The factor's only requirement is not assessed: recovery-ownership records conflict, so no judgment could be formed."
   },
   "schemaVersion": 3
 }

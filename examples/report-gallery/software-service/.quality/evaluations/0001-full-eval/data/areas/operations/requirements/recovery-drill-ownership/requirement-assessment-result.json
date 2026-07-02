@@ -1,53 +1,45 @@
 {
-  "confidence": "low",
-  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
-  "evaluationLimits": [
-    {
-      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
-      "id": "synthetic-source",
-      "impact": "The finding demonstrates report structure, not a verifiable source claim."
-    }
-  ],
-  "evidenceSummary": "Recovery ownership is visible but ambiguous across the sampled records.",
+  "confidence": "none",
+  "confidenceReason": "The conflicting records cannot support a judgment either way.",
+  "evidenceSummary": "Ownership records conflict; the requirement could not be assessed from the available material.",
   "factors": [
     "factor:operations::recoverability"
   ],
   "findings": [
     {
       "basis": {
-        "statement": "The available synthetic records conflict, so current ownership cannot be verified.",
+        "statement": "The records conflict, so neither can serve as the basis for a judgment.",
         "status": "not_assessed"
       },
-      "condition": "The synthetic recovery calendar names a team, while the incident playbook names a former individual owner.",
+      "condition": "The calendar's owner field names the platform team; the playbook's escalation section names an engineer who left the rotation in the spring reorg; no drill record exists after the reorg.",
       "confidence": "low",
       "criteria": [
         {
-          "criterion": "Recovery drills should meet the target recoverability bar with current named ownership.",
+          "criterion": "The calendar and playbook agree on the current drill owner and a drill record exists within the last quarter.",
           "ratingLevelId": "rating:target",
-          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "rationale": "The contradiction itself is the observation; it blocks assessment rather than failing it.",
           "requirementId": "requirement:operations::recovery-drill-ownership"
         }
       ],
       "effect": {
-        "ratingEffect": "constrains target",
-        "statement": "The finding limits confidence and constrains the requirement to minimum."
+        "ratingEffect": "blocks rating",
+        "statement": "The requirement is recorded as not assessed; restoring assessability is the actionable next step."
       },
       "evidence": [
         {
-          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
           "sourceRef": "synthetic-source:operations/recovery-calendar",
-          "statement": "The synthetic calendar and playbook disagree about who owns the next recovery drill."
+          "statement": "The calendar and playbook disagree on the owner, and the drill log's latest entry predates the reorg."
         }
       ],
-      "id": "gap-002",
-      "severity": "medium",
-      "statement": "The current owner for ledger recovery drills is ambiguous.",
-      "type": "gap"
+      "id": "note-003",
+      "statement": "Recovery drill ownership records contradict each other.",
+      "type": "note"
     }
   ],
   "kind": "RequirementAssessmentResult",
   "requirementId": "requirement:operations::recovery-drill-ownership",
   "schemaVersion": 3,
-  "status": "assessed",
-  "summary": "Recovery ownership is visible but ambiguous across the sampled records."
+  "status": "not_assessed",
+  "statusReason": "The recovery calendar and the incident playbook name different current owners, and no drill record exists after the ownership change, so current ownership could not be established from the available records.",
+  "summary": "Ownership records conflict; the requirement could not be assessed from the available material."
 }

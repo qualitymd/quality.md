@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The twelve most recent tracker handoffs were read directly.",
+  "evidenceSummary": "Recent handoffs state goals, but most omit done criteria and the confirming sensor.",
+  "factors": [
+    "factor:root::agent-harnessability/task-specifiability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The handoff sample was read in full; the omissions are countable.",
+        "status": "verified"
+      },
+      "condition": "Nine of the twelve most recent handoffs state a goal but no done criteria; none name the sensor that would confirm completion.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Sampled handoffs state goals, non-goals, done criteria, and the sensor that confirms completion.",
+          "ratingLevelId": "rating:target",
+          "rationale": "Without done criteria an agent must guess when work is finished.",
+          "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "Agents declare completion on judgment rather than criteria, which constrains task specifiability to minimum."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:tracker/quality-loop-handoffs",
+          "statement": "The sampled handoffs contain goal statements; done criteria appear in three, a confirming sensor in none."
+        }
+      ],
+      "id": "gap-001",
+      "severity": "medium",
+      "statement": "Most quality-loop handoffs omit done criteria and the confirming sensor.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::quality-loop-work-items-carry-done-criteria",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Recent handoffs state goals, but most omit done criteria and the confirming sensor."
+}

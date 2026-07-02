@@ -1,16 +1,17 @@
 {
   "derivedContext": {
     "evaluationPolicies": [
-      "Synthetic routine outputs are used for report-design demonstration only."
+      "Read ratings worst-of within an area; balance-invariants is the named veto requirement.",
+      "A not-assessed result stays visible as missing evidence and never counts as a low rating."
     ],
     "expectedEvaluationLimits": [
       {
-        "description": "The concrete source system is intentionally omitted from the gallery.",
+        "description": "This is an illustrative gallery evaluation: routine outputs are synthetic and the concrete source system behind the synthetic-source references is omitted.",
         "id": "synthetic-source-omitted",
         "impact": "Evidence references demonstrate report shape rather than checkable source claims."
       }
     ],
-    "rigor": "synthetic-gallery"
+    "rigor": "full-evaluation"
   },
   "inputs": {
     "ratingLevelIds": [

@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Each sensor was run to both pass and forced-fail outcomes.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "All three sensors met the bar under pass and forced-fail runs."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Sensors exist and run from recorded commands."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "All three recorded sensors are deterministic and their failures name the violated expectation.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-002]",
+          "subject": {
+            "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Every recorded sensor returned deterministic results whose failures name the violated expectation and point at the fix, meeting the target bar.",
+  "requirementId": "requirement:root::sensors-return-pass-fail-with-remediation",
+  "schemaVersion": 3,
+  "status": "rated"
+}

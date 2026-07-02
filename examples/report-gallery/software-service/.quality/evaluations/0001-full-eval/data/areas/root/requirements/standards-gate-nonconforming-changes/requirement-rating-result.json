@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The merge pipeline configuration was inspected directly.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "Contract tests and the invariant suite are advisory at merge time."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "Lint blocks merges and the other sensors run visibly."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Contract tests and the invariant suite run at merge time but cannot block a merge.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-003]",
+          "subject": {
+            "requirementId": "requirement:root::standards-gate-nonconforming-changes"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The strongest sensors run on every merge but cannot block one, so standards hold by convention rather than gate — minimum, not target.",
+  "requirementId": "requirement:root::standards-gate-nonconforming-changes",
+  "schemaVersion": 3,
+  "status": "rated"
+}

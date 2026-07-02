@@ -29,7 +29,7 @@ Factor: [Observability](observability-factor.md)
 
 ## Summary
 
-Observability follows its direct requirement signal.
+Dashboards-as-code express customer impact and match what is deployed.
 
 ## Requirements
 
@@ -47,8 +47,7 @@ Observability follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 

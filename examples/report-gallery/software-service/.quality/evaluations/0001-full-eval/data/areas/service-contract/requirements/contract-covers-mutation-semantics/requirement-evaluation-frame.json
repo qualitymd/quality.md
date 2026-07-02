@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Every endpoint in the contract's index defines retry, idempotency, and error semantics.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does every indexed mutation endpoint define retry, idempotency, and error semantics?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:service-contract"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does every indexed mutation endpoint define retry, idempotency, and error semantics?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:service-contract::completeness"
+    ],
+    "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
+  }
+}

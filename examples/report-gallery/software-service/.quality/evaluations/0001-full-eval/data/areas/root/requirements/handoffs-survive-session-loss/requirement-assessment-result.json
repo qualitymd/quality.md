@@ -1,0 +1,44 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Four recent multi-session efforts were traced; chat history could not be inspected directly, only its artifacts.",
+  "evidenceSummary": "Long-running work relies on chat scrollback; durable progress records exist for only one of four recent efforts.",
+  "factors": [
+    "factor:root::agent-harnessability/continuity"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The missing records are confirmed; the impact projection assumes a handoff or compaction event occurs mid-effort.",
+        "status": "plausible"
+      },
+      "condition": "Three of four recent multi-session efforts kept decisions and remaining work only in conversation; one kept a durable progress note.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "In-flight efforts keep durable records of decisions, remaining work, and verification status.",
+          "ratingLevelId": "rating:target",
+          "requirementId": "requirement:root::handoffs-survive-session-loss"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "An interruption forces rediscovery of decisions already made, risking repeated or contradicted work."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:tracker/in-flight-work",
+          "statement": "The traced efforts show tracker entries opened and closed with no interim state; the one durable note enabled a clean resume."
+        }
+      ],
+      "id": "risk-001",
+      "severity": "medium",
+      "statement": "In-flight decisions live in chat scrollback and would not survive a cold handoff.",
+      "type": "risk"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:root::handoffs-survive-session-loss",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Long-running work relies on chat scrollback; durable progress records exist for only one of four recent efforts."
+}

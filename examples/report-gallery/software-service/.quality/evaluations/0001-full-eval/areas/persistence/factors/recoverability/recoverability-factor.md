@@ -9,7 +9,7 @@ title: "Factor: Recoverability"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger persistence](../../persistence-area.md)
 
 Factor: [Recoverability](recoverability-factor.md)
 
@@ -29,13 +29,13 @@ Factor: [Recoverability](recoverability-factor.md)
 
 ## Summary
 
-Recoverability follows its direct requirement signal.
+Rollback guidance exists but is unrehearsed against the two most recent schema migrations.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
-| [migrations have rehearsed rollback paths](../../requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed |
+| [migrations have rollback paths rehearsed against the current schema](../../requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
 ## Sub-factors
 
@@ -47,8 +47,7 @@ Recoverability follows its direct requirement signal.
 
 | Type | Scope | Impact |
 | --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| (no limits or incomplete inputs) | — | — |
 
 ## Primary source data
 

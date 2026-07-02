@@ -2,21 +2,21 @@
   "derivedContext": {
     "appliedRatingCriteria": [
       {
-        "criterion": "Operational signals should meet the target observability bar by explaining customer impact.",
+        "criterion": "Committed dashboard definitions map symptom classes to failed customer actions and match what is deployed.",
         "ratingLevelId": "rating:target"
       },
       {
-        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
         "ratingLevelId": "rating:minimum"
       }
     ],
     "evidenceTargets": [
       {
-        "id": "synthetic-evidence",
-        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "id": "primary-evidence",
+        "question": "Can an operator read customer impact from the health dashboards during an incident?",
         "required": true,
         "sourceRefs": [
-          "synthetic-source:operations/customer-impact-dashboard"
+          "synthetic-source:operations/dashboards-as-code"
         ]
       }
     ]
@@ -28,7 +28,7 @@
       "rating:minimum",
       "rating:unacceptable"
     ],
-    "requirementAssessmentBasis": "Synthetic gallery evidence."
+    "requirementAssessmentBasis": "Can an operator read customer impact from the health dashboards during an incident?"
   },
   "kind": "RequirementEvaluationFrame",
   "schemaVersion": 3,

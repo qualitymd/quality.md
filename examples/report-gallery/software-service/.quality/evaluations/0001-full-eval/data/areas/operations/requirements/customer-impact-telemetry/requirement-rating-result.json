@@ -1,27 +1,27 @@
 {
   "confidence": "medium",
-  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "confidenceReason": "Definitions and deployed dashboards were compared; live incident use was not observed in the window.",
   "criteriaResults": [
     {
       "matched": true,
       "ratingLevelId": "rating:target",
-      "rationale": "Operational signals should meet the target observability bar by explaining customer impact."
+      "rationale": "Definitions cover the symptom classes and deployment drift is zero."
     },
     {
       "matched": true,
       "ratingLevelId": "rating:minimum",
-      "rationale": "The requirement remains usable in the synthetic evaluation."
+      "rationale": "Dashboards exist and are maintained as code."
     }
   ],
   "kind": "RequirementRatingResult",
   "ratingDrivers": [
     {
-      "description": "Health dashboards connect service errors to failed customer actions.",
+      "description": "Health dashboards express failed customer actions, not just service symptoms.",
       "effect": "supports target",
       "inputRefs": [
         {
           "kind": "RequirementAssessmentResult",
-          "selector": "findings[strength-003]",
+          "selector": "findings[strength-008]",
           "subject": {
             "requirementId": "requirement:operations::customer-impact-telemetry"
           }
@@ -31,7 +31,7 @@
     }
   ],
   "ratingLevelId": "rating:target",
-  "rationale": "The dashboard evidence meets the target observability criterion with medium confidence.",
+  "rationale": "Each major symptom class has a panel expressing customer impact, and the deployed dashboards match the committed definitions, meeting the target bar.",
   "requirementId": "requirement:operations::customer-impact-telemetry",
   "schemaVersion": 3,
   "status": "rated"
