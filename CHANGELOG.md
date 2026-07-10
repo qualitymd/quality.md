@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.28.0 - 2026-07-10
+
 ### CLI
 
 - New deterministic evaluation runner: `qualitymd evaluation run` now executes
@@ -48,6 +50,8 @@ QUALITY.md specification.
   `--evaluator harness`: the session's own agent judges each runner-emitted
   bounded work request and submits the typed result, preserving explicit user
   and configured evaluator choices and never silently switching providers.
+- `/quality` skill metadata now declares version `0.28.0` and requires the
+  `qualitymd` CLI `0.28.x` line.
 
 ### Documentation
 
@@ -71,6 +75,25 @@ QUALITY.md specification.
   coverage, quality-named `quality-md` factors, reused sensor-catalog
   assessments, and a recommendation that matures an inferential model-body
   review into a repeatable drift detector.
+
+### Compatibility / migration
+
+- Requirement judgment work units changed shape (`assessRateRequirement`
+  replaces the `assessRequirement`/`rateRequirement` pair) and evaluator input
+  hashes widened, so in-flight runs started with an earlier `qualitymd` do not
+  reuse prior results on resume; start a fresh run. Persisted payload kinds,
+  identities, schemas, and generated reports are unchanged.
+- No QUALITY.md specification version change; the specification remains
+  `0.10 (Draft)`.
+- `/quality` skill version `0.28.0` requires the `qualitymd` CLI `0.28.x`
+  line: harness checkpoints need `--evaluator-result`, the
+  `awaiting_evaluator` lifecycle, and the readiness-aware dry-run preview.
+
+Compatibility:
+
+- CLI: `v0.28.0`
+- QUALITY.md specification: `0.10 (Draft)`
+- /quality skill: `0.28.0`, requires `qualitymd >=0.28.0 <0.29.0`
 
 ## v0.27.1 - 2026-07-02
 
