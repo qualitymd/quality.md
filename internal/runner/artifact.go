@@ -1,8 +1,8 @@
 // Package runner is the CLI-owned deterministic evaluation runner. It owns
-// the evaluation work graph, execution strategy selection, evaluator
-// invocation, validation, the authoritative evaluation.json run artifact,
-// run-local logs, and report generation. Evaluators (internal/evaluator)
-// perform bounded judgment work units and nothing else.
+// the evaluation work graph, concurrency resolution, evaluator invocation,
+// validation, the authoritative evaluation.json run artifact, run-local logs,
+// and report generation. Evaluators (internal/evaluator) perform bounded
+// judgment work units and nothing else.
 package runner
 
 import (
@@ -13,7 +13,7 @@ import (
 const (
 	// ArtifactSchemaVersion versions the evaluation.json run artifact.
 	// Versions 1-3 belong to the historical multi-file data tree.
-	ArtifactSchemaVersion = 4
+	ArtifactSchemaVersion = 5
 	// ArtifactKind marks the evaluation.json document kind.
 	ArtifactKind = "EvaluationRun"
 	// ArtifactFile is the run-root artifact file name.
@@ -63,8 +63,8 @@ type Manifest struct {
 	Evaluator string `json:"evaluator"`
 	// EvaluatorKind is the selected evaluator's runtime kind.
 	EvaluatorKind string `json:"evaluatorKind"`
-	// ExecutionStrategy is the resolved execution strategy for the run.
-	ExecutionStrategy string `json:"executionStrategy"`
+	// Concurrency is the resolved concurrency cap for the run.
+	Concurrency int `json:"concurrency"`
 }
 
 // ManifestPayload renders the manifest as the EvaluationManifest data payload
@@ -106,16 +106,12 @@ func anyStrings(values []string) []any {
 // State carries the run's execution lifecycle. Provider context identifiers
 // and prompt-cache status live only in the evaluator-call log, never here.
 type State struct {
-	Status  string   `json:"status"`
-	Failure *Failure `json:"failure,omitempty"`
-	// Concurrency is the resolved concurrency cap for the run.
-	Concurrency int `json:"concurrency"`
-	// StrategyFallbacks records execution strategy downgrades.
-	StrategyFallbacks []StrategyFallback    `json:"strategyFallbacks,omitempty"`
-	WorkUnits         map[string]*UnitState `json:"workUnits"`
-	StartedAt         string                `json:"startedAt,omitempty"`
-	UpdatedAt         string                `json:"updatedAt,omitempty"`
-	CompletedAt       string                `json:"completedAt,omitempty"`
+	Status      string                `json:"status"`
+	Failure     *Failure              `json:"failure,omitempty"`
+	WorkUnits   map[string]*UnitState `json:"workUnits"`
+	StartedAt   string                `json:"startedAt,omitempty"`
+	UpdatedAt   string                `json:"updatedAt,omitempty"`
+	CompletedAt string                `json:"completedAt,omitempty"`
 	// Cancelled records a user interruption observed mid-run.
 	Cancelled bool `json:"cancelled,omitempty"`
 	// PendingEvaluatorCall is the persisted harness checkpoint: correlation
@@ -160,13 +156,6 @@ type UnitState struct {
 type Failure struct {
 	Category evaluator.FailureCategory `json:"category"`
 	Detail   string                    `json:"detail,omitempty"`
-}
-
-// StrategyFallback records one execution strategy downgrade decision.
-type StrategyFallback struct {
-	From   string `json:"from"`
-	To     string `json:"to"`
-	Reason string `json:"reason"`
 }
 
 // Results carries the run's structured evaluation judgment: the accepted

@@ -2,6 +2,17 @@
 
 ## 2026-07-10
 
+- **Release prep**: Bumped the runtime skill metadata to `0.29.0` with
+  `qualitymd >=0.29.0 <0.30.0` compatibility for the `v0.29.0` release.
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0195 - Evaluation concurrency. Runtime guidance now names
+  `evaluation.concurrency` as the runner configuration knob and describes
+  dry-run previews as reporting resolved concurrency rather than execution
+  strategy.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md),
   [`workflows/evaluate.md`](workflows/evaluate.md), and
   [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)

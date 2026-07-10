@@ -3,6 +3,18 @@
 ## 2026-07-10
 
 - **Revision**: Implemented durable spec changes for
+  [0195 - Evaluation concurrency](../changes/0195-evaluation-concurrency.md).
+  The evaluation [Runner](evaluation/runner.md), [Orchestration](evaluation/orchestration.md),
+  [Evaluator contract](evaluation/evaluator-contract.md), and
+  [`evaluation.json`](evaluation/evaluation-json.md) specs replace the public
+  `executionStrategy` surface with resolved `concurrency`, define the automatic
+  `max(2, runtime.NumCPU()*2)` default, keep harness-backed runs at
+  `concurrency: 1`, bump the runner artifact schema to `5`, and require
+  deterministic artifact ordering under concurrent evaluator calls. The
+  [qualitymd evaluation run](cli/evaluation-run.md) dry-run contract now reports
+  concurrency rather than execution strategy.
+
+- **Revision**: Implemented durable spec changes for
   [0194 - Harness-native evaluator dispatch](../changes/0194-harness-native-evaluator-dispatch.md).
   [qualitymd evaluation run](cli/evaluation-run.md) adds the reserved
   `harness` evaluator, the `awaiting_evaluator` checkpoint receipt (exit `0`)

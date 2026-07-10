@@ -100,7 +100,7 @@ func (e *engine) runHarnessUnit(unit *Unit) (bool, error) {
 	}
 	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
-	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.artifact.Results.ByWorkUnit(unit.ID)) > 0 {
+	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.payloadsByWorkUnit(unit.ID)) > 0 {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
 		return false, nil
 	}
@@ -160,7 +160,6 @@ func (e *engine) consumeHarnessResult(unit *Unit, state *UnitState, req evaluato
 		WorkUnitID:    unit.ID,
 		EvaluatorKind: "harness",
 		Model:         envelope.Evaluator.Model,
-		Strategy:      evaluator.StrategySequential,
 		ContextMeta:   map[string]string{"harnessRuntime": envelope.Evaluator.Runtime},
 		Usage:         envelope.Usage,
 		Payload:       envelope.Payload,

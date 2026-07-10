@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.28.0 <0.29.0.
+compatibility: Requires qualitymd CLI >=0.29.0 <0.30.0.
 metadata:
-  version: "0.28.0"
-  requires-qualitymd-cli: ">=0.28.0 <0.29.0"
+  version: "0.29.0"
+  requires-qualitymd-cli: ">=0.29.0 <0.30.0"
 ---
 
 ## Purpose
@@ -420,8 +420,8 @@ adjust its results.
 Scope is the only breadth control: evaluate the full model by default, or
 narrow with `--area <area-ref>` and repeatable `--factor <factor-ref>` resolved
 to canonical references. Do not expose or accept `quick`, `standard`, `deep`,
-`--rigor`, or `/quality evaluate deep`; execution strategy is runner
-configuration, not a user-facing knob.
+`--rigor`, or `/quality evaluate deep`; runner concurrency is configuration, not
+a user-facing workflow knob.
 
 Evaluator selection order: an explicit user request, then a non-`auto` config
 `evaluation.evaluator`, then `--evaluator harness` when you can service
@@ -488,7 +488,7 @@ Supported config now:
 evaluationDir: .quality/evaluations
 evaluation:
   evaluator: auto # auto, a built-in name, or a configured profile name
-  executionStrategy: auto # auto, sequential, or parallel
+  concurrency: 8 # optional; omitted defaults to the runner's automatic value
 evaluators:
   my-profile:
     kind: anthropic # codex | claude | openai | anthropic

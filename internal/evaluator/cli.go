@@ -93,7 +93,7 @@ func (e *cliEvaluator) Kind() string { return e.kind }
 
 func (e *cliEvaluator) Capabilities() Capabilities {
 	return Capabilities{
-		Strategies:   []Strategy{StrategySequential},
+		Concurrent:   true,
 		Subagents:    false,
 		ReportsUsage: e.kind == "claude",
 	}
@@ -102,7 +102,7 @@ func (e *cliEvaluator) Capabilities() Capabilities {
 func (e *cliEvaluator) Evaluate(ctx context.Context, req WorkRequest) (WorkResult, error) {
 	system, stablePrefix, delta := BuildPrompt(req)
 	prompt := system + "\n\n" + stablePrefix + delta
-	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Strategy: StrategySequential}
+	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind}
 
 	e.probeOnce.Do(func() { e.detectCapabilities(ctx) })
 

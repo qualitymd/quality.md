@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation runner
-description: CLI-owned deterministic evaluation engine, execution strategy, run-local logging, and failure taxonomy.
+description: CLI-owned deterministic evaluation engine, concurrency, run-local logging, and failure taxonomy.
 tags: [evaluation, runner, orchestration]
 timestamp: 2026-07-09T00:00:00Z
 ---
@@ -75,35 +75,36 @@ recommendation-ranking result, executing the protocol's
 The runner **MUST** assign canonical `qrec_` recommendation IDs to accepted
 recommendations before persisting them.
 
-## Execution strategy
+## Concurrency
 
-The runner **MUST** own execution strategy selection for ready work units.
+The runner **MUST** own concurrency resolution for ready evaluator-backed work
+units.
 
 > Rationale: parallelism, native subagents, and provider context reuse are
 > useful only while they remain scheduling and transport choices under the same
 > work graph. If they become alternate orchestration engines, the portability
-> problem returns. — 0192
+> problem returns. `concurrency` is the user-facing control; scheduler strategy
+> names are an implementation detail. — 0192, 0195
 
-The strategy vocabulary is `auto`, `sequential`, and `parallel`. The workspace
-config **MAY** set `evaluation.executionStrategy` in `.quality/config.yaml`;
-when it is absent, the runner **MUST** behave as though `auto` were configured.
-If the configured value is unknown, then the runner **MUST** fall back to
-`sequential` and record the fallback.
+The workspace config **MAY** set `evaluation.concurrency` in
+`.quality/config.yaml`. When it is present, it **MUST** be a positive integer. A
+configured value of `1` selects sequential execution; a configured value greater
+than `1` permits concurrent execution of dependency-ready evaluator-backed work
+units up to that limit.
 
-The first implementation slice resolves `auto` to `sequential` only. While
-`parallel` execution is unimplemented, a `parallel` selection **MUST** fall
-back to `sequential` with the fallback recorded in run state and logs.
+When `evaluation.concurrency` is absent, the runner **MUST** request automatic
+concurrency equal to `max(2, runtime.NumCPU()*2)`.
 
-The runner **MUST NOT** select an execution strategy the selected evaluator
-does not declare. If a declared capability proves unavailable at run time, then
-the runner **MUST** fall back to the next simpler strategy and record the
-fallback in run state and logs.
+The runner **MUST** resolve requested concurrency against the selected
+evaluator's declared support for concurrent calls before execution begins. If
+the selected evaluator does not support concurrent calls, then the resolved
+concurrency **MUST** be `1`.
 
-The runner **MUST** cap concurrency through a deterministic policy (currently
-`1`) and surface the resolved concurrency in dry-run JSON, run state, and
-receipts.
+The runner **MUST** surface the resolved concurrency in dry-run JSON,
+`evaluation.json`, run-local logs, and run receipts. The runner **MUST NOT**
+expose public execution-strategy or strategy-fallback fields.
 
-Every strategy **MUST** preserve the
+Concurrent execution **MUST** preserve the
 [observational equivalence](orchestration.md#scheduling-and-parallelism) the
 orchestration contract requires.
 
@@ -119,6 +120,9 @@ context-reuse strategy under the
 [evaluator contract](evaluator-contract.md#prompt-shaping-and-reusable-context)
 and the invariant above: a dropped or unavailable session only costs
 re-transmitted tokens, never output changes.
+
+Harness-backed runs **MUST** resolve to `concurrency: 1` until the runner and
+harness contracts define multiple pending evaluator checkpoints.
 
 ## Harness checkpoints
 
@@ -196,7 +200,7 @@ decisions, report build, and run completion.
 The runner **MUST** write evaluator-call metadata to a run-local structured log
 at `logs/evaluator-calls.jsonl`. Call metadata **SHOULD** include evaluator
 kind, model when known, work-unit kind, attempt number, duration, input hash,
-output hash, execution strategy, context/cache metadata when available, and
+output hash, resolved concurrency, context/cache metadata when available, and
 usage when available. When the evaluator reports cached input tokens, the
 runner **MUST** include the cached-input-token count in the call's usage
 metadata.

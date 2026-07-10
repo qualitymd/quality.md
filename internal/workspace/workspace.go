@@ -67,9 +67,9 @@ type EvaluationConfig struct {
 	// Evaluator selects the evaluator used by `qualitymd evaluation run`:
 	// "auto", a built-in evaluator name, or a configured profile name.
 	Evaluator string `yaml:"evaluator" json:"evaluator,omitempty"`
-	// ExecutionStrategy selects the runner execution strategy: "auto",
-	// "sequential", or "parallel".
-	ExecutionStrategy string `yaml:"executionStrategy" json:"executionStrategy,omitempty"`
+	// Concurrency selects the maximum number of evaluator calls the runner may
+	// keep active for one evaluation run. Zero means automatic.
+	Concurrency *int `yaml:"concurrency" json:"concurrency,omitempty"`
 }
 
 // EvaluatorProfile is one configured named evaluator profile. API-key profiles

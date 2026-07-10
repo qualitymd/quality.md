@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/qualitymd/quality.md/internal/evaluation"
@@ -66,15 +67,14 @@ type WorkUnitCounts struct {
 // Result is the JSON receipt for a completed, awaiting, failed, or cancelled
 // run.
 type Result struct {
-	SchemaVersion     int            `json:"schemaVersion"`
-	Path              string         `json:"path"`
-	Status            string         `json:"status"`
-	Evaluator         string         `json:"evaluator"`
-	EvaluatorKind     string         `json:"evaluatorKind"`
-	ExecutionStrategy string         `json:"executionStrategy"`
-	Concurrency       int            `json:"concurrency"`
-	WorkUnits         WorkUnitCounts `json:"workUnits"`
-	Failure           *Failure       `json:"failure,omitempty"`
+	SchemaVersion int            `json:"schemaVersion"`
+	Path          string         `json:"path"`
+	Status        string         `json:"status"`
+	Evaluator     string         `json:"evaluator"`
+	EvaluatorKind string         `json:"evaluatorKind"`
+	Concurrency   int            `json:"concurrency"`
+	WorkUnits     WorkUnitCounts `json:"workUnits"`
+	Failure       *Failure       `json:"failure,omitempty"`
 	// EvaluatorRequest is the pending bounded work request when Status is
 	// awaiting_evaluator.
 	EvaluatorRequest *EvaluatorRequest        `json:"evaluatorRequest,omitempty"`
@@ -113,27 +113,28 @@ func startRun(ctx context.Context, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, wrapEvaluationError(err)
 	}
-	strategy, fallbacks := resolveStrategy(ws.Evaluation.ExecutionStrategy, selection.Evaluator.Capabilities())
+	concurrency, err := resolveConcurrency(ws.Evaluation.Concurrency, selection.Evaluator.Capabilities())
+	if err != nil {
+		return nil, err
+	}
 	artifact := &Artifact{
 		SchemaVersion: ArtifactSchemaVersion,
 		Kind:          ArtifactKind,
 		Manifest: Manifest{
-			EvaluationID:      prepared.Manifest.EvaluationID,
-			CreatedAt:         prepared.Manifest.CreatedAt,
-			Model:             prepared.Manifest.Model,
-			RequestedScope:    prepared.Manifest.RequestedScope,
-			PlannedScope:      prepared.Manifest.PlannedScope,
-			Run:               prepared.Manifest.Run,
-			Evaluator:         selection.Name,
-			EvaluatorKind:     selection.Evaluator.Kind(),
-			ExecutionStrategy: strategy,
+			EvaluationID:   prepared.Manifest.EvaluationID,
+			CreatedAt:      prepared.Manifest.CreatedAt,
+			Model:          prepared.Manifest.Model,
+			RequestedScope: prepared.Manifest.RequestedScope,
+			PlannedScope:   prepared.Manifest.PlannedScope,
+			Run:            prepared.Manifest.Run,
+			Evaluator:      selection.Name,
+			EvaluatorKind:  selection.Evaluator.Kind(),
+			Concurrency:    concurrency,
 		},
 		State: State{
-			Status:            StatusRunning,
-			Concurrency:       1,
-			StrategyFallbacks: fallbacks,
-			WorkUnits:         map[string]*UnitState{},
-			StartedAt:         time.Now().UTC().Format(time.RFC3339),
+			Status:    StatusRunning,
+			WorkUnits: map[string]*UnitState{},
+			StartedAt: time.Now().UTC().Format(time.RFC3339),
 		},
 	}
 	store := NewStore(prepared.RunAbs)
@@ -228,11 +229,11 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 	}
 	defer logs.Close()
 	logs.event("run-started", map[string]any{
-		"run":       artifact.Manifest.Run.Label,
-		"evaluator": selection.Name,
-		"strategy":  artifact.Manifest.ExecutionStrategy,
-		"reason":    selection.Reason,
-		"workUnits": len(graph.Units),
+		"run":         artifact.Manifest.Run.Label,
+		"evaluator":   selection.Name,
+		"concurrency": artifact.Manifest.Concurrency,
+		"reason":      selection.Reason,
+		"workUnits":   len(graph.Units),
 	})
 	eng := &engine{
 		store:         store,
@@ -250,8 +251,8 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 		sourceBundles: map[string]*SourceBundle{},
 		harnessResult: harnessResult,
 	}
-	eng.progress("Evaluating %s with %s (%s, %d work units)",
-		displayPath, selection.Name, artifact.Manifest.ExecutionStrategy, len(graph.Units))
+	eng.progress("Evaluating %s with %s (concurrency %d, %d work units)",
+		displayPath, selection.Name, artifact.Manifest.Concurrency, len(graph.Units))
 	status, err := eng.execute(ctx)
 	if err != nil {
 		return nil, err
@@ -279,15 +280,14 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 		}
 	}
 	result := &Result{
-		SchemaVersion:     evaluation.SchemaVersion,
-		Path:              displayPath,
-		Status:            status,
-		Evaluator:         artifact.Manifest.Evaluator,
-		EvaluatorKind:     artifact.Manifest.EvaluatorKind,
-		ExecutionStrategy: artifact.Manifest.ExecutionStrategy,
-		Concurrency:       artifact.State.Concurrency,
-		WorkUnits:         counts,
-		Failure:           artifact.State.Failure,
+		SchemaVersion: evaluation.SchemaVersion,
+		Path:          displayPath,
+		Status:        status,
+		Evaluator:     artifact.Manifest.Evaluator,
+		EvaluatorKind: artifact.Manifest.EvaluatorKind,
+		Concurrency:   artifact.Manifest.Concurrency,
+		WorkUnits:     counts,
+		Failure:       artifact.State.Failure,
 	}
 	switch status {
 	case StatusCompleted:
@@ -320,44 +320,28 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 	return result
 }
 
-// resolveStrategy turns the configured execution strategy and the selected
-// evaluator's capabilities into the run's resolved strategy plus any recorded
-// fallback decisions. The first implementation slice resolves auto to
-// sequential execution, so every path currently lands on sequential; the
-// fallback records keep the downgrade observable.
-//
-//nolint:unparam // The resolved strategy is constant only while the first slice ships sequential-only.
-func resolveStrategy(configured string, caps evaluator.Capabilities) (string, []StrategyFallback) {
-	requested := configured
-	if requested == "" {
-		requested = string(evaluator.StrategyAuto)
+func resolveConcurrency(configured *int, caps evaluator.Capabilities) (int, error) {
+	requested := 0
+	if configured == nil {
+		requested = defaultConcurrency()
+	} else {
+		requested = *configured
 	}
-	resolved := string(evaluator.StrategySequential)
-	switch requested {
-	case string(evaluator.StrategyAuto), string(evaluator.StrategySequential):
-		return resolved, nil
-	case string(evaluator.StrategyParallel):
-		reason := "parallel execution is not implemented in this qualitymd version"
-		if !hasStrategy(caps, evaluator.StrategyParallel) {
-			reason = "the selected evaluator does not declare parallel execution"
-		}
-		return resolved, []StrategyFallback{{From: requested, To: resolved, Reason: reason}}
-	default:
-		return resolved, []StrategyFallback{{
-			From:   requested,
-			To:     resolved,
-			Reason: fmt.Sprintf("unknown execution strategy %q", requested),
-		}}
+	if requested < 1 {
+		return 0, &UsageError{Err: fmt.Errorf("evaluation.concurrency must be a positive integer")}
 	}
+	if requested > 1 && !caps.Concurrent {
+		return 1, nil
+	}
+	return requested, nil
 }
 
-func hasStrategy(caps evaluator.Capabilities, want evaluator.Strategy) bool {
-	for _, strategy := range caps.Strategies {
-		if strategy == want {
-			return true
-		}
+func defaultConcurrency() int {
+	n := runtime.NumCPU() * 2
+	if n < 2 {
+		return 2
 	}
-	return false
+	return n
 }
 
 func resolveRunnerWorkspace(opts Options) (*workspace.Workspace, error) {

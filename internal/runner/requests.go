@@ -288,7 +288,7 @@ func (e *engine) fillRecommendRequest(req *evaluator.WorkRequest) {
 }
 
 func (e *engine) fillRankRecommendationsRequest(req *evaluator.WorkRequest) {
-	recommendations := e.results().ByWorkUnit(string(KindRecommend))
+	recommendations := e.payloadsByWorkUnit(string(KindRecommend))
 	req.Context = map[string]any{
 		"recommendations": recommendations,
 		"findings":        e.findingIndex(),

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"sort"
+	"sync"
 	"time"
 
 	"github.com/qualitymd/quality.md/internal/evaluation"
@@ -36,6 +38,8 @@ type engine struct {
 	selection     *evaluator.Selection
 	logs          *runLogs
 	stderr        io.Writer
+	progressMu    sync.Mutex
+	artifactMu    sync.RWMutex
 	workspaceRoot string
 	runAbs        string
 	displayPath   string
@@ -57,21 +61,25 @@ type engine struct {
 	awaitingFailure *Failure
 }
 
-func (e *engine) results() *Results { return &e.artifact.Results }
-
 // payloadFor returns the first payload a work unit produced, or nil.
 func (e *engine) payloadFor(unitID string) map[string]any {
-	payloads := e.artifact.Results.ByWorkUnit(unitID)
+	payloads := e.payloadsByWorkUnit(unitID)
 	if len(payloads) == 0 {
 		return nil
 	}
 	return payloads[0]
 }
 
+func (e *engine) payloadsByWorkUnit(unitID string) []map[string]any {
+	e.artifactMu.RLock()
+	defer e.artifactMu.RUnlock()
+	return e.artifact.Results.ByWorkUnit(unitID)
+}
+
 // requirementPayload returns the payload of the given kind that a
 // requirement's combined judgment unit persisted, or nil.
 func (e *engine) requirementPayload(reqRef string, kind evaluation.DataKind) map[string]any {
-	for _, payload := range e.artifact.Results.ByWorkUnit(unitID(KindAssessRateRequirement, reqRef)) {
+	for _, payload := range e.payloadsByWorkUnit(unitID(KindAssessRateRequirement, reqRef)) {
 		if payload["kind"] == string(kind) {
 			return payload
 		}
@@ -87,6 +95,8 @@ func (e *engine) progress(format string, args ...any) {
 	if e.stderr == nil {
 		return
 	}
+	e.progressMu.Lock()
+	defer e.progressMu.Unlock()
 	_, _ = fmt.Fprintf(e.stderr, format+"\n", args...)
 }
 
@@ -99,6 +109,9 @@ func (e *engine) save() error {
 // run status; classified failures land in the artifact state rather than the
 // error return.
 func (e *engine) execute(ctx context.Context) (string, error) {
+	if e.artifact.Manifest.Concurrency > 1 && !e.harnessBacked() {
+		return e.executeConcurrent(ctx)
+	}
 	for _, unit := range e.graph.Units {
 		if ctx.Err() != nil {
 			return e.markCancelled()
@@ -193,7 +206,10 @@ func (e *engine) deterministicPayload(unit *Unit) (map[string]any, error) {
 // acceptUnit merges accepted payloads and persists the artifact atomically
 // before the unit counts as complete for scheduling or resume.
 func (e *engine) acceptUnit(unit *Unit, state *UnitState, payloads []map[string]any, inputHash string) error {
+	e.artifactMu.Lock()
 	e.artifact.Results.Merge(unit.ID, payloads)
+	e.sortResultPayloads()
+	e.artifactMu.Unlock()
 	state.Status = UnitCompleted
 	state.InputHash = inputHash
 	state.Failure = nil
@@ -203,6 +219,16 @@ func (e *engine) acceptUnit(unit *Unit, state *UnitState, payloads []map[string]
 	}
 	e.logs.event("work-unit-completed", map[string]any{"workUnit": unit.ID})
 	return nil
+}
+
+func (e *engine) sortResultPayloads() {
+	order := map[string]int{}
+	for i, unit := range e.graph.Units {
+		order[unit.ID] = i
+	}
+	sort.SliceStable(e.artifact.Results.Payloads, func(i, j int) bool {
+		return order[e.artifact.Results.Payloads[i].WorkUnit] < order[e.artifact.Results.Payloads[j].WorkUnit]
+	})
 }
 
 // runEvaluatorUnit dispatches one bounded judgment work unit with the
@@ -218,7 +244,7 @@ func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error)
 	}
 	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
-	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.artifact.Results.ByWorkUnit(unit.ID)) > 0 {
+	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.payloadsByWorkUnit(unit.ID)) > 0 {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
 		return false, nil
 	}
@@ -472,7 +498,7 @@ func (e *engine) verifyRecommendationCoverage(payload map[string]any) error {
 			ranked[id] = struct{}{}
 		}
 	}
-	for _, rec := range e.artifact.Results.ByWorkUnit(string(KindRecommend)) {
+	for _, rec := range e.payloadsByWorkUnit(string(KindRecommend)) {
 		id, _ := rec["id"].(string)
 		if _, ok := ranked[id]; !ok {
 			return fmt.Errorf("orderedRecommendations is missing recommendation %s", id)
@@ -484,7 +510,9 @@ func (e *engine) verifyRecommendationCoverage(payload map[string]any) error {
 // runBuildReports renders the Markdown report tree from evaluation.json.
 func (e *engine) runBuildReports(unit *Unit) (bool, error) {
 	state := e.artifact.State.unit(unit.ID)
+	e.artifactMu.RLock()
 	payloads := append([]map[string]any{e.artifact.Manifest.ManifestPayload()}, e.artifact.Results.PayloadList()...)
+	e.artifactMu.RUnlock()
 	result, gaps, err := evaluation.BuildReportFromPayloads(e.runAbs, e.displayPath, payloads)
 	if err != nil {
 		return false, err
@@ -524,7 +552,7 @@ func (e *engine) logCall(unit *Unit, req evaluator.WorkRequest, result evaluator
 		"evaluatorKind":     result.EvaluatorKind,
 		"attempt":           attempt,
 		"durationMs":        duration.Milliseconds(),
-		"strategy":          string(result.Strategy),
+		"concurrency":       e.artifact.Manifest.Concurrency,
 		"promptPrefixHash":  req.PromptPrefixHash,
 		"sourcePackageHash": req.SourcePackageHash,
 		"status":            "accepted",

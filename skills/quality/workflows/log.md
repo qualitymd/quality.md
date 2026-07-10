@@ -1,5 +1,11 @@
 # /quality runtime workflows update log
 
+## 2026-07-10
+
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0195 -
+  Evaluation concurrency. Dry-run selection guidance now describes resolved
+  concurrency instead of execution strategy.
+
 ## 2026-07-09
 
 - **Revision**: Rewrote the [evaluate](evaluate.md) workflow for 0192 -

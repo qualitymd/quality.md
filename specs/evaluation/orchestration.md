@@ -101,17 +101,21 @@ frame ordering.
 
 ## Scheduling and parallelism
 
-The runner **MAY** execute ready work units concurrently, up to the resolved
-concurrency cap, when the resolved
-[execution strategy](runner.md#execution-strategy) allows it. Execution
-strategies are scheduling choices under the runner contract; they never become
-alternate orchestration engines.
+The runner **MAY** execute dependency-ready evaluator-backed work units
+concurrently, up to the resolved [concurrency](runner.md#concurrency) cap.
+Concurrency is a scheduling choice under the runner contract; it never becomes
+an alternate orchestration engine.
 
 Parallel execution **MUST** be observationally equivalent to deterministic
 sequential execution in model order.
 
 Parallel execution **MUST NOT** change ratings, report content, output
 ordering, artifact paths, or persisted payload shapes.
+
+Evaluator workers **MUST NOT** write evaluation run artifacts directly. Accepted
+results reach disk only through the runner-owned persistence path, and persisted
+payload order **MUST** remain deterministic graph order even when evaluator calls
+finish out of order.
 
 ## Harness checkpoints
 
@@ -122,6 +126,9 @@ nothing further until a correlated result is submitted. Deterministic units
 **MUST** continue to execute on each invocation up to the next evaluator
 checkpoint or the terminal receipt, so deterministic work never leaks into the
 agent interface.
+
+Harness-backed execution **MUST** run with resolved concurrency `1` until the
+runner defines multiple pending evaluator checkpoints.
 
 A submitted result **MUST** advance the graph only when it correlates with the
 persisted pending request (request identity and input hash). A mismatched,

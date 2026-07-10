@@ -34,12 +34,12 @@ func TestEvaluationRunDryRunJSON(t *testing.T) {
 		t.Fatalf("evaluation run --dry-run Execute() error = %v", err)
 	}
 	var preview struct {
-		SchemaVersion     int    `json:"schemaVersion"`
-		Evaluator         string `json:"evaluator"`
-		EvaluatorKind     string `json:"evaluatorKind"`
-		ExecutionStrategy string `json:"executionStrategy"`
-		ExpectedRunPath   string `json:"expectedRunPath"`
-		WorkUnits         struct {
+		SchemaVersion   int    `json:"schemaVersion"`
+		Evaluator       string `json:"evaluator"`
+		EvaluatorKind   string `json:"evaluatorKind"`
+		Concurrency     int    `json:"concurrency"`
+		ExpectedRunPath string `json:"expectedRunPath"`
+		WorkUnits       struct {
 			Total          int `json:"total"`
 			EvaluatorUnits int `json:"evaluatorUnits"`
 		} `json:"workUnits"`
@@ -53,8 +53,8 @@ func TestEvaluationRunDryRunJSON(t *testing.T) {
 	if preview.Evaluator != "team" || preview.EvaluatorKind != "anthropic" {
 		t.Errorf("evaluator = %s/%s, want team/anthropic", preview.Evaluator, preview.EvaluatorKind)
 	}
-	if preview.ExecutionStrategy != "sequential" {
-		t.Errorf("strategy = %q, want sequential", preview.ExecutionStrategy)
+	if preview.Concurrency < 2 {
+		t.Errorf("concurrency = %d, want automatic concurrency >= 2", preview.Concurrency)
 	}
 	if preview.ExpectedRunPath != ".quality/evaluations/0001-full-eval" {
 		t.Errorf("expectedRunPath = %q", preview.ExpectedRunPath)

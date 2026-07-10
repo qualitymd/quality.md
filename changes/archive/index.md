@@ -796,3 +796,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   judgment through resumable runner checkpoints, with awaiting-aware status
   surfaces, readiness-checked CLI fallbacks, harness-native skill routing, and
   Claude Code and Codex automation guides (`Done`).
+- [0195 — Evaluation concurrency](0195-evaluation-concurrency.md) - replaces
+  evaluation execution strategies with a single concurrency setting and runs
+  dependency-ready evaluator steps concurrently under runner-owned coordination
+  (`Done`).

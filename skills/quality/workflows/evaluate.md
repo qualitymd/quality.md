@@ -78,7 +78,7 @@ Hard boundaries:
    preview with
    `qualitymd evaluation run --dry-run --json [--model ...] [--area ...] [--factor ...]`,
    which reports the resolved model, scope, evaluator (with readiness evidence
-   for `auto` candidates), execution strategy, and work-unit counts without
+   for `auto` candidates), concurrency, and work-unit counts without
    invoking an evaluator. Ask the user to choose only when selection fails or
    is ambiguous — for example a `missing_evaluator` failure — presenting the
    CLI's remedies as the options.

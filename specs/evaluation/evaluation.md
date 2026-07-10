@@ -101,7 +101,7 @@ routine JSON.
 `schemaVersion` **MUST** be treated as a payload-shape marker only. The current
 evaluation routine payload schema version is `3`; the
 [`evaluation.json`](evaluation-json.md) run artifact carries its own artifact
-`schemaVersion`, currently `4`. Evaluation does not define migrations,
+`schemaVersion`, currently `5`. Evaluation does not define migrations,
 compatibility transforms, or mixed-version run support; older evaluation runs
 remain schema-incompatible historical data.
 

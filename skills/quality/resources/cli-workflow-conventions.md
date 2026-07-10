@@ -23,8 +23,8 @@ Discover command shapes, flags, and payload contracts from the CLI at runtime:
   whether the install is in the skill's supported range.
 - Use `qualitymd spec` for active format rules and rating vocabulary.
 - Use `qualitymd evaluation run --dry-run --json` to preview a resolved
-  evaluation — model, scope, evaluator, execution strategy, and work-unit
-  counts — without invoking an evaluator or writing evaluation data.
+  evaluation — model, scope, evaluator, concurrency, and work-unit counts —
+  without invoking an evaluator or writing evaluation data.
 - Use `qualitymd evaluation data kinds`, `qualitymd evaluation data schema`, and
   `qualitymd evaluation data example` only when inspecting a historical
   multi-file run's payloads; new runs keep structured data in `evaluation.json`

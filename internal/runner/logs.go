@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
@@ -24,6 +25,7 @@ type runLogs struct {
 	events *os.File
 	calls  *os.File
 	now    func() time.Time
+	mu     sync.Mutex
 }
 
 func openRunLogs(runAbs string) (*runLogs, error) {
@@ -85,5 +87,7 @@ func (l *runLogs) append(file *os.File, entry map[string]any) {
 		return
 	}
 	raw = append(raw, '\n')
+	l.mu.Lock()
+	defer l.mu.Unlock()
 	_, _ = file.Write(raw)
 }

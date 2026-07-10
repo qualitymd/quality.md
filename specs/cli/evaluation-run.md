@@ -35,7 +35,7 @@ longer depends on the invoking harness. — 0192
 
 This spec covers the command surface: flags, evaluator selection, dry run,
 resume, cancellation reporting, output, and exit behavior. The work graph,
-execution strategy, run-local logging, and failure taxonomy are the
+concurrency resolution, run-local logging, and failure taxonomy are the
 [evaluation runner](../evaluation/runner.md)'s contract.
 
 Deferred:
@@ -149,8 +149,7 @@ binding are the [runner](../evaluation/runner.md#harness-checkpoints) and
 `qualitymd evaluation run --dry-run --json` **MUST** emit a deterministic
 machine-readable preview containing the resolved model, requested and planned
 scope, selected evaluator with its kind and selection reason, resolved
-execution strategy, resolved concurrency, work-unit counts, `expectedRunPath`,
-and `nextActions`.
+concurrency, work-unit counts, `expectedRunPath`, and `nextActions`.
 
 A dry run **MUST NOT** create the run folder and **MUST NOT** invoke an
 evaluator for judgment.

@@ -9,7 +9,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/qualitymd/quality.md/internal/evaluator"
 )
@@ -58,10 +60,21 @@ func testRunnerRepo(t *testing.T) string {
 	return repo
 }
 
+func writeRunnerConfig(t *testing.T, repo, config string) {
+	t.Helper()
+	if err := os.MkdirAll(filepath.Join(repo, ".quality"), 0o755); err != nil {
+		t.Fatalf("MkdirAll(.quality) error = %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repo, ".quality", "config.yaml"), []byte(config), 0o644); err != nil {
+		t.Fatalf("WriteFile(config.yaml) error = %v", err)
+	}
+}
+
 // scriptedEvaluator produces schema-valid payloads for every judgment work
 // unit, tracking calls per work unit. failUnits maps work-unit IDs to a count
 // of leading attempts that return a schema-invalid payload.
 type scriptedEvaluator struct {
+	mu        sync.Mutex
 	calls     map[string]int
 	failUnits map[string]int
 }
@@ -75,14 +88,19 @@ func newScriptedEvaluator() *scriptedEvaluator {
 func (s *scriptedEvaluator) Kind() string { return "scripted" }
 
 func (s *scriptedEvaluator) Capabilities() evaluator.Capabilities {
-	return evaluator.Capabilities{Strategies: []evaluator.Strategy{evaluator.StrategySequential}}
+	return evaluator.Capabilities{Concurrent: true}
 }
 
 func (s *scriptedEvaluator) Evaluate(_ context.Context, req evaluator.WorkRequest) (evaluator.WorkResult, error) {
+	s.mu.Lock()
 	s.calls[req.WorkUnitID]++
-	result := evaluator.WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: "scripted", Strategy: evaluator.StrategySequential}
-	if remaining := s.failUnits[req.WorkUnitID]; remaining > 0 {
+	remaining := s.failUnits[req.WorkUnitID]
+	if remaining > 0 {
 		s.failUnits[req.WorkUnitID] = remaining - 1
+	}
+	s.mu.Unlock()
+	result := evaluator.WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: "scripted"}
+	if remaining > 0 {
 		result.Payload = map[string]any{"broken": true}
 		return result, nil
 	}
@@ -163,6 +181,72 @@ func (s *scriptedEvaluator) payloadFor(req evaluator.WorkRequest) (map[string]an
 	default:
 		return nil, fmt.Errorf("unexpected work-unit kind %s", req.Kind)
 	}
+}
+
+type sequentialOnlyEvaluator struct {
+	inner *scriptedEvaluator
+}
+
+func (s *sequentialOnlyEvaluator) Kind() string { return s.inner.Kind() }
+
+func (s *sequentialOnlyEvaluator) Capabilities() evaluator.Capabilities {
+	return evaluator.Capabilities{Concurrent: false}
+}
+
+func (s *sequentialOnlyEvaluator) Evaluate(ctx context.Context, req evaluator.WorkRequest) (evaluator.WorkResult, error) {
+	return s.inner.Evaluate(ctx, req)
+}
+
+type overlappingEvaluator struct {
+	inner  *scriptedEvaluator
+	mu     sync.Mutex
+	active int
+	max    int
+	gate   chan struct{}
+	once   sync.Once
+}
+
+func newOverlappingEvaluator() *overlappingEvaluator {
+	return &overlappingEvaluator{inner: newScriptedEvaluator(), gate: make(chan struct{})}
+}
+
+func (e *overlappingEvaluator) Kind() string { return e.inner.Kind() }
+
+func (e *overlappingEvaluator) Capabilities() evaluator.Capabilities {
+	return evaluator.Capabilities{Concurrent: true}
+}
+
+func (e *overlappingEvaluator) Evaluate(ctx context.Context, req evaluator.WorkRequest) (evaluator.WorkResult, error) {
+	if UnitKind(req.Kind) != KindAssessRateRequirement {
+		return e.inner.Evaluate(ctx, req)
+	}
+	e.mu.Lock()
+	e.active++
+	if e.active > e.max {
+		e.max = e.active
+	}
+	if e.active >= 2 {
+		e.once.Do(func() { close(e.gate) })
+	}
+	e.mu.Unlock()
+	defer func() {
+		e.mu.Lock()
+		e.active--
+		e.mu.Unlock()
+	}()
+	select {
+	case <-e.gate:
+	case <-ctx.Done():
+		return evaluator.WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: "scripted", Failure: evaluator.FailureCancelled, FailureDetail: "cancelled"}, nil
+	case <-time.After(250 * time.Millisecond):
+	}
+	return e.inner.Evaluate(ctx, req)
+}
+
+func (e *overlappingEvaluator) maxActive() int {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.max
 }
 
 func (s *scriptedEvaluator) rankFindingsPayload(req evaluator.WorkRequest) (map[string]any, error) {
@@ -248,7 +332,7 @@ func roundTripJSON(payload map[string]any) map[string]any {
 	return out
 }
 
-func scriptedSelect(scripted *scriptedEvaluator) func(evaluator.Options) (*evaluator.Selection, error) {
+func scriptedSelect(scripted evaluator.Evaluator) func(evaluator.Options) (*evaluator.Selection, error) {
 	return func(_ evaluator.Options) (*evaluator.Selection, error) {
 		return &evaluator.Selection{Name: "scripted", Evaluator: scripted, Reason: "test"}, nil
 	}
@@ -280,8 +364,8 @@ func TestRunCompletesEndToEnd(t *testing.T) {
 	if result.ReportMD == "" || result.RatingResult == nil {
 		t.Errorf("receipt = %+v, want reportMd and ratingResult", result)
 	}
-	if result.ExecutionStrategy != "sequential" || result.Concurrency != 1 {
-		t.Errorf("strategy = %q concurrency = %d, want sequential/1", result.ExecutionStrategy, result.Concurrency)
+	if result.Concurrency != defaultConcurrency() {
+		t.Errorf("concurrency = %d, want %d", result.Concurrency, defaultConcurrency())
 	}
 	if result.WorkUnits.Completed != result.WorkUnits.Total {
 		t.Errorf("workUnits = %+v, want all completed", result.WorkUnits)
@@ -307,6 +391,64 @@ func TestRunCompletesEndToEnd(t *testing.T) {
 	}
 	if !status.Reportable || len(status.Gaps) != 0 {
 		t.Errorf("status = %+v, want reportable", status)
+	}
+}
+
+func TestRunUsesConfiguredConcurrencyForConcurrentEvaluator(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 2\n")
+	scripted := newOverlappingEvaluator()
+	result, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		SelectEvaluator: scriptedSelect(scripted),
+	})
+	if err != nil {
+		t.Fatalf("Run() error = %v", err)
+	}
+	if result.Status != StatusCompleted {
+		t.Fatalf("status = %q (failure: %+v), want completed", result.Status, result.Failure)
+	}
+	if result.Concurrency != 2 {
+		t.Errorf("concurrency = %d, want configured 2", result.Concurrency)
+	}
+	if scripted.maxActive() < 2 {
+		t.Errorf("max active assessRateRequirement calls = %d, want at least 2", scripted.maxActive())
+	}
+}
+
+func TestRunResolvesUnsupportedEvaluatorConcurrencyToOne(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 8\n")
+	scripted := &sequentialOnlyEvaluator{inner: newScriptedEvaluator()}
+	result, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		SelectEvaluator: scriptedSelect(scripted),
+	})
+	if err != nil {
+		t.Fatalf("Run() error = %v", err)
+	}
+	if result.Concurrency != 1 {
+		t.Errorf("concurrency = %d, want 1 for evaluator without concurrent support", result.Concurrency)
+	}
+}
+
+func TestDryRunRejectsInvalidConfiguredConcurrency(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 0\n")
+	scripted := newScriptedEvaluator()
+	_, err := DryRun(Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		SelectEvaluator: scriptedSelect(scripted),
+	})
+	if err == nil {
+		t.Fatal("DryRun() error = nil, want usage error for concurrency 0")
+	}
+	var usage *UsageError
+	if !errors.As(err, &usage) {
+		t.Fatalf("DryRun() error = %T, want UsageError", err)
 	}
 }
 
@@ -821,8 +963,8 @@ func TestDryRunPreviewsWithoutWriting(t *testing.T) {
 	if preview.ExpectedRunPath != ".quality/evaluations/0001-full-eval" {
 		t.Errorf("expectedRunPath = %q", preview.ExpectedRunPath)
 	}
-	if preview.ExecutionStrategy != "sequential" || preview.Concurrency != 1 {
-		t.Errorf("strategy = %q/%d, want sequential/1", preview.ExecutionStrategy, preview.Concurrency)
+	if preview.Concurrency != defaultConcurrency() {
+		t.Errorf("concurrency = %d, want %d", preview.Concurrency, defaultConcurrency())
 	}
 	if preview.WorkUnits.Total == 0 || preview.WorkUnits.EvaluatorUnits == 0 {
 		t.Errorf("workUnits = %+v", preview.WorkUnits)

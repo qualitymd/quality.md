@@ -29,7 +29,7 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
@@ -38,9 +38,9 @@ The document envelope is:
 }
 ```
 
-`schemaVersion` **MUST** be `4` and is a payload-shape marker only; versions
-1–3 belong to the historical multi-file data tree. `kind` **MUST** be
-`EvaluationRun`.
+`schemaVersion` **MUST** be `5` and is a payload-shape marker only; versions
+1–3 belong to the historical multi-file data tree, and version 4 belongs to the
+strategy-named runner artifact. `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
 
@@ -48,7 +48,7 @@ The document envelope is:
 `evaluationId`, `createdAt`, `model`, `requestedScope`, `plannedScope`, `run`
 (the local run `number` and folder `label`), `evaluator` (the selected
 evaluator or profile name), `evaluatorKind` (the selected evaluator's runtime
-kind), and `executionStrategy` (the resolved execution strategy).
+kind), and `concurrency` (the resolved concurrency cap).
 
 ## State
 
@@ -57,8 +57,6 @@ kind), and `executionStrategy` (the resolved execution strategy).
 - the run `status`, one of `running`, `awaiting_evaluator`, `completed`,
   `failed`, or `cancelled`;
 - the classified `failure` when the run failed;
-- the resolved `concurrency` cap;
-- `strategyFallbacks` recording execution-strategy downgrade decisions;
 - per-work-unit entries carrying status, attempts, input hash, failure, and
   timestamps;
 - a `cancelled` marker when a user interruption was observed mid-run;

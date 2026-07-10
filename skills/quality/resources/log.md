@@ -1,5 +1,12 @@
 # /quality runtime resources update log
 
+## 2026-07-10
+
+- **Revision**: Updated
+  [CLI workflow conventions](cli-workflow-conventions.md) for 0195 - Evaluation
+  concurrency. Dry-run preview guidance now names resolved concurrency rather
+  than execution strategy.
+
 ## 2026-07-09
 
 - **Revision**: Updated

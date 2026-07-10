@@ -2,6 +2,39 @@
 
 ## 2026-07-10
 
+- **Done**: Implemented and archived
+  [0195 - Evaluation concurrency](archive/0195-evaluation-concurrency.md).
+  The runner now resolves a single `evaluation.concurrency` setting (omitted
+  default `max(2, runtime.NumCPU()*2)`) instead of the public
+  `executionStrategy` enum, records only resolved `concurrency` in dry-run JSON,
+  run receipts, logs, and schema-version-5 `evaluation.json`, resolves
+  harness-backed runs to `concurrency: 1`, and runs dependency-ready
+  evaluator-backed steps concurrently through a coordinator-owned scheduler that
+  keeps artifact mutation and deterministic result ordering inside the runner.
+  Durable evaluation/CLI specs, runtime skill guidance, and release notes were
+  updated. Verified with `mise run check` and `go test -race ./internal/runner`.
+  Moved the case into [`archive/`](archive/index.md) and updated the bundle
+  [index](index.md).
+
+- **In-Progress**: Advanced
+  [0195 - Evaluation concurrency](archive/0195-evaluation-concurrency.md) from
+  `Design` to `In-Progress`. The functional spec and design doc are settled;
+  implementation of `evaluation.concurrency`, concurrency resolution, the
+  coordinator-owned runner scheduler, and durable spec/skill updates begins.
+  Updated the bundle [index](index.md).
+
+- **Design**: Created
+  [0195 - Evaluation concurrency](archive/0195-evaluation-concurrency.md) with
+  its [functional spec](archive/0195-evaluation-concurrency/spec.md) and
+  [design doc](archive/0195-evaluation-concurrency/design.md). The case removes
+  the public `executionStrategy` runner surface in favor of a single optional
+  `evaluation.concurrency` setting, defaults omitted concurrency to
+  `max(2, runtime.NumCPU()*2)`, keeps harness-backed runs sequential, and
+  designs a coordinator-owned scheduler so concurrent evaluator calls cannot
+  mutate `evaluation.json` directly or change deterministic result/report
+  ordering. Code remains untouched until **In-Progress**. Updated the bundle
+  [index](index.md).
+
 - **Done**: Implemented, landed, and archived
   [0194 - Harness-native evaluator dispatch](archive/0194-harness-native-evaluator-dispatch.md).
   The runner gains the reserved `harness` evaluator: a ready judgment work

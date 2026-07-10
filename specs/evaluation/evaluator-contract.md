@@ -76,7 +76,6 @@ the same work-unit kind. The envelope carries:
 
 - the result payload;
 - the evaluator kind and, when known, the model used;
-- the execution strategy used;
 - context metadata, when available;
 - usage metadata, when available; and
 - a failure category and detail when the evaluator completed but could not
@@ -218,6 +217,9 @@ The workspace config file `.quality/config.yaml` names evaluators:
 - `evaluation.evaluator` — `auto` or the name of a built-in evaluator or
   configured profile. When absent, the runner **MUST** behave as though
   `evaluation.evaluator: auto` were configured.
+- `evaluation.concurrency` — optional positive integer maximum for active
+  evaluator calls. When absent, the runner uses the
+  [runner concurrency default](runner.md#concurrency).
 - `evaluators` — an optional map of named profiles. Each profile **MUST**
   declare a `kind` — one of `codex`, `claude`, `openai`, or `anthropic`
   (`shell` and `manual` stay reserved) — and **MAY** declare `model`,
@@ -226,7 +228,7 @@ The workspace config file `.quality/config.yaml` names evaluators:
 ```yaml
 evaluation:
   evaluator: team-openai
-  executionStrategy: auto # see the evaluation runner spec
+  concurrency: 8
 evaluators:
   team-openai:
     kind: openai
@@ -247,3 +249,7 @@ name (`apiKeyEnv`), never by secret value.
 Evaluator resolution order and `auto` discovery are the
 [`qualitymd evaluation run`](../cli/evaluation-run.md#evaluator-selection)
 command's contract.
+
+Evaluators **MUST** declare whether they support concurrent calls. The runner
+**MUST NOT** resolve concurrency above `1` for an evaluator that does not
+declare concurrent-call support.

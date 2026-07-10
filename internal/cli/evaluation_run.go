@@ -60,8 +60,8 @@ func runEvaluationDryRun(cmd *cobra.Command, opts runner.Options, jsonOutput boo
 	if _, err := fmt.Fprintf(out, "Would evaluate %s at %s\n", preview.Model, preview.ExpectedRunPath); err != nil {
 		return err
 	}
-	if _, err := fmt.Fprintf(out, "Evaluator: %s (%s); strategy: %s; work units: %d (%d evaluator-backed)\n",
-		preview.Evaluator, preview.EvaluatorReason, preview.ExecutionStrategy,
+	if _, err := fmt.Fprintf(out, "Evaluator: %s (%s); concurrency: %d; work units: %d (%d evaluator-backed)\n",
+		preview.Evaluator, preview.EvaluatorReason, preview.Concurrency,
 		preview.WorkUnits.Total, preview.WorkUnits.EvaluatorUnits); err != nil {
 		return err
 	}

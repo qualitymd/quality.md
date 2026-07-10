@@ -13,15 +13,6 @@ import (
 	"encoding/json"
 )
 
-// Strategy names one runner execution strategy an evaluator can support.
-type Strategy string
-
-const (
-	StrategyAuto       Strategy = "auto"
-	StrategySequential Strategy = "sequential"
-	StrategyParallel   Strategy = "parallel"
-)
-
 // FailureCategory is a stable machine-readable failure classification shared
 // by the runner, evaluators, run artifacts, logs, and command receipts.
 type FailureCategory string
@@ -44,13 +35,12 @@ const (
 	FailureInternal                 FailureCategory = "internal_error"
 )
 
-// Capabilities is the execution capability declaration the runner's execution
-// planner reads before dispatching work. The planner never schedules a
-// strategy the evaluator does not declare.
+// Capabilities is the execution capability declaration the runner reads before
+// dispatching work.
 type Capabilities struct {
-	// Strategies lists the execution strategies the evaluator supports.
-	// Every evaluator supports at least sequential execution.
-	Strategies []Strategy `json:"strategies"`
+	// Concurrent reports whether the evaluator supports multiple simultaneous
+	// calls for one run.
+	Concurrent bool `json:"concurrent"`
 	// Subagents reports whether the evaluator can delegate independent work
 	// to native subagents or worker sessions.
 	Subagents bool `json:"subagents"`
@@ -148,8 +138,6 @@ type WorkResult struct {
 	EvaluatorKind string
 	// Model names the provider model when known.
 	Model string
-	// Strategy is the execution strategy the call ran under.
-	Strategy Strategy
 	// ContextMeta carries provider context identifiers and prompt-cache
 	// status when available. It is recorded only in run-local logs, never in
 	// the authoritative run artifact.

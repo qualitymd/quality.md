@@ -7,9 +7,9 @@ import (
 )
 
 // Preview is the deterministic machine-readable dry-run receipt: the
-// resolved model, scope, evaluator, execution strategy, work-unit counts,
-// and expected run path, with no evaluator invocation and no evaluation
-// judgment data written.
+// resolved model, scope, evaluator, concurrency, work-unit counts, and expected
+// run path, with no evaluator invocation and no evaluation judgment data
+// written.
 type Preview struct {
 	SchemaVersion   int                        `json:"schemaVersion"`
 	Model           string                     `json:"model"`
@@ -21,7 +21,6 @@ type Preview struct {
 	// EvaluatorCandidates is the readiness evidence for each CLI candidate
 	// auto discovery considered, present only for auto selection.
 	EvaluatorCandidates []evaluator.CLIReadiness `json:"evaluatorCandidates,omitempty"`
-	ExecutionStrategy   string                   `json:"executionStrategy"`
 	Concurrency         int                      `json:"concurrency"`
 	WorkUnits           WorkUnitCounts           `json:"workUnits"`
 	ExpectedRunPath     string                   `json:"expectedRunPath"`
@@ -53,7 +52,10 @@ func DryRun(opts Options) (*Preview, error) {
 	if err != nil {
 		return nil, err
 	}
-	strategy, _ := resolveStrategy(ws.Evaluation.ExecutionStrategy, selection.Evaluator.Capabilities())
+	concurrency, err := resolveConcurrency(ws.Evaluation.Concurrency, selection.Evaluator.Capabilities())
+	if err != nil {
+		return nil, err
+	}
 	runCommand := "qualitymd evaluation run"
 	if opts.Model != "" {
 		runCommand += " --model " + opts.Model
@@ -76,8 +78,7 @@ func DryRun(opts Options) (*Preview, error) {
 		EvaluatorKind:       selection.Evaluator.Kind(),
 		EvaluatorReason:     selection.Reason,
 		EvaluatorCandidates: selection.Candidates,
-		ExecutionStrategy:   strategy,
-		Concurrency:         1,
+		Concurrency:         concurrency,
 		WorkUnits: WorkUnitCounts{
 			Total:          len(graph.Units),
 			EvaluatorUnits: graph.EvaluatorUnits(),

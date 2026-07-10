@@ -31,7 +31,7 @@ func (e *apiEvaluator) Kind() string { return e.kind }
 
 func (e *apiEvaluator) Capabilities() Capabilities {
 	return Capabilities{
-		Strategies:      []Strategy{StrategySequential},
+		Concurrent:      true,
 		ReusableContext: []string{"prompt-cache"},
 		ReportsUsage:    true,
 	}
@@ -131,7 +131,7 @@ func newAnthropicEvaluator(profile workspace.EvaluatorProfile, opts Options) (*a
 }
 
 func (e *anthropicEvaluator) Evaluate(ctx context.Context, req WorkRequest) (WorkResult, error) {
-	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Model: e.model, Strategy: StrategySequential}
+	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Model: e.model}
 	key, err := e.apiKey()
 	if err != nil {
 		var selErr *SelectionError
@@ -219,7 +219,7 @@ func newOpenAIEvaluator(profile workspace.EvaluatorProfile, opts Options) (*open
 }
 
 func (e *openAIEvaluator) Evaluate(ctx context.Context, req WorkRequest) (WorkResult, error) {
-	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Model: e.model, Strategy: StrategySequential}
+	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Model: e.model}
 	key, err := e.apiKey()
 	if err != nil {
 		var selErr *SelectionError

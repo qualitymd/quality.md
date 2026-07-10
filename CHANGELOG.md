@@ -5,6 +5,48 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.29.0 - 2026-07-10
+
+### CLI
+
+- Evaluation runs can now execute dependency-ready evaluator-backed steps
+  concurrently. Configure the runner with `evaluation.concurrency` in
+  `.quality/config.yaml`; omit it to use the automatic default
+  `max(2, runtime.NumCPU()*2)`, set `1` for sequential execution, or set any
+  positive integer to choose the active evaluator-call limit.
+- `qualitymd evaluation run --dry-run --json`, run receipts, and
+  `evaluation.json` now report resolved `concurrency` directly. The previous
+  public `executionStrategy` and `strategyFallbacks` fields are removed.
+- Harness-backed evaluation remains sequential (`concurrency: 1`) while the
+  runner supports one pending harness checkpoint at a time.
+
+### /quality skill
+
+- Runtime guidance now documents `evaluation.concurrency` as the runner
+  configuration knob and describes dry-run previews as reporting resolved
+  concurrency.
+- `/quality` skill metadata now declares version `0.29.0` and requires the
+  `qualitymd` CLI `0.29.x` line.
+
+### Compatibility / migration
+
+- Replace `evaluation.executionStrategy` in `.quality/config.yaml` with
+  `evaluation.concurrency`. Use `concurrency: 1` for the old sequential
+  behavior.
+- Machine consumers of evaluation run receipts and `evaluation.json` should read
+  `concurrency`; `executionStrategy` and `strategyFallbacks` are no longer
+  emitted.
+- Runner `evaluation.json` artifacts now use schema version `5`; in-flight
+  version 4 runner runs should be started fresh.
+- No QUALITY.md specification version change; the specification remains
+  `0.10 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.29.0`
+- QUALITY.md specification: `0.10 (Draft)`
+- /quality skill: `0.29.0`, requires `qualitymd >=0.29.0 <0.30.0`
+
 ## v0.28.0 - 2026-07-10
 
 ### CLI
