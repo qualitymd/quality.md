@@ -1,5 +1,15 @@
 # /quality runtime skill update log
 
+## 2026-07-09
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0192 - Deterministic
+  evaluation runner. The CLI now owns evaluation orchestration and judgment
+  dispatch through `qualitymd evaluation run`; evaluate writes evaluation
+  records only through the runner, the payload-batch authoring guidance is
+  removed for new runs, workspace config gains `evaluation.evaluator`,
+  `evaluation.executionStrategy`, and the `evaluators` profile map, and the
+  evaluate feedback log stays skill-owned.
+
 ## 2026-07-02
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) prerequisites for the

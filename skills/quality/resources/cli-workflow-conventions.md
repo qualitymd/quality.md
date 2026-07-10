@@ -22,11 +22,13 @@ Discover command shapes, flags, and payload contracts from the CLI at runtime:
   development-build state, commit when known, bundled specification version, and
   whether the install is in the skill's supported range.
 - Use `qualitymd spec` for active format rules and rating vocabulary.
+- Use `qualitymd evaluation run --dry-run --json` to preview a resolved
+  evaluation — model, scope, evaluator, execution strategy, and work-unit
+  counts — without invoking an evaluator or writing evaluation data.
 - Use `qualitymd evaluation data kinds`, `qualitymd evaluation data schema`, and
-  `qualitymd evaluation data example` for evaluation payload discovery. For one
-  kind, `data schema <kind>` is self-contained and is the source for required
-  fields and allowed enum values; `data example <kind>` is one concrete valid
-  instance.
+  `qualitymd evaluation data example` only when inspecting a historical
+  multi-file run's payloads; new runs keep structured data in `evaluation.json`
+  written by the runner.
 
 Prefer stable structured channels (`--json`, schemas, examples) over parsing
 human-formatted help tables when the result will drive routing or authored
@@ -70,25 +72,20 @@ Sequence the work this way:
 
 Sequence an evaluation this way:
 
-1. Validate the model before judgment.
+1. Validate the model before invoking the runner.
 2. Inspect current workspace status from structured status output.
 3. Create the evaluate feedback log after the run frame.
-4. Create the run through the CLI and record the run path in the feedback log.
-5. Query in-scope canonical IDs from the run's `model-snapshot.md`, never from
-   the live `QUALITY.md`; use the model introspection command's structured list
-   output and scope it to the resolved evaluation scope.
-6. Discover payload kinds, schemas, and examples through the CLI data discovery
-   commands.
+4. Resolve any natural-language scope to canonical references through the model
+   introspection command's structured list output.
+5. Optionally preview the resolved run with the runner's dry-run JSON output,
+   and confirm or explain evaluator selection.
+6. Run the evaluation through `qualitymd evaluation run` with explicit flags
+   and record the reported run path in the feedback log.
 7. Maintain workflow feedback for material process events.
-8. Validate authored routine output with the CLI data dry-run path before
-   writing.
-9. Persist routine output through the CLI data write path.
-10. Check reportability through the CLI evaluation-status path.
-11. Build the report through the CLI report-build path.
+8. Summarize the receipt and the generated reports.
 
-Use the queried model IDs as the source of truth for every authored payload
-reference. The post-hoc identity-resolution check is a backstop, not the primary
-guard.
+The runner owns run creation, evaluator invocation, structured data, and report
+generation; do not author or persist evaluation payloads for new runs.
 
 ## Resuming or diagnosing a run
 
@@ -99,9 +96,14 @@ Sequence recovery work this way:
 3. Inspect run readiness through the CLI evaluation-status path.
 4. Record process ambiguity or recovery notes in the current evaluate feedback
    log; do not duplicate assessment evidence.
-5. For missing data, inspect data kinds, schemas, and examples; validate with
-   dry-run; then persist through the CLI data write path.
-6. Build the report only after the run is reportable.
+5. Resume a failed or cancelled runner run with
+   `qualitymd evaluation run --resume <run>`, keeping the run's recorded
+   evaluator; a different evaluator means a new run.
+6. For a historical multi-file run with missing data, inspect data kinds,
+   schemas, and examples; validate with dry-run; then persist through the CLI
+   data write path.
+7. Rebuild reports through the CLI report-build path only when the run is
+   reportable.
 
 ## Updating
 
@@ -113,9 +115,9 @@ When the CLI is missing, stale, incompatible, or uncertain:
 
 ## Evaluation scope
 
-Use `--area <area-id>` and repeatable `--factor <factor-id>` for scoped
+Use `--area <area-ref>` and repeatable `--factor <factor-ref>` for scoped
 evaluations. Pass canonical `area:` and `factor:` references resolved from the
-model. Let `qualitymd evaluation create` write `EvaluationManifest`, apply the root
+model. Let `qualitymd evaluation run` record the run manifest, apply the root
 default, and derive the run-folder slug.
 
 ## Command rules
@@ -124,10 +126,8 @@ default, and derive the run-folder slug.
 - Prefer structured status output for readiness, model shape, evaluation
   history, and stale-run signals.
 - Use model introspection output for canonical area, factor, and requirement IDs.
-- Persist routine JSON only through the CLI data write path.
-- Use the CLI payload schema and populated example commands to inspect payload
-  shape.
-- Use dry-run to validate new or materially revised payloads before writing.
+- Create and execute evaluations only through `qualitymd evaluation run`; the
+  data write path exists for historical multi-file runs only.
 - Do not continue past missing evaluation commands by manually creating files.
 - Never manually create evaluation run folders or structured data files.
 - Keep generated run paths exactly as the CLI reports them.

@@ -1,5 +1,41 @@
 # Specs update log
 
+## 2026-07-10
+
+- **Revision**: Implemented durable spec changes for
+  [0193 - Evaluation runner token efficiency](../changes/0193-evaluation-token-efficiency.md)
+  in the evaluation bundle: the
+  [Evaluator contract](evaluation/evaluator-contract.md) requires
+  stable-before-delta prompt ordering with an exposed stable/delta boundary,
+  provider prompt caching on the stable prefix for API evaluators, and cached
+  input tokens in usage; the [Runner](evaluation/runner.md) packages an area's
+  source once per run, logs cached input tokens, and names per-area CLI
+  session reuse; [Orchestration](evaluation/orchestration.md) merges
+  requirement assessment-and-rating into one `assessRateRequirement`
+  evaluator unit with partial results retryable; and
+  [payload kinds](evaluation/records/payload-kinds.md) notes one combined call
+  yields both unchanged requirement payload kinds. The
+  [qualitymd evaluation run](cli/evaluation-run.md) dry-run contract needed no
+  edit: it describes work-unit counts generically.
+
+## 2026-07-09
+
+- **Revision**: Implemented durable spec changes for
+  [0192 - Deterministic evaluation runner](../changes/archive/0192-deterministic-evaluation-runner.md).
+  Added [qualitymd evaluation run](cli/evaluation-run.md) and the evaluation
+  [Runner](evaluation/runner.md),
+  [Evaluator contract](evaluation/evaluator-contract.md), and
+  [evaluation.json](evaluation/evaluation-json.md) specs. The CLI-owned runner
+  now executes the evaluation protocol and invokes pluggable evaluators for
+  bounded judgment, and new runs persist one authoritative `evaluation.json`
+  instead of the multi-file `data/` tree. The quality-skill specs
+  ([quality-skill.md](skills/quality-skill/quality-skill.md),
+  [evaluation.md](skills/quality-skill/evaluation.md), and the
+  [evaluate workflow](skills/quality-skill/workflows/evaluate.md)) were
+  rewritten in the same change: `/quality evaluate` is the agent-mediated
+  wrapper around the runner and no longer orchestrates evaluation or writes
+  structured evaluation data itself.
+
 ## 2026-07-01
 
 - **Revision**: Narrowed [`SPECIFICATION.md`](../SPECIFICATION.md) (0.9 → 0.10

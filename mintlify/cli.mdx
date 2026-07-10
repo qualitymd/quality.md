@@ -204,11 +204,42 @@ qualitymd evaluation
 
 | Command | Description |
 | --- | --- |
+| `qualitymd evaluation run` | Execute a complete evaluation run with the deterministic runner |
 | `qualitymd evaluation create` | Create a numbered evaluation run folder |
 | `qualitymd evaluation list` | List evaluation runs |
 | `qualitymd evaluation status` | Show whether an evaluation run is reportable |
 | `qualitymd evaluation data` | Work with evaluation structured data |
 | `qualitymd evaluation report` | Build evaluation reports |
+
+### `qualitymd evaluation run`
+
+Execute a complete evaluation run with the deterministic runner
+
+```bash
+qualitymd evaluation run [flags]
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--area` | canonical area reference for the evaluation scope |
+| `--dry-run`, `-n` | preview the resolved run without invoking an evaluator or writing evaluation data |
+| `--evaluation-dir` | override the model-relative evaluation directory |
+| `--evaluator` | evaluator to use: auto (default), a built-in name, or a configured profile |
+| `--factor` | canonical factor reference for a scoped evaluation; repeatable |
+| `--json` | emit a machine-readable run receipt |
+| `--model` | QUALITY.md file to evaluate |
+| `--resume` | resume an existing run from its evaluation.json |
+
+**Examples**
+
+```bash
+qualitymd evaluation run
+qualitymd evaluation run --area area:docs --evaluator claude
+qualitymd evaluation run --dry-run --json
+qualitymd evaluation run --resume .quality/evaluations/0007-full-eval
+```
 
 ### `qualitymd evaluation create`
 

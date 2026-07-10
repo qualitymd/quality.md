@@ -44,6 +44,9 @@ type Workspace struct {
 	Evaluations PathRef
 	Log         PathRef
 	FeedbackLog PathRef
+
+	Evaluation EvaluationConfig
+	Evaluators map[string]EvaluatorProfile
 }
 
 // Options controls workspace resolution.
@@ -54,7 +57,36 @@ type Options struct {
 }
 
 type config struct {
-	EvaluationDir string `yaml:"evaluationDir"`
+	EvaluationDir string                      `yaml:"evaluationDir"`
+	Evaluation    EvaluationConfig            `yaml:"evaluation"`
+	Evaluators    map[string]EvaluatorProfile `yaml:"evaluators"`
+}
+
+// EvaluationConfig is the workspace-level evaluation runner configuration.
+type EvaluationConfig struct {
+	// Evaluator selects the evaluator used by `qualitymd evaluation run`:
+	// "auto", a built-in evaluator name, or a configured profile name.
+	Evaluator string `yaml:"evaluator" json:"evaluator,omitempty"`
+	// ExecutionStrategy selects the runner execution strategy: "auto",
+	// "sequential", or "parallel".
+	ExecutionStrategy string `yaml:"executionStrategy" json:"executionStrategy,omitempty"`
+}
+
+// EvaluatorProfile is one configured named evaluator profile. API-key profiles
+// reference secrets by environment-variable name only, never by value.
+type EvaluatorProfile struct {
+	// Kind names the evaluator runtime: codex, claude, openai, or anthropic
+	// (shell and manual are reserved).
+	Kind string `yaml:"kind" json:"kind"`
+	// Model overrides the provider model for API-backed kinds.
+	Model string `yaml:"model" json:"model,omitempty"`
+	// APIKeyEnv names the environment variable holding the API key for
+	// API-backed kinds.
+	APIKeyEnv string `yaml:"apiKeyEnv" json:"apiKeyEnv,omitempty"`
+	// BaseURL overrides the provider API base URL for API-backed kinds.
+	BaseURL string `yaml:"baseUrl" json:"baseUrl,omitempty"`
+	// Command overrides the CLI executable for CLI-backed kinds.
+	Command string `yaml:"command" json:"command,omitempty"`
 }
 
 // Resolve returns the workspace paths for the selected model file.
@@ -134,6 +166,8 @@ func Resolve(opts Options) (*Workspace, error) {
 		Evaluations:   PathRef{Abs: evalAbs, Rel: evalRel, RepoRel: evalRepoRel},
 		Log:           PathRef{Abs: logAbs, Rel: logRel, RepoRel: logRepoRel},
 		FeedbackLog:   PathRef{Abs: feedbackAbs, Rel: feedbackRel, RepoRel: feedbackRepoRel},
+		Evaluation:    cfg.Evaluation,
+		Evaluators:    cfg.Evaluators,
 	}, nil
 }
 

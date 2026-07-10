@@ -51,12 +51,9 @@ qualitymd update --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
-qualitymd evaluation create --help
+qualitymd evaluation run --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment --help
-qualitymd evaluation analysis --help
-qualitymd evaluation recommendation --help
 qualitymd evaluation report --help
 ```
 
@@ -157,3 +154,14 @@ evaluationDir: tmp/evals
 
 The path is relative to the selected `QUALITY.md` workspace and must not escape
 the repository.
+
+The same config file can pin the evaluator used by evaluation runs. By default
+`qualitymd evaluation run` auto-detects an installed Codex or Claude CLI, then
+configured API profiles:
+
+```yaml
+evaluation:
+  evaluator: auto # auto, codex, claude, or a configured profile name
+```
+
+See `qualitymd evaluation run --help` for the full runner surface.

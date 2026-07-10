@@ -108,9 +108,11 @@ Generated reports are deterministic projections over completed structured
 evaluation data. Do not introduce report-only findings, ratings, evidence,
 limits, recommendations, or analysis in the Markdown body or in frontmatter.
 
-Structured data under `data/` remains the machine-readable source of truth.
-The report body may point to that data in its bottom `Primary source data`
-section, but the report must not become a second result format.
+Structured run data remains the machine-readable source of truth —
+`evaluation.json` at the run root for runner-created runs, the multi-file
+`data/` tree for historical runs. The report body may point to that data in its
+bottom `Primary source data` section, but the report must not become a second
+result format.
 
 Keep rating drivers in structured evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
@@ -292,8 +294,10 @@ This keeps the first lines of a report readable in editors that expose
 frontmatter, makes frontmatter `title` the same document title as the H1, and
 keeps the structured evaluation data as the single source of truth for
 judgment. If a future consumer needs richer machine access to ratings, findings,
-recommendations, evidence, or limits, use `data/evaluation-output-result.json`
-and the payloads it indexes instead of expanding generated report frontmatter.
+recommendations, evidence, or limits, use the run's authoritative structured
+data — `evaluation.json` for runner-created runs, or
+`data/evaluation-output-result.json` and the payloads it indexes for historical
+runs — instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
 
@@ -331,8 +335,9 @@ values.
 
 Every generated report should end with a stable `## Primary source data`
 section. The section lists the report-local primary structured evaluation
-payloads used to render that report artifact. This is the only standard footer
-utility section.
+payloads used to render that report artifact; for runner-created runs it points
+to the run's `evaluation.json`. This is the only standard footer utility
+section. The multi-file examples below come from historical-layout runs.
 
 ```markdown
 ## Primary source data

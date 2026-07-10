@@ -26,7 +26,7 @@ in all capitals.
 A `QUALITY.md` snapshot and `git log` together record _what_ the model is and
 _how_ it changed, but not _why_: which evaluation surfaced a gap, whether a
 criterion moved by recalibration or drift, what a new factor was reacting to.
-That rationale is what the [learn loop](evaluation.md#evaluation-workflow) runs on, and it is
+That rationale is what the [learn loop](evaluation.md#workflow) runs on, and it is
 lost once a commit scrolls away. The **quality changelog** is a curated,
 evidence-linked timeline of meaningful model changes the skill maintains under
 `.quality/changelog/`: it preserves the _why_ and links each change to the evaluation

@@ -1,5 +1,38 @@
 # Evaluation v2 update log
 
+## 2026-07-10
+
+- **Revision**: Updated the [Evaluator contract](evaluator-contract.md),
+  [Runner](runner.md), [Orchestration](orchestration.md), and
+  [payload kinds](records/payload-kinds.md) contracts for
+  [0193 - Evaluation runner token efficiency](../../changes/0193-evaluation-token-efficiency.md).
+  Rendered prompts order stable content (task, schema, packaged source, shared
+  area context) before the per-work-unit delta and expose the boundary; API
+  evaluators apply provider prompt caching to the stable prefix; usage and
+  evaluator-call logging record cached input tokens; an area's source is
+  packaged once per run and reused; per-area CLI session reuse is named as a
+  permitted context-reuse strategy; and requirement assessment-and-rating is
+  one evaluator-backed `assessRateRequirement` unit that persists both
+  unchanged payload kinds, with a partial combined result named a retryable
+  unit failure.
+
+## 2026-07-09
+
+- **Addition**: Added the deterministic runner contracts for
+  [0192 - Deterministic evaluation runner](../../changes/archive/0192-deterministic-evaluation-runner.md):
+  [Runner](runner.md), [Evaluator contract](evaluator-contract.md), and
+  [evaluation.json](evaluation-json.md). The CLI-owned runner now executes the
+  evaluation protocol and invokes pluggable evaluators for bounded judgment.
+
+- **Revision**: Updated the Evaluation shared-invariant, protocol,
+  orchestration, data-layout, payload-kind, and report-tree contracts for 0192. The runner owns the work graph, scheduling, retry, resume, per-result
+  atomic persistence, and cancellation; new runner-created runs keep one
+  authoritative `evaluation.json` with `model-snapshot.md`, `logs/`, and
+  generated reports instead of the multi-file `data/` tree, which remains the
+  historical and manual layout; payload kinds are the shared vocabulary for
+  both surfaces; and `evaluation.json` is the report source of truth for
+  runner runs.
+
 ## 2026-06-30
 
 - **Revision**: Updated the Evaluation report-tree contract for

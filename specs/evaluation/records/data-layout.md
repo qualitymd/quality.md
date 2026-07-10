@@ -8,16 +8,41 @@ timestamp: 2026-06-25T00:00:00Z
 
 # Evaluation data layout
 
-Evaluation stores structured routine data under `data/` and human-readable
-reports outside `data/`.
+Evaluation has two run-folder layouts: the runner layout, where one
+authoritative `evaluation.json` carries all structured data, and the historical
+and manual multi-file layout under `data/`. Human-readable reports live outside
+the structured data in both layouts.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Data tree
+## Runner run layout
 
-An evaluation run **MUST** store structured data under `data/`.
+A run created by [`qualitymd evaluation run`](../../cli/evaluation-run.md)
+**MUST** keep one authoritative structured run artifact,
+[`evaluation.json`](../evaluation-json.md), at the run root, alongside
+`model-snapshot.md`, run-local `logs/`, and the generated reports.
+
+New runner-created runs **MUST NOT** write the multi-file `data/` tree as
+their authoritative structured data.
+
+> Rationale: the multi-file tree exists primarily to let skill-authored routine
+> payloads be validated and persisted incrementally. A CLI-owned runner keeps
+> the same structured concepts without exposing each routine as a separate
+> file. — 0192
+
+Existing multi-file evaluation runs stay readable as historical runs through
+the existing commands; the runner change requires no migrations, dual writers,
+or compatibility payload copies for new runs.
+
+## Historical and manual data tree
+
+The layout in this section is the historical and manual layout: runs created by
+`qualitymd evaluation create` and populated through
+`qualitymd evaluation data set`.
+
+Such an evaluation run **MUST** store structured data under `data/`.
 
 The run **MUST** store the CLI-generated evaluation manifest at:
 

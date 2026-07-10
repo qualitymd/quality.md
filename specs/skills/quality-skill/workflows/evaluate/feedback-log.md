@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluate feedback log
 description: Evaluate-specific adoption rules for the shared workflow feedback log.
 tags: [skill, evaluation, logging, feedback]
-timestamp: 2026-06-23T00:00:00Z
+timestamp: 2026-07-09T00:00:00Z
 ---
 
 # Evaluate feedback log
@@ -28,7 +28,7 @@ judgment remains in assessment, analysis, recommendation, and report artifacts.
 ## Evaluate behavior
 
 `evaluate` **MUST** create a feedback log after it verifies CLI support and emits
-the run frame, before assessment evidence collection or record writes begin.
+the run frame, before it invokes `qualitymd evaluation run`.
 
 `evaluate` **MUST** write the log to
 `.quality/logs/<timestamp>-evaluate-feedback-log.md`, using the evaluate run's
@@ -43,19 +43,18 @@ fields when known:
   terminal values are `completed-reportable`, `stopped-lint`, `stopped-model`,
   `stopped-source`, `stopped-tooling`, `failed`, and `interrupted`.
 
-After `qualitymd evaluation create` returns a numbered run path, `evaluate`
+After `qualitymd evaluation run` reports a numbered run path, `evaluate`
 **MUST** record that path in `evaluation-run` or in the timeline.
 
 `evaluate` **MUST** update the current run's feedback log when material
 workflow-experience information appears, including scope ambiguity, history
-inspection friction, coverage adjustment, interruption or resume, retries,
-record corrections, tooling failures, slow phases, redaction decisions,
-prompt-injection handling, report generation recovery, UX/AX observations,
-unusually smooth affordances worth preserving, and suggested workflow
-improvements.
+inspection friction, evaluator-selection friction, interruption or resume,
+retries, tooling failures, slow phases, redaction decisions, UX/AX
+observations, unusually smooth affordances worth preserving, and suggested
+workflow improvements.
 
 The log **SHOULD** avoid noisy churn for routine internal steps already captured
-by `design.md`, `plan.md`, CLI receipts, records, or generated reports.
+by CLI receipts, the runner's run-local logs, or generated reports.
 
 At normal close, `evaluate` **MUST** set `status: completed`, set
 `completed-at`, record `outcome: completed-reportable`, update effort when

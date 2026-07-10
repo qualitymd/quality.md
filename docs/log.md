@@ -1,5 +1,14 @@
 # Docs update log
 
+## 2026-07-09
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0192 - Deterministic evaluation runner](../changes/archive/0192-deterministic-evaluation-runner.md).
+  The machine-readable source of truth is now the run's `evaluation.json` for
+  runner-created runs, with the multi-file `data/` tree kept for historical
+  runs.
+
 ## 2026-06-30
 
 - **Revision**: Updated [Cut a release](guides/cut-a-release.md). The release

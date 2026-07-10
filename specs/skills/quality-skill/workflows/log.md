@@ -1,5 +1,16 @@
 # /quality skill workflows update log
 
+## 2026-07-09
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec and its
+  [feedback-log sub-spec](evaluate/feedback-log.md) for
+  [0192 - Deterministic evaluation runner](../../../../changes/archive/0192-deterministic-evaluation-runner.md).
+  Evaluate is now an agent-mediated wrapper around `qualitymd evaluation run`:
+  the runner creates all evaluation artifacts, and the workflow keeps intent
+  parsing, the run frame, scope resolution, lint, evaluator-selection
+  explanation, invocation, failure/resume handling, the result summary, and the
+  evaluate feedback log.
+
 ## 2026-06-30
 
 - **Revision**: Updated durable workflow specs for

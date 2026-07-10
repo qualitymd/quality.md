@@ -1,5 +1,14 @@
 # /quality runtime resources update log
 
+## 2026-07-09
+
+- **Revision**: Updated
+  [CLI workflow conventions](cli-workflow-conventions.md) and
+  [Output policy](output-policy.md) for 0192 - Deterministic evaluation runner.
+  Evaluation sequencing now routes new runs through `qualitymd evaluation run`
+  (with dry-run preview and `--resume` recovery), and the data
+  discovery/write path is scoped to historical multi-file runs.
+
 ## 2026-06-29
 
 - **Revision**: Updated runtime resource headings for 0189 - Heading Sentence

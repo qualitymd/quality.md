@@ -26,9 +26,11 @@ capitals.
 ## Scope
 
 This phase covers the deterministic CLI surface: format-tooling commands that
-operate on QUALITY.md files, plus evaluation-run commands that scaffold,
-validate, and render runtime records. The CLI never calls a model; skills carry
-judgment and pass judgment payloads to the deterministic surface.
+operate on QUALITY.md files, plus evaluation commands that scaffold, run,
+validate, and render runtime records. The format-tooling and evaluation record
+commands never call a model. `evaluation run` is the one judgment-invoking
+surface: its deterministic runner owns the workflow and invokes a selected
+evaluator for bounded judgment work units.
 
 | Command                                           | Purpose                                                  |
 | ------------------------------------------------- | -------------------------------------------------------- |
@@ -40,6 +42,7 @@ judgment and pass judgment payloads to the deterministic surface.
 | [`evaluation create`](./cli/evaluation-create.md) | Create a numbered evaluation run folder.                 |
 | [`evaluation data`](./cli/evaluation-data.md)     | Persist and inspect evaluation structured data.          |
 | [`evaluation list`](./cli/evaluation-list.md)     | List evaluation runs.                                    |
+| [`evaluation run`](./cli/evaluation-run.md)       | Execute a complete evaluation run with the runner.       |
 | [`evaluation status`](./cli/evaluation-status.md) | Inspect whether a run can be rendered.                   |
 | [`evaluation report`](./cli/evaluation-report.md) | Build evaluation reports.                                |
 | [`version`](./cli/version.md)                     | Show structured CLI and bundled spec version metadata.   |
@@ -58,6 +61,8 @@ judgment and pass judgment payloads to the deterministic surface.
 - [`evaluation data`](./cli/evaluation-data.md) — persist and inspect evaluation
   structured data.
 - [`evaluation list`](./cli/evaluation-list.md) — list evaluation runs.
+- [`evaluation run`](./cli/evaluation-run.md) — execute a complete evaluation
+  run with the deterministic runner.
 - [`evaluation status`](./cli/evaluation-status.md) — inspect renderability.
 - [`evaluation report`](./cli/evaluation-report.md) — build evaluation reports.
 - [`version`](./cli/version.md) — show structured CLI version metadata.

@@ -37,7 +37,9 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 #### The Middle/Meta Loop (hourly/daily)
 
 1. **Evaluate** with `/quality evaluate` to
-   create a quality evaluation report
+   create a quality evaluation report. Under the hood the skill drives
+   `qualitymd evaluation run`, the CLI's deterministic evaluation runner, so
+   evaluations behave the same across agents and harnesses.
 2. **Review** evaluation report quality ratings, assessment
    findings, and improvement recommendations by project area or quality factor.
 
@@ -279,6 +281,7 @@ Areas can nest recursively. `ratingScale` exists only on the root model.
 | Validate a file         | `qualitymd lint [path]`          |
 | Fix lint issues         | `qualitymd lint --fix [path]`    |
 | Query model structure   | `qualitymd model tree [path]`    |
+| Run an evaluation       | `qualitymd evaluation run`       |
 | Show workspace status   | `qualitymd status [path] --json` |
 | Show version info       | `qualitymd version --json`       |
 | Check for updates       | `qualitymd update --check`       |

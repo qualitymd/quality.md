@@ -43,7 +43,10 @@ edit.
 
 # Open change cases
 
-None.
+- [0194 - Harness-native evaluator dispatch](0194-harness-native-evaluator-dispatch.md)
+  (`Design`) - use the invoking agent harness for bounded evaluation judgment
+  by default, with resumable runner checkpoints, readiness-aware fallbacks, and
+  Claude Code routine and Codex scheduled-task guidance.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

@@ -1,5 +1,156 @@
 # Changes update log
 
+## 2026-07-10
+
+- **Done**: Landed and archived
+  [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md):
+  moved the parent concept and its folder into [`archive/`](archive/index.md)
+  and updated the bundle [index](index.md).
+
+- **Design**: Created
+  [0194 - Harness-native evaluator dispatch](0194-harness-native-evaluator-dispatch.md)
+  with its
+  [functional spec](0194-harness-native-evaluator-dispatch/spec.md) and
+  [design doc](0194-harness-native-evaluator-dispatch/design.md). The case adds
+  a reserved `harness` evaluator whose runner persists an
+  `awaiting_evaluator` checkpoint, emits one bounded typed work request, accepts
+  a correlated result through resume, and validates and persists it through the
+  existing evaluator path. The quality skill selects this transport when no
+  explicit or configured evaluator overrides it, while direct CLI `auto`
+  discovery gains authentication/capability readiness checks and CLI adapters
+  use native schema and no-persistence controls. The case also replaces the
+  placeholder Claude Code and Codex automation pages with runnable routine and
+  scheduled-task guidance, including artifact, permission, network, and
+  credential boundaries. Code remains untouched until **In-Progress**, after
+  0193 lands. Updated the bundle [index](index.md).
+
+- **In-Review**: Implemented
+  [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md)
+  and advanced it from `In-Progress` to `In-Review`. `evaluator.BuildPrompt`
+  now renders a stable prefix (task, expected schema, packaged source, shared
+  area context) before the per-work-unit delta and returns the boundary; the
+  Anthropic adapter marks the system prompt and stable prefix with
+  `cache_control` and folds cache reads/writes into total input; the OpenAI,
+  claude, and codex adapters record provider-reported cached input tokens; the
+  work graph replaces the `assessRequirement`/`rateRequirement` pair with one
+  `assessRateRequirement` evaluator unit whose composite result is split,
+  validated, and persisted as the two unchanged payload kinds (a partial
+  composite fails as retryable evaluator output); an area's source bundle is
+  packaged once per run and memoized; and `logs/evaluator-calls.jsonl` records
+  `cachedInputTokens`. Amended the durable
+  [evaluator contract](../specs/evaluation/evaluator-contract.md),
+  [runner](../specs/evaluation/runner.md),
+  [orchestration](../specs/evaluation/orchestration.md), and
+  [payload kinds](../specs/evaluation/records/payload-kinds.md) specs; the
+  dry-run CLI contract needed no edit. Per-area CLI session reuse stays a
+  permitted, unimplemented `MAY`. Verified with `go build`, `go vet`,
+  `golangci-lint` (0 issues), the full test suite, and a live
+  `qualitymd evaluation run --dry-run --json` (one judgment unit per
+  requirement). Updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md)
+  from `Design` to `In-Progress` to implement the settled design: stable/delta
+  prompt split with provider caching, the combined `assessRateRequirement`
+  evaluator unit, per-area source reuse, and cached-input-token logging.
+  Updated the bundle [index](index.md).
+
+## 2026-07-09
+
+- **Design**: Advanced
+  [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0193-evaluation-token-efficiency/design.md). The design keeps the
+  three levers independent but landing together: `evaluator.BuildPrompt` renders
+  stable-first (source and area frame in a cacheable prefix, requirement and its
+  frame in a trailing delta) and returns the boundary; the Anthropic adapter
+  marks the prefix with `cache_control` and both API adapters record cached
+  input tokens; a single `assessRateRequirement` evaluator unit returns a
+  composite that the engine splits back into the unchanged
+  `RequirementAssessmentResult` and `RequirementRatingResult` payloads (a partial
+  result fails the unit under the retry policy); and an area's source is packaged
+  once per run with optional per-area CLI session reuse. Observational
+  equivalence is preserved throughout. Updated the bundle [index](index.md). Code
+  remains untouched until **In-Progress**.
+
+- **Creation**: Added
+  [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md)
+  (`status: Draft`) with its [functional spec](archive/0193-evaluation-token-efficiency/spec.md)
+  and [index](archive/0193-evaluation-token-efficiency/index.md). A measured full-model
+  run spends ~8.8M input tokens against ~0.3M output (96.7% input) because the
+  per-area source bundle is re-uploaded per requirement and sits past the prompt
+  cache boundary, every requirement costs two evaluator calls, and the default
+  CLI path reuses no context. The spec requires cache-friendly prompt layout
+  (source in the stable prefix) with API evaluators applying provider caching,
+  a single evaluator call that both assesses and rates each requirement while
+  persisting the same two payload kinds, per-area source reuse with optional
+  per-area CLI session reuse, and cached-input-token observability — all under
+  the existing observational-equivalence invariant so ratings, payloads, and
+  reports are unchanged. Design doc deferred to the **Design** phase. Updated
+  the bundle [index](index.md).
+
+- **Done**: Implemented and archived
+  [0192 - Deterministic evaluation runner](archive/0192-deterministic-evaluation-runner.md).
+  `qualitymd evaluation run` is now the evaluation engine: a new
+  `internal/runner` package owns the deterministic work graph, execution
+  strategy (first slice: `auto` resolving to sequential), evaluator retries,
+  atomic per-result persistence into one authoritative `evaluation.json`
+  (schema version 4), run-local `logs/events.jsonl` and
+  `logs/evaluator-calls.jsonl`, cancellation/resume, and report generation
+  through the existing renderer; a new `internal/evaluator` package provides
+  the capability-declaring evaluator contract with CLI-backed `codex`/`claude`
+  and API-backed `openai`/`anthropic` adapters (`shell`/`manual` reserved),
+  selected via `--evaluator`, `evaluation.evaluator`, or `auto` discovery, with
+  `evaluators` profiles that reference API keys by environment-variable name
+  only. Added [`specs/cli/evaluation-run.md`](../specs/cli/evaluation-run.md)
+  and the durable [runner](../specs/evaluation/runner.md),
+  [evaluator contract](../specs/evaluation/evaluator-contract.md), and
+  [`evaluation.json`](../specs/evaluation/evaluation-json.md) specs; revised
+  the evaluation, orchestration, protocol, data-layout, payload-kind, and
+  report-tree specs; rewrote the quality-skill evaluation specs and the
+  runtime `/quality evaluate` workflow as an agent-mediated wrapper around the
+  runner; and updated README, install, reporting-design, and Mintlify skill
+  docs plus the generated CLI reference. Updated the bundle
+  [index](index.md) and [archive index](archive/index.md).
+
+- **In-Progress**: Advanced
+  [0192 - Deterministic evaluation runner](0192-deterministic-evaluation-runner.md)
+  from `Design` to `In-Progress`. The functional spec and design doc are
+  settled; implementation of `qualitymd evaluation run`, the evaluator
+  adapters, the `evaluation.json` run store, and the durable spec/doc/skill
+  updates begins. Updated the bundle [index](index.md).
+
+- **Refinement**: Tightened
+  [0192 - Deterministic evaluation runner](0192-deterministic-evaluation-runner.md)
+  after review, closing six gaps in the
+  [functional spec](0192-deterministic-evaluation-runner/spec.md) and
+  [design doc](0192-deterministic-evaluation-runner/design.md): evaluators now
+  declare execution capabilities the planner reads before scheduling (with a
+  `Capabilities()` method on the Go interface and recorded fallbacks);
+  `evaluation.json` persists atomically after each accepted work-unit result,
+  with serialized writes under parallel execution; resume compatibility is
+  defined (supported schema version, same workspace/model path, matching
+  evaluator profile — a conflicting `--evaluator` is refused); user
+  cancellation leaves the run valid and resumable and reports `cancelled`;
+  CLI-backed evaluators must honor non-interactive structured invocation or
+  fail selection with `evaluator_incompatible` (both added to the failure
+  taxonomy); and the overlapping open questions are resolved — the first slice
+  ships `auto`/`sequential` only, `shell`/`manual` stay reserved names, state
+  compaction and positional scope are deferred, and provider context
+  identifiers live only in the evaluator-call log.
+
+## 2026-07-08
+
+- **Design**: Created
+  [0192 - Deterministic evaluation runner](0192-deterministic-evaluation-runner.md)
+  with its
+  [functional spec](0192-deterministic-evaluation-runner/spec.md) and
+  [design doc](0192-deterministic-evaluation-runner/design.md). The case moves
+  evaluation toward a CLI-owned deterministic runner with pluggable evaluators,
+  `qualitymd evaluation run`, `evaluation.evaluator` config, a single
+  authoritative `evaluation.json`, structured run logs, and `/quality evaluate`
+  as a wrapper around the runner. Code is not started.
+
 ## 2026-07-02
 
 - **Done**: Implemented and archived

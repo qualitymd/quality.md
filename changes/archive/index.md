@@ -781,3 +781,13 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   expands the LedgerLite gallery to a realistic 39-requirement model with a
   codebase area, deeper factor families, reusable sensor-grounded assessments,
   refreshed body context, and workflow-faithful generated report prose (`Done`).
+- [0192 — Deterministic evaluation runner](0192-deterministic-evaluation-runner.md) -
+  moves evaluation from skill orchestration to the CLI-owned deterministic
+  runner: `qualitymd evaluation run`, pluggable evaluators, one authoritative
+  `evaluation.json` run artifact, run-local logs, and `/quality evaluate` as an
+  agent-mediated wrapper (`Done`).
+- [0193 — Evaluation runner token efficiency](0193-evaluation-token-efficiency.md) -
+  cuts evaluation input-token cost through a cacheable stable/delta prompt
+  layout with provider prompt caching, one combined assess-and-rate evaluator
+  call per requirement, per-area source reuse, and cached-input-token logging
+  (`Done`).

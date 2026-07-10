@@ -24,5 +24,9 @@ underlying CLI for you.
 
 {/* TODO: Explain the skill-first model: the skill drives the deterministic CLI, and users rarely call the CLI directly. Link to the CLI reference. */}
 
+You still just run `/quality evaluate`: the skill frames the run, resolves the
+scope, and then drives `qualitymd evaluation run`, the CLI's deterministic
+evaluation runner, which produces the evaluation artifacts and reports.
+
 See the [CLI reference](/cli) for the deterministic commands the skill
 builds on.

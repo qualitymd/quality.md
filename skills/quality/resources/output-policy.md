@@ -15,8 +15,8 @@ forward. Do not parse styled or tabular human output when a JSON form exists.
 
 Use JSON for:
 
-- run creation receipts;
-- data write receipts;
+- evaluation run receipts and dry-run previews;
+- historical data write receipts;
 - status or report data when the command offers JSON; and
 - any future command that emits structured findings or summaries.
 

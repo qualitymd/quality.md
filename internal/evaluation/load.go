@@ -93,6 +93,16 @@ func loadWithDisplay(path, displayPath string) (*Run, error) {
 
 // Status summarizes whether the evaluation data graph is reportable.
 func (r *Run) Status() RunStatus {
+	if payloads, ok, err := runArtifactPayloads(r.AbsPath); ok {
+		if err != nil {
+			return RunStatus{
+				SchemaVersion: SchemaVersion,
+				Path:          r.Path,
+				Gaps:          []RunGap{{Kind: GapUnreadableEvaluationData, Ref: RunArtifactFile, Detail: err.Error()}},
+			}
+		}
+		return r.runArtifactStatus(payloads)
+	}
 	gaps := evaluationRenderableGaps(r.AbsPath)
 	data := DataStatus{}
 	if list, err := ListData(r.AbsPath, ""); err == nil {

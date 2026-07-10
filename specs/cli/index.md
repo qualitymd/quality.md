@@ -16,6 +16,8 @@ The format-tooling commands specified for this phase. See the parent
 - [qualitymd evaluation data](evaluation-data.md) - persist and inspect
   evaluation structured data.
 - [qualitymd evaluation list](evaluation-list.md) - list evaluation runs.
+- [qualitymd evaluation run](evaluation-run.md) - execute a complete evaluation
+  run with the deterministic runner.
 - [qualitymd evaluation status](evaluation-status.md) - inspect whether a run can
   be rendered.
 - [qualitymd evaluation report](evaluation-report.md) - build evaluation reports.

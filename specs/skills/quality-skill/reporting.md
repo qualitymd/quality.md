@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality reporting
 description: Component spec for /quality evaluation reports and run artifacts.
 tags: [skill, quality, evaluation, reporting]
-timestamp: 2026-06-25T00:00:00Z
+timestamp: 2026-07-09T00:00:00Z
 ---
 
 # /quality reporting
@@ -31,12 +31,16 @@ config file defaults to `.quality/config.yaml` beside the selected model.
 The run folder **MUST** include `model-snapshot.md`, a snapshot of the
 `QUALITY.md` as evaluated.
 
-Evaluation structured data **MUST** live under `data/`. The skill **MUST**
-persist routine outputs through `qualitymd evaluation data set`; it **MUST NOT**
-hand-author structured data files directly.
+For new runner-created runs, structured evaluation data lives in the
+authoritative `evaluation.json` at the run root, written atomically by
+`qualitymd evaluation run` together with run-local logs under `logs/`.
+Historical runs keep their multi-file structured data under `data/`, persisted
+through `qualitymd evaluation data set`. The skill **MUST NOT** hand-author
+structured data files directly on either path.
 
-The CLI-generated `data/evaluation-output-result.json` indexes completed
-structured outputs and generated report paths.
+For historical runs, the CLI-generated `data/evaluation-output-result.json`
+indexes completed structured outputs and generated report paths; runner-created
+runs carry that output index inside `evaluation.json`.
 
 Workflow-experience feedback for current runs lives in
 `.quality/logs/<timestamp>-evaluate-feedback-log.md`, not in the evaluation run
@@ -58,7 +62,9 @@ not require registration in `specs/schema.md`.
 
 ## Report generation
 
-The skill **MUST** build reports through:
+`qualitymd evaluation run` builds the Markdown reports as part of the run. When
+reports must be rebuilt or a historical run rendered, the skill **MUST** build
+them through:
 
 ```text
 qualitymd evaluation report build <run>
@@ -73,8 +79,9 @@ directory and the run path is model-relative, the skill **MUST** pass
 and `qualitymd evaluation report build` so run resolution uses the selected
 model's workspace root.
 
-Report build **MUST** assemble `data/evaluation-output-result.json` before
-rendering Markdown reports.
+Reports **MUST** be rendered from the run's authoritative structured data:
+`evaluation.json` for runner-created runs, or the assembled
+`data/evaluation-output-result.json` for historical multi-file runs.
 
 Reports **MUST** be deterministic projections over completed structured data.
 The skill **MUST NOT** add report-only findings, ratings, evidence, limits,
@@ -93,8 +100,9 @@ Run reports **MUST** render the Model evaluation section required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Area reports
 **MUST** render the Area / factor breakdown required by that report tree. These
 sections are the human-facing area / factor structure and status surface; the
-machine-readable generated-report manifest remains
-`data/evaluation-output-result.json`.
+machine-readable generated-report manifest remains `evaluation.json` for
+runner-created runs and `data/evaluation-output-result.json` for historical
+runs.
 
 Reports **MUST** preserve secret-handling boundaries: cite locator and
 credential type only, never secret values or unsafe raw content.
@@ -158,8 +166,8 @@ findings, and top recommendations. The closeout **MUST** name the completed
 run's full `recommendations.md` path and describe its value as the
 action-planning report with ranked recommendations, why they matter, expected
 benefit, and how to know each worked. The primary report-reading CTA **MUST NOT**
-include `data/evaluation-output-result.json` or other machine-oriented report
-indexes.
+include `evaluation.json`, `data/evaluation-output-result.json`, or other
+machine-oriented run artifacts.
 
 The closeout **MUST** distinguish evaluated-source quality from model weakness,
 missing evidence, unknowns, and evaluation limits.

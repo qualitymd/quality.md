@@ -1,9 +1,10 @@
 # /quality skill
 
-The companion evaluation skill for QUALITY.md: it carries the evaluative
-judgment and drives the deterministic [CLI](../../cli.md) for every mechanical
-step. This folder holds the skill's functional spec and the reference artifacts
-that make it concrete. The installable skill artifact lives at
+The companion skill for QUALITY.md: it provides the agent-mediated interface
+over the deterministic [CLI](../../cli.md), which owns every mechanical step —
+including evaluation orchestration through `qualitymd evaluation run`. This
+folder holds the skill's functional spec and the reference artifacts that make
+it concrete. The installable skill artifact lives at
 [`../../../skills/quality/SKILL.md`](../../../skills/quality/SKILL.md).
 
 # Specs
@@ -11,8 +12,9 @@ that make it concrete. The installable skill artifact lives at
 - [/quality skill](quality-skill.md) - parent functional spec for shared
   contracts: operating model, invocation, CLI ownership, evaluation semantics,
   reporting, quality changelog, and cross-workflow invariants.
-- [/quality evaluation workflow](evaluation.md) - component spec for evaluation
-  conformance, workflow, grounding, QC, and rating judgment.
+- [/quality evaluation workflow](evaluation.md) - component spec for how the
+  skill wraps the CLI-owned deterministic evaluation runner: scope resolution,
+  evaluator-selection explanation, invocation, and result presentation.
 - [/quality reporting](reporting.md) - component spec for evaluation run
   artifacts, report outputs, records, recommendations, and correction behavior.
 - [/quality quality changelog](quality-changelog.md) - component spec for dated

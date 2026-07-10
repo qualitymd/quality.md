@@ -37,11 +37,17 @@ The protocol **MUST NOT** require a specific execution engine. Sequential
 execution and parallel worker execution are both valid when they satisfy the same
 dependency order and produce the same persisted outputs.
 
+The deterministic [evaluation runner](runner.md) executes this protocol for
+runner-created runs: frame moves are deterministic runner-generated payloads,
+judgment moves are evaluator-backed work units, and the
+[orchestration contract](orchestration.md) maps the moves onto the runner's
+work graph.
+
 ## Area traversal
 
-The evaluator **MUST** walk the area tree bottom-up for analysis.
+An evaluation run **MUST** walk the area tree bottom-up for analysis.
 
-For each area, the evaluator **MUST**:
+For each area, the run **MUST**:
 
 1. create an area evaluation frame;
 2. evaluate local requirements;
@@ -71,10 +77,10 @@ the structured analysis artifacts actually produced.
 
 ## Factor traversal
 
-The evaluator **MUST** walk each area's factor tree bottom-up.
+An evaluation run **MUST** walk each area's factor tree bottom-up.
 
-For each factor node, the evaluator **MUST** analyze child factors before the
-parent factor.
+For each factor node, the run **MUST** analyze child factors before the parent
+factor.
 
 A factor analysis frame **MUST** include direct requirement rating results for
 that exact factor node and direct child factor analysis results. It **MUST NOT**

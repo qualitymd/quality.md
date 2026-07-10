@@ -11,6 +11,7 @@ import (
 	"golang.org/x/term"
 
 	"github.com/qualitymd/quality.md/internal/evaluation"
+	"github.com/qualitymd/quality.md/internal/runner"
 )
 
 type evaluationRunFlags struct {
@@ -25,6 +26,7 @@ func newEvaluationCmd() *cobra.Command {
 		Short: "Work with QUALITY.md evaluation runs",
 		RunE:  runGroupHelpOrUnknown,
 	}
+	cmd.AddCommand(newEvaluationRunCmd())
 	cmd.AddCommand(newEvaluationCreateCmd())
 	cmd.AddCommand(newEvaluationListCmd())
 	cmd.AddCommand(newEvaluationStatusCmd())
@@ -403,8 +405,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			status := run.Status()
-			status = statusWithModel(status, resolved.Model)
+			status := statusWithModel(run.Status(), resolved.Model)
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), status)
 			}
@@ -438,7 +439,12 @@ func newEvaluationReportBuildCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			result, err := evaluation.BuildReportWithDisplay(resolved.Path, resolved.DisplayPath)
+			var result *evaluation.BuildReportReceipt
+			if runner.IsRunnerRun(resolved.Path) {
+				result, err = runner.RebuildReports(resolved.Path, resolved.DisplayPath)
+			} else {
+				result, err = evaluation.BuildReportWithDisplay(resolved.Path, resolved.DisplayPath)
+			}
 			if err != nil {
 				return mapEvaluationError(err)
 			}

@@ -20,16 +20,28 @@ capitals.
 Report generation **MUST** consume `EvaluationOutputResult` and referenced
 structured routine outputs.
 
+For runner-created runs, [`evaluation.json`](../evaluation-json.md) **MUST** be
+the source of truth for generated Markdown reports:
+`qualitymd evaluation report build` re-renders the report tree from its
+manifest, results, and outputs. Historical multi-file runs render from the
+`data/` tree.
+
+For runner-created runs, the run receipt's `evaluationOutputResult` reference
+**MUST** point at `evaluation.json`, not at a
+`data/evaluation-output-result.json` file.
+
+Generated Markdown reports **MUST NOT** be used as input to regenerate,
+validate, or resume a run.
+
 Report generation **MUST NOT** inspect new source evidence.
 
 Report generation **MUST NOT** introduce new findings, ratings, evidence, limits,
 analysis, or recommendations. It **MUST** render persisted advice outputs when
 the run is otherwise renderable.
 
-Generated report frontmatter and Markdown body content **MUST NOT** be read as
-report-generation input. Generated reports are output conveniences for readers,
-agents, and editor previews; structured evaluation data remains the source of
-truth.
+Generated reports are output conveniences for readers, agents, and editor
+previews; structured evaluation data remains the source of truth, so generated
+report frontmatter and Markdown body content are never read back as input.
 
 ## Report paths
 

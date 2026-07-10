@@ -201,9 +201,14 @@ func verifyRun(runPath string) (string, error) {
 	if _, err := os.Stat(filepath.Join(abs, ModelSnapshotFile)); err != nil {
 		return "", fmt.Errorf("%s is not an evaluation run folder: missing %s", runPath, ModelSnapshotFile)
 	}
+	// Runner-created runs carry one authoritative evaluation.json instead of
+	// the historical multi-file data tree.
+	if _, err := os.Stat(filepath.Join(abs, RunArtifactFile)); err == nil {
+		return abs, nil
+	}
 	dataInfo, err := os.Stat(filepath.Join(abs, "data"))
 	if err != nil {
-		return "", fmt.Errorf("%s is not an evaluation run folder: missing data", runPath)
+		return "", fmt.Errorf("%s is not an evaluation run folder: missing data or %s", runPath, RunArtifactFile)
 	}
 	if !dataInfo.IsDir() {
 		return "", fmt.Errorf("%s is not an evaluation run folder: data is not a directory", runPath)

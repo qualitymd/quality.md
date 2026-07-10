@@ -1,0 +1,391 @@
+package runner
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"path/filepath"
+	"time"
+
+	"github.com/qualitymd/quality.md/internal/evaluation"
+	"github.com/qualitymd/quality.md/internal/evaluator"
+	"github.com/qualitymd/quality.md/internal/receipt"
+	"github.com/qualitymd/quality.md/internal/workspace"
+)
+
+// Options configures one `qualitymd evaluation run` invocation.
+type Options struct {
+	RepoRoot      string
+	Model         string
+	EvaluationDir string
+	Area          string
+	Factors       []string
+	// Evaluator is the --evaluator flag value ("" means the config default,
+	// then auto).
+	Evaluator string
+	// Resume names an existing run folder to resume.
+	Resume string
+	// Stderr receives human progress diagnostics.
+	Stderr io.Writer
+	// SelectEvaluator overrides evaluator selection in tests.
+	SelectEvaluator func(opts evaluator.Options) (*evaluator.Selection, error)
+}
+
+// UsageError marks a runner error caused by invalid invocation input.
+type UsageError struct{ Err error }
+
+func (e *UsageError) Error() string { return e.Err.Error() }
+func (e *UsageError) Unwrap() error { return e.Err }
+
+// RunError is a classified run failure surfaced alongside the JSON receipt.
+type RunError struct {
+	Category evaluator.FailureCategory
+	Detail   string
+}
+
+func (e *RunError) Error() string {
+	return fmt.Sprintf("%s: %s", e.Category, e.Detail)
+}
+
+// WorkUnitCounts summarizes work-graph execution for receipts.
+type WorkUnitCounts struct {
+	Total          int `json:"total"`
+	EvaluatorUnits int `json:"evaluatorUnits"`
+	Completed      int `json:"completed"`
+	Reused         int `json:"reused,omitempty"`
+	Failed         int `json:"failed,omitempty"`
+}
+
+// Result is the JSON receipt for a completed, failed, or cancelled run.
+type Result struct {
+	SchemaVersion     int                      `json:"schemaVersion"`
+	Path              string                   `json:"path"`
+	Status            string                   `json:"status"`
+	Evaluator         string                   `json:"evaluator"`
+	EvaluatorKind     string                   `json:"evaluatorKind"`
+	ExecutionStrategy string                   `json:"executionStrategy"`
+	Concurrency       int                      `json:"concurrency"`
+	WorkUnits         WorkUnitCounts           `json:"workUnits"`
+	Failure           *Failure                 `json:"failure,omitempty"`
+	ReportMD          string                   `json:"reportMd,omitempty"`
+	RatingResult      *evaluation.RatingResult `json:"ratingResult,omitempty"`
+	NextActions       []receipt.Action         `json:"nextActions,omitempty"`
+}
+
+// Run executes (or resumes) a complete evaluation run.
+func Run(ctx context.Context, opts Options) (*Result, error) {
+	if opts.Resume != "" {
+		return resumeRun(ctx, opts)
+	}
+	return startRun(ctx, opts)
+}
+
+func startRun(ctx context.Context, opts Options) (*Result, error) {
+	ws, err := resolveRunnerWorkspace(opts)
+	if err != nil {
+		return nil, err
+	}
+	selection, err := selectEvaluator(opts, ws, requestedEvaluator(opts, ws))
+	if err != nil {
+		return nil, err
+	}
+	prepared, err := evaluation.PrepareRun(evaluation.Options{
+		RepoRoot:   opts.RepoRoot,
+		ResolveDir: opts.EvaluationDir,
+		Area:       opts.Area,
+		Factors:    opts.Factors,
+		Model:      opts.Model,
+	})
+	if err != nil {
+		return nil, wrapEvaluationError(err)
+	}
+	strategy, fallbacks := resolveStrategy(ws.Evaluation.ExecutionStrategy, selection.Evaluator.Capabilities())
+	artifact := &Artifact{
+		SchemaVersion: ArtifactSchemaVersion,
+		Kind:          ArtifactKind,
+		Manifest: Manifest{
+			EvaluationID:      prepared.Manifest.EvaluationID,
+			CreatedAt:         prepared.Manifest.CreatedAt,
+			Model:             prepared.Manifest.Model,
+			RequestedScope:    prepared.Manifest.RequestedScope,
+			PlannedScope:      prepared.Manifest.PlannedScope,
+			Run:               prepared.Manifest.Run,
+			Evaluator:         selection.Name,
+			EvaluatorKind:     selection.Evaluator.Kind(),
+			ExecutionStrategy: strategy,
+		},
+		State: State{
+			Status:            StatusRunning,
+			Concurrency:       1,
+			StrategyFallbacks: fallbacks,
+			WorkUnits:         map[string]*UnitState{},
+			StartedAt:         time.Now().UTC().Format(time.RFC3339),
+		},
+	}
+	store := NewStore(prepared.RunAbs)
+	if err := store.Save(artifact); err != nil {
+		return nil, err
+	}
+	return executeRun(ctx, opts, store, artifact, prepared.RunAbs, prepared.RunRel, selection, ws)
+}
+
+func resumeRun(ctx context.Context, opts Options) (*Result, error) {
+	runAbs, displayPath, err := resolveResumePath(opts)
+	if err != nil {
+		return nil, err
+	}
+	store := NewStore(runAbs)
+	if !store.Exists() {
+		return nil, &RunError{
+			Category: evaluator.FailureRunStateInvalid,
+			Detail:   fmt.Sprintf("%s has no %s; only runner-created runs can be resumed — start a new run instead", displayPath, ArtifactFile),
+		}
+	}
+	artifact, err := store.Load()
+	if err != nil {
+		return nil, &RunError{Category: evaluator.FailureRunStateInvalid, Detail: err.Error() + "; start a new run instead"}
+	}
+	if artifact.SchemaVersion != ArtifactSchemaVersion {
+		return nil, &RunError{
+			Category: evaluator.FailureRunStateInvalid,
+			Detail: fmt.Sprintf("%s schemaVersion %d is not supported by this qualitymd (want %d); start a new run instead",
+				ArtifactFile, artifact.SchemaVersion, ArtifactSchemaVersion),
+		}
+	}
+	ws, err := resolveRunnerWorkspace(opts)
+	if err != nil {
+		return nil, err
+	}
+	if artifact.Manifest.Model != ws.Model.Rel {
+		return nil, &RunError{
+			Category: evaluator.FailureRunStateInvalid,
+			Detail: fmt.Sprintf("run manifest model %q does not resolve to the selected model %q; start a new run instead",
+				artifact.Manifest.Model, ws.Model.Rel),
+		}
+	}
+	if opts.Evaluator != "" && opts.Evaluator != artifact.Manifest.Evaluator {
+		return nil, &UsageError{Err: fmt.Errorf(
+			"--resume run was evaluated by %q; re-evaluating with --evaluator %s is a new run, not a resume",
+			artifact.Manifest.Evaluator, opts.Evaluator)}
+	}
+	selection, err := selectEvaluator(opts, ws, artifact.Manifest.Evaluator)
+	if err != nil {
+		return nil, err
+	}
+	artifact.State.Status = StatusRunning
+	artifact.State.Failure = nil
+	artifact.State.Cancelled = false
+	artifact.State.CompletedAt = ""
+	if err := store.Save(artifact); err != nil {
+		return nil, err
+	}
+	return executeRun(ctx, opts, store, artifact, runAbs, displayPath, selection, ws)
+}
+
+func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artifact, runAbs, displayPath string, selection *evaluator.Selection, ws *workspace.Workspace) (*Result, error) {
+	spec, err := evaluation.LoadRunModel(runAbs)
+	if err != nil {
+		return nil, err
+	}
+	graph, err := BuildGraph(spec, artifact.Manifest.PlannedScope)
+	if err != nil {
+		return nil, err
+	}
+	logs, err := openRunLogs(runAbs)
+	if err != nil {
+		return nil, err
+	}
+	defer logs.Close()
+	logs.event("run-started", map[string]any{
+		"run":       artifact.Manifest.Run.Label,
+		"evaluator": selection.Name,
+		"strategy":  artifact.Manifest.ExecutionStrategy,
+		"reason":    selection.Reason,
+		"workUnits": len(graph.Units),
+	})
+	eng := &engine{
+		store:         store,
+		artifact:      artifact,
+		graph:         graph,
+		spec:          spec,
+		selection:     selection,
+		logs:          logs,
+		stderr:        opts.Stderr,
+		workspaceRoot: ws.WorkspaceRoot.Abs,
+		runAbs:        runAbs,
+		displayPath:   displayPath,
+		now:           time.Now,
+		sleep:         sleepWithContext,
+		sourceBundles: map[string]*SourceBundle{},
+	}
+	eng.progress("Evaluating %s with %s (%s, %d work units)",
+		displayPath, selection.Name, artifact.Manifest.ExecutionStrategy, len(graph.Units))
+	status, err := eng.execute(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return buildResult(artifact, graph, displayPath, status), nil
+}
+
+func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *Result {
+	counts := WorkUnitCounts{Total: len(graph.Units), EvaluatorUnits: graph.EvaluatorUnits()}
+	for _, unit := range graph.Units {
+		state, ok := artifact.State.WorkUnits[unit.ID]
+		if !ok {
+			continue
+		}
+		switch state.Status {
+		case UnitCompleted:
+			counts.Completed++
+		case UnitFailed:
+			counts.Failed++
+		}
+	}
+	result := &Result{
+		SchemaVersion:     evaluation.SchemaVersion,
+		Path:              displayPath,
+		Status:            status,
+		Evaluator:         artifact.Manifest.Evaluator,
+		EvaluatorKind:     artifact.Manifest.EvaluatorKind,
+		ExecutionStrategy: artifact.Manifest.ExecutionStrategy,
+		Concurrency:       artifact.State.Concurrency,
+		WorkUnits:         counts,
+		Failure:           artifact.State.Failure,
+	}
+	switch status {
+	case StatusCompleted:
+		if artifact.Outputs != nil {
+			result.ReportMD = artifact.Outputs.ReportMD
+			result.RatingResult = artifact.Outputs.Rating
+		}
+		result.NextActions = []receipt.Action{{
+			ID:      "evaluation-report-read",
+			Label:   "Read the evaluation report",
+			Command: "cat " + result.ReportMD,
+		}}
+	case StatusCancelled, StatusFailed:
+		result.NextActions = []receipt.Action{{
+			ID:      "evaluation-run-resume",
+			Label:   "Resume the run",
+			Command: "qualitymd evaluation run --resume " + displayPath,
+		}}
+	}
+	return result
+}
+
+// resolveStrategy turns the configured execution strategy and the selected
+// evaluator's capabilities into the run's resolved strategy plus any recorded
+// fallback decisions. The first implementation slice resolves auto to
+// sequential execution, so every path currently lands on sequential; the
+// fallback records keep the downgrade observable.
+//
+//nolint:unparam // The resolved strategy is constant only while the first slice ships sequential-only.
+func resolveStrategy(configured string, caps evaluator.Capabilities) (string, []StrategyFallback) {
+	requested := configured
+	if requested == "" {
+		requested = string(evaluator.StrategyAuto)
+	}
+	resolved := string(evaluator.StrategySequential)
+	switch requested {
+	case string(evaluator.StrategyAuto), string(evaluator.StrategySequential):
+		return resolved, nil
+	case string(evaluator.StrategyParallel):
+		reason := "parallel execution is not implemented in this qualitymd version"
+		if !hasStrategy(caps, evaluator.StrategyParallel) {
+			reason = "the selected evaluator does not declare parallel execution"
+		}
+		return resolved, []StrategyFallback{{From: requested, To: resolved, Reason: reason}}
+	default:
+		return resolved, []StrategyFallback{{
+			From:   requested,
+			To:     resolved,
+			Reason: fmt.Sprintf("unknown execution strategy %q", requested),
+		}}
+	}
+}
+
+func hasStrategy(caps evaluator.Capabilities, want evaluator.Strategy) bool {
+	for _, strategy := range caps.Strategies {
+		if strategy == want {
+			return true
+		}
+	}
+	return false
+}
+
+func resolveRunnerWorkspace(opts Options) (*workspace.Workspace, error) {
+	ws, err := workspace.Resolve(workspace.Options{
+		RepoRoot:              opts.RepoRoot,
+		Model:                 opts.Model,
+		EvaluationDirOverride: opts.EvaluationDir,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if err := evaluator.ValidateProfiles(ws.Evaluators); err != nil {
+		return nil, &UsageError{Err: err}
+	}
+	return ws, nil
+}
+
+// requestedEvaluator resolves the evaluator name: the --evaluator flag, then
+// the workspace config, then auto.
+func requestedEvaluator(opts Options, ws *workspace.Workspace) string {
+	if opts.Evaluator != "" {
+		return opts.Evaluator
+	}
+	if ws.Evaluation.Evaluator != "" {
+		return ws.Evaluation.Evaluator
+	}
+	return "auto"
+}
+
+func selectEvaluator(opts Options, ws *workspace.Workspace, name string) (*evaluator.Selection, error) {
+	sel := opts.SelectEvaluator
+	if sel == nil {
+		sel = evaluator.Select
+	}
+	selection, err := sel(evaluator.Options{Name: name, Profiles: ws.Evaluators})
+	if err != nil {
+		return nil, err
+	}
+	return selection, nil
+}
+
+func resolveResumePath(opts Options) (string, string, error) {
+	resolved, err := evaluation.ResolveRunSelection(evaluation.RunSelection{
+		Model:         opts.Model,
+		EvaluationDir: opts.EvaluationDir,
+		RunArg:        opts.Resume,
+	})
+	if err != nil {
+		return "", "", wrapEvaluationError(err)
+	}
+	abs, err := filepath.Abs(resolved.Path)
+	if err != nil {
+		return "", "", err
+	}
+	display := resolved.DisplayPath
+	if display == "" {
+		display = resolved.Path
+	}
+	return abs, display, nil
+}
+
+func wrapEvaluationError(err error) error {
+	var usage *evaluation.UsageError
+	if errors.As(err, &usage) {
+		return &UsageError{Err: err}
+	}
+	return err
+}
+
+func sleepWithContext(ctx context.Context, d time.Duration) {
+	timer := time.NewTimer(d)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+	case <-timer.C:
+	}
+}

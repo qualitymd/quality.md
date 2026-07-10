@@ -1,5 +1,15 @@
 # /quality runtime workflows update log
 
+## 2026-07-09
+
+- **Revision**: Rewrote the [evaluate](evaluate.md) workflow for 0192 -
+  Deterministic evaluation runner. Evaluate now wraps
+  `qualitymd evaluation run`: it frames the run, verifies CLI support, resolves
+  scope, lints, opens the feedback log, explains evaluator selection (with an
+  optional `--dry-run --json` preview), invokes the runner, handles
+  failure/resume, and summarizes the receipt and generated reports instead of
+  orchestrating assessment, QC, roll-up, and payload writes itself.
+
 ## 2026-06-29
 
 - **Revision**: Updated runtime workflow headings for 0189 - Heading Sentence

@@ -1,44 +1,78 @@
 ---
 type: Functional Specification
 title: Evaluation orchestration
-description: Agent-agnostic dependency graph, parallelism, persistence, resume, and failure rules.
-tags: [evaluation, orchestration, agents]
-timestamp: 2026-06-25T00:00:00Z
+description: Runner-owned work graph, scheduling, persistence, resume, retry, and cancellation rules.
+tags: [evaluation, orchestration, runner]
+timestamp: 2026-07-09T00:00:00Z
 ---
 
 # Evaluation orchestration
 
-Evaluation is a dependency-ordered work graph. This spec defines the graph and
-runtime invariants without requiring a specific agent or concurrency mechanism.
+Evaluation is a dependency-ordered work graph. The deterministic
+[evaluation runner](runner.md) owns the graph: it builds it from the model
+snapshot and planned scope, schedules ready work units, applies the retry
+policy, persists accepted results, and decides resume. This spec defines the
+graph and its runtime invariants.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Work units
+## Work graph
 
-An orchestrator **MUST** treat these as the primary work-unit boundaries:
+The runner **MUST** build a deterministic work graph in model order:
 
-- `EvaluationWork`
-- `AreaWork`
-- `RequirementWork`
-- `FactorWork`
-- `AdviceWork`
-- `ReportWork`
+1. `frameEvaluation`;
+2. `frameAreaEvaluation` for each planned area;
+3. `frameRequirementEvaluation`, then `assessRateRequirement` for each planned
+   requirement;
+4. `frameFactorAnalysis` and `analyzeFactor` for each in-scope factor node,
+   bottom-up;
+5. `frameAreaAnalysis` and `analyzeArea` for each in-scope area, bottom-up;
+6. `rankFindings`;
+7. `recommend`;
+8. `rankRecommendations`; and
+9. `buildReports`.
 
-The orchestrator **MUST** enforce dependencies between work units even when it
-delegates work to subagents, workers, threads, processes, queues, or another
-runtime-specific mechanism.
+Work-unit IDs **MUST** be deterministic strings: `<kind>` for run-wide units
+and `<kind>:<canonical-ref>` for subject-scoped units, for example
+`assessRateRequirement:requirement:docs::links-resolve`.
+
+Frame units and `buildReports` **MUST** be deterministic runner work; the
+remaining units are evaluator-backed judgment work dispatched under the
+[evaluator contract](evaluator-contract.md).
+
+`assessRateRequirement` **MUST** execute the protocol's `assessRequirement` and
+`rateRequirement` moves as one evaluator call and persist both the
+`RequirementAssessmentResult` and `RequirementRatingResult` payloads, under
+their unchanged kinds, identities, and schemas per
+[payload kinds](records/payload-kinds.md#judgment-kinds).
+
+> Rationale: a separate rate call re-ships the requirement's full context to
+> score an assessment the same evaluator just produced, roughly doubling
+> requirement calls for no new evidence. The merge is a call-shape change only;
+> reports, roll-up, and resume cannot tell the difference. — 0193
+
+The graph executes every [protocol](protocol.md) move: the protocol's
+`assessRequirement` and `rateRequirement` run inside `assessRateRequirement`,
+`accountForFindingCoverage` runs as runner acceptance validation of the
+`rankRecommendations` result, and `assembleEvaluationOutputResult` plus
+`generateEvaluationReports` run inside `buildReports`.
 
 ## Dependencies
 
-`EvaluationFrame` **MUST** exist before root `AreaWork` begins.
+The runner **MUST** enforce these dependencies even when work is delegated to
+subagents, workers, threads, processes, or another runtime-specific mechanism:
 
-`AreaEvaluationFrame` **MUST** exist before local `RequirementWork`, local
-factor work, or child area work for that area begins.
+`frameEvaluation` **MUST** complete before any area work begins.
+
+An area's `frameAreaEvaluation` **MUST** complete before local requirement
+work, local factor work, or child area work for that area begins.
 
 `RequirementRatingResult`s **MUST** exist before a factor node that depends on
-those direct requirements can be analyzed.
+those direct requirements can be analyzed. The combined
+`assessRateRequirement` unit satisfies this dependency: its accepted result
+carries the requirement's valid rating.
 
 Direct child `FactorAnalysisResult`s **MUST** exist before a parent factor is
 analyzed.
@@ -52,63 +86,88 @@ before `EvaluationOutputResult` and reports are generated.
 
 `FindingRankingResult` **MUST** exist before recommendation generation closes.
 
-All `RecommendationResult` payloads **MUST** exist before final finding coverage
-accounting and recommendation ranking close. Finding coverage and recommendation
-ranking **MUST** reference recommendations by `RecommendationResult.id`.
+All `RecommendationResult` payloads **MUST** exist before final finding
+coverage accounting and recommendation ranking close. Finding coverage and
+recommendation ranking **MUST** reference recommendations by
+`RecommendationResult.id`.
 
-`RecommendationRankingResult` **MUST** exist before
-`EvaluationOutputResult` and reports are generated.
+`RecommendationRankingResult` **MUST** exist before `EvaluationOutputResult`
+and reports are generated.
 
-Report generation **MUST** require a valid `EvaluationManifest`, a valid evaluation
-frame, the analysis outputs required by `EvaluationManifest.plannedScope`, and the
+Report generation **MUST** require a valid run manifest, a valid evaluation
+frame, the analysis outputs required by the manifest's `plannedScope`, and the
 required advice outputs. It **MUST NOT** select report scope from evaluation
 frame ordering.
 
-## Parallelism
+## Scheduling and parallelism
 
-A runtime **MAY** execute ready work units concurrently.
+The runner **MAY** execute ready work units concurrently, up to the resolved
+concurrency cap, when the resolved
+[execution strategy](runner.md#execution-strategy) allows it. Execution
+strategies are scheduling choices under the runner contract; they never become
+alternate orchestration engines.
 
 Parallel execution **MUST** be observationally equivalent to deterministic
 sequential execution in model order.
 
-Parallel execution **MUST NOT** change ratings, report content, output ordering,
-data paths, or persisted payload shapes.
-
-Good v0 parallelism includes sibling requirements, child areas, and sibling
-factors whose dependencies are ready.
+Parallel execution **MUST NOT** change ratings, report content, output
+ordering, artifact paths, or persisted payload shapes.
 
 ## Persistence
 
-Workers **SHOULD** return structured routine JSON to the orchestrator. The
-orchestrator should assemble accepted payloads into a JSON array and persist the
-batch through:
+The runner **MUST** merge each accepted work-unit result into
+`evaluation.json` and persist it before treating the work unit as complete for
+scheduling or resume. Write mechanics are the
+[`evaluation.json` contract](evaluation-json.md#persistence).
 
-```text
-qualitymd evaluation data set <run> < payloads.json
-```
+> Rationale: an interrupted run must resume without repeating accepted
+> judgment work; batched persistence silently discards completed evaluator
+> calls. — 0192
 
-Workers **SHOULD NOT** write arbitrary files in an evaluation run folder.
-
-If a runtime allows workers to call the CLI directly, the resulting run **MUST**
-be equivalent to orchestrator-mediated persistence.
+Evaluators and subagents **MUST NOT** write files in an evaluation run folder;
+results reach disk only through the runner, per the
+[evaluator contract](evaluator-contract.md#boundaries).
 
 ## Resume
 
-Before scheduling a work unit, the orchestrator **MAY** inspect persisted
-outputs.
+Before scheduling work, a resumed run **MUST** verify artifact compatibility
+per the [`evaluation.json` contract](evaluation-json.md#resume-compatibility),
+then rebuild the graph from the current model snapshot and compare it with
+saved state.
 
-A work unit **MAY** be skipped when the expected output exists, is structurally
-valid, its dependencies have not changed, and the runtime accepts reuse for the
-current run.
+A completed work unit **MUST** be reused when its recorded input hash matches
+the recomputed hash of its resolved inputs.
 
-A work unit **MUST** be rerun when required output is missing, malformed,
-schema-incompatible, stale relative to dependencies, or not provably reusable.
+A work unit **MUST** be rerun when its required output is missing, malformed,
+schema-incompatible, or dependency-stale (its input hash no longer matches).
 
-## Failure
+## Retry and failure
 
-A failed work unit **SHOULD** produce either no persisted output or a valid
-structured output whose status reflects the failure mode.
+The runner **MUST** retry a failed work unit only when its failure category is
+`rate_limited`, `timeout`, `invalid_evaluator_output`, or
+`schema_invalid_output`, up to three attempts total per work unit. Any other
+failure category **MUST** fail the run immediately.
 
-The orchestrator **SHOULD** continue independent work where possible, then rely
-on `evaluation status` or failed `evaluation report build` to surface typed
-gaps.
+An `assessRateRequirement` result that carries an assessment but no valid
+rating, or the reverse, **MUST** fail the work unit as retryable evaluator
+output; the runner **MUST NOT** persist a partial requirement result.
+
+> Rationale: the combined call introduces the half-answered result as a new
+> failure mode; persisting an unrated requirement would trip roll-up later and
+> break the rating dependency above. — 0193
+
+If a work unit exhausts its attempts or fails with a non-retryable category,
+then the run **MUST** finish with status `failed` and remain resumable.
+
+Failure categories are the [runner failure taxonomy](runner.md#failure-taxonomy).
+
+## Cancellation
+
+When a run is interrupted by user cancellation or a termination signal (SIGINT
+or SIGTERM), the runner **MUST** cancel in-flight evaluator calls, leave
+`evaluation.json` valid and resumable, record the interruption in run state and
+the event log, and report the run as `cancelled` rather than failed.
+Interrupted work units keep their attempt counts and stay incomplete.
+
+> Rationale: stopping a long evaluation is an expected user action, not an
+> internal error; accepted work must survive for `--resume`. — 0192
