@@ -120,6 +120,37 @@ context-reuse strategy under the
 and the invariant above: a dropped or unavailable session only costs
 re-transmitted tokens, never output changes.
 
+## Harness checkpoints
+
+For a harness-backed run, the runner **MUST** keep every ownership listed
+above across checkpoints: it builds the bounded work request, atomically
+persists an awaiting-evaluator checkpoint with the pending call's correlation
+metadata (request identity, work-unit identity, input hash, correlation ID,
+and attempt) before the request leaves stdout, and later validates the
+submitted result against that checkpoint.
+
+> Rationale: the CLI command returns control to the invoking agent between
+> request and result, so the run must be resumable before the work request is
+> emitted. — 0194
+
+Pending-call metadata **MUST NOT** persist raw prompt, source, or result
+bodies; the pending request is rebuilt deterministically from the model
+snapshot, work-graph state, and current source package, and a rebuilt request
+whose input hash no longer matches the checkpoint **MUST** fail with
+`run_state_invalid` rather than accept judgment for changed input.
+
+The runner **MUST** normalize, schema-validate, retry, accept, log, and
+persist a harness payload through the same paths used for CLI- and API-backed
+evaluator payloads, **MUST** reject a mismatched, duplicate, or unsolicited
+result without advancing the work graph, and **MUST** enforce the
+[harness identity binding](evaluator-contract.md#harness-evaluator) on
+resume. Invalid output is never repaired outside the runner.
+
+Evaluator-call logging for harness dispatch **MUST** follow the same boundary
+as every other transport: hashes, identities, durations, attempt state, usage
+when available, and failure categories — never raw harness requests, source
+contents, result bodies, credentials, or tokens.
+
 ## Source packaging
 
 The runner **MUST** select and package source for evaluator work units through

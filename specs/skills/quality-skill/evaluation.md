@@ -56,12 +56,25 @@ The workflow **MUST** continue to provide the agent-mediated user interface:
 intent parsing, the run frame, evaluator/default-selection explanation, CLI
 invocation, progress summary, result summary, and next-workflow routing.
 
-The workflow **MUST NOT** independently collect evidence, assign ratings, run a
-parallel QC loop, second-guess the runner's authoritative evaluation result,
-orchestrate the evaluation protocol itself, or write structured evaluation data.
+The workflow **MUST NOT** independently collect evidence, run a parallel QC
+loop, second-guess the runner's authoritative evaluation result, orchestrate
+the evaluation protocol itself, or write structured evaluation data.
 
 > Rationale: a wrapper that re-evaluates the source recreates the two-engine
 > architecture the deterministic runner removes. — 0192
+
+The one sanctioned judgment role is servicing harness checkpoints: when the
+run uses the `harness` evaluator, the skill **MUST** answer each checkpoint
+only from the runner-supplied bounded work request, submit the typed result
+envelope through `qualitymd evaluation run --resume <run> --evaluator-result`,
+and treat the runner's accepted state and terminal receipt as authoritative.
+It **MUST NOT** construct its own work graph, widen source beyond the
+request's bounded package, write evaluation records, or adjust accepted
+results, and it **MUST NOT** repair invalid output outside the runner's retry
+loop.
+
+> Rationale: the harness provides judgment, not a second evaluation workflow.
+> — 0194
 
 The skill **MUST NOT** use `qualitymd evaluation create` or
 `qualitymd evaluation data set` for new evaluations. Those commands remain only
@@ -140,6 +153,25 @@ strategy is runner-owned configuration, not a user-facing evaluation knob.
 > scope is the durable way to go faster without pretending partial coverage is
 > whole coverage. — 0129
 
+## Evaluator selection
+
+The workflow **MUST** resolve evaluator intent before invoking the runner, in
+this precedence:
+
+1. an explicit user evaluator request;
+2. a non-`auto` workspace `evaluation.evaluator` configuration;
+3. `--evaluator harness`, when the current agent harness can service harness
+   checkpoints; and
+4. CLI `auto` discovery, only when no harness transport is available.
+
+> Rationale: the skill knows the active harness; the standalone CLI has no
+> portable, documented way to infer it. — 0194
+
+The workflow **MUST** explain the selected transport before the first
+evaluation mutation and **MUST NOT** silently cross to a different provider
+after harness selection or a harness failure; switching evaluators is an
+explicit user decision and a new run.
+
 ## Workflow
 
 For an `evaluate` invocation the skill's process wraps the runner:
@@ -151,9 +183,12 @@ flowchart TD
     Resolve --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Log[Open the evaluate feedback log]
-    Log --> Select[Explain evaluator selection<br/>optionally preview with --dry-run --json]
+    Log --> Select[Resolve and explain evaluator selection<br/>optionally preview with --dry-run --json]
     Select --> Run[Invoke qualitymd evaluation run<br/>with explicit flags]
-    Run --> Summarize[Summarize progress and the result receipt]
+    Run --> Receipt{receipt status}
+    Receipt -->|awaiting_evaluator| Judge[Judge only the supplied request<br/>submit --evaluator-result]
+    Judge --> Run
+    Receipt -->|terminal| Summarize[Summarize progress and the result receipt]
     Summarize --> Route([Route follow-up workflows])
 ```
 
@@ -165,18 +200,28 @@ flowchart TD
 4. **Validate** with `qualitymd lint`, stopping on errors (see
    [Driving the CLI](quality-skill.md#driving-the-cli)).
 5. **Open the evaluate feedback log** for workflow-experience events.
-6. **Explain evaluator selection.** The workflow **MUST** explain which
-   evaluator the run will use and why (explicit flag, configured
-   `evaluation.evaluator`, or `auto` discovery). It **MAY** preview the resolved
-   run with `qualitymd evaluation run --dry-run --json`, and **MAY** ask the
-   user to choose an evaluator when the CLI reports a missing or ambiguous
-   evaluator.
+6. **Resolve and explain evaluator selection** per the
+   [selection precedence](#evaluator-selection). It **MAY** preview the
+   resolved run with `qualitymd evaluation run --dry-run --json`, and **MAY**
+   ask the user to choose an evaluator when the CLI reports a missing or
+   ambiguous evaluator.
 7. **Invoke the runner** with explicit flags:
    `qualitymd evaluation run [--model <model>] [--area <area-ref>] [--factor <factor-ref>...] [--evaluator <name>] --json`.
-8. **Summarize progress and the result receipt**, then route next workflows
+8. **Service harness checkpoints.** While the receipt status is
+   `awaiting_evaluator`, judge only the supplied bounded request, submit the
+   result envelope with
+   `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
+   repeat until a terminal receipt. In unattended automation the loop adds no
+   interactive gates: the run advances, returns a report, or stops with the
+   runner's classified remedy.
+9. **Summarize progress and the result receipt**, then route next workflows
    (review, improve, recommendation follow-up).
 
 ## Failure and resume
+
+An `awaiting_evaluator` receipt is expected progress, not a failure: an
+interrupted checkpoint loop **MUST** recover by resuming the run without a
+result to re-obtain the same pending request, then continue the loop.
 
 When a run ends `failed` or `cancelled`, the workflow **MUST** explain the
 receipt's stable failure category in user terms and offer

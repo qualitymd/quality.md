@@ -31,12 +31,16 @@ to that selected model's workspace root.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
 **MUST** identify the run path, root area, evaluation data artifact count,
-reportability, gap count, `requestedScope`, and `plannedScope`.
+reportability, gap count, `requestedScope`, and `plannedScope`. Entries for
+artifact-backed runs **MUST** carry the runner `lifecycle` status, so an
+`awaiting_evaluator` run stays distinguishable from a generic incomplete
+entry.
 
 The command **MUST** use the current evaluation run inspection path. If a
 recognized run has a broken evaluation skeleton, the command **MUST** fail
 with the same diagnostic as `qualitymd evaluation status <run>`.
 
-The command **MAY** accept `--state all|complete|reportable|incomplete` to
-filter the listed runs. `complete` and `reportable` are equivalent. Unknown
-state filters **MUST** be usage errors.
+The command **MAY** accept `--state all|complete|reportable|incomplete|awaiting`
+to filter the listed runs. `complete` and `reportable` are equivalent;
+`awaiting` selects runs whose lifecycle is `awaiting_evaluator`. Unknown state
+filters **MUST** be usage errors.

@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -508,6 +509,302 @@ func (c *cancellingEvaluator) Evaluate(ctx context.Context, req evaluator.WorkRe
 		c.cancel()
 	}
 	return result, err
+}
+
+// harnessSelect resolves the real built-in harness evaluator selection.
+func harnessSelect() func(evaluator.Options) (*evaluator.Selection, error) {
+	return func(_ evaluator.Options) (*evaluator.Selection, error) {
+		return evaluator.Select(evaluator.Options{Name: "harness"})
+	}
+}
+
+// workRequestFor converts an awaiting receipt's bounded request back into the
+// evaluator work-request shape the scripted payload registry consumes.
+func workRequestFor(req *runnerEvaluatorRequest) evaluator.WorkRequest {
+	return evaluator.WorkRequest{
+		WorkUnitID: req.WorkUnitID,
+		Kind:       req.Kind,
+		Subject:    req.Subject,
+		Context:    req.Context,
+	}
+}
+
+type runnerEvaluatorRequest = EvaluatorRequest
+
+// submitHarnessResult resumes an awaiting run with one result envelope.
+func submitHarnessResult(t *testing.T, repo, runPath string, envelope evaluator.HarnessResultEnvelope) (*Result, error) {
+	t.Helper()
+	raw, err := json.Marshal(envelope)
+	if err != nil {
+		t.Fatalf("marshaling envelope: %v", err)
+	}
+	return Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Resume:          runPath,
+		EvaluatorResult: "-",
+		Stdin:           bytes.NewReader(raw),
+		SelectEvaluator: harnessSelect(),
+	})
+}
+
+func startHarnessRun(t *testing.T, repo string) *Result {
+	t.Helper()
+	result, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Evaluator:       "harness",
+		SelectEvaluator: harnessSelect(),
+	})
+	if err != nil {
+		t.Fatalf("Run(harness) error = %v", err)
+	}
+	return result
+}
+
+func TestHarnessRunCheckpointsToCompletion(t *testing.T) {
+	repo := testRunnerRepo(t)
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	checkpoints := 0
+	for result.Status == StatusAwaitingEvaluator {
+		checkpoints++
+		if checkpoints > 20 {
+			t.Fatalf("run did not complete after %d checkpoints", checkpoints)
+		}
+		req := result.EvaluatorRequest
+		if req == nil || req.RequestID == "" || req.InputHash == "" || len(req.ExpectedSchema) == 0 {
+			t.Fatalf("awaiting receipt lacks the bounded request: %+v", req)
+		}
+		payload, err := scripted.payloadFor(workRequestFor(req))
+		if err != nil {
+			t.Fatalf("scripted payload for %s: %v", req.WorkUnitID, err)
+		}
+		result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+			RequestID: req.RequestID,
+			InputHash: req.InputHash,
+			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code", Model: "test-model"},
+			Payload:   roundTripJSON(payload),
+		})
+		if err != nil {
+			t.Fatalf("submit for %s error = %v", req.WorkUnitID, err)
+		}
+	}
+	if result.Status != StatusCompleted {
+		t.Fatalf("status = %q (failure: %+v), want completed", result.Status, result.Failure)
+	}
+	// The test model has 7 evaluator-backed units: one checkpoint each.
+	if checkpoints != 7 {
+		t.Errorf("checkpoints = %d, want 7", checkpoints)
+	}
+	if result.Evaluator != "harness" || result.EvaluatorKind != "harness" {
+		t.Errorf("receipt evaluator = %s/%s, want harness", result.Evaluator, result.EvaluatorKind)
+	}
+	if result.ReportMD == "" || result.RatingResult == nil {
+		t.Errorf("receipt = %+v, want reportMd and ratingResult", result)
+	}
+	artifact, err := NewStore(filepath.Join(repo, result.Path)).Load()
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	if artifact.State.HarnessIdentity == nil || artifact.State.HarnessIdentity.Runtime != "claude-code" {
+		t.Errorf("harness identity = %+v, want claude-code", artifact.State.HarnessIdentity)
+	}
+	if artifact.State.PendingEvaluatorCall != nil {
+		t.Errorf("completed run still has a pending evaluator call")
+	}
+}
+
+func TestHarnessAwaitingRunStatusSurfacesPendingRequest(t *testing.T) {
+	repo := testRunnerRepo(t)
+	result := startHarnessRun(t, repo)
+	if result.Status != StatusAwaitingEvaluator {
+		t.Fatalf("status = %q, want awaiting_evaluator", result.Status)
+	}
+	status, err := Status(filepath.Join(repo, result.Path), result.Path)
+	if err != nil {
+		t.Fatalf("Status() error = %v", err)
+	}
+	if status.Reportable {
+		t.Errorf("awaiting run must be incomplete, got reportable")
+	}
+	if status.Lifecycle != StatusAwaitingEvaluator {
+		t.Errorf("lifecycle = %q, want awaiting_evaluator", status.Lifecycle)
+	}
+	if status.AwaitingEvaluator == nil ||
+		status.AwaitingEvaluator.WorkUnitID != result.EvaluatorRequest.WorkUnitID ||
+		status.AwaitingEvaluator.RequestID != result.EvaluatorRequest.RequestID {
+		t.Errorf("awaitingEvaluator = %+v, want the pending request %+v", status.AwaitingEvaluator, result.EvaluatorRequest)
+	}
+	if len(status.NextActions) == 0 || status.NextActions[0].ID != "evaluation-run-reemit" {
+		t.Errorf("nextActions = %+v, want the resume continuation first", status.NextActions)
+	}
+}
+
+func TestHarnessResumeWithoutResultReemitsSameRequest(t *testing.T) {
+	repo := testRunnerRepo(t)
+	first := startHarnessRun(t, repo)
+	if first.Status != StatusAwaitingEvaluator {
+		t.Fatalf("status = %q, want awaiting_evaluator", first.Status)
+	}
+	again, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Resume:          first.Path,
+		SelectEvaluator: harnessSelect(),
+	})
+	if err != nil {
+		t.Fatalf("Run(resume) error = %v", err)
+	}
+	if again.Status != StatusAwaitingEvaluator {
+		t.Fatalf("resumed status = %q, want awaiting_evaluator", again.Status)
+	}
+	if again.EvaluatorRequest.RequestID != first.EvaluatorRequest.RequestID ||
+		again.EvaluatorRequest.InputHash != first.EvaluatorRequest.InputHash {
+		t.Errorf("re-emitted request %+v differs from original %+v", again.EvaluatorRequest, first.EvaluatorRequest)
+	}
+}
+
+func TestHarnessRejectsMismatchedResult(t *testing.T) {
+	repo := testRunnerRepo(t)
+	result := startHarnessRun(t, repo)
+	_, err := submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+		RequestID: "req_other",
+		InputHash: result.EvaluatorRequest.InputHash,
+		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+		Payload:   map[string]any{"any": true},
+	})
+	var runErr *RunError
+	if err == nil || !errors.As(err, &runErr) || runErr.Category != evaluator.FailureRunStateInvalid {
+		t.Fatalf("submit(mismatched) error = %v, want run_state_invalid", err)
+	}
+	// The pending request is untouched and recoverable.
+	again, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Resume:          result.Path,
+		SelectEvaluator: harnessSelect(),
+	})
+	if err != nil || again.Status != StatusAwaitingEvaluator ||
+		again.EvaluatorRequest.RequestID != result.EvaluatorRequest.RequestID {
+		t.Fatalf("pending request not recoverable after rejected submit: %+v, %v", again, err)
+	}
+}
+
+func TestHarnessRejectsStaleInput(t *testing.T) {
+	repo := testRunnerRepo(t)
+	result := startHarnessRun(t, repo)
+	if err := os.WriteFile(filepath.Join(repo, "src", "main.txt"), []byte("changed content\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile error = %v", err)
+	}
+	_, err := submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+		RequestID: result.EvaluatorRequest.RequestID,
+		InputHash: result.EvaluatorRequest.InputHash,
+		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+		Payload:   map[string]any{"any": true},
+	})
+	var runErr *RunError
+	if err == nil || !errors.As(err, &runErr) || runErr.Category != evaluator.FailureRunStateInvalid {
+		t.Fatalf("submit(stale source) error = %v, want run_state_invalid", err)
+	}
+}
+
+func TestHarnessRefusesMixedRuntimes(t *testing.T) {
+	repo := testRunnerRepo(t)
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	payload, err := scripted.payloadFor(workRequestFor(result.EvaluatorRequest))
+	if err != nil {
+		t.Fatalf("payload error = %v", err)
+	}
+	result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+		RequestID: result.EvaluatorRequest.RequestID,
+		InputHash: result.EvaluatorRequest.InputHash,
+		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+		Payload:   roundTripJSON(payload),
+	})
+	if err != nil || result.Status != StatusAwaitingEvaluator {
+		t.Fatalf("first submit: %+v, %v", result, err)
+	}
+	_, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+		RequestID: result.EvaluatorRequest.RequestID,
+		InputHash: result.EvaluatorRequest.InputHash,
+		Evaluator: evaluator.HarnessIdentity{Runtime: "codex"},
+		Payload:   map[string]any{"any": true},
+	})
+	var runErr *RunError
+	if err == nil || !errors.As(err, &runErr) || runErr.Category != evaluator.FailureRunStateInvalid {
+		t.Fatalf("submit(mixed runtime) error = %v, want run_state_invalid", err)
+	}
+}
+
+func TestHarnessRetriesInvalidPayloadThenFails(t *testing.T) {
+	repo := testRunnerRepo(t)
+	result := startHarnessRun(t, repo)
+	for attempt := 1; attempt <= maxUnitAttempts; attempt++ {
+		if result.Status != StatusAwaitingEvaluator {
+			t.Fatalf("attempt %d: status = %q, want awaiting_evaluator", attempt, result.Status)
+		}
+		if got := result.EvaluatorRequest.Attempt; got != attempt {
+			t.Fatalf("request attempt = %d, want %d", got, attempt)
+		}
+		if attempt > 1 && result.Failure == nil {
+			t.Errorf("retry receipt lacks the classified previous-attempt failure")
+		}
+		var err error
+		result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
+			RequestID: result.EvaluatorRequest.RequestID,
+			InputHash: result.EvaluatorRequest.InputHash,
+			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+			Payload:   map[string]any{"broken": true},
+		})
+		if err != nil {
+			t.Fatalf("submit attempt %d error = %v", attempt, err)
+		}
+	}
+	if result.Status != StatusFailed {
+		t.Fatalf("status = %q, want failed after exhausting retries", result.Status)
+	}
+	if result.Failure == nil || result.Failure.Category != evaluator.FailureInvalidEvaluatorOutput {
+		t.Fatalf("failure = %+v, want invalid_evaluator_output", result.Failure)
+	}
+}
+
+func TestHarnessResultRequiresResumeAndPendingRequest(t *testing.T) {
+	repo := testRunnerRepo(t)
+	_, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		EvaluatorResult: "-",
+		Stdin:           strings.NewReader("{}"),
+		SelectEvaluator: harnessSelect(),
+	})
+	var usageErr *UsageError
+	if err == nil || !errors.As(err, &usageErr) {
+		t.Fatalf("Run(--evaluator-result without --resume) error = %v, want usage error", err)
+	}
+
+	// A completed non-harness run refuses a harness result.
+	scripted := newScriptedEvaluator()
+	completed, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		SelectEvaluator: scriptedSelect(scripted),
+	})
+	if err != nil {
+		t.Fatalf("Run() error = %v", err)
+	}
+	_, err = Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Resume:          completed.Path,
+		EvaluatorResult: "-",
+		Stdin:           strings.NewReader(`{"requestId":"r","inputHash":"h","evaluator":{"runtime":"claude-code"},"payload":{}}`),
+		SelectEvaluator: scriptedSelect(scripted),
+	})
+	if err == nil || !errors.As(err, &usageErr) {
+		t.Fatalf("Run(result for non-harness run) error = %v, want usage error", err)
+	}
 }
 
 func TestDryRunPreviewsWithoutWriting(t *testing.T) {

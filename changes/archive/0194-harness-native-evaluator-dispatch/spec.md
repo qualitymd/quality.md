@@ -11,9 +11,9 @@ timestamp: 2026-07-10T00:00:00Z
 This spec governs the delta from subprocess-first `auto` discovery to a
 first-class harness evaluator for `qualitymd evaluation run`. It inherits the
 binding work graph, result-validation, persistence, and report semantics from
-the durable [evaluation runner](../../specs/evaluation/runner.md),
-[evaluator contract](../../specs/evaluation/evaluator-contract.md), and
-[orchestration contract](../../specs/evaluation/orchestration.md). It does not
+the durable [evaluation runner](../../../specs/evaluation/runner.md),
+[evaluator contract](../../../specs/evaluation/evaluator-contract.md), and
+[orchestration contract](../../../specs/evaluation/orchestration.md). It does not
 change evaluation judgment semantics or result payload schemas.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be

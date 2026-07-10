@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os/signal"
 	"syscall"
 
@@ -40,6 +41,8 @@ func newEvaluationRunCmd() *cobra.Command {
 	cmd.Flags().StringArrayVar(&opts.Factors, "factor", nil, "canonical factor reference for a scoped evaluation; repeatable")
 	cmd.Flags().StringVar(&opts.Evaluator, "evaluator", "", "evaluator to use: auto (default), a built-in name, or a configured profile")
 	cmd.Flags().StringVar(&opts.Resume, "resume", "", "resume an existing run from its evaluation.json")
+	cmd.Flags().StringVar(&opts.EvaluatorResult, "evaluator-result", "",
+		"submit a harness result envelope for the awaiting work request, from a file or - for stdin (requires --resume)")
 	cmd.Flags().BoolVarP(&dryRun, "dry-run", "n", false, "preview the resolved run without invoking an evaluator or writing evaluation data")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run receipt")
 	return cmd
@@ -69,6 +72,7 @@ func runEvaluationRun(cmd *cobra.Command, opts runner.Options, jsonOutput bool) 
 	ctx, stop := signal.NotifyContext(cmd.Context(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 	opts.Stderr = cmd.ErrOrStderr()
+	opts.Stdin = cmd.InOrStdin()
 	result, err := runner.Run(ctx, opts)
 	if err != nil {
 		return mapRunnerError(cmd, err, jsonOutput)
@@ -82,7 +86,9 @@ func runEvaluationRun(cmd *cobra.Command, opts runner.Options, jsonOutput bool) 
 			return err
 		}
 	}
-	if result.Status != runner.StatusCompleted {
+	// An awaiting-evaluator checkpoint is expected progress, not a failure:
+	// the command exits successfully with the pending request in the receipt.
+	if result.Status != runner.StatusCompleted && result.Status != runner.StatusAwaitingEvaluator {
 		return silentProblems(fmt.Errorf("evaluation run %s", result.Status))
 	}
 	return nil
@@ -91,6 +97,10 @@ func runEvaluationRun(cmd *cobra.Command, opts runner.Options, jsonOutput bool) 
 func renderEvaluationRunResult(cmd *cobra.Command, result *runner.Result) error {
 	out := cmd.ErrOrStderr()
 	switch result.Status {
+	case runner.StatusAwaitingEvaluator:
+		if err := renderAwaitingEvaluator(out, result); err != nil {
+			return err
+		}
 	case runner.StatusCompleted:
 		rating := "not assessed"
 		if result.RatingResult != nil && result.RatingResult.Level != "" {
@@ -111,6 +121,22 @@ func renderEvaluationRunResult(cmd *cobra.Command, result *runner.Result) error 
 		}
 	}
 	return renderNextActions(out, result.NextActions)
+}
+
+func renderAwaitingEvaluator(out io.Writer, result *runner.Result) error {
+	if result.EvaluatorRequest != nil {
+		if _, err := fmt.Fprintf(out, "Awaiting harness judgment: %s (request %s, attempt %d)\n",
+			result.EvaluatorRequest.WorkUnitID, result.EvaluatorRequest.RequestID, result.EvaluatorRequest.Attempt); err != nil {
+			return err
+		}
+	}
+	if result.Failure != nil {
+		if _, err := fmt.Fprintf(out, "Previous attempt: %s: %s\n", result.Failure.Category, result.Failure.Detail); err != nil {
+			return err
+		}
+	}
+	_, err := fmt.Fprintln(out, "Run with --json to receive the bounded work request.")
+	return err
 }
 
 // mapRunnerError classifies runner errors onto CLI exit-code categories and,

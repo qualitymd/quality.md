@@ -384,7 +384,7 @@ func newEvaluationListCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&modelPath, "model", "", "QUALITY.md file that anchors evaluation history")
 	cmd.Flags().StringVar(&evaluationDir, "evaluation-dir", "", "override the model-relative evaluation directory")
-	cmd.Flags().StringVar(&state, "state", "all", "filter runs: all, reportable, incomplete")
+	cmd.Flags().StringVar(&state, "state", "all", "filter runs: all, reportable, incomplete, awaiting")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run list")
 	return cmd
 }
@@ -531,7 +531,11 @@ func renderRunList(w io.Writer, result *evaluation.RunList) error {
 		return err
 	}
 	for _, run := range result.Runs {
-		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\tdata=%d\tgaps=%d\n", run.Path, run.RootArea, run.Reportable, run.DataArtifacts, run.Gaps); err != nil {
+		lifecycle := ""
+		if run.Lifecycle != "" {
+			lifecycle = "\tlifecycle=" + run.Lifecycle
+		}
+		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v%s\tdata=%d\tgaps=%d\n", run.Path, run.RootArea, run.Reportable, lifecycle, run.DataArtifacts, run.Gaps); err != nil {
 			return err
 		}
 	}
@@ -547,6 +551,17 @@ func renderEvaluationStatus(cmd *cobra.Command, status evaluation.RunStatus) err
 	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nData artifacts: %d\n",
 		status.Path, reportable, status.Data.Artifacts); err != nil {
 		return err
+	}
+	if status.Lifecycle != "" {
+		if _, err := fmt.Fprintf(out, "Lifecycle: %s\n", status.Lifecycle); err != nil {
+			return err
+		}
+	}
+	if status.AwaitingEvaluator != nil {
+		if _, err := fmt.Fprintf(out, "Awaiting harness judgment: %s (request %s, attempt %d)\n",
+			status.AwaitingEvaluator.WorkUnitID, status.AwaitingEvaluator.RequestID, status.AwaitingEvaluator.Attempt); err != nil {
+			return err
+		}
 	}
 	for _, gap := range status.Gaps {
 		if _, err := fmt.Fprintf(out, "- %s %s: %s\n", gap.Kind, gap.Ref, gap.Detail); err != nil {

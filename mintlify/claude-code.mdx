@@ -3,8 +3,90 @@ title: Automate with Claude Code
 description: Run recurring evaluations and hand off recommendations on a cadence with Claude Code.
 ---
 
-<Note>
-  **Coming soon.** This guide will show how to make the Quality Loop recurring
-  in Claude Code — scheduled evaluations and recommendation handoffs. For the
-  model behind it, see [Engineering loops](/loops).
-</Note>
+Recurring evaluation keeps a QUALITY.md model honest: the same `/quality
+evaluate` you run interactively can run on a schedule, with the evaluation
+artifacts committed back to the repository. This guide shows the agent-first
+setup in Claude Code. For the model behind the cadence, see
+[Engineering loops](/loops).
+
+## How evaluation runs inside Claude Code
+
+When Claude Code runs `/quality evaluate`, the skill selects the built-in
+`harness` evaluator by default (unless you or the workspace config choose
+another evaluator). The deterministic `qualitymd` runner owns the work graph
+and every artifact; the Claude Code session itself supplies the bounded
+judgment answers through checkpoints. That means:
+
+- **No provider API key is needed.** Evaluation judgment uses the same
+  authenticated agent that is already running the skill.
+- **No nested agent process.** The runner never launches a second Claude or
+  Codex session; it exchanges typed JSON requests and results with the current
+  one.
+- **Interrupted runs resume.** Every checkpoint is persisted in the run's
+  `evaluation.json`, so a stopped session picks up the pending work request
+  with `qualitymd evaluation run --resume <run> --json`.
+
+## Choose an execution surface
+
+- **Cloud routines** run as autonomous sessions against a fresh clone of your
+  repository on a schedule, API call, or GitHub trigger. See the
+  [Claude Code routines documentation](https://code.claude.com/docs/en/routines)
+  and the
+  [cloud environment reference](https://code.claude.com/docs/en/claude-code-on-the-web).
+- **Local scheduled tasks and session loops** run on your machine inside an
+  ordinary Claude Code session. They use your local checkout and stay
+  available only while the app and machine are.
+
+## Set up a recurring evaluation routine
+
+1. **Make the skill and CLI available in the environment.** Commit the
+   `/quality` project skill to the repository so fresh clones carry it, and
+   install a compatible `qualitymd` in the environment's setup script — for
+   example through the install script or npm package from the [Quickstart](/quickstart).
+2. **Invoke the skill explicitly in the routine prompt.** A reliable prompt
+   names the skill and the scope rather than describing the task loosely:
+
+   ```text
+   Run /quality evaluate for the repository's QUALITY.md. When the run
+   completes, commit the new evaluation run folder and open a pull request
+   summarizing the rating, top findings, and top recommendations.
+   ```
+
+3. **Decide how artifacts persist.** Cloud routines work on a fresh clone, so
+   anything not committed or pushed is gone when the session ends. Have the
+   routine commit the new `.quality/evaluations/<run>/` folder (the
+   authoritative `evaluation.json`, generated reports, and logs) to a branch
+   or pull request. Local tasks write directly to your working tree.
+4. **Grant the permissions evaluation needs.** The run writes only under the
+   resolved evaluation directory (default `.quality/evaluations/`) and the
+   workflow feedback log under `.quality/logs/`. Network access is not
+   required for harness-backed judgment; it is required only if the
+   environment installs `qualitymd` at setup time or a fallback evaluator
+   calls a provider API.
+
+## Unattended behavior
+
+The evaluate workflow adds no interactive gates when run unattended: the run
+advances checkpoint by checkpoint, finishes with a report, or stops with the
+runner's classified failure and remedy. An `awaiting_evaluator` receipt is
+normal progress — if a session ends mid-run, the next session resumes the run
+and recovers the same pending work request. `qualitymd status --json` and
+`qualitymd evaluation list --json` identify awaiting runs and their
+continuation command.
+
+## Fallback credentials (only for non-harness evaluators)
+
+Harness-backed evaluation needs no credential beyond the routine's own agent.
+Reserve these for an explicitly selected fallback evaluator, and note that
+they are not interchangeable:
+
+- `ANTHROPIC_API_KEY` — the direct Anthropic API evaluator
+  (`--evaluator anthropic` or an `anthropic`-kind profile).
+- `OPENAI_API_KEY` — the direct OpenAI API evaluator.
+- Codex or Claude CLI subscription/access-token auth — the non-interactive
+  CLI evaluators, per each CLI's own headless documentation.
+
+Supply secrets through the environment's secret facility as environment
+variables. Never commit values to `.quality/config.yaml` — evaluator profiles
+reference secrets by environment-variable name only — and avoid exposing
+job-wide credentials to steps that execute repository-controlled code.

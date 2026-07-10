@@ -26,6 +26,10 @@ const (
 	StatusCompleted = "completed"
 	StatusFailed    = "failed"
 	StatusCancelled = "cancelled"
+	// StatusAwaitingEvaluator marks a run checkpointed at a harness work
+	// request: resumable, incomplete, and not failed — the pending action is
+	// submitting the harness judgment result.
+	StatusAwaitingEvaluator = "awaiting_evaluator"
 )
 
 // Work-unit status values persisted in evaluation.json state.
@@ -114,6 +118,30 @@ type State struct {
 	CompletedAt       string                `json:"completedAt,omitempty"`
 	// Cancelled records a user interruption observed mid-run.
 	Cancelled bool `json:"cancelled,omitempty"`
+	// PendingEvaluatorCall is the persisted harness checkpoint: correlation
+	// metadata for the one work request awaiting its result. It carries no
+	// raw prompt, source, or result bodies; the request itself is rebuilt
+	// deterministically on resume.
+	PendingEvaluatorCall *PendingEvaluatorCall `json:"pendingEvaluatorCall,omitempty"`
+	// HarnessIdentity is the harness runtime the run's judgment is bound to,
+	// set by the first accepted harness result. Later results from a
+	// different runtime are refused.
+	HarnessIdentity *HarnessIdentity `json:"harnessIdentity,omitempty"`
+}
+
+// PendingEvaluatorCall is one awaiting harness work request's persisted
+// correlation metadata.
+type PendingEvaluatorCall struct {
+	RequestID     string `json:"requestId"`
+	WorkUnitID    string `json:"workUnitId"`
+	InputHash     string `json:"inputHash"`
+	CorrelationID string `json:"correlationId"`
+	Attempt       int    `json:"attempt"`
+}
+
+// HarnessIdentity is the stable harness runtime attribution for a run.
+type HarnessIdentity struct {
+	Runtime string `json:"runtime"`
 }
 
 // UnitState is the persisted execution state of one work unit.

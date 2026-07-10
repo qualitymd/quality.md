@@ -791,3 +791,8 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   layout with provider prompt caching, one combined assess-and-rate evaluator
   call per requirement, per-area source reuse, and cached-input-token logging
   (`Done`).
+- [0194 — Harness-native evaluator dispatch](0194-harness-native-evaluator-dispatch.md) -
+  adds the reserved `harness` evaluator so the invoking agent supplies bounded
+  judgment through resumable runner checkpoints, with awaiting-aware status
+  surfaces, readiness-checked CLI fallbacks, harness-native skill routing, and
+  Claude Code and Codex automation guides (`Done`).

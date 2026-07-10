@@ -1,5 +1,20 @@
 # /quality runtime skill update log
 
+## 2026-07-10
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0194 - Harness-native evaluator dispatch. Evaluator selection now
+  defaults to `--evaluator harness` when the invoking agent can service
+  checkpoints (after an explicit request or non-`auto` config), with CLI
+  `auto` discovery as the readiness-checked fallback; the evaluate workflow
+  gains the checkpoint loop — judge only the runner-supplied bounded work
+  request, submit the envelope with `--resume <run> --evaluator-result -`,
+  repeat to the terminal receipt — and `awaiting_evaluator` receipts are
+  expected progress with resume-without-result as recovery. `harness` joins
+  the reserved evaluator names.
+
 ## 2026-07-09
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0192 - Deterministic

@@ -40,7 +40,18 @@ A missing run folder or broken evaluation run skeleton fails as a command error.
 
 Human output **MUST** include the run path, evaluation data artifact count,
 reportability, and any gaps. Under `--json`, stdout **MUST** include
-`schemaVersion`, `path`, `reportable`, `data`, gaps, and `nextActions`.
+`schemaVersion`, `path`, `reportable`, `data`, gaps, and `nextActions`. For
+artifact-backed runs it **MUST** also include the runner `lifecycle` status.
+
+A run whose lifecycle is `awaiting_evaluator` **MUST** be identified as
+resumable and incomplete with harness judgment as the pending action —
+including the pending work-unit and request identity and the exact
+continuation command — distinct from a failed, cancelled, malformed, or
+generically incomplete run.
+
+> Rationale: unattended or interrupted workflows use status as the recovery
+> surface; describing a normal checkpoint as an undifferentiated gap loses the
+> exact action needed to continue. — 0194
 
 Every gap `kind` **MUST** be one of the typed evaluation-run gap kinds defined by
 the implementation and the active evaluation contract. For evaluation runs,

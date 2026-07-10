@@ -2,7 +2,7 @@
 type: Change Case
 title: Harness-native evaluator dispatch
 description: Make /quality evaluation use the invoking agent harness for bounded judgment by default, with checkpointed runner dispatch, readiness-aware fallbacks, and unattended automation guidance.
-status: Design
+status: Done
 tags: [evaluation, evaluator, agents, automation]
 timestamp: 2026-07-10T00:00:00Z
 ---
@@ -57,7 +57,7 @@ Deferred:
 - automation creation or management by `qualitymd`; this case makes evaluation
   runnable inside host automations but does not create schedules or triggers;
 - token and context reuse work owned by
-  [0193](archive/0193-evaluation-token-efficiency.md).
+  [0193](0193-evaluation-token-efficiency.md).
 
 Non-goals:
 
@@ -118,6 +118,13 @@ can settle while 0193 is in review; code remains unstarted.
 
 ## Status
 
-`Design`. The functional contract and technical design are drafted; code and
-durable specs/docs have not started. Implementation begins only after 0193 lands
-and this case advances to `In-Progress`.
+`Done`. Implemented and landed: the reserved `harness` evaluator with
+checkpointed dispatch (`awaiting_evaluator` receipts, `--evaluator-result`
+submission, deterministic pending-request reconstruction, first-result runtime
+binding), awaiting-aware status/list/workspace-status surfaces,
+readiness-aware `auto` discovery with dry-run candidate evidence,
+capability-gated native CLI schema and no-persistence flags, the skill's
+harness-native selection precedence and checkpoint loop, the Claude Code and
+Codex automation guides, and all listed durable spec amendments. Verified with
+the full check suite plus a live end-to-end checkpoint loop against the built
+binary.

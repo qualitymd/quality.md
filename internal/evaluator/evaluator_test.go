@@ -114,6 +114,22 @@ func TestValidateProfilesRequiresKind(t *testing.T) {
 	}
 }
 
+// fakeProbe simulates readiness probe subprocess output per command.
+func fakeProbe(responses map[string]struct {
+	out string
+	err error
+},
+) func(string, ...string) (string, error) {
+	return func(name string, args ...string) (string, error) {
+		key := name + " " + strings.Join(args, " ")
+		response, ok := responses[key]
+		if !ok {
+			return "", errors.New("unexpected probe: " + key)
+		}
+		return response.out, response.err
+	}
+}
+
 func TestSelectAutoPrefersInstalledCLI(t *testing.T) {
 	opts := Options{
 		LookPath: func(file string) (string, error) {
@@ -123,6 +139,12 @@ func TestSelectAutoPrefersInstalledCLI(t *testing.T) {
 			return "", errors.New("not found")
 		},
 		Getenv: func(string) string { return "" },
+		RunProbe: fakeProbe(map[string]struct {
+			out string
+			err error
+		}{
+			"claude --help": {out: "--print --output-format json"},
+		}),
 	}
 	selection, err := Select(opts)
 	if err != nil {
@@ -130,6 +152,71 @@ func TestSelectAutoPrefersInstalledCLI(t *testing.T) {
 	}
 	if selection.Name != "claude" {
 		t.Fatalf("selection = %q, want claude", selection.Name)
+	}
+	if len(selection.Candidates) != 2 || selection.Candidates[0].Name != "codex" || selection.Candidates[0].Usable {
+		t.Fatalf("candidates = %+v, want unusable codex evidence then claude", selection.Candidates)
+	}
+}
+
+func TestSelectAutoSkipsUnauthenticatedCodex(t *testing.T) {
+	opts := Options{
+		LookPath: func(string) (string, error) { return "/usr/local/bin/cli", nil },
+		Getenv:   func(string) string { return "" },
+		RunProbe: fakeProbe(map[string]struct {
+			out string
+			err error
+		}{
+			"codex exec --help":  {out: "--json --output-schema"},
+			"codex login status": {out: "Not logged in", err: errors.New("exit status 1")},
+			"claude --help":      {out: "--print --output-format json"},
+		}),
+	}
+	selection, err := Select(opts)
+	if err != nil {
+		t.Fatalf("Select(auto) error = %v", err)
+	}
+	if selection.Name != "claude" {
+		t.Fatalf("selection = %q, want claude after skipping unauthenticated codex", selection.Name)
+	}
+	codex := selection.Candidates[0]
+	if codex.Usable || codex.Authenticated == nil || *codex.Authenticated {
+		t.Fatalf("codex readiness = %+v, want unauthenticated and unusable", codex)
+	}
+}
+
+func TestSelectAutoSkipsCLIWithoutStructuredOutput(t *testing.T) {
+	opts := Options{
+		LookPath: func(file string) (string, error) {
+			if file == "claude" {
+				return "/usr/local/bin/claude", nil
+			}
+			return "", errors.New("not found")
+		},
+		Getenv: func(string) string { return "" },
+		RunProbe: fakeProbe(map[string]struct {
+			out string
+			err error
+		}{
+			"claude --help": {out: "an old interactive-only build"},
+		}),
+	}
+	_, err := Select(opts)
+	var selErr *SelectionError
+	if err == nil || !errors.As(err, &selErr) || selErr.Category != FailureMissingEvaluator {
+		t.Fatalf("Select(auto) error = %v, want missing_evaluator after capability probe", err)
+	}
+	if !strings.Contains(selErr.Message, "structured-output") {
+		t.Fatalf("message = %q, want structured-output readiness evidence", selErr.Message)
+	}
+}
+
+func TestSelectHarnessEvaluator(t *testing.T) {
+	selection, err := Select(Options{Name: "harness"})
+	if err != nil {
+		t.Fatalf("Select(harness) error = %v", err)
+	}
+	if selection.Name != "harness" || selection.Evaluator.Kind() != "harness" {
+		t.Fatalf("selection = %q/%q, want harness", selection.Name, selection.Evaluator.Kind())
 	}
 }
 
@@ -323,6 +410,51 @@ func hasCacheControl(block any) bool {
 	object, _ := block.(map[string]any)
 	_, ok := object["cache_control"].(map[string]any)
 	return ok
+}
+
+func TestCLIEvaluatorUsesNativeSchemaAndNoPersistFlags(t *testing.T) {
+	ev := &cliEvaluator{kind: "codex", command: "codex"}
+	var judgeArgs []string
+	ev.runCommand = func(_ context.Context, _ string, args []string, _ string) (string, string, error) {
+		if len(args) >= 2 && args[0] == "exec" && args[1] == "--help" {
+			return "usage: codex exec --json --output-schema <file> --ephemeral", "", nil
+		}
+		judgeArgs = args
+		return `{"type":"item.completed","item":{"type":"agent_message","text":"{\"kind\":\"x\"}"}}`, "", nil
+	}
+	result, err := ev.Evaluate(context.Background(), WorkRequest{WorkUnitID: "u1", ExpectedSchema: []byte(`{"type":"object"}`)})
+	if err != nil {
+		t.Fatalf("Evaluate() error = %v", err)
+	}
+	if result.Failure != "" {
+		t.Fatalf("failure = %s: %s", result.Failure, result.FailureDetail)
+	}
+	joined := strings.Join(judgeArgs, " ")
+	if !strings.Contains(joined, "--ephemeral") || !strings.Contains(joined, "--output-schema") {
+		t.Fatalf("judge args = %v, want native --ephemeral and --output-schema flags", judgeArgs)
+	}
+	if judgeArgs[len(judgeArgs)-1] != "-" {
+		t.Fatalf("judge args = %v, want trailing stdin marker", judgeArgs)
+	}
+}
+
+func TestCLIEvaluatorSkipsUnsupportedNativeFlags(t *testing.T) {
+	ev := &cliEvaluator{kind: "claude", command: "claude"}
+	var judgeArgs []string
+	ev.runCommand = func(_ context.Context, _ string, args []string, _ string) (string, string, error) {
+		if len(args) >= 1 && args[0] == "--help" {
+			return "usage: claude -p --output-format json", "", nil
+		}
+		judgeArgs = args
+		return `{"result":"{\"kind\":\"x\"}"}`, "", nil
+	}
+	if _, err := ev.Evaluate(context.Background(), WorkRequest{WorkUnitID: "u1", ExpectedSchema: []byte(`{}`)}); err != nil {
+		t.Fatalf("Evaluate() error = %v", err)
+	}
+	joined := strings.Join(judgeArgs, " ")
+	if strings.Contains(joined, "--json-schema") || strings.Contains(joined, "--no-session-persistence") {
+		t.Fatalf("judge args = %v, must not pass flags the installed CLI does not advertise", judgeArgs)
+	}
 }
 
 func TestCLIEvaluatorClassifiesAuthFailure(t *testing.T) {

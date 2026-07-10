@@ -2,6 +2,36 @@
 
 ## 2026-07-10
 
+- **Done**: Implemented, landed, and archived
+  [0194 - Harness-native evaluator dispatch](archive/0194-harness-native-evaluator-dispatch.md).
+  The runner gains the reserved `harness` evaluator: a ready judgment work
+  unit persists an `awaiting_evaluator` checkpoint (`pendingEvaluatorCall`
+  correlation metadata, exit `0`) and emits the complete bounded work request;
+  `--resume <run> --evaluator-result <path|->` submits the typed result
+  envelope, which is correlation-checked, validated, retried, logged, and
+  persisted through the shared evaluator paths, with stale rebuilt input and
+  mixed harness runtimes refused as `run_state_invalid` and the first accepted
+  result binding `state.harnessIdentity`. `evaluation status`,
+  `evaluation list` (new `--state awaiting`), and workspace `status` surface
+  the awaiting lifecycle with its continuation action. CLI `auto` discovery
+  becomes readiness-aware (executable, authentication where probeable, and
+  structured-output capability, with dry-run evidence) and the codex/claude
+  adapters use native schema and no-persistence flags when advertised. The
+  runtime skill selects `harness` by default in capable agents and services
+  the checkpoint loop; the Claude Code and Codex automation guides replace
+  their placeholders; `install.md` documents evaluator defaults; and the
+  durable CLI, evaluation, and quality-skill specs carry the contract (see the
+  [specs log](../specs/log.md)). Verified by the full check suite and a live
+  end-to-end checkpoint loop against the built binary. Moved the case into
+  [`archive/`](archive/index.md) and updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0194 - Harness-native evaluator dispatch](0194-harness-native-evaluator-dispatch.md)
+  from `Design` to `In-Progress` now that 0193 has landed; implementation of the
+  checkpointed harness transport, status surfaces, readiness-aware fallbacks,
+  skill routing, and automation guides is underway. Updated the bundle
+  [index](index.md).
+
 - **Done**: Landed and archived
   [0193 - Evaluation runner token efficiency](archive/0193-evaluation-token-efficiency.md):
   moved the parent concept and its folder into [`archive/`](archive/index.md)

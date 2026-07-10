@@ -7,8 +7,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
+	"sync"
 )
 
 // cliEvaluator invokes a coding-agent CLI non-interactively as a subprocess
@@ -16,11 +18,54 @@ import (
 // machine-readable print/exec mode; an installation that cannot honor
 // non-interactive structured invocation fails selection with
 // evaluator_incompatible rather than degrading into unparseable runs.
+//
+// Where the installed CLI advertises native JSON Schema output enforcement or
+// no-persistence controls in its help output, the adapter uses them for
+// bounded work requests; the runner still validates every returned payload
+// independently, so an absent flag only loses the native enforcement.
 type cliEvaluator struct {
 	kind    string
 	command string
 	// runCommand overrides subprocess execution in tests.
 	runCommand func(ctx context.Context, name string, args []string, stdin string) (string, string, error)
+
+	// capabilities detected from the installed CLI's help output before the
+	// first judgment call.
+	probeOnce     sync.Once
+	schemaFlag    string
+	noPersistFlag string
+}
+
+// cliCapabilityFlags names the native structured-output and no-persistence
+// flags each CLI kind may advertise. A flag is used only when the installed
+// CLI's help output contains it verbatim.
+var cliCapabilityFlags = map[string]struct{ schema, noPersist string }{
+	"claude": {schema: "--json-schema", noPersist: "--no-session-persistence"},
+	"codex":  {schema: "--output-schema", noPersist: "--ephemeral"},
+}
+
+// detectCapabilities inspects the installed CLI's help output once, before
+// the first judgment call, so a version or capability mismatch never degrades
+// mid-run.
+func (e *cliEvaluator) detectCapabilities(ctx context.Context) {
+	flags, ok := cliCapabilityFlags[e.kind]
+	if !ok {
+		return
+	}
+	helpArgs := []string{"--help"}
+	if e.kind == "codex" {
+		helpArgs = []string{"exec", "--help"}
+	}
+	help, stderr, err := e.run(ctx, helpArgs, "")
+	if err != nil {
+		help += stderr
+	}
+	if strings.Contains(help, flags.schema) {
+		e.schemaFlag = flags.schema
+	}
+	if strings.Contains(help, flags.noPersist) {
+		e.noPersistFlag = flags.noPersist
+	}
 }
 
 var _ Evaluator = (*cliEvaluator)(nil)
@@ -59,16 +104,34 @@ func (e *cliEvaluator) Evaluate(ctx context.Context, req WorkRequest) (WorkResul
 	prompt := system + "\n\n" + stablePrefix + delta
 	result := WorkResult{WorkUnitID: req.WorkUnitID, EvaluatorKind: e.kind, Strategy: StrategySequential}
 
+	e.probeOnce.Do(func() { e.detectCapabilities(ctx) })
+
 	var args []string
 	switch e.kind {
 	case "claude":
 		args = []string{"-p", "--output-format", "json"}
 	case "codex":
-		args = []string{"exec", "--json", "-"}
+		args = []string{"exec", "--json"}
 	default:
 		result.Failure = FailureInternal
 		result.FailureDetail = fmt.Sprintf("unsupported CLI evaluator kind %q", e.kind)
 		return result, nil
+	}
+	if e.noPersistFlag != "" {
+		args = append(args, e.noPersistFlag)
+	}
+	if e.schemaFlag != "" {
+		schemaFile, cleanup, err := writeSchemaFile(req.ExpectedSchema)
+		if err != nil {
+			result.Failure = FailureInternal
+			result.FailureDetail = "staging expected schema: " + err.Error()
+			return result, nil
+		}
+		defer cleanup()
+		args = append(args, e.schemaFlag, schemaFile)
+	}
+	if e.kind == "codex" {
+		args = append(args, "-")
 	}
 
 	stdout, stderr, err := e.run(ctx, args, prompt)
@@ -97,6 +160,27 @@ func (e *cliEvaluator) Evaluate(ctx context.Context, req WorkRequest) (WorkResul
 	}
 	result.Payload = payload
 	return result, nil
+}
+
+// writeSchemaFile stages the expected result schema as a temporary file for a
+// CLI's native schema-enforcement flag, removed after the call.
+func writeSchemaFile(schema []byte) (string, func(), error) {
+	file, err := os.CreateTemp("", "qualitymd-schema-*.json")
+	if err != nil {
+		return "", nil, err
+	}
+	name := file.Name()
+	cleanup := func() { _ = os.Remove(name) }
+	if _, err := file.Write(schema); err != nil {
+		_ = file.Close()
+		cleanup()
+		return "", nil, err
+	}
+	if err := file.Close(); err != nil {
+		cleanup()
+		return "", nil, err
+	}
+	return name, cleanup, nil
 }
 
 func (e *cliEvaluator) run(ctx context.Context, args []string, stdin string) (string, string, error) {

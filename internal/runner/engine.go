@@ -46,6 +46,15 @@ type engine struct {
 	// bundle is identical to a re-packaged one (same hash); the memo only
 	// removes redundant filesystem work.
 	sourceBundles map[string]*SourceBundle
+	// harnessResult is the submitted --evaluator-result envelope, consumed by
+	// the pending harness work unit.
+	harnessResult *evaluator.HarnessResultEnvelope
+	// awaitingRequest is the bounded work request staged for an
+	// awaiting-evaluator receipt after a harness checkpoint.
+	awaitingRequest *EvaluatorRequest
+	// awaitingFailure classifies the rejected attempt an awaiting request is
+	// retrying, for the receipt.
+	awaitingFailure *Failure
 }
 
 func (e *engine) results() *Results { return &e.artifact.Results }
@@ -106,6 +115,11 @@ func (e *engine) execute(ctx context.Context) (string, error) {
 		}
 		if err != nil {
 			return StatusFailed, err
+		}
+		if e.awaitingRequest != nil {
+			// The run checkpointed at a harness work request; the artifact
+			// already persists the awaiting state.
+			return StatusAwaitingEvaluator, nil
 		}
 		if ctx.Err() != nil {
 			return e.markCancelled()
@@ -195,17 +209,14 @@ func (e *engine) acceptUnit(unit *Unit, state *UnitState, payloads []map[string]
 // runner's retry policy. It returns failed=true when the unit (and so the
 // run) fails with a classified failure.
 func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error) {
+	if e.harnessBacked() {
+		return e.runHarnessUnit(unit)
+	}
 	req, err := e.buildWorkRequest(unit)
 	if err != nil {
 		return false, err
 	}
-	inputHash := hashJSON(map[string]any{
-		"instructions":  req.Instructions,
-		"sharedContext": req.SharedContext,
-		"context":       req.Context,
-		"schema":        string(req.ExpectedSchema),
-		"source":        req.SourcePackageHash,
-	})
+	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
 	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.artifact.Results.ByWorkUnit(unit.ID)) > 0 {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
@@ -226,6 +237,18 @@ func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error)
 	}
 	e.progress("%s failed: %s: %s", unit.ID, lastFailure.Category, lastFailure.Detail)
 	return true, nil
+}
+
+// workUnitInputHash fingerprints a work unit's resolved inputs so resume can
+// detect dependency-stale completed work and stale pending harness requests.
+func workUnitInputHash(req evaluator.WorkRequest) string {
+	return hashJSON(map[string]any{
+		"instructions":  req.Instructions,
+		"sharedContext": req.SharedContext,
+		"context":       req.Context,
+		"schema":        string(req.ExpectedSchema),
+		"source":        req.SourcePackageHash,
+	})
 }
 
 // attemptEvaluatorUnit runs the retry loop for one work unit. done reports

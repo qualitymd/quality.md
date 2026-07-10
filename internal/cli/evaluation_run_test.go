@@ -99,6 +99,40 @@ func TestEvaluationRunMissingAPIKeyFailure(t *testing.T) {
 	}
 }
 
+func TestEvaluationRunHarnessCheckpointExitsSuccessfully(t *testing.T) {
+	repo := testEvaluationRepo(t)
+
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "run", "--evaluator", "harness", "--json",
+		"--model", filepath.Join(repo, "QUALITY.md")})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v, want success: an awaiting checkpoint is expected progress", err)
+	}
+	var receipt struct {
+		Status           string `json:"status"`
+		Evaluator        string `json:"evaluator"`
+		EvaluatorRequest *struct {
+			RequestID  string          `json:"requestId"`
+			WorkUnitID string          `json:"workUnitId"`
+			InputHash  string          `json:"inputHash"`
+			Schema     json.RawMessage `json:"expectedSchema"`
+		} `json:"evaluatorRequest"`
+	}
+	if err := json.Unmarshal(out.Bytes(), &receipt); err != nil {
+		t.Fatalf("receipt is not JSON: %v\n%s", err, out.String())
+	}
+	if receipt.Status != "awaiting_evaluator" || receipt.Evaluator != "harness" {
+		t.Errorf("receipt = %+v, want awaiting_evaluator/harness", receipt)
+	}
+	if receipt.EvaluatorRequest == nil || receipt.EvaluatorRequest.RequestID == "" ||
+		receipt.EvaluatorRequest.InputHash == "" || len(receipt.EvaluatorRequest.Schema) == 0 {
+		t.Errorf("evaluatorRequest = %+v, want the complete bounded request", receipt.EvaluatorRequest)
+	}
+}
+
 func TestEvaluationRunRejectsProfileShadowingReservedName(t *testing.T) {
 	repo := testEvaluationRepo(t)
 	if err := os.MkdirAll(filepath.Join(repo, ".quality"), 0o755); err != nil {

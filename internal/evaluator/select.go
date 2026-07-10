@@ -1,19 +1,21 @@
 package evaluator
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
 	"slices"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/qualitymd/quality.md/internal/workspace"
 )
 
 // ReservedNames are the built-in evaluator names. Custom evaluator profiles
 // must not shadow them.
-var ReservedNames = []string{"auto", "codex", "claude", "openai", "anthropic", "shell", "manual"}
+var ReservedNames = []string{"auto", "harness", "codex", "claude", "openai", "anthropic", "shell", "manual"}
 
 // Default provider models for the built-in API-backed evaluators. Profiles
 // override these per workspace.
@@ -47,6 +49,30 @@ type Selection struct {
 	Evaluator Evaluator
 	// Reason explains how the selection was made (for logs and receipts).
 	Reason string
+	// Candidates carries the readiness evidence for every CLI candidate auto
+	// discovery considered, in consideration order. Empty for explicit
+	// selections.
+	Candidates []CLIReadiness
+}
+
+// CLIReadiness is the readiness evidence for one CLI evaluator candidate:
+// executable presence, non-interactive structured-output capability, and
+// authentication state where a documented non-interactive probe exists. It
+// never carries credential values.
+type CLIReadiness struct {
+	Name       string `json:"name"`
+	Executable bool   `json:"executable"`
+	// StructuredOutput reports whether the installed CLI advertises the
+	// non-interactive structured-output invocation the runner requires.
+	StructuredOutput bool `json:"structuredOutput"`
+	// Authenticated is nil when the CLI documents no non-interactive
+	// authentication probe; readiness then assumes authentication and the
+	// evidence says so.
+	Authenticated *bool `json:"authenticated,omitempty"`
+	// Usable reports whether auto discovery may select this candidate.
+	Usable bool `json:"usable"`
+	// Evidence lists human-readable probe observations.
+	Evidence []string `json:"evidence,omitempty"`
 }
 
 // Options configures evaluator selection.
@@ -60,6 +86,9 @@ type Options struct {
 	LookPath func(file string) (string, error)
 	// Getenv overrides environment lookup in tests.
 	Getenv func(key string) string
+	// RunProbe overrides readiness probe subprocess execution in tests. It
+	// returns the probe command's combined output.
+	RunProbe func(name string, args ...string) (string, error)
 }
 
 func (o Options) lookPath(file string) (string, error) {
@@ -74,6 +103,19 @@ func (o Options) getenv(key string) string {
 		return o.Getenv(key)
 	}
 	return os.Getenv(key)
+}
+
+// probeTimeout bounds one readiness probe subprocess.
+const probeTimeout = 10 * time.Second
+
+func (o Options) runProbe(name string, args ...string) (string, error) {
+	if o.RunProbe != nil {
+		return o.RunProbe(name, args...)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), probeTimeout)
+	defer cancel()
+	out, err := exec.CommandContext(ctx, name, args...).CombinedOutput()
+	return string(out), err
 }
 
 // ValidateProfiles rejects configured profiles that shadow reserved names or
@@ -127,6 +169,12 @@ func Select(opts Options) (*Selection, error) {
 
 func selectBuiltin(name string, opts Options) (*Selection, error) {
 	switch name {
+	case "harness":
+		return &Selection{
+			Name:      "harness",
+			Evaluator: &harnessEvaluator{},
+			Reason:    "requested harness evaluator: judgment is supplied by the invoking agent harness through checkpoints",
+		}, nil
 	case "codex", "claude":
 		ev, err := newCLIEvaluator(name, "", opts)
 		if err != nil {
@@ -184,19 +232,31 @@ func selectProfile(name string, profile workspace.EvaluatorProfile, opts Options
 	return &Selection{Name: name, Evaluator: ev, Reason: "configured evaluator profile"}, nil
 }
 
-// selectAuto performs deterministic local discovery: an installed Codex CLI,
-// then an installed Claude CLI, then configured API profiles whose key
-// environment variable is present, then a clear non-interactive failure.
+// selectAuto performs deterministic local discovery: a ready Codex CLI, then
+// a ready Claude CLI, then configured API profiles whose key environment
+// variable is present, then a clear non-interactive failure. A CLI candidate
+// is usable only after its readiness probe verifies executable presence,
+// authentication where non-interactively verifiable, and the required
+// structured-output invocation; auto never infers a parent agent harness —
+// harness-backed runs are selected explicitly.
 func selectAuto(opts Options) (*Selection, error) {
+	var candidates []CLIReadiness
 	for _, name := range []string{"codex", "claude"} {
-		if _, err := opts.lookPath(cliCommandName(name, "")); err != nil {
+		readiness := probeCLIReadiness(name, opts)
+		candidates = append(candidates, readiness)
+		if !readiness.Usable {
 			continue
 		}
 		ev, err := newCLIEvaluator(name, "", opts)
 		if err != nil {
 			continue
 		}
-		return &Selection{Name: name, Evaluator: ev, Reason: "auto: installed " + name + " CLI"}, nil
+		return &Selection{
+			Name:       name,
+			Evaluator:  ev,
+			Reason:     "auto: " + name + " CLI is installed and ready (" + strings.Join(readiness.Evidence, "; ") + ")",
+			Candidates: candidates,
+		}, nil
 	}
 	for _, name := range sortedProfileNames(opts.Profiles) {
 		profile := opts.Profiles[name]
@@ -208,17 +268,78 @@ func selectAuto(opts Options) (*Selection, error) {
 			continue
 		}
 		selection.Reason = "auto: configured profile with API key present"
+		selection.Candidates = candidates
 		return selection, nil
 	}
 	return nil, &SelectionError{
 		Category: FailureMissingEvaluator,
-		Message:  "no evaluator is available",
+		Message:  "no evaluator is available" + readinessSummary(candidates),
 		Remedies: []string{
 			"install and authenticate the codex or claude CLI",
 			"configure an evaluator profile in .quality/config.yaml and export its API key environment variable",
 			"pass --evaluator <name> to select one explicitly",
 		},
 	}
+}
+
+// probeCLIReadiness verifies one CLI candidate beyond command presence:
+// required structured-output flags from its help output, and authentication
+// through the CLI's documented non-interactive probe where one exists.
+func probeCLIReadiness(name string, opts Options) CLIReadiness {
+	readiness := CLIReadiness{Name: name}
+	command := cliCommandName(name, "")
+	if _, err := opts.lookPath(command); err != nil {
+		readiness.Evidence = append(readiness.Evidence, "executable not found on PATH")
+		return readiness
+	}
+	readiness.Executable = true
+
+	helpArgs := []string{"--help"}
+	requiredFlag := "--output-format"
+	if name == "codex" {
+		helpArgs = []string{"exec", "--help"}
+		requiredFlag = "--json"
+	}
+	help, err := opts.runProbe(command, helpArgs...)
+	if err != nil {
+		readiness.Evidence = append(readiness.Evidence, "help probe failed: "+firstLineOr(help, err.Error()))
+		return readiness
+	}
+	if !strings.Contains(help, requiredFlag) {
+		readiness.Evidence = append(readiness.Evidence,
+			fmt.Sprintf("installed CLI does not advertise the required %s structured-output flag", requiredFlag))
+		return readiness
+	}
+	readiness.StructuredOutput = true
+	readiness.Evidence = append(readiness.Evidence, "non-interactive structured output available")
+
+	if name == "codex" {
+		out, err := opts.runProbe(command, "login", "status")
+		authenticated := err == nil
+		readiness.Authenticated = &authenticated
+		if authenticated {
+			readiness.Evidence = append(readiness.Evidence, "authenticated (codex login status)")
+		} else {
+			readiness.Evidence = append(readiness.Evidence, "not authenticated: "+firstLineOr(out, err.Error()))
+		}
+	} else {
+		readiness.Evidence = append(readiness.Evidence,
+			"authentication is not verifiable non-interactively; assumed available")
+	}
+	readiness.Usable = readiness.Executable && readiness.StructuredOutput &&
+		(readiness.Authenticated == nil || *readiness.Authenticated)
+	return readiness
+}
+
+func readinessSummary(candidates []CLIReadiness) string {
+	parts := make([]string, 0, len(candidates))
+	for _, candidate := range candidates {
+		parts = append(parts, candidate.Name+": "+strings.Join(candidate.Evidence, ", "))
+	}
+	if len(parts) == 0 {
+		return ""
+	}
+	return " (" + strings.Join(parts, "; ") + ")"
 }
 
 func profileAPIKeyPresent(profile workspace.EvaluatorProfile, opts Options) bool {
@@ -249,7 +370,7 @@ func sortedProfileNames(profiles map[string]workspace.EvaluatorProfile) []string
 }
 
 func availableEvaluatorRemedies(opts Options) []string {
-	remedies := []string{"use a built-in evaluator: codex, claude, openai, anthropic"}
+	remedies := []string{"use a built-in evaluator: harness (agent-supplied judgment), codex, claude, openai, anthropic"}
 	if names := sortedProfileNames(opts.Profiles); len(names) > 0 {
 		remedies = append(remedies, "or a configured profile: "+strings.Join(names, ", "))
 	}

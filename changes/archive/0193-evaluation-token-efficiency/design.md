@@ -141,7 +141,7 @@ evaluator-backed `assessRateRequirement` unit:
   ~660k input, and helps only API evaluators — the default codex path still pays
   full price. The merge is transport-independent.
 - **A new combined payload kind.** Rejected: would change the
-  [payload-kinds](../../specs/evaluation/records/payload-kinds.md) contract and
+  [payload-kinds](../../../specs/evaluation/records/payload-kinds.md) contract and
   the report inputs. Splitting the composite back into the two existing kinds
   keeps the data model and reports untouched.
 - **One session for the whole run.** Rejected: source differs per area, so a

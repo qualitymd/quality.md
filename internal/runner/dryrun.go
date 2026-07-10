@@ -2,6 +2,7 @@ package runner
 
 import (
 	"github.com/qualitymd/quality.md/internal/evaluation"
+	"github.com/qualitymd/quality.md/internal/evaluator"
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
@@ -10,18 +11,21 @@ import (
 // and expected run path, with no evaluator invocation and no evaluation
 // judgment data written.
 type Preview struct {
-	SchemaVersion     int                        `json:"schemaVersion"`
-	Model             string                     `json:"model"`
-	RequestedScope    evaluation.RunScope        `json:"requestedScope"`
-	PlannedScope      evaluation.PlannedRunScope `json:"plannedScope"`
-	Evaluator         string                     `json:"evaluator"`
-	EvaluatorKind     string                     `json:"evaluatorKind"`
-	EvaluatorReason   string                     `json:"evaluatorReason"`
-	ExecutionStrategy string                     `json:"executionStrategy"`
-	Concurrency       int                        `json:"concurrency"`
-	WorkUnits         WorkUnitCounts             `json:"workUnits"`
-	ExpectedRunPath   string                     `json:"expectedRunPath"`
-	NextActions       []receipt.Action           `json:"nextActions"`
+	SchemaVersion   int                        `json:"schemaVersion"`
+	Model           string                     `json:"model"`
+	RequestedScope  evaluation.RunScope        `json:"requestedScope"`
+	PlannedScope    evaluation.PlannedRunScope `json:"plannedScope"`
+	Evaluator       string                     `json:"evaluator"`
+	EvaluatorKind   string                     `json:"evaluatorKind"`
+	EvaluatorReason string                     `json:"evaluatorReason"`
+	// EvaluatorCandidates is the readiness evidence for each CLI candidate
+	// auto discovery considered, present only for auto selection.
+	EvaluatorCandidates []evaluator.CLIReadiness `json:"evaluatorCandidates,omitempty"`
+	ExecutionStrategy   string                   `json:"executionStrategy"`
+	Concurrency         int                      `json:"concurrency"`
+	WorkUnits           WorkUnitCounts           `json:"workUnits"`
+	ExpectedRunPath     string                   `json:"expectedRunPath"`
+	NextActions         []receipt.Action         `json:"nextActions"`
 }
 
 // DryRun resolves everything a run would use and previews it without
@@ -64,15 +68,16 @@ func DryRun(opts Options) (*Preview, error) {
 		runCommand += " --evaluator " + opts.Evaluator
 	}
 	return &Preview{
-		SchemaVersion:     evaluation.SchemaVersion,
-		Model:             plan.Manifest.Model,
-		RequestedScope:    plan.Manifest.RequestedScope,
-		PlannedScope:      plan.Manifest.PlannedScope,
-		Evaluator:         selection.Name,
-		EvaluatorKind:     selection.Evaluator.Kind(),
-		EvaluatorReason:   selection.Reason,
-		ExecutionStrategy: strategy,
-		Concurrency:       1,
+		SchemaVersion:       evaluation.SchemaVersion,
+		Model:               plan.Manifest.Model,
+		RequestedScope:      plan.Manifest.RequestedScope,
+		PlannedScope:        plan.Manifest.PlannedScope,
+		Evaluator:           selection.Name,
+		EvaluatorKind:       selection.Evaluator.Kind(),
+		EvaluatorReason:     selection.Reason,
+		EvaluatorCandidates: selection.Candidates,
+		ExecutionStrategy:   strategy,
+		Concurrency:         1,
 		WorkUnits: WorkUnitCounts{
 			Total:          len(graph.Units),
 			EvaluatorUnits: graph.EvaluatorUnits(),

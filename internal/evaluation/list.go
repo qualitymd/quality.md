@@ -13,7 +13,12 @@ type RunListEntry struct {
 	PlannedScope   PlannedRunScope `json:"plannedScope"`
 	DataArtifacts  int             `json:"dataArtifacts"`
 	Reportable     bool            `json:"reportable"`
-	Gaps           int             `json:"gaps"`
+	// Lifecycle is the runner lifecycle status of an artifact-backed run;
+	// empty for manual multi-file runs. An awaiting_evaluator run is
+	// resumable and incomplete with harness judgment pending, never a
+	// generic incomplete entry.
+	Lifecycle string `json:"lifecycle,omitempty"`
+	Gaps      int    `json:"gaps"`
 }
 
 // RunList is the JSON contract emitted by evaluation run listings.
@@ -110,7 +115,7 @@ func ListRunsForModel(model, evaluationDir, state string) (*RunList, error) {
 			return nil, fmt.Errorf("loading %s: %w", dir.Rel, err)
 		}
 		status := run.Status()
-		if !includeRunState(status.Reportable, state) {
+		if !includeRunState(status, state) {
 			continue
 		}
 		manifest, err := loadEvaluationManifest(dir.Abs)
@@ -124,6 +129,7 @@ func ListRunsForModel(model, evaluationDir, state string) (*RunList, error) {
 			PlannedScope:   manifest.PlannedScope,
 			DataArtifacts:  status.Data.Artifacts,
 			Reportable:     status.Reportable,
+			Lifecycle:      status.Lifecycle,
 			Gaps:           len(status.Gaps),
 		})
 	}
@@ -137,14 +143,16 @@ func modelFromRepoRoot(repoRoot string) string {
 	return filepath.Join(repoRoot, "QUALITY.md")
 }
 
-func includeRunState(reportable bool, state string) bool {
+func includeRunState(status RunStatus, state string) bool {
 	switch state {
 	case "", "all":
 		return true
 	case "reportable", "complete":
-		return reportable
+		return status.Reportable
 	case "incomplete":
-		return !reportable
+		return !status.Reportable
+	case "awaiting":
+		return status.Lifecycle == RunStatusAwaitingEvaluator
 	default:
 		return false
 	}
@@ -153,9 +161,9 @@ func includeRunState(reportable bool, state string) bool {
 // ValidateRunState checks an evaluation run listing state filter.
 func ValidateRunState(state string) error {
 	switch state {
-	case "", "all", "reportable", "complete", "incomplete":
+	case "", "all", "reportable", "complete", "incomplete", "awaiting":
 		return nil
 	default:
-		return usagef("--state must be one of: all, complete, reportable, incomplete")
+		return usagef("--state must be one of: all, complete, reportable, incomplete, awaiting")
 	}
 }

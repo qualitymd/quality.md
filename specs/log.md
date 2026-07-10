@@ -3,6 +3,24 @@
 ## 2026-07-10
 
 - **Revision**: Implemented durable spec changes for
+  [0194 - Harness-native evaluator dispatch](../changes/0194-harness-native-evaluator-dispatch.md).
+  [qualitymd evaluation run](cli/evaluation-run.md) adds the reserved
+  `harness` evaluator, the `awaiting_evaluator` checkpoint receipt (exit `0`)
+  carrying the complete bounded work request, `--evaluator-result` submission,
+  readiness-aware `auto` discovery with dry-run candidate evidence, and no
+  environment-based harness inference.
+  [qualitymd evaluation status](cli/evaluation-status.md),
+  [qualitymd evaluation list](cli/evaluation-list.md), and
+  [qualitymd status](cli/status.md) surface the awaiting lifecycle as a
+  distinct resumable, incomplete state with its continuation action. The
+  evaluation bundle's evaluator, runner, orchestration, and `evaluation.json`
+  contracts define the harness transport (see the
+  [evaluation log](evaluation/log.md)), and the quality-skill specs make
+  harness-native dispatch the default in capable agent surfaces with a bounded
+  checkpoint-servicing role (see the
+  [workflows log](skills/quality-skill/workflows/log.md)).
+
+- **Revision**: Implemented durable spec changes for
   [0193 - Evaluation runner token efficiency](../changes/0193-evaluation-token-efficiency.md)
   in the evaluation bundle: the
   [Evaluator contract](evaluation/evaluator-contract.md) requires

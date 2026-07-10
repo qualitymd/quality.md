@@ -423,15 +423,26 @@ to canonical references. Do not expose or accept `quick`, `standard`, `deep`,
 `--rigor`, or `/quality evaluate deep`; execution strategy is runner
 configuration, not a user-facing knob.
 
-Evaluator selection order: the `--evaluator` flag, then config
-`evaluation.evaluator`, then `auto` discovery (installed Codex CLI, then Claude
-CLI, then configured API profiles whose key env var is present). The reserved
-names `auto`, `codex`, `claude`, `openai`, `anthropic`, `shell`, and `manual`
-cannot be shadowed by configured profiles. When selection fails, the CLI
-reports a typed `missing_evaluator` failure with remedies; present those to the
-user rather than inventing a fallback. Preview a run with
+Evaluator selection order: an explicit user request, then a non-`auto` config
+`evaluation.evaluator`, then `--evaluator harness` when you can service
+harness checkpoints (the normal agent case — the run uses your session's own
+judgment and authentication, no nested agent or API key), then CLI `auto`
+discovery (a ready Codex CLI, then a ready Claude CLI, then configured API
+profiles whose key env var is present). Explain the selected transport before
+the first mutation and never silently switch providers afterward. The reserved
+names `auto`, `harness`, `codex`, `claude`, `openai`, `anthropic`, `shell`,
+and `manual` cannot be shadowed by configured profiles. When selection fails,
+the CLI reports a typed `missing_evaluator` failure with remedies; present
+those to the user rather than inventing a fallback. Preview a run with
 `qualitymd evaluation run --dry-run --json` when the resolved model, scope,
 evaluator, or work-unit counts are worth confirming first.
+
+With `--evaluator harness`, the run checkpoints at each judgment work unit:
+the command exits `0` with `status: awaiting_evaluator` and the bounded work
+request. Judge only that request and submit the result with
+`qualitymd evaluation run --resume <run> --evaluator-result - --json`, looping
+until the terminal receipt (the evaluate workflow file has the full loop). An
+awaiting receipt is expected progress, not a failure.
 
 Failed or interrupted runs report `failed` or `cancelled` with a stable failure
 category and are resumable with `qualitymd evaluation run --resume <run>`.
@@ -494,8 +505,8 @@ Rules:
 - Require a model-relative normalized path.
 - Reject absolute paths and paths that escape the repository.
 - Treat `evaluation.evaluator` as `auto` when absent; configured profile names
-  cannot shadow the reserved names `auto`, `codex`, `claude`, `openai`,
-  `anthropic`, `shell`, or `manual`.
+  cannot shadow the reserved names `auto`, `harness`, `codex`, `claude`,
+  `openai`, `anthropic`, `shell`, or `manual`.
 - API-key profiles reference secrets by environment-variable name only, never
   by value.
 - Warn and ignore unknown keys.

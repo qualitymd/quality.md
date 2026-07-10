@@ -54,13 +54,26 @@ kind), and `executionStrategy` (the resolved execution strategy).
 
 `state` carries the run's execution lifecycle. It **MUST** include:
 
-- the run `status`, one of `running`, `completed`, `failed`, or `cancelled`;
+- the run `status`, one of `running`, `awaiting_evaluator`, `completed`,
+  `failed`, or `cancelled`;
 - the classified `failure` when the run failed;
 - the resolved `concurrency` cap;
 - `strategyFallbacks` recording execution-strategy downgrade decisions;
 - per-work-unit entries carrying status, attempts, input hash, failure, and
-  timestamps; and
-- a `cancelled` marker when a user interruption was observed mid-run.
+  timestamps;
+- a `cancelled` marker when a user interruption was observed mid-run;
+- `pendingEvaluatorCall` — the awaiting harness checkpoint's correlation
+  metadata (request identity, work-unit identity, input hash, correlation ID,
+  and attempt), present exactly while a harness work request awaits its
+  result; and
+- `harnessIdentity` — the harness runtime the run's judgment is bound to, set
+  by the first accepted harness result.
+
+`awaiting_evaluator` marks a resumable, incomplete checkpoint — never a
+failure. `pendingEvaluatorCall` **MUST NOT** carry raw prompt, source, or
+result bodies: the pending request is rebuilt from the model snapshot,
+work-graph state, and current source package per the
+[runner harness contract](runner.md#harness-checkpoints).
 
 `state` **MUST NOT** carry provider context identifiers or prompt-cache
 status; those live only in run-local logs.
@@ -99,6 +112,11 @@ run root, its `schemaVersion` is supported by the running `qualitymd` version,
 and its manifest `model` resolves to the selected model. If compatibility
 verification fails, then resume **MUST** fail with `run_state_invalid` and
 report that starting a new run is the remedy.
+
+For a harness-backed run, resume compatibility additionally covers the pending
+request and identity: a pending request whose rebuilt input hash no longer
+matches `pendingEvaluatorCall`, or a result from a runtime other than the
+bound `harnessIdentity`, **MUST** fail with `run_state_invalid`.
 
 Work-unit reuse on resume is decided by the
 [orchestration resume rules](orchestration.md#resume).

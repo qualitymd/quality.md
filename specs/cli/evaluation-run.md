@@ -55,9 +55,11 @@ The command takes no positional arguments.
 - `--area <area-ref>` — canonical area reference for the run scope.
 - `--factor <factor-ref>` — canonical factor reference for a scoped evaluation;
   repeatable.
-- `--evaluator <name>` — evaluator to use: `auto`, a built-in name, or a
-  configured profile.
+- `--evaluator <name>` — evaluator to use: `auto`, a built-in name (including
+  `harness`), or a configured profile.
 - `--resume <run>` — resume an existing run from its `evaluation.json`.
+- `--evaluator-result <path|->` — submit one harness result envelope for the
+  awaiting work request, from a file or stdin; valid only with `--resume`.
 - `-n/--dry-run` — preview the resolved run without invoking an evaluator or
   writing evaluation data.
 - `--json` — emit a machine-readable receipt on stdout.
@@ -83,9 +85,27 @@ omitted `--evaluator` **MUST** behave exactly as `--evaluator auto`.
 > Rationale: default evaluation should work for subscription-based Codex or
 > Claude users without requiring a config file on first use. — 0192
 
-`auto` **MUST** use deterministic local discovery, in order: an installed
-`codex` CLI, then an installed `claude` CLI, then configured API profiles in
-alphabetical order whose API key environment variable is present.
+`auto` **MUST** use deterministic local discovery, in order: a ready `codex`
+CLI, then a ready `claude` CLI, then configured API profiles in alphabetical
+order whose API key environment variable is present.
+
+`auto` **MUST** consider a CLI-backed candidate usable only after verifying
+that its executable, authentication state, and required non-interactive
+structured-output capabilities are available; where a CLI documents no
+non-interactive authentication probe, readiness assumes authentication and the
+evidence says so. An unusable candidate **MUST** be skipped, and dry-run JSON
+**MUST** report each considered candidate's readiness evidence and the final
+selection reason, never credential values.
+
+> Rationale: command presence alone let a dry run describe an unauthenticated
+> or incompatible evaluator as ready. — 0194
+
+`auto` **MUST NOT** infer a parent agent harness from undocumented environment
+variables; a harness-backed run is selected explicitly by the skill or caller
+via `--evaluator harness`.
+
+> Rationale: Claude and Codex expose different subprocess environments, and an
+> internal variable is not a cross-harness compatibility contract. — 0194
 
 If discovery finds no usable evaluator, then the command **MUST** fail
 non-interactively with the `missing_evaluator` failure category and list the
@@ -93,6 +113,36 @@ available remedies.
 
 Evaluator names, profiles, and the configuration surface are defined by the
 [evaluator contract](../evaluation/evaluator-contract.md).
+
+### Harness checkpoints
+
+`--evaluator harness` **MUST** select the reserved harness evaluator: bounded
+judgment is supplied by the invoking agent harness through checkpoints, per
+the [evaluator contract](../evaluation/evaluator-contract.md#harness-evaluator).
+
+When a harness-backed run reaches an evaluator work unit, the command **MUST**
+persist the awaiting checkpoint, exit `0`, and emit a receipt with the stable
+status `awaiting_evaluator` carrying the complete bounded work request — run
+reference, request identity, work-unit identity and kind, subject,
+instructions, context, bounded source package, expected result schema, input
+hash, and correlation ID.
+
+> Rationale: awaiting harness judgment is expected progress, not a failure
+> that automation should retry from the beginning. — 0194
+
+`--resume <run> --evaluator-result <path|->` **MUST** accept exactly one
+harness result envelope from a file or stdin and **MUST** advance
+deterministic work until the next evaluator checkpoint or the terminal run
+receipt. Submitting a result for a run whose evaluator is not `harness`, or
+without `--resume`, **MUST** fail as a usage error; submitting when no request
+is pending **MUST** fail with `run_state_invalid`.
+
+Resuming an awaiting run without `--evaluator-result` **MUST** re-emit the
+same pending request when its rebuilt input hash matches the checkpoint, and
+**MUST** fail with `run_state_invalid` and recommend a new run when it cannot
+rebuild the same request. Result correlation, validation, retry, and identity
+binding are the [runner](../evaluation/runner.md#harness-checkpoints) and
+[orchestration](../evaluation/orchestration.md#harness-checkpoints) contracts.
 
 ### Dry run
 
@@ -142,7 +192,8 @@ Failure categories in receipts **MUST** use the
 
 ### Exit codes
 
-The command **MUST** exit `0` when the run completes. When the run finishes
-`failed` or `cancelled`, the command **MUST** emit its receipt and exit `1`.
-Usage errors, including the resume evaluator conflict, **MUST** exit `2`.
-Internal errors **MUST** exit `70`.
+The command **MUST** exit `0` when the run completes or checkpoints at
+`awaiting_evaluator`. When the run finishes `failed` or `cancelled`, the
+command **MUST** emit its receipt and exit `1`. Usage errors, including the
+resume evaluator conflict, **MUST** exit `2`. Internal errors **MUST** exit
+`70`.

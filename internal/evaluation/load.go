@@ -40,12 +40,20 @@ type DataStatus struct {
 
 // RunStatus is the JSON contract emitted by evaluation status.
 type RunStatus struct {
-	SchemaVersion int              `json:"schemaVersion"`
-	Path          string           `json:"path"`
-	Reportable    bool             `json:"reportable"`
-	Data          DataStatus       `json:"data"`
-	Gaps          []RunGap         `json:"gaps"`
-	NextActions   []receipt.Action `json:"nextActions"`
+	SchemaVersion int    `json:"schemaVersion"`
+	Path          string `json:"path"`
+	Reportable    bool   `json:"reportable"`
+	// Lifecycle is the runner lifecycle status of an artifact-backed run
+	// (running, awaiting_evaluator, completed, failed, cancelled); empty for
+	// manual multi-file runs.
+	Lifecycle string `json:"lifecycle,omitempty"`
+	// AwaitingEvaluator summarizes the pending harness work request when
+	// Lifecycle is awaiting_evaluator: the run is resumable and incomplete,
+	// and submitting the harness judgment is the pending action.
+	AwaitingEvaluator *AwaitingEvaluatorCall `json:"awaitingEvaluator,omitempty"`
+	Data              DataStatus             `json:"data"`
+	Gaps              []RunGap               `json:"gaps"`
+	NextActions       []receipt.Action       `json:"nextActions"`
 }
 
 // Load reads an evaluation run.
@@ -93,7 +101,7 @@ func loadWithDisplay(path, displayPath string) (*Run, error) {
 
 // Status summarizes whether the evaluation data graph is reportable.
 func (r *Run) Status() RunStatus {
-	if payloads, ok, err := runArtifactPayloads(r.AbsPath); ok {
+	if payloads, state, ok, err := runArtifactPayloads(r.AbsPath); ok {
 		if err != nil {
 			return RunStatus{
 				SchemaVersion: SchemaVersion,
@@ -101,7 +109,7 @@ func (r *Run) Status() RunStatus {
 				Gaps:          []RunGap{{Kind: GapUnreadableEvaluationData, Ref: RunArtifactFile, Detail: err.Error()}},
 			}
 		}
-		return r.runArtifactStatus(payloads)
+		return r.runArtifactStatus(payloads, state)
 	}
 	gaps := evaluationRenderableGaps(r.AbsPath)
 	data := DataStatus{}

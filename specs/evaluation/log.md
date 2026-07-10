@@ -4,6 +4,20 @@
 
 - **Revision**: Updated the [Evaluator contract](evaluator-contract.md),
   [Runner](runner.md), [Orchestration](orchestration.md), and
+  [evaluation.json](evaluation-json.md) contracts for
+  [0194 - Harness-native evaluator dispatch](../../changes/0194-harness-native-evaluator-dispatch.md).
+  A reserved `harness` evaluator delegates bounded judgment to the invoking
+  agent harness through persisted `awaiting_evaluator` checkpoints: the runner
+  keeps every ownership across checkpoints, rebuilds and hash-checks pending
+  requests, validates submitted result envelopes through the shared acceptance
+  and retry paths, binds the run to the first accepted harness runtime, and
+  logs harness calls under the existing no-raw-bodies boundary. CLI evaluator
+  adapters use native JSON Schema output and no-persistence controls where the
+  installed CLI supports them, and evaluator credential kinds are declared
+  non-interchangeable.
+
+- **Revision**: Updated the [Evaluator contract](evaluator-contract.md),
+  [Runner](runner.md), [Orchestration](orchestration.md), and
   [payload kinds](records/payload-kinds.md) contracts for
   [0193 - Evaluation runner token efficiency](../../changes/0193-evaluation-token-efficiency.md).
   Rendered prompts order stable content (task, schema, packaged source, shared

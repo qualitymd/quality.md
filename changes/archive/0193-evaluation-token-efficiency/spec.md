@@ -12,11 +12,11 @@ This change makes the evaluation runner spend far fewer input tokens without
 changing what it judges. It governs how the runner lays out evaluator prompts,
 how many evaluator calls a requirement costs, and how an area's packaged source
 is reused across the work that consumes it. It defers to the durable
-[Evaluation runner](../../specs/evaluation/runner.md),
-[Evaluator contract](../../specs/evaluation/evaluator-contract.md), and
-[Evaluation orchestration](../../specs/evaluation/orchestration.md) specs, which
+[Evaluation runner](../../../specs/evaluation/runner.md),
+[Evaluator contract](../../../specs/evaluation/evaluator-contract.md), and
+[Evaluation orchestration](../../../specs/evaluation/orchestration.md) specs, which
 this change amends, and inherits the observational-equivalence and
-source-as-data invariants from [Evaluation](../../specs/evaluation/evaluation.md).
+source-as-data invariants from [Evaluation](../../../specs/evaluation/evaluation.md).
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
@@ -65,7 +65,7 @@ Non-goals:
 
 - The runner executes an area's requirement work units consecutively and in a
   deterministic order (per
-  [orchestration](../../specs/evaluation/orchestration.md#work-graph)); per-area
+  [orchestration](../../../specs/evaluation/orchestration.md#work-graph)); per-area
   source reuse and per-area session reuse rely on that adjacency for cache and
   session hits, but not for correctness.
 - Providers report cached input tokens in usage

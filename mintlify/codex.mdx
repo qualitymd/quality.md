@@ -3,8 +3,80 @@ title: Automate with Codex
 description: Run recurring evaluations and hand off recommendations on a cadence with Codex.
 ---
 
-<Note>
-  **Coming soon.** This guide will show how to make the Quality Loop recurring
-  in Codex — scheduled evaluations and recommendation handoffs. For the model
-  behind it, see [Engineering loops](/loops).
-</Note>
+Recurring evaluation keeps a QUALITY.md model honest: the same `$quality`
+evaluation you run interactively can run as a Codex scheduled task, with the
+evaluation artifacts persisted in your project. This guide shows the
+agent-first setup in Codex. For the model behind the cadence, see
+[Engineering loops](/loops).
+
+## How evaluation runs inside Codex
+
+When Codex runs the quality skill's evaluate workflow, the skill selects the
+built-in `harness` evaluator by default (unless you or the workspace config
+choose another evaluator). The deterministic `qualitymd` runner owns the work
+graph and every artifact; the Codex session itself supplies the bounded
+judgment answers through checkpoints. That means:
+
+- **No provider API key is needed.** Evaluation judgment uses the same
+  authenticated agent that is already running the skill.
+- **No nested agent process.** The runner never launches a second Codex or
+  Claude session; it exchanges typed JSON requests and results with the
+  current one.
+- **Interrupted runs resume.** Every checkpoint is persisted in the run's
+  `evaluation.json`, so a stopped task picks up the pending work request with
+  `qualitymd evaluation run --resume <run> --json`.
+
+## Set up a recurring evaluation task
+
+1. **Create the scheduled task** from ChatGPT on the web or the Codex desktop
+   app, per the
+   [Codex scheduled-task documentation](https://learn.chatgpt.com/docs/automations?surface=app),
+   and select the local project or worktree the QUALITY.md model lives in.
+2. **Make the CLI available.** Install a compatible `qualitymd` on the machine
+   or in the task environment — see [Quickstart](/quickstart) — so the skill can
+   drive the runner.
+3. **Invoke the skill explicitly in the task prompt.** Repeatable workflows
+   name the skill rather than describing it:
+
+   ```text
+   Run the $quality evaluate workflow for this repository's QUALITY.md and
+   summarize the rating, top findings, and top recommendations.
+   ```
+
+4. **Keep workspace write access.** The run writes the numbered evaluation
+   run folder under the resolved evaluation directory (default
+   `.quality/evaluations/`) plus the workflow feedback log under
+   `.quality/logs/`, so the task needs workspace-write access to persist its
+   artifacts. Local tasks run against your checkout and require the machine
+   and app to remain available; cloud environments distinguish task-wide
+   environment variables from setup-only secrets, per the
+   [Codex cloud environment reference](https://learn.chatgpt.com/docs/environments/cloud-environment).
+
+## Unattended behavior
+
+The evaluate workflow adds no interactive gates when run unattended: the run
+advances checkpoint by checkpoint, finishes with a report, or stops with the
+runner's classified failure and remedy. An `awaiting_evaluator` receipt is
+normal progress — a later task or session resumes the run and recovers the
+same pending work request. `qualitymd status --json` and
+`qualitymd evaluation list --json` identify awaiting runs and their
+continuation command.
+
+## Fallback credentials (only for non-harness evaluators)
+
+Harness-backed evaluation needs no credential beyond the task's own agent.
+Reserve these for an explicitly selected fallback evaluator, and note that
+they are not interchangeable:
+
+- `OPENAI_API_KEY` — the direct OpenAI API evaluator (`--evaluator openai` or
+  an `openai`-kind profile).
+- `ANTHROPIC_API_KEY` — the direct Anthropic API evaluator.
+- `CODEX_API_KEY` / `CODEX_ACCESS_TOKEN` — non-interactive Codex CLI
+  authentication, per the
+  [Codex environment-variable reference](https://learn.chatgpt.com/docs/config-file/environment-variables);
+  distinct from a direct OpenAI API key.
+
+Supply secrets through the environment's secret facility as environment
+variables. Never commit values to `.quality/config.yaml` — evaluator profiles
+reference secrets by environment-variable name only — and avoid exposing
+task-wide credentials to steps that execute repository-controlled code.

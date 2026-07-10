@@ -89,13 +89,16 @@ Before invoking the runner, `evaluate` **MUST**:
 - open the evaluate feedback log; and
 - explain evaluator selection.
 
-For evaluator selection, `evaluate` **MUST** explain which evaluator the run
-will use and why: an explicit `--evaluator` request, the configured
-`evaluation.evaluator`, or `auto` discovery. It **MAY** preview the resolved
-model, scope, evaluator, and work-unit counts with
+For evaluator selection, `evaluate` **MUST** resolve and explain the transport
+per the shared [selection precedence](../evaluation.md#evaluator-selection):
+an explicit user request, then a non-`auto` configured
+`evaluation.evaluator`, then `--evaluator harness` when the current agent can
+service harness checkpoints, then CLI `auto` discovery. It **MAY** preview the
+resolved model, scope, evaluator, and work-unit counts with
 `qualitymd evaluation run --dry-run --json`, and **MAY** ask the user to choose
 an evaluator when the CLI reports a missing or ambiguous evaluator, presenting
-the CLI's remedies as the options.
+the CLI's remedies as the options. It **MUST NOT** silently cross to a
+different provider after harness selection or failure.
 
 `evaluate` **MUST** then invoke the runner with explicit flags:
 
@@ -104,13 +107,27 @@ qualitymd evaluation run [--model <model>] [--area <area-ref>]
   [--factor <factor-ref>...] [--evaluator <name>] --json
 ```
 
+While the receipt status is `awaiting_evaluator`, `evaluate` **MUST** service
+each harness checkpoint only from the runner-supplied bounded request — it
+**MAY** use the harness's ordinary reasoning or a native subagent to answer
+one request — submit the typed result envelope with
+`qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
+repeat until a terminal receipt. In unattended automation the loop **MUST NOT**
+add interactive gates: the run advances, returns a report, or stops with the
+runner's classified remedy.
+
 While the runner executes and after it returns, `evaluate` **MUST NOT**
-independently collect evidence, assign ratings, run a parallel QC loop,
-second-guess the runner's authoritative result, or write structured evaluation
-data. The evaluation protocol — coverage, verification, roll-up, advice, and
-report generation — is runner-owned.
+independently collect evidence, run a parallel QC loop, second-guess the
+runner's authoritative result, judge anything beyond a checkpoint's supplied
+request, or write structured evaluation data. The evaluation protocol —
+coverage, verification, roll-up, advice, and report generation — is
+runner-owned.
 
 ## Failure and resume
+
+An `awaiting_evaluator` receipt is expected progress, not a failure. If the
+checkpoint loop is interrupted, `evaluate` **MUST** recover by resuming the run
+without a result to re-obtain the same pending request.
 
 When the runner reports `failed` or `cancelled`, `evaluate` **MUST** explain the
 receipt's stable failure category in user terms and offer

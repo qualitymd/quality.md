@@ -136,7 +136,14 @@ evaluation skeletons **MUST** be reported as run inspection problems.
 
 For each run summary under `--json`, `status` **MUST** include run path,
 reportability, stale state, evaluation data artifact count, gap count, and any
-inspection problem.
+inspection problem, plus the runner `lifecycle` status for artifact-backed
+runs.
+
+A run awaiting harness judgment (`lifecycle: awaiting_evaluator`) **MUST**
+count as incomplete and be distinguishable from failed, cancelled, or
+generically incomplete runs. When the latest run is awaiting, the snapshot's
+next actions **MUST** name resuming that run to recover its pending work
+request as the continuation.
 
 `status` **MUST NOT** read generated Markdown report bodies to compute the
 snapshot.

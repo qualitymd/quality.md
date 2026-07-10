@@ -155,28 +155,53 @@ func FindingSelector(findingID string) string {
 	return "findings[" + findingID + "]"
 }
 
+// RunArtifactState summarizes the runner lifecycle state of an
+// artifact-backed run for status surfaces.
+type RunArtifactState struct {
+	// Status is the run lifecycle status from evaluation.json state.
+	Status string
+	// AwaitingEvaluator summarizes the pending harness work request when
+	// Status is awaiting_evaluator.
+	AwaitingEvaluator *AwaitingEvaluatorCall
+}
+
+// AwaitingEvaluatorCall summarizes one pending harness work request.
+type AwaitingEvaluatorCall struct {
+	RequestID  string `json:"requestId"`
+	WorkUnitID string `json:"workUnitId"`
+	Attempt    int    `json:"attempt"`
+}
+
 // runArtifactPayloads loads the authoritative payload list of a
 // runner-created run — the manifest payload followed by every accepted
-// routine payload — from its evaluation.json. ok is false when the run is not
-// artifact-backed.
-func runArtifactPayloads(runAbs string) ([]map[string]any, bool, error) {
+// routine payload — plus its lifecycle state from its evaluation.json. ok is
+// false when the run is not artifact-backed.
+func runArtifactPayloads(runAbs string) ([]map[string]any, *RunArtifactState, bool, error) {
 	raw, err := os.ReadFile(filepath.Join(runAbs, RunArtifactFile))
 	if os.IsNotExist(err) {
-		return nil, false, nil
+		return nil, nil, false, nil
 	}
 	if err != nil {
-		return nil, true, fmt.Errorf("reading %s: %w", RunArtifactFile, err)
+		return nil, nil, true, fmt.Errorf("reading %s: %w", RunArtifactFile, err)
 	}
 	var doc struct {
 		Manifest map[string]any `json:"manifest"`
-		Results  struct {
+		State    struct {
+			Status               string `json:"status"`
+			PendingEvaluatorCall *struct {
+				RequestID  string `json:"requestId"`
+				WorkUnitID string `json:"workUnitId"`
+				Attempt    int    `json:"attempt"`
+			} `json:"pendingEvaluatorCall"`
+		} `json:"state"`
+		Results struct {
 			Payloads []struct {
 				Payload map[string]any `json:"payload"`
 			} `json:"payloads"`
 		} `json:"results"`
 	}
 	if err := json.Unmarshal(raw, &doc); err != nil {
-		return nil, true, fmt.Errorf("decoding %s: %w", RunArtifactFile, err)
+		return nil, nil, true, fmt.Errorf("decoding %s: %w", RunArtifactFile, err)
 	}
 	payloads := make([]map[string]any, 0, len(doc.Results.Payloads)+1)
 	if doc.Manifest != nil {
@@ -190,15 +215,33 @@ func runArtifactPayloads(runAbs string) ([]map[string]any, bool, error) {
 			payloads = append(payloads, entry.Payload)
 		}
 	}
-	return payloads, true, nil
+	state := &RunArtifactState{Status: doc.State.Status}
+	if pending := doc.State.PendingEvaluatorCall; pending != nil {
+		state.AwaitingEvaluator = &AwaitingEvaluatorCall{
+			RequestID:  pending.RequestID,
+			WorkUnitID: pending.WorkUnitID,
+			Attempt:    pending.Attempt,
+		}
+	}
+	return payloads, state, true, nil
 }
 
+// RunStatusAwaitingEvaluator is the runner lifecycle status of a run
+// checkpointed at a pending harness work request.
+const RunStatusAwaitingEvaluator = "awaiting_evaluator"
+
 // runArtifactStatus computes the RunStatus of an artifact-backed run.
-func (r *Run) runArtifactStatus(payloads []map[string]any) RunStatus {
+func (r *Run) runArtifactStatus(payloads []map[string]any, state *RunArtifactState) RunStatus {
 	status := RunStatus{
 		SchemaVersion: SchemaVersion,
 		Path:          r.Path,
 		Data:          DataStatus{Artifacts: max(len(payloads)-1, 0)},
+	}
+	if state != nil {
+		status.Lifecycle = state.Status
+		if state.Status == RunStatusAwaitingEvaluator {
+			status.AwaitingEvaluator = state.AwaitingEvaluator
+		}
 	}
 	artifacts, err := collectArtifactsFromPayloads(r.AbsPath, payloads)
 	if err != nil {
@@ -210,13 +253,27 @@ func (r *Run) runArtifactStatus(payloads []map[string]any) RunStatus {
 		status.Gaps = []RunGap{}
 	}
 	status.Reportable = len(status.Gaps) == 0
-	if status.Reportable {
+	switch {
+	case status.Lifecycle == RunStatusAwaitingEvaluator:
+		// A checkpointed run is resumable and incomplete, not failed: the
+		// pending action is recovering the work request and submitting the
+		// harness judgment.
+		status.NextActions = []receipt.Action{{
+			ID:      "evaluation-run-reemit",
+			Label:   "Recover the pending harness work request",
+			Command: "qualitymd evaluation run --resume " + r.Path + " --json",
+		}, {
+			ID:      "evaluation-evaluator-result",
+			Label:   "Submit the harness judgment result",
+			Command: "qualitymd evaluation run --resume " + r.Path + " --evaluator-result - --json",
+		}}
+	case status.Reportable:
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-report-build",
 			Label:   "Build evaluation report",
 			Command: "qualitymd evaluation report build " + r.Path,
 		}}
-	} else {
+	default:
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-run-resume",
 			Label:   "Resume the evaluation run",

@@ -5,7 +5,59 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- New deterministic evaluation runner: `qualitymd evaluation run` now executes
+  the complete evaluation — run creation, the dependency-ordered work graph,
+  evaluator invocation for bounded judgment, result validation, atomic
+  persistence, and Markdown report generation — with one authoritative
+  `evaluation.json` run artifact per run, run-local logs, `--resume`, and a
+  `--dry-run --json` preview. Evaluators are pluggable: `codex` and `claude`
+  CLI subprocesses, direct `openai` and `anthropic` API profiles, and
+  configured profiles in `.quality/config.yaml`.
+- New `harness` evaluator: an invoking agent (such as Claude Code or Codex)
+  supplies evaluation judgment directly through checkpointed work requests —
+  no nested agent process and no provider API key. Runs checkpoint with the
+  stable status `awaiting_evaluator` (exit `0`), results are submitted with
+  `qualitymd evaluation run --resume <run> --evaluator-result -`, and the
+  first accepted result binds the run to one harness runtime.
+- `qualitymd evaluation status`, `qualitymd evaluation list` (new
+  `--state awaiting` filter), and `qualitymd status` now report the runner
+  lifecycle, identify runs awaiting harness judgment, and name the exact
+  continuation command.
+- `auto` evaluator discovery is readiness-aware: a CLI candidate is selected
+  only after verifying its executable, authentication state (where a
+  documented non-interactive probe exists), and required structured-output
+  capabilities, with per-candidate evidence in the dry-run preview. CLI
+  evaluator adapters use native JSON Schema output and no-persistence flags
+  when the installed CLI supports them.
+- Evaluation runs spend far fewer input tokens with unchanged results:
+  evaluator prompts render a cacheable stable prefix (task, schema, packaged
+  source, shared area context) before the per-work-unit delta, the Anthropic
+  adapter applies provider prompt caching, each requirement is assessed and
+  rated in one evaluator call instead of two, an area's source is packaged
+  once per run, and `logs/evaluator-calls.jsonl` records cached input tokens.
+
+### /quality skill
+
+- `/quality evaluate` is now an agent-mediated wrapper around
+  `qualitymd evaluation run`: the skill keeps intent parsing, scope
+  resolution, preflight validation, evaluator-selection explanation, and
+  result summaries, while the runner owns evaluation execution and artifacts.
+- Inside a capable agent harness, evaluation now defaults to
+  `--evaluator harness`: the session's own agent judges each runner-emitted
+  bounded work request and submits the typed result, preserving explicit user
+  and configured evaluator choices and never silently switching providers.
+
 ### Documentation
+
+- New automation guides: run recurring `/quality evaluate` in Claude Code
+  routines and Codex scheduled tasks, including skill/CLI availability,
+  artifact persistence, permissions, unattended behavior, and fallback
+  credential boundaries.
+- Install guide documents evaluator defaults: harness-backed evaluation for
+  agent surfaces needs no provider API key; direct CLI `auto` discovery and
+  API-profile credentials are the fallback paths.
 
 - The LedgerLite report gallery is now an authoring exemplar: the example
   QUALITY.md demonstrates the authoring guide family (full body sections with

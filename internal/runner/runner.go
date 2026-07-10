@@ -26,6 +26,12 @@ type Options struct {
 	Evaluator string
 	// Resume names an existing run folder to resume.
 	Resume string
+	// EvaluatorResult is the --evaluator-result path ("-" for stdin) of a
+	// harness result envelope submitted for an awaiting run. Valid only with
+	// Resume.
+	EvaluatorResult string
+	// Stdin supplies the envelope body when EvaluatorResult is "-".
+	Stdin io.Reader
 	// Stderr receives human progress diagnostics.
 	Stderr io.Writer
 	// SelectEvaluator overrides evaluator selection in tests.
@@ -57,26 +63,33 @@ type WorkUnitCounts struct {
 	Failed         int `json:"failed,omitempty"`
 }
 
-// Result is the JSON receipt for a completed, failed, or cancelled run.
+// Result is the JSON receipt for a completed, awaiting, failed, or cancelled
+// run.
 type Result struct {
-	SchemaVersion     int                      `json:"schemaVersion"`
-	Path              string                   `json:"path"`
-	Status            string                   `json:"status"`
-	Evaluator         string                   `json:"evaluator"`
-	EvaluatorKind     string                   `json:"evaluatorKind"`
-	ExecutionStrategy string                   `json:"executionStrategy"`
-	Concurrency       int                      `json:"concurrency"`
-	WorkUnits         WorkUnitCounts           `json:"workUnits"`
-	Failure           *Failure                 `json:"failure,omitempty"`
-	ReportMD          string                   `json:"reportMd,omitempty"`
-	RatingResult      *evaluation.RatingResult `json:"ratingResult,omitempty"`
-	NextActions       []receipt.Action         `json:"nextActions,omitempty"`
+	SchemaVersion     int            `json:"schemaVersion"`
+	Path              string         `json:"path"`
+	Status            string         `json:"status"`
+	Evaluator         string         `json:"evaluator"`
+	EvaluatorKind     string         `json:"evaluatorKind"`
+	ExecutionStrategy string         `json:"executionStrategy"`
+	Concurrency       int            `json:"concurrency"`
+	WorkUnits         WorkUnitCounts `json:"workUnits"`
+	Failure           *Failure       `json:"failure,omitempty"`
+	// EvaluatorRequest is the pending bounded work request when Status is
+	// awaiting_evaluator.
+	EvaluatorRequest *EvaluatorRequest        `json:"evaluatorRequest,omitempty"`
+	ReportMD         string                   `json:"reportMd,omitempty"`
+	RatingResult     *evaluation.RatingResult `json:"ratingResult,omitempty"`
+	NextActions      []receipt.Action         `json:"nextActions,omitempty"`
 }
 
 // Run executes (or resumes) a complete evaluation run.
 func Run(ctx context.Context, opts Options) (*Result, error) {
 	if opts.Resume != "" {
 		return resumeRun(ctx, opts)
+	}
+	if opts.EvaluatorResult != "" {
+		return nil, &UsageError{Err: fmt.Errorf("--evaluator-result submits a harness judgment for an awaiting run and requires --resume")}
 	}
 	return startRun(ctx, opts)
 }
@@ -127,7 +140,7 @@ func startRun(ctx context.Context, opts Options) (*Result, error) {
 	if err := store.Save(artifact); err != nil {
 		return nil, err
 	}
-	return executeRun(ctx, opts, store, artifact, prepared.RunAbs, prepared.RunRel, selection, ws)
+	return executeRun(ctx, opts, store, artifact, prepared.RunAbs, prepared.RunRel, selection, ws, nil)
 }
 
 func resumeRun(ctx context.Context, opts Options) (*Result, error) {
@@ -173,6 +186,23 @@ func resumeRun(ctx context.Context, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
+	var harnessResult *evaluator.HarnessResultEnvelope
+	if opts.EvaluatorResult != "" {
+		if selection.Evaluator.Kind() != "harness" {
+			return nil, &UsageError{Err: fmt.Errorf(
+				"--evaluator-result submits harness judgment, but this run's evaluator is %q", artifact.Manifest.Evaluator)}
+		}
+		if artifact.State.PendingEvaluatorCall == nil {
+			return nil, &RunError{
+				Category: evaluator.FailureRunStateInvalid,
+				Detail:   "no work request is awaiting a harness result for this run",
+			}
+		}
+		harnessResult, err = loadHarnessResult(opts.EvaluatorResult, opts.Stdin)
+		if err != nil {
+			return nil, err
+		}
+	}
 	artifact.State.Status = StatusRunning
 	artifact.State.Failure = nil
 	artifact.State.Cancelled = false
@@ -180,10 +210,10 @@ func resumeRun(ctx context.Context, opts Options) (*Result, error) {
 	if err := store.Save(artifact); err != nil {
 		return nil, err
 	}
-	return executeRun(ctx, opts, store, artifact, runAbs, displayPath, selection, ws)
+	return executeRun(ctx, opts, store, artifact, runAbs, displayPath, selection, ws, harnessResult)
 }
 
-func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artifact, runAbs, displayPath string, selection *evaluator.Selection, ws *workspace.Workspace) (*Result, error) {
+func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artifact, runAbs, displayPath string, selection *evaluator.Selection, ws *workspace.Workspace, harnessResult *evaluator.HarnessResultEnvelope) (*Result, error) {
 	spec, err := evaluation.LoadRunModel(runAbs)
 	if err != nil {
 		return nil, err
@@ -218,6 +248,7 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 		now:           time.Now,
 		sleep:         sleepWithContext,
 		sourceBundles: map[string]*SourceBundle{},
+		harnessResult: harnessResult,
 	}
 	eng.progress("Evaluating %s with %s (%s, %d work units)",
 		displayPath, selection.Name, artifact.Manifest.ExecutionStrategy, len(graph.Units))
@@ -225,7 +256,12 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 	if err != nil {
 		return nil, err
 	}
-	return buildResult(artifact, graph, displayPath, status), nil
+	result := buildResult(artifact, graph, displayPath, status)
+	if status == StatusAwaitingEvaluator {
+		result.EvaluatorRequest = eng.awaitingRequest
+		result.Failure = eng.awaitingFailure
+	}
+	return result, nil
 }
 
 func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *Result {
@@ -263,6 +299,16 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 			ID:      "evaluation-report-read",
 			Label:   "Read the evaluation report",
 			Command: "cat " + result.ReportMD,
+		}}
+	case StatusAwaitingEvaluator:
+		result.NextActions = []receipt.Action{{
+			ID:      "evaluation-evaluator-result",
+			Label:   "Submit the harness judgment result for the pending request",
+			Command: "qualitymd evaluation run --resume " + displayPath + " --evaluator-result - --json",
+		}, {
+			ID:      "evaluation-run-reemit",
+			Label:   "Recover the pending work request",
+			Command: "qualitymd evaluation run --resume " + displayPath + " --json",
 		}}
 	case StatusCancelled, StatusFailed:
 		result.NextActions = []receipt.Action{{

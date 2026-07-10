@@ -227,6 +227,7 @@ qualitymd evaluation run [flags]
 | `--dry-run`, `-n` | preview the resolved run without invoking an evaluator or writing evaluation data |
 | `--evaluation-dir` | override the model-relative evaluation directory |
 | `--evaluator` | evaluator to use: auto (default), a built-in name, or a configured profile |
+| `--evaluator-result` | submit a harness result envelope for the awaiting work request, from a file or - for stdin (requires --resume) |
 | `--factor` | canonical factor reference for a scoped evaluation; repeatable |
 | `--json` | emit a machine-readable run receipt |
 | `--model` | QUALITY.md file to evaluate |
@@ -274,7 +275,7 @@ qualitymd evaluation list [flags]
 | `--evaluation-dir` | override the model-relative evaluation directory |
 | `--json` | emit a machine-readable run list |
 | `--model` | QUALITY.md file that anchors evaluation history |
-| `--state` | filter runs: all, reportable, incomplete (default: `all`) |
+| `--state` | filter runs: all, reportable, incomplete, awaiting (default: `all`) |
 
 ### `qualitymd evaluation status`
 

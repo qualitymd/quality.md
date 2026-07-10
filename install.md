@@ -155,13 +155,21 @@ evaluationDir: tmp/evals
 The path is relative to the selected `QUALITY.md` workspace and must not escape
 the repository.
 
-The same config file can pin the evaluator used by evaluation runs. By default
-`qualitymd evaluation run` auto-detects an installed Codex or Claude CLI, then
-configured API profiles:
+The same config file can pin the evaluator used by evaluation runs:
 
 ```yaml
 evaluation:
-  evaluator: auto # auto, codex, claude, or a configured profile name
+  evaluator: auto # auto, harness, codex, claude, openai, anthropic, or a profile name
 ```
+
+When the `/quality` skill runs an evaluation inside an agent (Claude Code,
+Codex, and similar), it selects the `harness` evaluator by default: judgment
+comes from the invoking agent itself through checkpoints, using that agent's
+own authentication — no provider API key needed. For direct CLI use, `auto`
+discovers a ready Codex CLI, then a ready Claude CLI (verifying
+authentication and non-interactive structured output, not just installation),
+then configured API profiles whose key environment variable is present. API
+profiles reference secrets by environment-variable name only — for example
+`ANTHROPIC_API_KEY` or `OPENAI_API_KEY` — never by value.
 
 See `qualitymd evaluation run --help` for the full runner surface.

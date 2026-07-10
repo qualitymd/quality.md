@@ -126,14 +126,22 @@ type EvaluationHistory struct {
 type EvaluationSummary struct {
 	Reportable int `json:"reportable"`
 	Incomplete int `json:"incomplete"`
-	Stale      int `json:"stale"`
-	Problems   int `json:"problems"`
+	// AwaitingEvaluator counts incomplete runs checkpointed at a pending
+	// harness work request. They are included in Incomplete as well.
+	AwaitingEvaluator int `json:"awaitingEvaluator,omitempty"`
+	Stale             int `json:"stale"`
+	Problems          int `json:"problems"`
 }
 
 // EvaluationRunSummary summarizes one evaluation run in status output.
 type EvaluationRunSummary struct {
-	Path          string `json:"path"`
-	Reportable    bool   `json:"reportable"`
+	Path       string `json:"path"`
+	Reportable bool   `json:"reportable"`
+	// Lifecycle is the runner lifecycle status of an artifact-backed run;
+	// empty for manual multi-file runs. awaiting_evaluator means the run is
+	// resumable with harness judgment as the pending action, not failed or
+	// generically incomplete.
+	Lifecycle     string `json:"lifecycle,omitempty"`
 	Stale         bool   `json:"stale"`
 	DataArtifacts int    `json:"dataArtifacts"`
 	Gaps          int    `json:"gaps"`
@@ -354,6 +362,9 @@ func evaluationHistory(ws *workspace.Workspace, modelBytes []byte) (EvaluationHi
 			history.Summary.Reportable++
 		} else {
 			history.Summary.Incomplete++
+			if summary.Lifecycle == evaluation.RunStatusAwaitingEvaluator {
+				history.Summary.AwaitingEvaluator++
+			}
 		}
 		if summary.Stale {
 			history.Summary.Stale++
@@ -382,6 +393,7 @@ func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummar
 	}
 	runStatus := run.Status()
 	summary.Reportable = runStatus.Reportable
+	summary.Lifecycle = runStatus.Lifecycle
 	summary.DataArtifacts = runStatus.Data.Artifacts
 	summary.Gaps = len(runStatus.Gaps)
 	return summary
@@ -425,6 +437,14 @@ func reconciliationActions(path string, history EvaluationHistory) []receipt.Act
 	}
 	latest := history.Latest
 	switch {
+	case latest.Problem == "" && latest.Lifecycle == evaluation.RunStatusAwaitingEvaluator:
+		// Awaiting harness judgment is a normal checkpoint: the continuation
+		// is resuming the run to recover the pending work request.
+		return []receipt.Action{{
+			ID:      "evaluation-run-reemit",
+			Label:   "Resume the awaiting evaluation run to recover its pending work request",
+			Command: "qualitymd evaluation run --model " + path + " --resume " + latest.Path + " --json",
+		}}
 	case latest.Problem != "" || !latest.Reportable:
 		return []receipt.Action{{
 			ID:      "evaluation-status-latest",

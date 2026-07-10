@@ -113,6 +113,28 @@ sequential execution in model order.
 Parallel execution **MUST NOT** change ratings, report content, output
 ordering, artifact paths, or persisted payload shapes.
 
+## Harness checkpoints
+
+When the selected evaluator is harness-backed, a ready evaluator work unit
+**MUST** checkpoint instead of dispatching a subprocess: the runner persists
+the awaiting state atomically, returns the bounded work request, and schedules
+nothing further until a correlated result is submitted. Deterministic units
+**MUST** continue to execute on each invocation up to the next evaluator
+checkpoint or the terminal receipt, so deterministic work never leaks into the
+agent interface.
+
+A submitted result **MUST** advance the graph only when it correlates with the
+persisted pending request (request identity and input hash). A mismatched,
+duplicate, or unsolicited result **MUST** be rejected with `run_state_invalid`
+and leave the pending request recoverable. A pending request whose rebuilt
+input hash no longer matches its checkpoint **MUST** fail with
+`run_state_invalid` rather than bind judgment to changed evidence.
+
+A schema-invalid or unparseable harness submission **MUST** consume the same
+[retry budget](#retry-and-failure) as any other evaluator attempt: the runner
+records the attempt, re-checkpoints with the next attempt's request, and fails
+the run when the budget is exhausted.
+
 ## Persistence
 
 The runner **MUST** merge each accepted work-unit result into

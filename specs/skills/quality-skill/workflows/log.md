@@ -1,5 +1,18 @@
 # /quality skill workflows update log
 
+## 2026-07-10
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0194 - Harness-native evaluator dispatch](../../../../changes/0194-harness-native-evaluator-dispatch.md).
+  Evaluator selection follows the shared precedence (explicit user request,
+  non-`auto` workspace configuration, `--evaluator harness` when the current
+  agent can service checkpoints, then CLI `auto`); the workflow services
+  `awaiting_evaluator` checkpoints by judging only the runner-supplied bounded
+  request and submitting the typed envelope through
+  `--resume <run> --evaluator-result`; an awaiting receipt is expected
+  progress with resume-without-result as recovery; and unattended runs add no
+  interactive gates.
+
 ## 2026-07-09
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec and its

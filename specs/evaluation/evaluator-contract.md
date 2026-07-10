@@ -98,15 +98,25 @@ failure and retry only per the
 
 ## Built-in evaluators
 
-The built-in evaluator kinds are `codex` (Codex CLI subprocess), `claude`
-(Claude Code CLI subprocess), `openai` (direct OpenAI API), and `anthropic`
-(direct Anthropic API). `shell` and `manual` are reserved names with no
+The built-in evaluator kinds are `harness` (checkpointed dispatch to the
+invoking agent harness), `codex` (Codex CLI subprocess), `claude` (Claude Code
+CLI subprocess), `openai` (direct OpenAI API), and `anthropic` (direct
+Anthropic API). `shell` and `manual` are reserved names with no
 implementations.
 
 CLI-backed evaluators **MUST** be invoked non-interactively with
 machine-readable structured output — Claude Code in print mode with JSON
 output, Codex in exec mode with JSON output — which the runner validates
 against the work unit's expected schema.
+
+Where a supported CLI advertises JSON Schema output enforcement or ephemeral /
+no-session-persistence controls for its non-interactive mode, its built-in
+evaluator adapter **MUST** use those controls for bounded work requests,
+detecting the capability from the installed CLI before the first judgment
+call. The runner still **MUST** validate the returned payload independently.
+
+> Rationale: prompt-only JSON and retained one-off sessions add avoidable
+> output failures and local state without replacing runner validation. — 0194
 
 If an installed CLI cannot honor non-interactive structured invocation, then
 evaluator selection **MUST** fail with `evaluator_incompatible` and report
@@ -119,6 +129,44 @@ remediation, including any other available evaluators.
 API-backed evaluators **MUST** read their API key from the profile's configured
 environment variable. If that variable is unset when an API-backed evaluator is
 selected, then selection **MUST** fail with `missing_api_key`.
+
+Evaluator credentials are not interchangeable across kinds: CLI
+subscription/access-token authentication belongs to the CLI evaluators, direct
+provider API keys belong to the API evaluators, and the harness evaluator uses
+the invoking agent's own authentication and **MUST NOT** require a provider
+API key. Guidance and configuration **MUST** reference secrets by
+environment-variable name only.
+
+## Harness evaluator
+
+`harness` is the reserved built-in evaluator for judgment supplied by the
+invoking agent harness. It **MUST** be selected explicitly — by the quality
+skill or the caller — never by `auto` discovery, and it **MUST** delegate only
+bounded evaluator work requests: the runner checkpoints the run with the
+complete typed work request instead of calling a subprocess, and the harness
+submits a typed result envelope through resume.
+
+The harness evaluator **MUST NOT** own run creation, scope expansion,
+work-graph ordering, retry policy, result validation, persistence, report
+generation, or final authority outside the result envelope it submits.
+
+> Rationale: making the outer agent the workflow orchestrator would recreate
+> the harness-dependent evaluation behavior 0192 removed. — 0194
+
+A submitted harness result envelope **MUST** identify the pending request and
+its input hash, **MUST** identify the harness runtime supplying the judgment,
+and **MUST** carry either a result payload or a classified evaluator failure.
+Optional usage and model metadata follow the ordinary result envelope.
+
+The first accepted harness result **MUST** bind the run to the envelope's
+harness runtime identity; later results from a different runtime **MUST** be
+refused with `run_state_invalid`. The runner **SHOULD** record the model per
+call when the harness reports it, without making model metadata a correctness,
+resume, or validation dependency.
+
+> Rationale: a resumable run must not silently mix Claude, Codex, or another
+> harness after accepted judgments exist, while model metadata is not
+> uniformly available across surfaces. — 0194
 
 ## Subagent-backed work
 
