@@ -29,6 +29,7 @@ const (
 	FailureUnsafeSourceContent      FailureCategory = "unsafe_source_content"
 	FailureInsufficientEvidence     FailureCategory = "insufficient_evidence"
 	FailureSourceUnavailable        FailureCategory = "source_unavailable"
+	FailureSelectorUnsupported      FailureCategory = "selector_unsupported"
 	FailureRunStateInvalid          FailureCategory = "run_state_invalid"
 	FailureCancelled                FailureCategory = "cancelled"
 	FailureReportBuildFailed        FailureCategory = "report_build_failed"
@@ -44,6 +45,11 @@ type Capabilities struct {
 	// Subagents reports whether the evaluator can delegate independent work
 	// to native subagents or worker sessions.
 	Subagents bool `json:"subagents"`
+	// SourceResolution reports whether the evaluator can serve source
+	// resolution work requests — gathering the material a non-deterministic
+	// source selector describes. Distinct from Subagents: serving a different
+	// request kind is a different promise than internal judgment parallelism.
+	SourceResolution bool `json:"sourceResolution"`
 	// ReusableContext lists the reusable evaluator context kinds available
 	// (for example "prompt-cache" or "session"). Reusable context is
 	// reconstructible execution metadata, never authoritative run state.

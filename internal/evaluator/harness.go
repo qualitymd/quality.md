@@ -18,9 +18,10 @@ func (e *harnessEvaluator) Kind() string { return "harness" }
 
 func (e *harnessEvaluator) Capabilities() Capabilities {
 	return Capabilities{
-		Concurrent:      false,
-		ReusableContext: []string{"session"},
-		ReportsUsage:    true,
+		Concurrent:       false,
+		SourceResolution: true,
+		ReusableContext:  []string{"session"},
+		ReportsUsage:     true,
 	}
 }
 

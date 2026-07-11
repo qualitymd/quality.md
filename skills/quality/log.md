@@ -1,5 +1,16 @@
 # /quality runtime skill update log
 
+## 2026-07-11
+
+- **Revision**: Updated [`workflows/evaluate.md`](workflows/evaluate.md) for
+  0197 - Resolver-dispatched source selectors. The harness checkpoint loop
+  now serves two request kinds: judgment requests are judged from the bounded
+  request only, and `resolveSource` requests — emitted for areas whose source
+  selector describes material the runner cannot walk — gather exactly the
+  selector's described material and return it verbatim as the `files`
+  envelope, failing `source_unavailable` when the material does not exist.
+  Dry-run guidance now names the per-area source dispatch plan.
+
 ## 2026-07-10
 
 - **Release prep**: Bumped the runtime skill metadata to `0.29.0` with

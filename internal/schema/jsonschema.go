@@ -30,7 +30,7 @@ const (
 	jsonSchemaComment = "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). " +
 		"Structural-only: passing this schema does not imply full conformance. Semantic rules " +
 		"(factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, " +
-		"and rating-level ordering and uniqueness) are enforced by `qualitymd lint`, not here. " +
+		"and rating-level uniqueness) are enforced by `qualitymd lint`, not here. " +
 		"Generated from internal/schema and guarded against drift by a consistency test; " +
 		"do not edit by hand — run `go generate ./...`."
 )
@@ -127,15 +127,16 @@ func anyOfRequired(r RequiredAny) []any {
 	return alternatives
 }
 
-// propertySchema renders the JSON Schema for one property's value shape.
+// propertySchema renders the JSON Schema for one property's value shape. A
+// scalar with a Pattern is a name/ID and stays a patterned string; a scalar
+// without one is content and accepts any non-empty scalar.
 func propertySchema(p Property) (map[string]any, error) {
 	switch p.Shape {
 	case ScalarShape:
-		schema := map[string]any{"type": "string"}
 		if p.Pattern != "" {
-			schema["pattern"] = p.Pattern
+			return map[string]any{"type": "string", "pattern": p.Pattern}, nil
 		}
-		return schema, nil
+		return scalarValueSchema(), nil
 	case MapShape:
 		element, err := elementSchema(p)
 		if err != nil {
@@ -177,14 +178,27 @@ func propertySchema(p Property) (map[string]any, error) {
 }
 
 // elementSchema resolves the element type of a map value or sequence item: a
-// $ref to a node definition when the element is a structural node, or a scalar
-// type when it is a plain string.
+// $ref to a node definition when the element is a structural node, or a
+// content scalar when it is a plain scalar.
 func elementSchema(p Property) (map[string]any, error) {
 	if p.ElementKind != "" {
 		return map[string]any{"$ref": "#/$defs/" + string(p.ElementKind)}, nil
 	}
 	if p.ElementShape == ScalarShape || p.ValueShape == ScalarShape {
-		return map[string]any{"type": "string"}, nil
+		return scalarValueSchema(), nil
 	}
 	return nil, fmt.Errorf("schema: property %q has an unresolved element type", p.Name)
+}
+
+// scalarValueSchema is the schema for a content scalar: any non-empty scalar,
+// matching SPECIFICATION.md and the linter, which accept any non-empty YAML
+// scalar (so `assessment: 42` is valid).
+func scalarValueSchema() map[string]any {
+	return map[string]any{
+		"anyOf": []any{
+			map[string]any{"type": "string", "minLength": 1},
+			map[string]any{"type": "number"},
+			map[string]any{"type": "boolean"},
+		},
+	}
 }

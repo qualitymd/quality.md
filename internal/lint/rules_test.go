@@ -862,6 +862,28 @@ requirements:
         assessment: Inspect it.
 `),
 	},
+	{
+		ruleID:      RuleUnknownKey,
+		name:        "root extension key",
+		absentRules: []RuleID{RuleInvalidFrontmatter},
+		model: validFrontmatter(`x-owner: platform-team
+requirements:
+  has-assessment:
+    title: Has an assessment
+    assessment: Inspect it.
+`),
+	},
+	{
+		ruleID:      RuleUnknownKey,
+		name:        "requirement extension key",
+		absentRules: []RuleID{RuleInvalidFrontmatter},
+		model: validFrontmatter(`requirements:
+  has-assessment:
+    title: Has an assessment
+    assessment: Inspect it.
+    assessmnt: A typo of assessment.
+`),
+	},
 }
 
 func TestRules(t *testing.T) {
@@ -1225,10 +1247,47 @@ requirements:
 			if err != nil {
 				t.Fatalf("Check() error = %v", err)
 			}
-			if !hasRule(result, RuleInvalidFrontmatter) {
-				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidFrontmatter)
+			if !hasRule(result, RuleUnknownKey) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleUnknownKey)
+			}
+			if hasRule(result, RuleInvalidFrontmatter) {
+				t.Fatalf("findings = %#v, extension frontmatter must not be %s", result.Findings, RuleInvalidFrontmatter)
+			}
+			for _, finding := range result.Findings {
+				if finding.RuleID == RuleUnknownKey && finding.Severity != SeverityWarning {
+					t.Fatalf("unknown-key severity = %s, want %s", finding.Severity, SeverityWarning)
+				}
 			}
 		})
+	}
+}
+
+// TestExtensionFrontmatterLintsValid pins the spec's Extensions rule: a
+// conforming document carrying extension frontmatter stays valid and loads.
+func TestExtensionFrontmatterLintsValid(t *testing.T) {
+	path := writeModel(t, validFrontmatter(`x-owner: platform-team
+factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+        x-ticket: QM-42
+`))
+	result, err := Check(path)
+	if err != nil {
+		t.Fatalf("Check() error = %v", err)
+	}
+	if !result.Valid || result.Summary.Errors != 0 {
+		t.Fatalf("result = %+v, want extension frontmatter to lint valid", result.Summary)
+	}
+	if result.Summary.Warnings == 0 || !hasRule(result, RuleUnknownKey) {
+		t.Fatalf("findings = %#v, want unknown-key advisories for the extension keys", result.Findings)
+	}
+	if _, err := Load(path); err != nil {
+		t.Fatalf("Load() error = %v, want extension frontmatter to load", err)
 	}
 }
 

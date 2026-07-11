@@ -1,5 +1,34 @@
 # Evaluation v2 update log
 
+## 2026-07-11
+
+- **Revision**: Updated the [Runner](runner.md), [Protocol](protocol.md),
+  [Orchestration](orchestration.md), [Evaluator contract](evaluator-contract.md),
+  and [evaluation.json](evaluation-json.md) contracts for
+  [0197 - Resolver-dispatched source selectors](../../changes/0197-resolver-dispatched-source-selectors.md).
+  Source now reaches judgment through detection + resolution + packaging:
+  selector kinds (glob → path → prose, filesystem always winning) are
+  detected at run creation and pinned in the artifact's new per-area
+  `sources` provenance record (schema version 6); prose selectors resolve
+  through evaluator-dispatched `resolveSource` work units on the harness
+  checkpoint transport, their returned material validated, capped, hashed,
+  and captured into the bounded bundle before dependent judgment; a selector
+  kind no resolver serves fails the run at plan time with the new
+  `selector_unsupported` category, distinct from `source_unavailable`
+  (material missing); and a dedicated source-resolution capability, declared
+  by the harness evaluator, keeps the promise separate from subagent support.
+
+- **Revision**: Updated the [Runner](runner.md) source-packaging contract for
+  [0196 - Spec-faithful model reading](../../changes/archive/0196-spec-faithful-model-reading.md).
+  The runner resolves each area's effective source selector as the format
+  defines it — the area's own `source`, else the nearest declaring ancestor's,
+  else the document default (the QUALITY.md file's directory) — expands glob
+  selectors over the workspace through the same sorted, hashed, capped
+  bundling, skips non-regular filesystem entries (symlinked directories and
+  files, sockets, devices) without erroring, and fails work whose selector
+  packages zero readable files with `source_unavailable`, naming the selector,
+  instead of judging against an empty bundle.
+
 ## 2026-07-10
 
 - **Revision**: Updated the [Evaluator contract](evaluator-contract.md),

@@ -142,6 +142,68 @@ func TestGenerateJSONIncludesStrictModelNamePatterns(t *testing.T) {
 	}
 }
 
+// TestGenerateJSONContentScalarsAcceptAnyScalar pins the content-scalar
+// shape: the format accepts any non-empty scalar (assessment: 42 is valid),
+// so pattern-less scalars must not be constrained to JSON strings. Only
+// name/ID scalars (a Pattern-carrying property such as rating level) stay
+// patterned strings.
+func TestGenerateJSONContentScalarsAcceptAnyScalar(t *testing.T) {
+	doc := generate(t)
+	defs := doc["$defs"].(map[string]any)
+	requirement := defs[string(RequirementKind)].(map[string]any)
+	requirementProps := requirement["properties"].(map[string]any)
+	ratingLevel := defs[string(RatingLevelKind)].(map[string]any)
+	ratingLevelProps := ratingLevel["properties"].(map[string]any)
+
+	assertContentScalar(t, "requirement.assessment", requirementProps[PropertyAssessment])
+	assertContentScalar(t, "ratingLevel.criterion", ratingLevelProps[PropertyCriterion])
+	ratings := requirementProps[PropertyRatings].(map[string]any)
+	assertContentScalar(t, "requirement.ratings values", ratings["additionalProperties"])
+
+	level := ratingLevelProps[PropertyLevel].(map[string]any)
+	if level["type"] != "string" || level["pattern"] != ModelNamePattern {
+		t.Errorf("ratingLevel.level = %#v, want a patterned string", level)
+	}
+}
+
+func assertContentScalar(t *testing.T, label string, v any) {
+	t.Helper()
+	schema, ok := v.(map[string]any)
+	if !ok {
+		t.Fatalf("%s = %T, want map", label, v)
+	}
+	if _, closed := schema["type"]; closed {
+		t.Fatalf("%s = %#v, want anyOf over scalar types, not a single type", label, schema)
+	}
+	types := map[string]bool{}
+	for _, alt := range anySlice(t, schema["anyOf"]) {
+		if altMap, ok := alt.(map[string]any); ok {
+			if s, ok := altMap["type"].(string); ok {
+				types[s] = true
+			}
+		}
+	}
+	for _, want := range []string{"string", "number", "boolean"} {
+		if !types[want] {
+			t.Errorf("%s anyOf = %#v, missing scalar type %q", label, schema["anyOf"], want)
+		}
+	}
+}
+
+// TestGenerateJSONCommentClaimsNoUnperformedCheck pins R8 of 0196: the
+// annotations must not claim an enforcement no tool performs — no tool checks
+// rating-level ordering.
+func TestGenerateJSONCommentClaimsNoUnperformedCheck(t *testing.T) {
+	doc := generate(t)
+	comment, _ := doc["$comment"].(string)
+	if strings.Contains(comment, "ordering") {
+		t.Errorf("$comment = %q, must not claim a rating-level ordering check", comment)
+	}
+	if !strings.Contains(comment, "uniqueness") {
+		t.Errorf("$comment = %q, want the enforced uniqueness rule still named", comment)
+	}
+}
+
 func TestGenerateJSONAllowsExtensions(t *testing.T) {
 	doc := generate(t)
 	// The format permits extension frontmatter, so no node object closes itself

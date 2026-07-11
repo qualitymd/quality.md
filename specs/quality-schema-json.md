@@ -39,7 +39,7 @@ recursion, `minItems`, map-keyed entries, strict model-name patterns where JSON
 Schema can express them, and the "at least one of factors/requirements/areas"
 rule. The _semantic_ layer the linter owns
 (factor-reference resolution, rating-override keys matching declared levels, the
-placement-dependent factor-connection rule, level ordering and uniqueness) cannot
+placement-dependent factor-connection rule, level uniqueness) cannot
 be expressed in JSON Schema. Drawing that line explicitly is what keeps the
 artifact honest: a consumer must not read passing validation as full conformance,
 and the artifact must not pretend to a check it cannot make. Because the value of
@@ -108,6 +108,28 @@ omits it rather than encoding a misleading one.
 
 > Rationale: a near-miss structural check that looks semantic teaches consumers
 > to trust the schema for guarantees only the linter makes. — 0049
+
+`quality.schema.json` **MUST NOT** constrain content scalars — scalar-shaped
+model properties that carry no name grammar, including `assessment`,
+rating-level `criterion`, and `ratings` override values — to JSON `string`; it
+**MUST** accept any non-empty scalar (string, number, or boolean), matching
+[`SPECIFICATION.md`](../SPECIFICATION.md) and the linter. Name/ID scalars that
+carry the strict model-name pattern (such as `ratingScale[].level`) remain
+patterned strings.
+
+> Rationale: the format defines `assessment` as "a single non-empty scalar" and
+> the linter accepts any non-empty YAML scalar, so a string-only schema failed
+> documents (`assessment: 42`) that `lint` accepts — exactly the drift the
+> derived artifact exists to prevent. — 0196
+
+Generated schema annotations (`title`, `description`, `$comment`) **MUST NOT**
+claim an enforcement that no tool performs. In particular, rating-level
+ordering is semantic and mechanically unchecked, so the annotations must not
+present it as enforced by `qualitymd lint`.
+
+> Rationale: the `$comment` once claimed lint enforces rating-level ordering;
+> no such check exists, and an artifact that overstates its companion tool
+> teaches consumers to trust guarantees nobody makes. — 0196
 
 `quality.schema.json` **MUST** constrain requirement names with the strict
 model-name pattern.

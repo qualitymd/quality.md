@@ -74,7 +74,10 @@ type Result struct {
 	EvaluatorKind string         `json:"evaluatorKind"`
 	Concurrency   int            `json:"concurrency"`
 	WorkUnits     WorkUnitCounts `json:"workUnits"`
-	Failure       *Failure       `json:"failure,omitempty"`
+	// Sources is the per-area source dispatch plan pinned at run creation:
+	// selector, detected kind, and serving resolver, in plan order.
+	Sources []SourcePlan `json:"sources,omitempty"`
+	Failure *Failure     `json:"failure,omitempty"`
 	// EvaluatorRequest is the pending bounded work request when Status is
 	// awaiting_evaluator.
 	EvaluatorRequest *EvaluatorRequest        `json:"evaluatorRequest,omitempty"`
@@ -219,7 +222,18 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 	if err != nil {
 		return nil, err
 	}
-	graph, err := BuildGraph(spec, artifact.Manifest.PlannedScope)
+	plan, err := BuildPlan(spec, artifact.Manifest.PlannedScope)
+	if err != nil {
+		return nil, err
+	}
+	sourceKinds, err := pinSourceKinds(artifact, ws.WorkspaceRoot.Abs, plan)
+	if err != nil {
+		return nil, err
+	}
+	if err := store.Save(artifact); err != nil {
+		return nil, err
+	}
+	graph, err := BuildGraph(spec, artifact.Manifest.PlannedScope, sourceKinds)
 	if err != nil {
 		return nil, err
 	}
@@ -265,6 +279,39 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 	return result, nil
 }
 
+// pinSourceKinds detects and pins each in-scope area's selector kind on a
+// fresh run, or reads the pinned kinds back on resume. Detection runs once,
+// at run creation: resume reads the pinned kind instead of re-detecting, so a
+// file appearing or vanishing mid-run cannot silently re-dispatch a selector
+// to a different resolver or change the graph shape.
+func pinSourceKinds(artifact *Artifact, workspaceRoot string, plan *ModelPlan) (map[string]SourceKind, error) {
+	kinds := map[string]SourceKind{}
+	if artifact.Sources == nil {
+		artifact.Sources = map[string]*SourceRecord{}
+		for _, area := range plan.Areas {
+			kind := detectSourceKind(workspaceRoot, area.Source)
+			artifact.Sources[area.Ref] = &SourceRecord{
+				Selector: area.Source,
+				Kind:     string(kind),
+				Resolver: resolverForKind(kind),
+			}
+			kinds[area.Ref] = kind
+		}
+		return kinds, nil
+	}
+	for _, area := range plan.Areas {
+		record := artifact.Sources[area.Ref]
+		if record == nil {
+			return nil, &RunError{
+				Category: evaluator.FailureRunStateInvalid,
+				Detail:   fmt.Sprintf("the run artifact pins no source record for %s; start a new run", area.Ref),
+			}
+		}
+		kinds[area.Ref] = SourceKind(record.Kind)
+	}
+	return kinds, nil
+}
+
 func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *Result {
 	counts := WorkUnitCounts{Total: len(graph.Units), EvaluatorUnits: graph.EvaluatorUnits()}
 	for _, unit := range graph.Units {
@@ -279,6 +326,19 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 			counts.Failed++
 		}
 	}
+	sources := make([]SourcePlan, 0, len(graph.Plan.Areas))
+	for _, area := range graph.Plan.Areas {
+		record := artifact.Sources[area.Ref]
+		if record == nil {
+			continue
+		}
+		sources = append(sources, SourcePlan{
+			Area:     area.Ref,
+			Selector: record.Selector,
+			Kind:     record.Kind,
+			Resolver: record.Resolver,
+		})
+	}
 	result := &Result{
 		SchemaVersion: evaluation.SchemaVersion,
 		Path:          displayPath,
@@ -287,6 +347,7 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 		EvaluatorKind: artifact.Manifest.EvaluatorKind,
 		Concurrency:   artifact.Manifest.Concurrency,
 		WorkUnits:     counts,
+		Sources:       sources,
 		Failure:       artifact.State.Failure,
 	}
 	switch status {

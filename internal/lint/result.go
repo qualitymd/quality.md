@@ -50,6 +50,7 @@ const (
 	RuleUnknownFactor            RuleID = "unknown-factor"
 	RuleMissingFactorReference   RuleID = "missing-factor-reference"
 	RuleEmptyProperty            RuleID = "empty-property"
+	RuleUnknownKey               RuleID = "unknown-key"
 )
 
 // Rule describes one lint rule in the catalog.
@@ -89,6 +90,7 @@ var Rules = []Rule{
 	{RuleUnknownFactor, SeverityError, false, "A requirement references a factor that does not resolve."},
 	{RuleMissingFactorReference, SeverityError, false, "A direct area-level requirement references no quality factor."},
 	{RuleEmptyProperty, SeverityWarning, true, "An optional property is present but empty and should be omitted."},
+	{RuleUnknownKey, SeverityWarning, false, "Warns when a frontmatter key names no model property on its node; the format permits extension properties, but the key may be a typo."},
 }
 
 // rulesByID indexes the catalog so the recording path can derive a finding's

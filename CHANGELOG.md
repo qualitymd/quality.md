@@ -5,6 +5,63 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Specification
+
+- The format now commits to non-filesystem source selectors: `source` stays a
+  single string, and its kind is detected from the selector itself — glob
+  metacharacters make a glob, an existing filesystem entry is a path, and any
+  other selector describes the evaluated material in prose (for example
+  "open tickets in the support queue"), resolved by evaluating tools. The
+  frontmatter shape and `quality.schema.json` are unchanged.
+
+### CLI
+
+- Evaluation runs resolve every source selector through a per-kind resolver.
+  Path and glob selectors keep the deterministic workspace walk; a prose
+  selector is dispatched to the invoking harness as a `resolveSource` work
+  request on the existing checkpoint transport, and the returned material is
+  validated, capped, hashed, and captured into the run artifact before any
+  dependent judgment. Selector kinds are detected and pinned at run creation
+  and honored on resume.
+- A selector kind the selected evaluator cannot resolve now fails the run at
+  plan time with the new `selector_unsupported` category — naming the
+  selector, its detected kind, and the remedy — distinct from
+  `source_unavailable`, which keeps meaning the named material is missing.
+- `evaluation.json` bumps to schema version 6 and gains a per-area `sources`
+  provenance record: each area's selector, detected kind, serving resolver
+  (and harness runtime when harness-resolved), bundle hash, capture time, and
+  per-file hashes — with captured content kept for harness-gathered evidence
+  so resume re-judges against the exact evidence of record.
+- `qualitymd evaluation run --dry-run --json` and run receipts now include
+  the per-area source dispatch plan (selector, detected kind, resolver).
+- Evaluation runs now resolve area sources as the format specification
+  defines: a source-less root area evaluates the QUALITY.md file's directory,
+  a source-less child area inherits the nearest ancestor's source, and glob
+  selectors (for example `docs/**/*.md`) are expanded. Previously these were
+  silently packaged as empty evidence.
+- An area source that resolves to no readable files now fails the run loudly
+  with `source_unavailable`, naming the unresolved selector, instead of
+  judging the area against an empty source bundle.
+- Source packaging skips symlinked directories and files, sockets, and
+  devices instead of crashing on them (`is a directory`), so repositories with
+  committed symlinks evaluate and resume cleanly.
+- `qualitymd lint` no longer reports spec-permitted extension frontmatter as
+  `invalid-frontmatter`: a key that names no model property is now the
+  warning-severity `unknown-key` advisory, so conforming documents carrying
+  extension properties lint valid and load. Misplaced root keys on nested
+  areas remain errors.
+- `quality.schema.json` now accepts any non-empty scalar (string, number, or
+  boolean) for content scalars such as `assessment`, rating-level
+  `criterion`, and `ratings` override values, matching `lint`; its `$comment`
+  no longer claims a rating-level ordering check that no tool performs.
+
+### /quality skill
+
+- The harness checkpoint loop now serves `resolveSource` resolution requests
+  alongside judgment requests: the skill gathers exactly the material the
+  request's selector describes and returns it verbatim, or reports
+  `source_unavailable` when it does not exist.
+
 ## v0.29.0 - 2026-07-10
 
 ### CLI

@@ -244,13 +244,25 @@ func (e *engine) completeFrameStep(unit *Unit) EvaluationStepCompletion {
 }
 
 func (e *engine) prepareJudgmentStep(unit *Unit) (*evaluationStepCall, *EvaluationStepCompletion, error) {
+	if failure := e.resolveSourceGuard(unit); failure != nil {
+		return nil, &EvaluationStepCompletion{
+			Step:     unit,
+			Rejected: &RejectedEvaluationStep{Failure: failure},
+		}, nil
+	}
 	req, err := e.buildWorkRequest(unit)
 	if err != nil {
+		if failure := sourceUnavailableFailure(err); failure != nil {
+			return nil, &EvaluationStepCompletion{
+				Step:     unit,
+				Rejected: &RejectedEvaluationStep{Failure: failure},
+			}, nil
+		}
 		return nil, nil, err
 	}
 	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
-	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.payloadsByWorkUnit(unit.ID)) > 0 {
+	if state.Status == UnitCompleted && state.InputHash == inputHash && e.unitResultPresent(unit) {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
 		return nil, &EvaluationStepCompletion{Step: unit, Reused: true}, nil
 	}

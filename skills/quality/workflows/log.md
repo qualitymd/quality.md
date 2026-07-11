@@ -1,5 +1,14 @@
 # /quality runtime workflows update log
 
+## 2026-07-11
+
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0197 -
+  Resolver-dispatched source selectors. Checkpoint servicing distinguishes
+  judgment requests (judge the bounded evidence only) from `resolveSource`
+  resolution requests (gather the selector's described material with your
+  tools and return it verbatim, or fail `source_unavailable` when it does not
+  exist); dry-run previews include the per-area source dispatch plan.
+
 ## 2026-07-10
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0195 -

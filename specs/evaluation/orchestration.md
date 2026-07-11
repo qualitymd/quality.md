@@ -24,23 +24,29 @@ The runner **MUST** build a deterministic work graph in model order:
 
 1. `frameEvaluation`;
 2. `frameAreaEvaluation` for each planned area;
-3. `frameRequirementEvaluation`, then `assessRateRequirement` for each planned
+3. `resolveSource` for each planned area whose pinned selector kind has no
+   deterministic resolver (see the
+   [runner's source packaging contract](runner.md#source-packaging));
+4. `frameRequirementEvaluation`, then `assessRateRequirement` for each planned
    requirement;
-4. `frameFactorAnalysis` and `analyzeFactor` for each in-scope factor node,
+5. `frameFactorAnalysis` and `analyzeFactor` for each in-scope factor node,
    bottom-up;
-5. `frameAreaAnalysis` and `analyzeArea` for each in-scope area, bottom-up;
-6. `rankFindings`;
-7. `recommend`;
-8. `rankRecommendations`; and
-9. `buildReports`.
+6. `frameAreaAnalysis` and `analyzeArea` for each in-scope area, bottom-up;
+7. `rankFindings`;
+8. `recommend`;
+9. `rankRecommendations`; and
+10. `buildReports`.
 
 Work-unit IDs **MUST** be deterministic strings: `<kind>` for run-wide units
 and `<kind>:<canonical-ref>` for subject-scoped units, for example
 `assessRateRequirement:requirement:docs::links-resolve`.
 
 Frame units and `buildReports` **MUST** be deterministic runner work; the
-remaining units are evaluator-backed judgment work dispatched under the
-[evaluator contract](evaluator-contract.md).
+remaining units are evaluator-backed work dispatched under the
+[evaluator contract](evaluator-contract.md). `resolveSource` is
+evaluator-backed gathering, not judgment: its accepted effect is the captured
+source bundle persisted in the artifact's
+[`sources` record](evaluation-json.md#sources), never a result payload.
 
 `assessRateRequirement` **MUST** execute the protocol's `assessRequirement` and
 `rateRequirement` moves as one evaluator call and persist both the
@@ -68,6 +74,11 @@ subagents, workers, threads, processes, or another runtime-specific mechanism:
 
 An area's `frameAreaEvaluation` **MUST** complete before local requirement
 work, local factor work, or child area work for that area begins.
+
+An area's `resolveSource` unit, when present, **MUST** complete — its bundle
+captured and persisted — before any of the area's `assessRateRequirement`
+units are dispatched. Analysis and advice units consume prior results, not
+source, and take no dependency on it.
 
 `RequirementRatingResult`s **MUST** exist before a factor node that depends on
 those direct requirements can be analyzed. The combined

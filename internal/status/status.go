@@ -83,34 +83,16 @@ type ModelShape struct {
 	RatingLevels int `json:"ratingLevels"`
 }
 
-// SourceState describes how an area's evaluation source is resolved.
-type SourceState string
-
-const (
-	// SourceStateDeclared means the area declares its own source.
-	SourceStateDeclared SourceState = "declared"
-	// SourceStateInherited means the area inherits a source declared by an
-	// ancestor area.
-	SourceStateInherited SourceState = "inherited"
-	// SourceStateDefault means no area in the chain declares a source, so the
-	// area resolves to the document's default source: the directory containing
-	// the QUALITY.md file. This is a deliberate, valid choice, not a defect.
-	SourceStateDefault SourceState = "default"
-	// SourceStateMissing is reserved for a source that cannot be resolved. A
-	// lint-valid model never produces it, because an undeclared source always
-	// resolves to the document default.
-	SourceStateMissing SourceState = "missing"
-)
-
-// SourceCoverage summarizes source declarations for one area.
+// SourceCoverage summarizes source declarations for one area. The source
+// state comes from the shared model resolver (model.EffectiveSource).
 type SourceCoverage struct {
-	AreaPath     []string    `json:"areaPath"`
-	Label        string      `json:"label"`
-	SourceState  SourceState `json:"sourceState"`
-	Source       string      `json:"source,omitempty"`
-	Factors      int         `json:"factors"`
-	Requirements int         `json:"requirements"`
-	ChildAreas   int         `json:"childAreas"`
+	AreaPath     []string          `json:"areaPath"`
+	Label        string            `json:"label"`
+	SourceState  model.SourceState `json:"sourceState"`
+	Source       string            `json:"source,omitempty"`
+	Factors      int               `json:"factors"`
+	Requirements int               `json:"requirements"`
+	ChildAreas   int               `json:"childAreas"`
 }
 
 // EvaluationHistory summarizes discovered evaluation runs for the model.
@@ -272,17 +254,17 @@ func modelShape(spec *model.Spec) ModelShape {
 
 // sourceCoverage builds the per-area source provenance rows. Source state is a
 // status-only concern the identity projection deliberately omits, so it keeps
-// its own source-aware walk.
+// its own source-aware walk over the shared model resolver.
 func sourceCoverage(spec *model.Spec) []SourceCoverage {
 	label := spec.Title
 	if label == "" {
 		label = "Model"
 	}
-	rows := []SourceCoverage{sourceCoverageRow(nil, label, spec.Source, "", len(spec.Factors), len(spec.Requirements), len(spec.Areas))}
-	return appendAreaCoverage(rows, spec.Areas, nil, spec.Source)
+	rows := []SourceCoverage{sourceCoverageRow(spec, nil, label, len(spec.Factors), len(spec.Requirements), len(spec.Areas))}
+	return appendAreaCoverage(rows, spec, spec.Areas, nil)
 }
 
-func appendAreaCoverage(rows []SourceCoverage, areas map[string]model.Area, parentPath []string, inheritedSource string) []SourceCoverage {
+func appendAreaCoverage(rows []SourceCoverage, spec *model.Spec, areas map[string]model.Area, parentPath []string) []SourceCoverage {
 	for _, name := range sortedKeys(areas) {
 		area := areas[name]
 		path := appendString(parentPath, name)
@@ -290,17 +272,13 @@ func appendAreaCoverage(rows []SourceCoverage, areas map[string]model.Area, pare
 		if label == "" {
 			label = name
 		}
-		rows = append(rows, sourceCoverageRow(path, label, area.Source, inheritedSource, len(area.Factors), len(area.Requirements), len(area.Areas)))
-		nextSource := inheritedSource
-		if area.Source != "" {
-			nextSource = area.Source
-		}
-		rows = appendAreaCoverage(rows, area.Areas, path, nextSource)
+		rows = append(rows, sourceCoverageRow(spec, path, label, len(area.Factors), len(area.Requirements), len(area.Areas)))
+		rows = appendAreaCoverage(rows, spec, area.Areas, path)
 	}
 	return rows
 }
 
-func sourceCoverageRow(path []string, label, declaredSource, inheritedSource string, factors, requirements, children int) SourceCoverage {
+func sourceCoverageRow(spec *model.Spec, path []string, label string, factors, requirements, children int) SourceCoverage {
 	row := SourceCoverage{
 		AreaPath:     append([]string{}, path...),
 		Label:        label,
@@ -308,17 +286,12 @@ func sourceCoverageRow(path []string, label, declaredSource, inheritedSource str
 		Requirements: requirements,
 		ChildAreas:   children,
 	}
-	switch {
-	case declaredSource != "":
-		row.SourceState = SourceStateDeclared
-		row.Source = declaredSource
-	case inheritedSource != "":
-		row.SourceState = SourceStateInherited
-		row.Source = inheritedSource
-	default:
-		// No area declares a source, so this area resolves to the document
-		// default source — the directory containing the QUALITY.md file.
-		row.SourceState = SourceStateDefault
+	selector, state := model.EffectiveSource(spec, model.AreaPath(path))
+	row.SourceState = state
+	if state != model.SourceStateDefault {
+		// The default selector is implicit (the document's directory); the row
+		// reports it through the state alone.
+		row.Source = selector
 	}
 	return row
 }

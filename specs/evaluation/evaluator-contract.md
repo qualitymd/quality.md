@@ -39,13 +39,25 @@ typed work-unit result they return.
 ## Capability declaration
 
 Every evaluator **MUST** declare its execution capabilities — supported
-execution strategies, subagent support, reusable-context kinds, and usage
-reporting — and the runner **MUST** read the declaration before dispatching
-work.
+execution strategies, subagent support, source-resolution support,
+reusable-context kinds, and usage reporting — and the runner **MUST** read
+the declaration before dispatching work.
 
 > Rationale: the runner can only choose strategies an evaluator provably
 > supports; assuming undeclared capabilities reintroduces harness-dependent
 > behavior. — 0192
+
+Source-resolution support — serving `resolveSource` work requests that gather
+the material a non-deterministic source selector describes — is a dedicated
+capability, distinct from subagent support. An evaluator **MUST NOT** be
+dispatched resolution work it does not declare; the runner fails such runs
+with `selector_unsupported` per the
+[runner source contract](runner.md#source-packaging).
+
+> Rationale: subagent support describes an evaluator's internal parallelism
+> for judgment work; serving a distinct request kind is a different promise,
+> and conflating them would make every subagent-capable evaluator implicitly
+> claim resolution. — 0197
 
 ## Work-unit envelope
 
@@ -144,6 +156,16 @@ skill or the caller — never by `auto` discovery, and it **MUST** delegate only
 bounded evaluator work requests: the runner checkpoints the run with the
 complete typed work request instead of calling a subprocess, and the harness
 submits a typed result envelope through resume.
+
+The harness evaluator is the built-in evaluator that declares
+source-resolution support: alongside judgment requests, its checkpoint
+transport carries `resolveSource` work requests — the selector, its detected
+kind, the area frame, and an empty source bundle — whose returned files the
+runner validates and captures per the
+[runner source contract](runner.md#source-packaging). A resolution result
+envelope is the ordinary result envelope; when the material the selector
+describes does not exist, the harness returns a classified
+`source_unavailable` failure instead of improvised evidence.
 
 The harness evaluator **MUST NOT** own run creation, scope expansion,
 work-graph ordering, retry policy, result validation, persistence, report

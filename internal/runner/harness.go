@@ -96,11 +96,14 @@ func (e *engine) harnessBacked() bool {
 func (e *engine) runHarnessUnit(unit *Unit) (bool, error) {
 	req, err := e.buildWorkRequest(unit)
 	if err != nil {
+		if failure := sourceUnavailableFailure(err); failure != nil {
+			return e.failUnit(unit, failure)
+		}
 		return false, err
 	}
 	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
-	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.payloadsByWorkUnit(unit.ID)) > 0 {
+	if state.Status == UnitCompleted && state.InputHash == inputHash && e.unitResultPresent(unit) {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
 		return false, nil
 	}
@@ -178,6 +181,7 @@ func (e *engine) consumeHarnessResult(unit *Unit, state *UnitState, req evaluato
 		if e.artifact.State.HarnessIdentity == nil {
 			e.artifact.State.HarnessIdentity = &HarnessIdentity{Runtime: envelope.Evaluator.Runtime}
 		}
+		e.attributeResolutionRuntime(unit, envelope.Evaluator.Runtime)
 		e.artifact.State.PendingEvaluatorCall = nil
 		e.artifact.State.Status = StatusRunning
 		if err := e.acceptUnit(unit, state, payloads, inputHash); err != nil {
@@ -206,6 +210,17 @@ func (e *engine) consumeHarnessResult(unit *Unit, state *UnitState, req evaluato
 	}
 	e.progress("%s failed: %s: %s", unit.ID, lastFailure.Category, lastFailure.Detail)
 	return true, nil
+}
+
+// attributeResolutionRuntime records which harness runtime served an accepted
+// resolution result in the area's source provenance record.
+func (e *engine) attributeResolutionRuntime(unit *Unit, runtime string) {
+	if unit.Kind != KindResolveSource {
+		return
+	}
+	if record := e.artifact.Sources[unit.Subject]; record != nil {
+		record.HarnessRuntime = runtime
+	}
 }
 
 // checkpointHarness atomically persists the awaiting-evaluator checkpoint and

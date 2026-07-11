@@ -76,6 +76,23 @@ loop.
 > Rationale: the harness provides judgment, not a second evaluation workflow.
 > — 0194
 
+Checkpoints carry two request kinds. For a **judgment** request the skill
+judges only the supplied bounded evidence. For a **`resolveSource`
+resolution** request the skill **MUST** gather the material the request's
+selector describes — using its own tools; this is the one checkpoint kind
+where gathering is the task — and return it verbatim as the requested
+`files` envelope, without assessing, rating, filtering by quality, or
+widening beyond what the selector describes. If the material the selector
+describes does not exist — including when the selector reads like a
+filesystem path that names nothing — the skill **MUST** return a classified
+`source_unavailable` failure naming the selector instead of improvising or
+substituting evidence.
+
+> Rationale: resolution and judgment stay distinct requests so the gatherer
+> and the judge are never the same uncontrolled step; the runner validates,
+> caps, hashes, and captures the returned material before any dependent
+> judgment. — 0197
+
 The skill **MUST NOT** use `qualitymd evaluation create` or
 `qualitymd evaluation data set` for new evaluations. Those commands remain only
 for the historical/manual multi-file path.
@@ -208,8 +225,9 @@ flowchart TD
 7. **Invoke the runner** with explicit flags:
    `qualitymd evaluation run [--model <model>] [--area <area-ref>] [--factor <factor-ref>...] [--evaluator <name>] --json`.
 8. **Service harness checkpoints.** While the receipt status is
-   `awaiting_evaluator`, judge only the supplied bounded request, submit the
-   result envelope with
+   `awaiting_evaluator`, serve the supplied bounded request — judge a judgment
+   request from its bounded evidence only; gather a `resolveSource` request's
+   described material and return it verbatim — submit the result envelope with
    `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
    repeat until a terminal receipt. In unattended automation the loop adds no
    interactive gates: the run advances, returns a report, or stops with the

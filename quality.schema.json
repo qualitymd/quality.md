@@ -1,5 +1,5 @@
 {
-  "$comment": "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). Structural-only: passing this schema does not imply full conformance. Semantic rules (factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, and rating-level ordering and uniqueness) are enforced by `qualitymd lint`, not here. Generated from internal/schema and guarded against drift by a consistency test; do not edit by hand — run `go generate ./...`.",
+  "$comment": "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). Structural-only: passing this schema does not imply full conformance. Semantic rules (factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, and rating-level uniqueness) are enforced by `qualitymd lint`, not here. Generated from internal/schema and guarded against drift by a consistency test; do not edit by hand — run `go generate ./...`.",
   "$defs": {
     "area": {
       "properties": {
@@ -24,7 +24,18 @@
           "type": "object"
         },
         "description": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "factors": {
           "additionalProperties": {
@@ -45,10 +56,32 @@
           "type": "object"
         },
         "source": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "title": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -59,7 +92,18 @@
     "factor": {
       "properties": {
         "description": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "factors": {
           "additionalProperties": {
@@ -80,7 +124,18 @@
           "type": "object"
         },
         "title": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -91,17 +146,50 @@
     "ratingLevel": {
       "properties": {
         "criterion": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "description": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "level": {
           "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
           "type": "string"
         },
         "title": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -114,25 +202,80 @@
     "requirement": {
       "properties": {
         "assessment": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "description": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "factors": {
           "items": {
-            "type": "string"
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
           },
           "type": "array"
         },
         "ratings": {
           "additionalProperties": {
-            "type": "string"
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
           },
           "type": "object"
         },
         "title": {
-          "type": "string"
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
         }
       },
       "required": [
@@ -184,7 +327,18 @@
       "type": "object"
     },
     "description": {
-      "type": "string"
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
     },
     "factors": {
       "additionalProperties": {
@@ -212,10 +366,32 @@
       "type": "object"
     },
     "source": {
-      "type": "string"
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
     },
     "title": {
-      "type": "string"
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
     }
   },
   "required": [

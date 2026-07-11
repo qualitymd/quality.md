@@ -1,5 +1,152 @@
 # Changes update log
 
+## 2026-07-11
+
+- **In-Review**: Implemented
+  [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
+  and advanced it from `In-Progress` to `In-Review`. The runner now detects
+  each effective selector's kind (glob metacharacters → glob, existing
+  filesystem entry → path, otherwise prose) and pins it at run creation in
+  `evaluation.json`'s new per-area `sources` provenance record (artifact
+  schema version 6); prose selectors resolve through evaluator-backed
+  `resolveSource` work units on the existing harness checkpoint transport,
+  whose returned files are validated, capped, hashed, and captured into the
+  bounded bundle — persisted atomically with unit completion — before any
+  dependent judgment (R1–R3, R6); a selector kind the selected evaluator
+  cannot serve fails the run at plan time with the new `selector_unsupported`
+  category, distinct from `source_unavailable`, with a per-unit guard as
+  backstop (R4); and dry-run previews plus run receipts surface the per-area
+  source dispatch plan while the provenance record carries resolver and
+  harness-runtime attribution (R5). Durable specs (`SPECIFICATION.md`, the
+  evaluation [runner](../specs/evaluation/runner.md),
+  [protocol](../specs/evaluation/protocol.md),
+  [orchestration](../specs/evaluation/orchestration.md),
+  [evaluator contract](../specs/evaluation/evaluator-contract.md),
+  [evaluation.json](../specs/evaluation/evaluation-json.md),
+  [evaluation run](../specs/cli/evaluation-run.md), and the
+  [skill evaluation workflow](../specs/skills/quality-skill/evaluation.md)),
+  the bundled skill's evaluate workflow, the regenerated Mintlify
+  specification page, and release notes were updated; the affected-artifacts
+  list was reconciled (orchestration and evaluation-run specs added;
+  `quality.schema.json` confirmed unchanged). Verified with the full local
+  gate (`vet`, `lint`, tests, docs generators and link check) and an
+  end-to-end CLI smoke run: prose dry-run plan, `resolveSource` checkpoint,
+  captured provenance, and the dependent judgment request carrying the
+  captured bundle. Updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
+  from `Design` to `In-Progress`. The functional spec (R1–R6) and design doc
+  are settled; implementation begins: runner-owned kind detection pinned at
+  run creation in the per-area `sources` record, `resolveSource` work units
+  riding the harness checkpoint transport with capture-before-dependents, the
+  `SourceResolution` capability with the plan-time `selector_unsupported`
+  failure, and the durable spec updates. Updated the bundle [index](index.md).
+
+- **Design**: Advanced
+  [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
+  from `Draft` to `Design`. Settled the two gating questions in the
+  [functional spec](0197-resolver-dispatched-source-selectors/spec.md):
+  `SPECIFICATION.md` commits to non-filesystem selectors (Q2), and a selector
+  stays a bare string with detected kind — glob metacharacters → glob,
+  existing filesystem entry → path, otherwise prose — so the frontmatter shape
+  and `quality.schema.json` do not move (Q1). Added the
+  [design doc](0197-resolver-dispatched-source-selectors/design.md): kind
+  detection is a runner-owned classifier in front of the untouched 0196
+  packaging path, pinned at run creation in a new per-area `sources` record in
+  `evaluation.json`; prose resolution rides the existing harness checkpoint
+  transport as first-class `resolveSource` work units that capture returned
+  material (caps, hashes, provenance) before dependent judgment; a
+  `SourceResolution` evaluator capability plus a plan-time
+  `selector_unsupported` failure keeps unsupported selectors loud, early, and
+  distinct from `source_unavailable`. Recorded the accepted Q1 typo hazard and
+  its mitigations as design trade-offs. Reconciled the parent's affected
+  artifacts (skill resolution step confirmed; `internal/model` and the
+  companion schema deliberately unchanged) and updated the bundle
+  [index](index.md). No code changed (gated to In-Progress).
+
+- **Draft**: Opened
+  [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
+  (`status: Draft`), the follow-up 0196 deferred: resolve every effective
+  source selector through a per-kind resolver feeding the bounded, hashed
+  evidence bundle, dispatch non-deterministic kinds to the invoking harness
+  through the existing checkpoint transport, fail unsupported kinds with a
+  classification distinct from `source_unavailable`, and record bundle
+  provenance in the run artifact. Added the parent concept and child folder
+  with the [functional spec](0197-resolver-dispatched-source-selectors/spec.md)
+  (R1–R6, gated by two open questions on selector typing and format
+  commitment), and listed it in the bundle [index](index.md). Motivated by
+  0196's [considerations](archive/0196-spec-faithful-model-reading/considerations.md)
+  and the 2026-07-11 re-validation, which confirmed the bundle contract's
+  guarantees (input-hash guard, evidence-bound re-judgment, resumability) as
+  the seam resolvers must feed and surfaced default-selector granularity as
+  design pressure.
+
+- **Done**: Implemented and archived
+  [0196 - Spec-faithful model reading](archive/0196-spec-faithful-model-reading.md).
+  The shared `model.EffectiveSource` resolver now serves both the evaluation
+  runner and `status`, so a source-less root area packages the document's
+  directory and source-less child areas inherit the nearest ancestor's selector
+  (R1–R2); source packaging expands glob selectors through the same sorted,
+  hashed, capped bundling via a small in-tree matcher (R3), skips symlinked and
+  other non-regular entries instead of crashing (R5), and fails work whose
+  selector packages zero readable files with a classified `source_unavailable`
+  naming the selector across the sequential, concurrent, and harness dispatch
+  paths (R4). `qualitymd lint` reports extension frontmatter as the new
+  warning-severity `unknown-key` advisory instead of an `invalid-frontmatter`
+  error, so conforming extension documents lint valid and load (R6). The
+  companion `quality.schema.json` accepts any non-empty scalar for content
+  scalars and drops the inaccurate ordering-enforcement `$comment` claim
+  (R7–R8). Durable specs ([runner](../specs/evaluation/runner.md),
+  [lint rules](../specs/cli/lint-rules.md),
+  [quality.schema.json](../specs/quality-schema-json.md)), the regenerated
+  schema artifact, and release notes were updated; the bundled skill needed no
+  change. Verified with `mise run check`. Moved the case into
+  [`archive/`](archive/index.md) and updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0196 - Spec-faithful model reading](archive/0196-spec-faithful-model-reading.md) from
+  `Design` to `In-Progress`. The functional spec (R1–R8) and design doc are
+  settled; implementation of the shared `EffectiveSource` resolver, glob and
+  symlink-safe source packaging with the `source_unavailable` guard, the
+  warning-severity `unknown-key` lint reclassification, the companion-schema
+  scalar widening, and the durable spec updates begins. Updated the bundle
+  [index](index.md).
+
+- **Design**: Advanced
+  [0196 - Spec-faithful model reading](archive/0196-spec-faithful-model-reading.md) from
+  `Draft` to `Design` and added its
+  [design doc](archive/0196-spec-faithful-model-reading/design.md). The design extracts a
+  shared `effectiveSource` resolver so `runner` and `status` cannot diverge on
+  root-default and ancestor-inherited source (R1–R2), adds glob and symlink-safe
+  packaging plus a `source_unavailable` guard against silent empty evidence
+  (R3–R5), reclassifies unknown frontmatter keys from an `invalid-frontmatter`
+  error to a warning-severity `unknown-key` advisory so spec-permitted extensions
+  lint valid (R6), and widens the companion schema's content scalars beyond
+  `string` while correcting an inaccurate ordering-enforcement claim (R7–R8).
+  Resolved the four design questions (D1–D4): `**` via a small in-tree matcher
+  with no new dependency; globs honor the skip list except a literal-segment
+  opt-in (`vendor/**`); binary-only sources are `source_unavailable`; and the
+  shared `EffectiveSource` resolver lives in `internal/model`. No code changed
+  (gated to In-Progress).
+
+- **Draft**: Opened
+  [0196 - Spec-faithful model reading](archive/0196-spec-faithful-model-reading.md)
+  (`status: Draft`). The case corrects a family of places where the CLI narrows
+  an abstract `SPECIFICATION.md` concept to a closed assumption: the runner
+  treats `source` as a single present literal path (source-less root/child areas
+  get empty evidence, globs are not expanded, unresolved selectors are judged
+  against nothing, and the directory walk crashes on committed symlinked skill
+  directories), `lint` rejects spec-permitted extension frontmatter as invalid,
+  and the companion JSON schema forces scalars to strings and overclaims an
+  ordering check. Diagnosed from duplicated failed evaluation runs in two
+  external projects. Added the parent concept, child folder with
+  [functional spec](archive/0196-spec-faithful-model-reading/spec.md) (R1–R8) and a
+  [considerations](archive/0196-spec-faithful-model-reading/considerations.md) sketch on
+  resolver-dispatched selectors, and listed it in the bundle
+  [index](index.md). `SPECIFICATION.md` is the conformance target and is
+  intentionally unchanged.
+
 ## 2026-07-10
 
 - **Done**: Implemented and archived

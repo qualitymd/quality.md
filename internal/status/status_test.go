@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/qualitymd/quality.md/internal/evaluation"
+	"github.com/qualitymd/quality.md/internal/model"
 )
 
 func TestSnapshotMissingModelSucceeds(t *testing.T) {
@@ -151,11 +152,11 @@ areas:
 		t.Fatalf("sourceCoverage = %#v, want root plus one child area", snapshot.Model.SourceCoverage)
 	}
 	root := snapshot.Model.SourceCoverage[0]
-	if root.SourceState != SourceStateDefault || root.Source != "" {
+	if root.SourceState != model.SourceStateDefault || root.Source != "" {
 		t.Fatalf("root source coverage = %#v, want default source state and no declared source", root)
 	}
 	child := snapshot.Model.SourceCoverage[1]
-	if child.SourceState != SourceStateDefault {
+	if child.SourceState != model.SourceStateDefault {
 		t.Fatalf("child source coverage = %#v, want default source state inherited from document default", child)
 	}
 }

@@ -109,6 +109,9 @@ func (e *engine) save() error {
 // run status; classified failures land in the artifact state rather than the
 // error return.
 func (e *engine) execute(ctx context.Context) (string, error) {
+	if failure := e.unsupportedSelectorFailure(); failure != nil {
+		return e.markRunFailed(failure)
+	}
 	if e.artifact.Manifest.Concurrency > 1 && !e.harnessBacked() {
 		return e.executeConcurrent(ctx)
 	}
@@ -153,6 +156,46 @@ func (e *engine) execute(ctx context.Context) (string, error) {
 	}
 	e.logs.event("run-completed", map[string]any{"run": e.artifact.Manifest.Run.Label})
 	return StatusCompleted, nil
+}
+
+// unsupportedSelectorFailure runs the plan-time resolver check: if any
+// in-scope area's pinned selector kind has no resolver under the selected
+// evaluator, the run fails before any judgment is dispatched, naming the
+// selector, its detected kind, and the remedy. Distinct from
+// source_unavailable — the material is not missing; this run cannot resolve
+// this kind of selector.
+func (e *engine) unsupportedSelectorFailure() *Failure {
+	if e.selection.Evaluator.Capabilities().SourceResolution {
+		return nil
+	}
+	for _, area := range e.graph.Plan.Areas {
+		record := e.artifact.Sources[area.Ref]
+		if record == nil || record.Resolver != ResolverHarness {
+			continue
+		}
+		return &Failure{
+			Category: evaluator.FailureSelectorUnsupported,
+			Detail:   selectorUnsupportedDetail(area.Ref, record.Selector, SourceKind(record.Kind), e.selection.Name),
+		}
+	}
+	return nil
+}
+
+// markRunFailed records a run-level classified failure before any work unit
+// is dispatched.
+func (e *engine) markRunFailed(failure *Failure) (string, error) {
+	e.artifact.State.Status = StatusFailed
+	e.artifact.State.Failure = failure
+	e.artifact.State.CompletedAt = e.timestamp()
+	if err := e.save(); err != nil {
+		return StatusFailed, err
+	}
+	e.logs.event("run-failed", map[string]any{
+		"category": string(failure.Category),
+		"detail":   failure.Detail,
+	})
+	e.progress("run failed: %s: %s", failure.Category, failure.Detail)
+	return StatusFailed, nil
 }
 
 // markCancelled records a user interruption, leaving the artifact valid and
@@ -235,16 +278,22 @@ func (e *engine) sortResultPayloads() {
 // runner's retry policy. It returns failed=true when the unit (and so the
 // run) fails with a classified failure.
 func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error) {
+	if failure := e.resolveSourceGuard(unit); failure != nil {
+		return e.failUnit(unit, failure)
+	}
 	if e.harnessBacked() {
 		return e.runHarnessUnit(unit)
 	}
 	req, err := e.buildWorkRequest(unit)
 	if err != nil {
+		if failure := sourceUnavailableFailure(err); failure != nil {
+			return e.failUnit(unit, failure)
+		}
 		return false, err
 	}
 	inputHash := workUnitInputHash(req)
 	state := e.artifact.State.unit(unit.ID)
-	if state.Status == UnitCompleted && state.InputHash == inputHash && len(e.payloadsByWorkUnit(unit.ID)) > 0 {
+	if state.Status == UnitCompleted && state.InputHash == inputHash && e.unitResultPresent(unit) {
 		e.logs.event("work-unit-reused", map[string]any{"workUnit": unit.ID})
 		return false, nil
 	}
@@ -262,6 +311,56 @@ func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error)
 		return true, err
 	}
 	e.progress("%s failed: %s: %s", unit.ID, lastFailure.Category, lastFailure.Detail)
+	return true, nil
+}
+
+// resolveSourceGuard is the per-unit backstop behind the plan-time
+// unsupported-selector check: a resolution work unit must never be dispatched
+// to an evaluator that cannot serve source resolution requests.
+func (e *engine) resolveSourceGuard(unit *Unit) *Failure {
+	if unit.Kind != KindResolveSource || e.selection.Evaluator.Capabilities().SourceResolution {
+		return nil
+	}
+	record := e.artifact.Sources[unit.Subject]
+	if record == nil {
+		return &Failure{
+			Category: evaluator.FailureInternal,
+			Detail:   fmt.Sprintf("no pinned source record for %s", unit.Subject),
+		}
+	}
+	return &Failure{
+		Category: evaluator.FailureSelectorUnsupported,
+		Detail:   selectorUnsupportedDetail(unit.Subject, record.Selector, SourceKind(record.Kind), e.selection.Name),
+	}
+}
+
+// unitResultPresent reports whether a completed unit's persisted effect is
+// present in the artifact: accepted payloads for judgment units, a captured
+// source bundle for resolution units.
+func (e *engine) unitResultPresent(unit *Unit) bool {
+	if unit.Kind == KindResolveSource {
+		record := e.artifact.Sources[unit.Subject]
+		return record != nil && record.BundleHash != "" && len(record.Files) > 0
+	}
+	return len(e.payloadsByWorkUnit(unit.ID)) > 0
+}
+
+// failUnit records one work unit's terminal classified failure and fails the
+// run without dispatching the unit.
+func (e *engine) failUnit(unit *Unit, failure *Failure) (bool, error) {
+	state := e.artifact.State.unit(unit.ID)
+	state.Status = UnitFailed
+	state.Failure = failure
+	e.artifact.State.Failure = failure
+	e.logs.event("work-unit-attempt-failed", map[string]any{
+		"workUnit": unit.ID,
+		"category": string(failure.Category),
+		"detail":   failure.Detail,
+	})
+	if err := e.save(); err != nil {
+		return true, err
+	}
+	e.progress("%s failed: %s: %s", unit.ID, failure.Category, failure.Detail)
 	return true, nil
 }
 
@@ -337,6 +436,9 @@ func (e *engine) acceptResultPayload(unit *Unit, payload map[string]any) ([]map[
 	if payload == nil {
 		return nil, evaluator.FailureInvalidEvaluatorOutput, "evaluator returned no payload"
 	}
+	if unit.Kind == KindResolveSource {
+		return e.acceptSourceResolution(unit, payload)
+	}
 	if unit.Kind == KindAssessRateRequirement {
 		return e.acceptAssessRate(unit, payload)
 	}
@@ -354,6 +456,26 @@ func (e *engine) acceptResultPayload(unit *Unit, payload map[string]any) ([]map[
 		return nil, evaluator.FailureSchemaInvalidOutput, err.Error()
 	}
 	return []map[string]any{normalized}, "", ""
+}
+
+// acceptSourceResolution validates a resolution result's returned material
+// and captures it as the area's bounded, hashed source bundle in the
+// artifact's sources record. The capture persists atomically with the unit's
+// completion (the shared acceptUnit save), so every dependent judgment
+// request is built from persisted data. Resolution units persist no result
+// payloads: the captured bundle is the unit's effect of record.
+func (e *engine) acceptSourceResolution(unit *Unit, payload map[string]any) ([]map[string]any, evaluator.FailureCategory, string) {
+	bundle, err := captureResolvedSource(payload)
+	if err != nil {
+		return nil, evaluator.FailureInvalidEvaluatorOutput, err.Error()
+	}
+	record := e.artifact.Sources[unit.Subject]
+	if record == nil {
+		return nil, evaluator.FailureInternal, fmt.Sprintf("no pinned source record for %s", unit.Subject)
+	}
+	record.completeFromBundle(bundle, e.timestamp(), true)
+	delete(e.sourceBundles, unit.Subject)
+	return nil, "", ""
 }
 
 // acceptAssessRate splits the combined requirement judgment composite into

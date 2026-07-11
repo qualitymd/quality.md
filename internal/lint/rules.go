@@ -58,7 +58,9 @@ func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, ba
 				s.add(RuleMisplacedRootKey, "The area `"+context.areaName+"` declares `"+key.Value+"`; `"+key.Value+"` is only valid on the model root.", s.loc(key, path, locationLabel), nil)
 				continue
 			}
-			s.invalid(key, path, locationLabel, unknownPropertyMessage(node, key.Value, context))
+			// An unrecognized key is spec-permitted extension frontmatter, not
+			// invalidity; the advisory only surfaces a possible typo.
+			s.add(RuleUnknownKey, unknownKeyMessage(node, key.Value, context), s.loc(key, path, locationLabel), nil)
 			continue
 		}
 		s.checkSchemaProperty(node, property, owner, key, value, path, locationLabel, context)
@@ -162,20 +164,21 @@ func (s *runState) checkScalarSequenceItems(value *yaml.Node, path []PathSegment
 	}
 }
 
-func unknownPropertyMessage(node qschema.Node, key string, context schemaContext) string {
+func unknownKeyMessage(node qschema.Node, key string, context schemaContext) string {
+	const advice = "the format permits extension properties, but check it is not a typo of a model property."
 	switch node.Kind {
 	case qschema.ModelKind:
-		return "The frontmatter declares an unknown root key `" + key + "`; a QUALITY.md model may only use the specified model properties."
+		return "The frontmatter declares `" + key + "`, which is not a model root property; " + advice
 	case qschema.AreaKind:
-		return "The area `" + context.areaName + "` declares an unknown key `" + key + "`; areas may only use area properties."
+		return "The area `" + context.areaName + "` declares `" + key + "`, which is not an area property; " + advice
 	case qschema.FactorKind:
-		return "The factor `" + context.factorName + "` declares an unknown key `" + key + "`; factors may only use factor properties."
+		return "The factor `" + context.factorName + "` declares `" + key + "`, which is not a factor property; " + advice
 	case qschema.RequirementKind:
-		return "The requirement `" + context.requirement + "` declares an unknown key `" + key + "`; requirements may only use requirement properties."
+		return "The requirement `" + context.requirement + "` declares `" + key + "`, which is not a requirement property; " + advice
 	case qschema.RatingLevelKind:
-		return "A rating level declares an unknown key `" + key + "`; rating levels may only use " + formatSchemaKeys(qschema.RatingLevel.PropertyNames()) + "."
+		return "A rating level declares `" + key + "`, which is not a rating level property (" + formatSchemaKeys(qschema.RatingLevel.PropertyNames()) + "); " + advice
 	default:
-		return "Unknown property `" + key + "`."
+		return "The key `" + key + "` is not a model property; " + advice
 	}
 }
 

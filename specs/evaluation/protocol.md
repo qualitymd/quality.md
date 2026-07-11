@@ -21,17 +21,21 @@ An evaluation run **MUST** perform these protocol moves:
 
 1. `frameEvaluation`
 2. `frameAreaEvaluation` for each in-scope area
-3. `frameRequirementEvaluation` for each local requirement
-4. `assessRequirement` for each framed requirement
-5. `rateRequirement` for each requirement assessment
-6. `frameFactorAnalysis` and `analyzeFactor` for each factor node bottom-up
-7. `frameAreaAnalysis` and `analyzeArea` for each area bottom-up
-8. `rankFindings`
-9. `recommend`
-10. `accountForFindingCoverage`
-11. `rankRecommendations`
-12. `assembleEvaluationOutputResult`
-13. `generateEvaluationReports`
+3. `resolveSource` for each in-scope area whose effective source selector has
+   no deterministic resolver: gather the material the selector describes and
+   capture it as the area's bounded evidence bundle before any of the area's
+   requirement judgment
+4. `frameRequirementEvaluation` for each local requirement
+5. `assessRequirement` for each framed requirement
+6. `rateRequirement` for each requirement assessment
+7. `frameFactorAnalysis` and `analyzeFactor` for each factor node bottom-up
+8. `frameAreaAnalysis` and `analyzeArea` for each area bottom-up
+9. `rankFindings`
+10. `recommend`
+11. `accountForFindingCoverage`
+12. `rankRecommendations`
+13. `assembleEvaluationOutputResult`
+14. `generateEvaluationReports`
 
 The protocol **MUST NOT** require a specific execution engine. Sequential
 execution and parallel worker execution are both valid when they satisfy the same
@@ -91,6 +95,17 @@ When a factor has no direct requirements (an umbrella factor), its factor
 analysis result **MUST** record `localAnalysis` with the `empty` status and a
 reason, because there is no local signal to analyze; the factor's
 `localAndDescendantAnalysis` carries the roll-up of its child factor analyses.
+
+## Source resolution flow
+
+`resolveSource` is gathering, never judgment: it returns the material its
+selector describes as bounded files and **MUST NOT** assess, rate, or filter
+by quality. The captured bundle **MUST** exist before any of the area's
+requirement assessment, so the gatherer and the judge are never the same
+uncontrolled step. Areas whose selectors resolve deterministically (path and
+glob) have no `resolveSource` move; the
+[runner's source packaging contract](runner.md#source-packaging) owns kind
+detection and dispatch.
 
 ## Requirement flow
 

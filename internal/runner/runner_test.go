@@ -116,6 +116,13 @@ func (s *scriptedEvaluator) Evaluate(_ context.Context, req evaluator.WorkReques
 func (s *scriptedEvaluator) payloadFor(req evaluator.WorkRequest) (map[string]any, error) {
 	analysis := map[string]any{"status": "analyzed", "ratingLevelId": "rating:target", "rationale": "Synthesized."}
 	switch UnitKind(req.Kind) {
+	case KindResolveSource:
+		return map[string]any{
+			"files": []any{map[string]any{
+				"path":    "tickets/T-1",
+				"content": "T-1: the API times out under load.",
+			}},
+		}, nil
 	case KindAssessRateRequirement:
 		return map[string]any{
 			"assessment": map[string]any{

@@ -1,5 +1,47 @@
 # Specs update log
 
+## 2026-07-11
+
+- **Revision**: Implemented durable spec changes for
+  [0197 - Resolver-dispatched source selectors](../changes/0197-resolver-dispatched-source-selectors.md).
+  [`SPECIFICATION.md`](../SPECIFICATION.md) commits the format to
+  non-filesystem source selectors: `source` stays a single string, and its
+  kind is detected from the bare selector (glob metacharacters → glob,
+  existing filesystem entry → path, otherwise prose) with the filesystem
+  interpretation always winning. The evaluation [Runner](evaluation/runner.md)
+  source contract becomes detection + resolution + packaging with kinds
+  pinned at run creation, adds the resolver-independent captured-bundle
+  contract and harness-dispatched `resolveSource` resolution, and gains the
+  `selector_unsupported` failure category distinct from `source_unavailable`.
+  [Orchestration](evaluation/orchestration.md) and the
+  [Protocol](evaluation/protocol.md) add the `resolveSource` unit/move gating
+  the area's requirement judgment; the
+  [Evaluator contract](evaluation/evaluator-contract.md) adds the dedicated
+  source-resolution capability served by the harness evaluator;
+  [evaluation.json](evaluation/evaluation-json.md) bumps to schema version 6
+  with the per-area `sources` provenance record;
+  [qualitymd evaluation run](cli/evaluation-run.md) previews and receipts
+  carry the per-area source dispatch plan; and the
+  [/quality evaluation workflow](skills/quality-skill/evaluation.md) serves
+  resolution requests alongside judgment. `quality.schema.json` and its spec
+  are deliberately unchanged — the frontmatter shape does not move.
+
+- **Revision**: Implemented durable spec changes for
+  [0196 - Spec-faithful model reading](../changes/archive/0196-spec-faithful-model-reading.md).
+  The evaluation [Runner](evaluation/runner.md) source-packaging contract now
+  requires the format's source resolution (root default to the document's
+  directory, nearest-ancestor inheritance), glob expansion over the workspace,
+  symlink-safe walking of non-regular entries, and a loud `source_unavailable`
+  failure — never an empty bundle — when a selector resolves to nothing.
+  [qualitymd lint rules](cli/lint-rules.md) reclassifies spec-permitted
+  extension frontmatter from an `invalid-frontmatter` error to the
+  warning-severity `unknown-key` advisory (root `config` stays exempt;
+  `misplaced-root-key` stays an error).
+  [quality.schema.json](quality-schema-json.md) requires content scalars
+  (`assessment`, `criterion`, `ratings` values) to accept any non-empty scalar
+  rather than only JSON strings, and forbids annotations claiming enforcement
+  no tool performs (the rating-level ordering `$comment`).
+
 ## 2026-07-10
 
 - **Revision**: Implemented durable spec changes for

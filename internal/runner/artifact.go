@@ -12,8 +12,11 @@ import (
 
 const (
 	// ArtifactSchemaVersion versions the evaluation.json run artifact.
-	// Versions 1-3 belong to the historical multi-file data tree.
-	ArtifactSchemaVersion = 5
+	// Versions 1-3 belong to the historical multi-file data tree; version 4
+	// belongs to the strategy-named runner artifact; version 5 predates the
+	// per-area sources provenance record that resume reads pinned selector
+	// kinds from.
+	ArtifactSchemaVersion = 6
 	// ArtifactKind marks the evaluation.json document kind.
 	ArtifactKind = "EvaluationRun"
 	// ArtifactFile is the run-root artifact file name.
@@ -47,8 +50,63 @@ type Artifact struct {
 	Kind          string   `json:"kind"`
 	Manifest      Manifest `json:"manifest"`
 	State         State    `json:"state"`
-	Results       Results  `json:"results"`
-	Outputs       *Outputs `json:"outputs,omitempty"`
+	// Sources is the per-area source provenance record, keyed by area
+	// reference: which selector, detected kind, and resolver produced each
+	// packaged bundle. Written at run creation with the pinned selector and
+	// kind, completed as bundles materialize. Resume reads the pinned kind
+	// instead of re-detecting, so a filesystem change mid-run cannot silently
+	// re-dispatch a selector to a different resolver.
+	Sources map[string]*SourceRecord `json:"sources"`
+	Results Results                  `json:"results"`
+	Outputs *Outputs                 `json:"outputs,omitempty"`
+}
+
+// SourceRecord is one area's source provenance of record: the selector, its
+// pinned kind, the resolver that served it, and the captured bundle hashes.
+// Deterministic (walked) areas record file hashes without content — their
+// material is re-readable from the workspace. Harness-resolved areas keep
+// content, because the captured bundle is the evidence of record: resume
+// rebuilds dependent requests from it, never re-gathers.
+type SourceRecord struct {
+	Selector string `json:"selector"`
+	Kind     string `json:"kind"`
+	Resolver string `json:"resolver"`
+	// HarnessRuntime is the harness runtime that served resolution, when the
+	// resolver is harness dispatch.
+	HarnessRuntime string `json:"harnessRuntime,omitempty"`
+	// BundleHash is the captured bundle's stable hash; empty until the bundle
+	// materializes.
+	BundleHash string `json:"bundleHash,omitempty"`
+	CapturedAt string `json:"capturedAt,omitempty"`
+	// Truncated reports whether the captured bundle hit its size cap.
+	Truncated bool               `json:"truncated,omitempty"`
+	Files     []SourceRecordFile `json:"files,omitempty"`
+}
+
+// SourceRecordFile is one captured file's provenance. Content is present only
+// for harness-resolved bundles.
+type SourceRecordFile struct {
+	Path      string `json:"path"`
+	SHA256    string `json:"sha256"`
+	Truncated bool   `json:"truncated,omitempty"`
+	Content   string `json:"content,omitempty"`
+}
+
+// completeFromBundle fills the record's captured-bundle provenance from a
+// materialized bundle. keepContent preserves file contents for bundles that
+// cannot be re-read from the workspace (harness-resolved material).
+func (r *SourceRecord) completeFromBundle(bundle *SourceBundle, capturedAt string, keepContent bool) {
+	r.BundleHash = bundle.Hash
+	r.CapturedAt = capturedAt
+	r.Truncated = bundle.Truncated
+	r.Files = r.Files[:0]
+	for _, file := range bundle.Files {
+		entry := SourceRecordFile{Path: file.Path, SHA256: file.SHA256, Truncated: file.Truncated}
+		if keepContent {
+			entry.Content = file.Content
+		}
+		r.Files = append(r.Files, entry)
+	}
 }
 
 // Manifest carries the run's immutable identity and setup.

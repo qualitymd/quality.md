@@ -800,3 +800,9 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   evaluation execution strategies with a single concurrency setting and runs
   dependency-ready evaluator steps concurrently under runner-owned coordination
   (`Done`).
+- [0196 — Spec-faithful model reading](0196-spec-faithful-model-reading.md) -
+  restores CLI fidelity to `SPECIFICATION.md` for source selectors (root
+  default, ancestor inheritance, globs, symlink-safe walking, loud
+  `source_unavailable`), reclassifies extension frontmatter to a warning-severity
+  `unknown-key` advisory, and widens companion-schema content scalars beyond
+  JSON strings (`Done`).

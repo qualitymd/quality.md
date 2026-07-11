@@ -45,12 +45,28 @@ YAML value shapes, the model-content group, and the rating-scale minimum — MUS
 derive from the single structural schema declaration that the linter consumes.
 Rule logic MUST NOT maintain a second valid-key list independent of that schema.
 
+A key that names no model property on its node — at the root or nested inside
+areas, factors, requirements, and rating levels — is extension frontmatter,
+which the format specification permits
+([Extensions](../../SPECIFICATION.md#extensions)). The `unknown-key` rule
+**MUST** report it as a warning-severity advisory, surfacing a possible typo of
+a model property, and **MUST NOT** classify the document as invalid or block
+model loading because of it. A known model-root key placed on a nested area is
+a structural misplacement, not an extension, and remains the
+`misplaced-root-key` error.
+
+> Rationale: the format permits _any_ additional frontmatter property, so an
+> unknown-key error marked conforming documents non-conforming and disagreed
+> with the deliberately open companion schema
+> ([`quality.schema.json`](../quality-schema-json.md)). Warning severity — not
+> an extension-namespace allowlist — is the faithful reading, and keeping the
+> advisory (rather than deleting detection) preserves the typo authoring
+> aid. — 0196
+
 The unknown-key rule **MUST** be internally configurable by rule options so a
-documented qualitymd tooling key can be allowed without hard-coding a one-off
+documented qualitymd tooling key can be exempted without hard-coding a one-off
 exception into schema traversal. The default qualitymd lint profile **MUST**
-allow root `config` and **MUST** keep all other unknown root keys as error
-findings. Unknown nested keys inside areas, factors, requirements, and rating
-levels **MUST** remain error findings by default.
+exempt root `config` from the advisory.
 
 Root `config` is a qualitymd tooling convention, not a normative model property.
 `lint` **MUST** accept it only at the root and **MUST** validate its value with
@@ -218,17 +234,20 @@ Each enforces a **MUST** — its finding means the file is not a valid
 
 ### Warnings
 
-Each enforces a mechanically determinable **SHOULD**/**RECOMMENDED** — its
-finding is advisory and does not affect the exit code.
+Each finding is advisory and does not affect the exit code. Most enforce a
+mechanically determinable **SHOULD**/**RECOMMENDED**; `unknown-key` instead
+surfaces spec-permitted extension frontmatter as a possible typo without
+making it a conformance claim.
 
-| Rule                         | Enforces (format spec)                                                     | Description                                                                                                                        | Fixable | Fixable rationale                                                                             |
-| ---------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
-| `missing-level-description`  | _Rating scale_ — a level `description` is RECOMMENDED                      | Warns when a rating level declares no `description`.                                                                               | No      | A description states the level's meaning and requires authored content.                       |
-| `missing-factor-description` | _Factor_ — a factor SHOULD declare a `description`                         | Warns when a factor declares no `description`.                                                                                     | No      | A description states what the factor means and requires authored content.                     |
-| `duplicate-factor-name`      | _Factor_ — an area SHOULD avoid reusing one factor name in its factor tree | Warns when the same factor name appears more than once inside one area's recursive factor tree.                                    | No      | Repair requires choosing whether to rename, merge, or keep the distinct factors.              |
-| `empty-factor`               | _Factor_ — a factor SHOULD lead to at least one requirement                | Warns when a factor leads to no `requirements` declared under it, referencing it under `factors`, or reached through a sub-factor. | No      | Repair requires adding or moving requirements, or adding factor references with model intent. |
-| `empty-area`                 | _Area_ — each area SHOULD lead to a requirement somewhere in its subtree   | Warns when an area's subtree reaches no `requirements`.                                                                            | No      | Repair requires choosing area content or restructuring the area tree.                         |
-| `empty-property`             | _YAML Frontmatter_ — null or empty optional properties SHOULD be omitted   | Warns when an optional property is present but null or empty instead of omitted.                                                   | Yes     | Removing the empty optional property is the required structural repair.                       |
+| Rule                         | Enforces (format spec)                                                     | Description                                                                                                                           | Fixable | Fixable rationale                                                                             |
+| ---------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `missing-level-description`  | _Rating scale_ — a level `description` is RECOMMENDED                      | Warns when a rating level declares no `description`.                                                                                  | No      | A description states the level's meaning and requires authored content.                       |
+| `missing-factor-description` | _Factor_ — a factor SHOULD declare a `description`                         | Warns when a factor declares no `description`.                                                                                        | No      | A description states what the factor means and requires authored content.                     |
+| `duplicate-factor-name`      | _Factor_ — an area SHOULD avoid reusing one factor name in its factor tree | Warns when the same factor name appears more than once inside one area's recursive factor tree.                                       | No      | Repair requires choosing whether to rename, merge, or keep the distinct factors.              |
+| `empty-factor`               | _Factor_ — a factor SHOULD lead to at least one requirement                | Warns when a factor leads to no `requirements` declared under it, referencing it under `factors`, or reached through a sub-factor.    | No      | Repair requires adding or moving requirements, or adding factor references with model intent. |
+| `empty-area`                 | _Area_ — each area SHOULD lead to a requirement somewhere in its subtree   | Warns when an area's subtree reaches no `requirements`.                                                                               | No      | Repair requires choosing area content or restructuring the area tree.                         |
+| `empty-property`             | _YAML Frontmatter_ — null or empty optional properties SHOULD be omitted   | Warns when an optional property is present but null or empty instead of omitted.                                                      | Yes     | Removing the empty optional property is the required structural repair.                       |
+| `unknown-key`                | _Extensions_ — a document MAY carry extension frontmatter properties       | Warns when a frontmatter key names no model property on its node; the format permits extension properties, but the key may be a typo. | No      | Repair requires knowing whether the key is an intended extension or a typo.                   |
 
 ### Not checked
 

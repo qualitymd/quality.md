@@ -149,7 +149,11 @@ binding are the [runner](../evaluation/runner.md#harness-checkpoints) and
 `qualitymd evaluation run --dry-run --json` **MUST** emit a deterministic
 machine-readable preview containing the resolved model, requested and planned
 scope, selected evaluator with its kind and selection reason, resolved
-concurrency, work-unit counts, `expectedRunPath`, and `nextActions`.
+concurrency, work-unit counts, the per-area source dispatch plan (each
+in-scope area's effective selector, detected kind, and serving resolver, per
+the [runner detection contract](../evaluation/runner.md#selector-kind-detection)),
+`expectedRunPath`, and `nextActions`. Run receipts carry the same per-area
+source dispatch plan, pinned at run creation.
 
 A dry run **MUST NOT** create the run folder and **MUST NOT** invoke an
 evaluator for judgment.

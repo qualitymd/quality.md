@@ -29,18 +29,20 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
+  "sources": {},
   "results": {},
   "outputs": {}
 }
 ```
 
-`schemaVersion` **MUST** be `5` and is a payload-shape marker only; versions
-1–3 belong to the historical multi-file data tree, and version 4 belongs to the
-strategy-named runner artifact. `kind` **MUST** be `EvaluationRun`.
+`schemaVersion` **MUST** be `6` and is a payload-shape marker only; versions
+1–3 belong to the historical multi-file data tree, version 4 belongs to the
+strategy-named runner artifact, and version 5 predates the per-area `sources`
+record. `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
 
@@ -79,6 +81,49 @@ status; those live only in run-local logs.
 > Rationale: provider-retained identifiers expire outside the run's control.
 > Keeping them out of the authoritative artifact keeps resume honest about what
 > is reconstructible. — 0192
+
+## Sources
+
+`sources` is the per-area source provenance of record, keyed by area
+reference. Each record **MUST** carry the area's effective `selector`, its
+detected `kind` (`path`, `glob`, or `prose`), and the `resolver` that serves
+it (`walk` for the deterministic filesystem walk, `harness` for
+checkpoint-dispatched resolution), written at run creation per the
+[runner detection contract](runner.md#selector-kind-detection). As each
+area's bundle materializes, the record **MUST** be completed with the
+`bundleHash`, `capturedAt`, a bundle `truncated` mark when a cap applied, and
+per-file entries carrying `path`, `sha256`, and a `truncated` mark; a
+harness-resolved record additionally carries the `harnessRuntime` that served
+resolution.
+
+```json
+"sources": {
+  "area:api": {
+    "selector": "open tickets in the support queue",
+    "kind": "prose",
+    "resolver": "harness",
+    "harnessRuntime": "claude-code",
+    "bundleHash": "…",
+    "capturedAt": "2026-07-11T00:00:00Z",
+    "files": [{ "path": "…", "sha256": "…", "content": "…" }]
+  }
+}
+```
+
+Walked (path/glob) records **MUST NOT** carry file `content` — their material
+is re-readable from the workspace, and resume re-packages it. Harness-resolved
+records **MUST** carry file `content`: the captured bundle is the evidence of
+record, and resume **MUST** rebuild dependent requests from it rather than
+re-gather. Captured prose file paths are labels for gathered material (a
+ticket ID, a URL, a repo-relative path), recorded and hashed verbatim.
+
+> Rationale: one record serves kind pinning, resume for harness-resolved
+> areas, and audit provenance — a reviewer reads the same shape for walked and
+> agent-gathered evidence and can tell which is which. Keeping captured
+> content in the one authoritative artifact preserves the store's atomic
+> write; the 512 KB bundle cap bounds the growth. Gathered material lands in
+> the artifact verbatim — the same class of exposure as quoted evidence in
+> reports. — 0197
 
 ## Results
 

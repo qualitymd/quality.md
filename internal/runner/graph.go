@@ -13,8 +13,14 @@ import (
 type UnitKind string
 
 const (
-	KindFrameEvaluation            UnitKind = "frameEvaluation"
-	KindFrameAreaEvaluation        UnitKind = "frameAreaEvaluation"
+	KindFrameEvaluation     UnitKind = "frameEvaluation"
+	KindFrameAreaEvaluation UnitKind = "frameAreaEvaluation"
+	// KindResolveSource gathers the material a non-deterministic source
+	// selector describes and captures it as the area's bounded evidence
+	// bundle; every source-consuming unit in the area depends on it. The
+	// captured bundle persists in the artifact's sources record, not as a
+	// result payload.
+	KindResolveSource              UnitKind = "resolveSource"
 	KindFrameRequirementEvaluation UnitKind = "frameRequirementEvaluation"
 	// KindAssessRateRequirement executes the protocol's assessRequirement and
 	// rateRequirement moves as one evaluator call; the unit persists both
@@ -382,23 +388,12 @@ func contains(values []string, want string) bool {
 	return false
 }
 
+// areaSource resolves an area's effective source selector through the shared
+// model resolver: the area's own declaration, else the nearest declaring
+// ancestor's, else the document default.
 func areaSource(spec *model.Spec, path model.AreaPath) string {
-	if len(path) == 0 {
-		return spec.Source
-	}
-	areas := spec.Areas
-	var current model.Area
-	for i, name := range path {
-		area, ok := areas[name]
-		if !ok {
-			return ""
-		}
-		current = area
-		if i < len(path)-1 {
-			areas = area.Areas
-		}
-	}
-	return current.Source
+	selector, _ := model.EffectiveSource(spec, path)
+	return selector
 }
 
 func lookupRequirement(spec *model.Spec, path model.AreaPath, name string) *model.Requirement {
@@ -435,8 +430,10 @@ func findFactorRequirement(factors map[string]model.Factor, name string) *model.
 // BuildGraph builds the deterministic work graph for a planned scope. Units
 // are emitted in topological model order: frames and requirement judgment in
 // projection order, then factor and area analyses bottom-up, then advice,
-// then report build.
-func BuildGraph(spec *model.Spec, planned evaluation.PlannedRunScope) (*Graph, error) {
+// then report build. sourceKinds carries each in-scope area's pinned selector
+// kind by area reference; areas whose kind needs a resolution work unit gain
+// one, and a nil or incomplete map means deterministic resolution throughout.
+func BuildGraph(spec *model.Spec, planned evaluation.PlannedRunScope, sourceKinds map[string]SourceKind) (*Graph, error) {
 	plan, err := BuildPlan(spec, planned)
 	if err != nil {
 		return nil, err
@@ -445,7 +442,8 @@ func BuildGraph(spec *model.Spec, planned evaluation.PlannedRunScope) (*Graph, e
 
 	frameEvaluation := g.add(&Unit{ID: string(KindFrameEvaluation), Kind: KindFrameEvaluation, DataKind: evaluation.DataKindEvaluationFrame})
 	areaFrames := g.addAreaFrameUnits(plan, frameEvaluation.ID)
-	requirementUnits := g.addRequirementUnits(plan, areaFrames)
+	resolveUnits := g.addSourceResolutionUnits(plan, areaFrames, sourceKinds)
+	requirementUnits := g.addRequirementUnits(plan, areaFrames, resolveUnits)
 	analyzeFactorUnits := g.addFactorAnalysisUnits(plan, requirementUnits)
 	analyzeAreaUnits := g.addAreaAnalysisUnits(plan, requirementUnits, analyzeFactorUnits)
 
@@ -523,12 +521,37 @@ func (g *Graph) addAreaFrameUnits(plan *ModelPlan, frameEvaluationID string) map
 	return areaFrames
 }
 
+// addSourceResolutionUnits emits one evaluator-backed resolution unit per
+// in-scope area whose pinned selector kind has no deterministic resolver, and
+// returns the unit IDs by area ref. The unit depends on the area's frame (the
+// resolution request carries it) and gates every source-consuming unit in the
+// area, so capture-before-dependents is enforced by graph dependency, not
+// convention.
+func (g *Graph) addSourceResolutionUnits(plan *ModelPlan, areaFrames map[string]string, sourceKinds map[string]SourceKind) map[string]string {
+	resolveUnits := map[string]string{}
+	for _, area := range plan.Areas {
+		if sourceKinds[area.Ref] != SourceKindProse {
+			continue
+		}
+		unit := g.add(&Unit{
+			ID:              unitID(KindResolveSource, area.Ref),
+			Kind:            KindResolveSource,
+			Subject:         area.Ref,
+			DependsOn:       []string{areaFrames[area.Ref]},
+			EvaluatorBacked: true,
+		})
+		resolveUnits[area.Ref] = unit.ID
+	}
+	return resolveUnits
+}
+
 // addRequirementUnits emits one frame unit and one combined judgment unit per
 // requirement, and returns the judgment unit IDs by requirement ref. The
 // combined unit is composite (no single DataKind): it persists both the
 // assessment and rating payloads, so every dependency the rating satisfied
-// before the merge now targets the combined unit.
-func (g *Graph) addRequirementUnits(plan *ModelPlan, areaFrames map[string]string) map[string]string {
+// before the merge now targets the combined unit. Judgment consumes source,
+// so it additionally depends on the area's resolution unit when one exists.
+func (g *Graph) addRequirementUnits(plan *ModelPlan, areaFrames map[string]string, resolveUnits map[string]string) map[string]string {
 	requirementUnits := map[string]string{}
 	for _, req := range plan.Requirements {
 		frame := g.add(&Unit{
@@ -538,11 +561,15 @@ func (g *Graph) addRequirementUnits(plan *ModelPlan, areaFrames map[string]strin
 			DependsOn: []string{areaFrames[req.Area.Reference()]},
 			DataKind:  evaluation.DataKindRequirementEvaluationFrame,
 		})
+		judgeDeps := []string{frame.ID}
+		if resolveID, ok := resolveUnits[req.Area.Reference()]; ok {
+			judgeDeps = append(judgeDeps, resolveID)
+		}
 		judge := g.add(&Unit{
 			ID:              unitID(KindAssessRateRequirement, req.Ref),
 			Kind:            KindAssessRateRequirement,
 			Subject:         req.Ref,
-			DependsOn:       []string{frame.ID},
+			DependsOn:       judgeDeps,
 			EvaluatorBacked: true,
 		})
 		requirementUnits[req.Ref] = judge.ID

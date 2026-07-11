@@ -27,6 +27,8 @@ func (e *engine) buildWorkRequest(unit *Unit) (evaluator.WorkRequest, error) {
 	req.ExpectedSchema = schema
 
 	switch unit.Kind {
+	case KindResolveSource:
+		e.fillResolveSourceRequest(unit, &req)
 	case KindAssessRateRequirement:
 		if err := e.fillAssessRateRequest(unit, &req); err != nil {
 			return req, err
@@ -58,6 +60,29 @@ func (e *engine) buildWorkRequest(unit *Unit) (evaluator.WorkRequest, error) {
 }
 
 func expectedSchema(unit *Unit) (json.RawMessage, error) {
+	if unit.Kind == KindResolveSource {
+		resolved := map[string]any{
+			"type": "object",
+			"properties": map[string]any{
+				"files": map[string]any{
+					"type":     "array",
+					"minItems": 1,
+					"items": map[string]any{
+						"type": "object",
+						"properties": map[string]any{
+							"path":    map[string]any{"type": "string", "minLength": 1},
+							"content": map[string]any{"type": "string"},
+						},
+						"required":             []any{"path", "content"},
+						"additionalProperties": false,
+					},
+				},
+			},
+			"required":             []any{"files"},
+			"additionalProperties": false,
+		}
+		return json.MarshalIndent(resolved, "", "  ")
+	}
 	if unit.Kind == KindAssessRateRequirement {
 		assessment, err := evaluation.EvaluationDataSchema(evaluation.DataKindRequirementAssessment)
 		if err != nil {
@@ -102,6 +127,38 @@ func expectedSchema(unit *Unit) (json.RawMessage, error) {
 		return nil, err
 	}
 	return raw, nil
+}
+
+// fillResolveSourceRequest assembles a source resolution request: gather the
+// material the area's selector describes and return it as files. The request
+// carries the selector, its pinned kind, and the area frame — and an empty
+// source bundle: the resolver is fed a description, never pre-gathered
+// evidence, so the gatherer and the judge are never the same uncontrolled
+// step.
+func (e *engine) fillResolveSourceRequest(unit *Unit, req *evaluator.WorkRequest) {
+	record := e.artifact.Sources[unit.Subject]
+	areaFrame := e.payloadFor(unitID(KindFrameAreaEvaluation, unit.Subject))
+	req.SharedContext = map[string]any{
+		"areaEvaluationFrame": areaFrame,
+	}
+	req.Context = map[string]any{
+		"sourceSelector": map[string]any{
+			"selector": record.Selector,
+			"kind":     record.Kind,
+		},
+	}
+	req.Instructions = "Resolve this area's source selector: gather the material the selector describes and return " +
+		"one JSON object of the form {\"files\": [{\"path\": string, \"content\": string}, ...]}.\n" +
+		"- The selector describes a body of evidence; use your tools to locate exactly the material it names and " +
+		"return it as text files.\n" +
+		"- path is a stable label for each gathered item — a repo-relative path, ticket ID, or URL; paths must be " +
+		"unique and non-empty.\n" +
+		"- content is the gathered material itself, verbatim; do not summarize, assess, or rate it — a separate " +
+		"judgment request evaluates the captured evidence.\n" +
+		"- Gather only what the selector describes; do not widen to adjacent material.\n" +
+		"- If the material the selector describes does not exist — including when the selector reads like a " +
+		"filesystem path that names nothing — return the classified failure source_unavailable naming the selector " +
+		"instead of improvising or substituting evidence."
 }
 
 // fillAssessRateRequest assembles the combined requirement judgment request:

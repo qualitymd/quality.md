@@ -23,8 +23,21 @@ type Preview struct {
 	EvaluatorCandidates []evaluator.CLIReadiness `json:"evaluatorCandidates,omitempty"`
 	Concurrency         int                      `json:"concurrency"`
 	WorkUnits           WorkUnitCounts           `json:"workUnits"`
-	ExpectedRunPath     string                   `json:"expectedRunPath"`
-	NextActions         []receipt.Action         `json:"nextActions"`
+	// Sources is the per-area source dispatch plan: each in-scope area's
+	// effective selector, its detected kind, and the resolver that would
+	// serve it — visible before anything runs.
+	Sources         []SourcePlan     `json:"sources"`
+	ExpectedRunPath string           `json:"expectedRunPath"`
+	NextActions     []receipt.Action `json:"nextActions"`
+}
+
+// SourcePlan is one area's source dispatch entry in previews and run
+// receipts.
+type SourcePlan struct {
+	Area     string `json:"area"`
+	Selector string `json:"selector"`
+	Kind     string `json:"kind"`
+	Resolver string `json:"resolver"`
 }
 
 // DryRun resolves everything a run would use and previews it without
@@ -48,7 +61,23 @@ func DryRun(opts Options) (*Preview, error) {
 	if err != nil {
 		return nil, wrapEvaluationError(err)
 	}
-	graph, err := BuildGraph(plan.ModelSpec, plan.Manifest.PlannedScope)
+	modelPlan, err := BuildPlan(plan.ModelSpec, plan.Manifest.PlannedScope)
+	if err != nil {
+		return nil, err
+	}
+	sourceKinds := map[string]SourceKind{}
+	sources := make([]SourcePlan, 0, len(modelPlan.Areas))
+	for _, area := range modelPlan.Areas {
+		kind := detectSourceKind(ws.WorkspaceRoot.Abs, area.Source)
+		sourceKinds[area.Ref] = kind
+		sources = append(sources, SourcePlan{
+			Area:     area.Ref,
+			Selector: area.Source,
+			Kind:     string(kind),
+			Resolver: resolverForKind(kind),
+		})
+	}
+	graph, err := BuildGraph(plan.ModelSpec, plan.Manifest.PlannedScope, sourceKinds)
 	if err != nil {
 		return nil, err
 	}
@@ -83,6 +112,7 @@ func DryRun(opts Options) (*Preview, error) {
 			Total:          len(graph.Units),
 			EvaluatorUnits: graph.EvaluatorUnits(),
 		},
+		Sources:         sources,
 		ExpectedRunPath: plan.RunRel,
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-run",

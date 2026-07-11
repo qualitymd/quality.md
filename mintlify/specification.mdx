@@ -296,10 +296,15 @@ as a grouping node for child `areas`.
 area name; its area ID is the ordered path of area names from the root area to
 that area.
 
-When present, `source` selects the entities evaluated by the area. Relative
-paths and globs resolve relative to the containing QUALITY.md file. Source
-inheritance and the scope of an area's requirements are defined in
-[Model semantics](#model-semantics).
+When present, `source` is a single string selecting the material evaluated by
+the area. A selector is not limited to filesystem material: relative paths
+and globs resolve relative to the containing QUALITY.md file, and any other
+selector describes the evaluated material in prose — a saved query, a live
+system, a body of records ("open tickets in the support queue") — resolved by
+the evaluating tool's own means. The selector's kind is detected from the
+string, never declared; see
+[Source resolution](#source-resolution). Source inheritance and the scope of
+an area's requirements are defined in [Model semantics](#model-semantics).
 
 ### Factor
 
@@ -400,6 +405,19 @@ An area that declares `source` selects its own evaluated material. An area that
 omits `source` inherits the source of the nearest ancestor area that declares
 one; if no ancestor declares one, it inherits the document's default source
 defined in [Document structure](#document-structure).
+
+An effective source selector is interpreted by kind, detected from the bare
+selector string in this order: a selector containing glob metacharacters
+(`*`, `?`, `[`) is a glob; otherwise a selector that names an existing
+filesystem entry relative to the containing QUALITY.md file is a path;
+otherwise the selector is prose — a description of the evaluated material
+that filesystem resolution cannot serve. The filesystem interpretation always
+wins, so prose is only ever the meaning of a selector that cannot be
+filesystem material. Tools resolve path and glob selectors deterministically
+and MAY resolve prose selectors through their own gathering means; a tool
+that cannot resolve a selector's kind MUST report that inability distinctly,
+rather than treating the named material as missing or evaluating the area
+against no material.
 
 ### Requirement scope
 
