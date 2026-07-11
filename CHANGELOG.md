@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.30.0 - 2026-07-11
+
 ### Specification
 
 - The format now commits to non-filesystem source selectors: `source` stays a
@@ -12,7 +14,9 @@ QUALITY.md specification.
   metacharacters make a glob, an existing filesystem entry is a path, and any
   other selector describes the evaluated material in prose (for example
   "open tickets in the support queue"), resolved by evaluating tools. The
-  frontmatter shape and `quality.schema.json` are unchanged.
+  frontmatter shape and `quality.schema.json` are unchanged. The specification
+  version moves to `0.11 (Draft)`: what a `source` selector means in a
+  conforming document has changed.
 
 ### CLI
 
@@ -61,6 +65,28 @@ QUALITY.md specification.
   alongside judgment requests: the skill gathers exactly the material the
   request's selector describes and returns it verbatim, or reports
   `source_unavailable` when it does not exist.
+- `/quality` skill metadata now declares version `0.30.0` and requires the
+  `qualitymd` CLI `0.30.x` line.
+
+### Compatibility / migration
+
+- The QUALITY.md specification moves to `0.11 (Draft)`. A `source` selector is
+  now defined for non-filesystem material: a selector that is neither a glob
+  nor an existing filesystem path is prose describing the evaluated material,
+  where before only filesystem selectors were defined. Existing path and glob
+  selectors are unchanged.
+- Runner `evaluation.json` artifacts now use schema version `6` and add the
+  per-area `sources` provenance record; in-flight version 5 runner runs should
+  be started fresh.
+- A selector kind the selected evaluator cannot resolve now fails the run at
+  plan time with the new `selector_unsupported` category. `source_unavailable`
+  keeps its narrower meaning: the named material is missing.
+
+Compatibility:
+
+- CLI: `v0.30.0`
+- QUALITY.md specification: `0.11 (Draft)`
+- /quality skill: `0.30.0`, requires `qualitymd >=0.30.0 <0.31.0`
 
 ## v0.29.0 - 2026-07-10
 
