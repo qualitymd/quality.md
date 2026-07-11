@@ -806,3 +806,8 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   `source_unavailable`), reclassifies extension frontmatter to a warning-severity
   `unknown-key` advisory, and widens companion-schema content scalars beyond
   JSON strings (`Done`).
+- [0197 — Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md) -
+  resolves every source selector through a per-kind resolver that feeds the
+  bounded, hashed evidence bundle, dispatching non-filesystem (prose) selectors
+  to the invoking harness through the existing checkpoint transport and failing
+  an unsupported selector kind loudly with `selector_unsupported` (`Done`).

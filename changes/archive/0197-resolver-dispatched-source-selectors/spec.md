@@ -11,7 +11,7 @@ Companion to the
 change case. This spec states _what_ the change must do; a design doc will
 cover _how_ once the case reaches Design. It builds on the resolution model
 recorded in 0196's
-[considerations sketch](../archive/0196-spec-faithful-model-reading/considerations.md):
+[considerations sketch](../0196-spec-faithful-model-reading/considerations.md):
 
 ```
 source selector ──[ resolver (per kind) ]──► bounded, hashed evidence bundle ──[ evaluator ]──► judgment
@@ -45,7 +45,7 @@ path; otherwise the selector is prose. A selector that is absolute or escapes
 the workspace **MUST** remain a filesystem selector under the existing
 workspace-containment rules and **MUST NOT** fall back to prose. Path and glob
 selectors **MUST** keep the deterministic resolution and packaging contract of
-[`specs/evaluation/runner.md`](../../specs/evaluation/runner.md) §Source
+[`specs/evaluation/runner.md`](../../../specs/evaluation/runner.md) §Source
 packaging unchanged. A run's detected kinds **MUST** be recorded at run
 creation and honored on resume, so a filesystem change mid-run cannot silently
 re-dispatch a selector to a different resolver.
@@ -123,7 +123,7 @@ identity when applicable), alongside the existing hashes.
 **R6 — Source-as-data across resolvers.** Resolver-returned material **MUST**
 be presented to judging evaluators as data under the same standing safety
 instructions as walked source, applying the source-as-data invariant in
-[`specs/evaluation/evaluation.md`](../../specs/evaluation/evaluation.md#shared-invariants).
+[`specs/evaluation/evaluation.md`](../../../specs/evaluation/evaluation.md#shared-invariants).
 
 > _Why:_ the data-not-instructions boundary is the safety property that makes
 > non-deterministic gathering acceptable; it must not weaken with the
@@ -153,8 +153,8 @@ Both gating questions were settled 2026-07-11, before Design.
 
 ## Durable spec changes
 
-Covers the [`specs/`](../../specs/index.md) bundle and
-[`SPECIFICATION.md`](../../SPECIFICATION.md).
+Covers the [`specs/`](../../../specs/index.md) bundle and
+[`SPECIFICATION.md`](../../../SPECIFICATION.md).
 
 ### To add
 

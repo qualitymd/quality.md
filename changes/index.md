@@ -43,10 +43,7 @@ edit.
 
 # Open change cases
 
-- [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
-  (`In-Review`) - resolve every source selector through a per-kind resolver that
-  feeds the bounded, hashed evidence bundle, so non-path selectors evaluate
-  through the same audited contract instead of dead-ending as unavailable.
+None.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

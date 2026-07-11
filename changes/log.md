@@ -2,6 +2,13 @@
 
 ## 2026-07-11
 
+- **Done**: Landed
+  [0197 - Resolver-dispatched source selectors](archive/0197-resolver-dispatched-source-selectors.md)
+  in the v0.30.0 release, set it `Done`, and moved the case parent and its
+  child folder into [`archive/`](archive/index.md). Updated the archive
+  [index](archive/index.md) and cleared the entry from the bundle-root
+  [index](index.md).
+
 - **In-Review**: Implemented
   [0197 - Resolver-dispatched source selectors](0197-resolver-dispatched-source-selectors.md)
   and advanced it from `In-Progress` to `In-Review`. The runner now detects

@@ -13,7 +13,7 @@ Answers the [functional spec](spec.md) (R1–R6) for the
 case, under its settled questions: the format commits to non-filesystem
 selectors (Q2), and kind is detected from the bare selector string (Q1). The
 governing idea, from 0196's
-[considerations sketch](../archive/0196-spec-faithful-model-reading/considerations.md):
+[considerations sketch](../0196-spec-faithful-model-reading/considerations.md):
 resolution (gathering, per kind) is separated from judgment (rating against a
 captured bundle), with the bounded, hashed evidence bundle as the contract
 between them. The design's job is to add the prose kind and the harness

@@ -2,7 +2,7 @@
 type: Change Case
 title: Resolver-dispatched source selectors
 description: Resolve every source selector through a per-kind resolver that feeds the bounded, hashed evidence bundle, so non-path selectors evaluate through the same audited contract instead of dead-ending as unavailable.
-status: In-Review
+status: Done
 ---
 
 # Resolver-dispatched source selectors
@@ -13,10 +13,10 @@ status: In-Review
 evaluated by an area." A selector could be a path, a glob, a saved query, or a
 prose description of a body of evidence ("all specs", "the deployed API",
 "open tickets in the support queue").
-[0196](archive/0196-spec-faithful-model-reading.md) made the path/glob selector
+[0196](0196-spec-faithful-model-reading.md) made the path/glob selector
 kind spec-faithful and stopped silent empty evidence, and deferred the general
 architecture to this case with the reasoning recorded in its
-[considerations sketch](archive/0196-spec-faithful-model-reading/considerations.md):
+[considerations sketch](0196-spec-faithful-model-reading/considerations.md):
 separate _resolution_ (gathering, per selector kind) from _judgment_ (rating
 against a captured bundle), with the bounded, hashed evidence bundle as the
 contract between them.
