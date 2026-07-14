@@ -811,3 +811,8 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   bounded, hashed evidence bundle, dispatching non-filesystem (prose) selectors
   to the invoking harness through the existing checkpoint transport and failing
   an unsupported selector kind loudly with `selector_unsupported` (`Done`).
+- [0198 — Batched harness checkpoints](0198-batched-harness-checkpoints.md) -
+  keeps a bounded rolling window of dependency-ready judgment requests
+  outstanding to the invoking harness so it can fan them out to subagents and
+  stream results back, removing the concurrency-1 tax on harness-backed runs
+  (`Done`).

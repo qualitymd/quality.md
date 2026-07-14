@@ -27,9 +27,9 @@ type Options struct {
 	Evaluator string
 	// Resume names an existing run folder to resume.
 	Resume string
-	// EvaluatorResult is the --evaluator-result path ("-" for stdin) of a
-	// harness result envelope submitted for an awaiting run. Valid only with
-	// Resume.
+	// EvaluatorResult is the --evaluator-result path ("-" for stdin) of one
+	// or more harness result envelopes submitted for an awaiting run. Valid
+	// only with Resume.
 	EvaluatorResult string
 	// Stdin supplies the envelope body when EvaluatorResult is "-".
 	Stdin io.Reader
@@ -78,12 +78,13 @@ type Result struct {
 	// selector, detected kind, and serving resolver, in plan order.
 	Sources []SourcePlan `json:"sources,omitempty"`
 	Failure *Failure     `json:"failure,omitempty"`
-	// EvaluatorRequest is the pending bounded work request when Status is
-	// awaiting_evaluator.
-	EvaluatorRequest *EvaluatorRequest        `json:"evaluatorRequest,omitempty"`
-	ReportMD         string                   `json:"reportMd,omitempty"`
-	RatingResult     *evaluation.RatingResult `json:"ratingResult,omitempty"`
-	NextActions      []receipt.Action         `json:"nextActions,omitempty"`
+	// EvaluatorRequests is the outstanding bounded work-request set when
+	// Status is awaiting_evaluator, in emission order, bounded by the run's
+	// resolved concurrency.
+	EvaluatorRequests []*EvaluatorRequest      `json:"evaluatorRequests,omitempty"`
+	ReportMD          string                   `json:"reportMd,omitempty"`
+	RatingResult      *evaluation.RatingResult `json:"ratingResult,omitempty"`
+	NextActions       []receipt.Action         `json:"nextActions,omitempty"`
 }
 
 // Run executes (or resumes) a complete evaluation run.
@@ -190,19 +191,19 @@ func resumeRun(ctx context.Context, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	var harnessResult *evaluator.HarnessResultEnvelope
+	var harnessResults []*evaluator.HarnessResultEnvelope
 	if opts.EvaluatorResult != "" {
 		if selection.Evaluator.Kind() != "harness" {
 			return nil, &UsageError{Err: fmt.Errorf(
 				"--evaluator-result submits harness judgment, but this run's evaluator is %q", artifact.Manifest.Evaluator)}
 		}
-		if artifact.State.PendingEvaluatorCall == nil {
+		if len(artifact.State.PendingEvaluatorCalls) == 0 {
 			return nil, &RunError{
 				Category: evaluator.FailureRunStateInvalid,
 				Detail:   "no work request is awaiting a harness result for this run",
 			}
 		}
-		harnessResult, err = loadHarnessResult(opts.EvaluatorResult, opts.Stdin)
+		harnessResults, err = loadHarnessResults(opts.EvaluatorResult, opts.Stdin)
 		if err != nil {
 			return nil, err
 		}
@@ -214,10 +215,10 @@ func resumeRun(ctx context.Context, opts Options) (*Result, error) {
 	if err := store.Save(artifact); err != nil {
 		return nil, err
 	}
-	return executeRun(ctx, opts, store, artifact, runAbs, displayPath, selection, ws, harnessResult)
+	return executeRun(ctx, opts, store, artifact, runAbs, displayPath, selection, ws, harnessResults)
 }
 
-func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artifact, runAbs, displayPath string, selection *evaluator.Selection, ws *workspace.Workspace, harnessResult *evaluator.HarnessResultEnvelope) (*Result, error) {
+func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artifact, runAbs, displayPath string, selection *evaluator.Selection, ws *workspace.Workspace, harnessResults []*evaluator.HarnessResultEnvelope) (*Result, error) {
 	spec, err := evaluation.LoadRunModel(runAbs)
 	if err != nil {
 		return nil, err
@@ -250,20 +251,21 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 		"workUnits":   len(graph.Units),
 	})
 	eng := &engine{
-		store:         store,
-		artifact:      artifact,
-		graph:         graph,
-		spec:          spec,
-		selection:     selection,
-		logs:          logs,
-		stderr:        opts.Stderr,
-		workspaceRoot: ws.WorkspaceRoot.Abs,
-		runAbs:        runAbs,
-		displayPath:   displayPath,
-		now:           time.Now,
-		sleep:         sleepWithContext,
-		sourceBundles: map[string]*SourceBundle{},
-		harnessResult: harnessResult,
+		store:          store,
+		artifact:       artifact,
+		graph:          graph,
+		spec:           spec,
+		selection:      selection,
+		logs:           logs,
+		stderr:         opts.Stderr,
+		workspaceRoot:  ws.WorkspaceRoot.Abs,
+		runAbs:         runAbs,
+		displayPath:    displayPath,
+		now:            time.Now,
+		sleep:          sleepWithContext,
+		sourceBundles:  map[string]*SourceBundle{},
+		harnessResults: harnessResults,
+		retryFailures:  map[string]*Failure{},
 	}
 	eng.progress("Evaluating %s with %s (concurrency %d, %d work units)",
 		displayPath, selection.Name, artifact.Manifest.Concurrency, len(graph.Units))
@@ -273,8 +275,7 @@ func executeRun(ctx context.Context, opts Options, store *Store, artifact *Artif
 	}
 	result := buildResult(artifact, graph, displayPath, status)
 	if status == StatusAwaitingEvaluator {
-		result.EvaluatorRequest = eng.awaitingRequest
-		result.Failure = eng.awaitingFailure
+		result.EvaluatorRequests = eng.awaitingRequests
 	}
 	return result, nil
 }
@@ -364,11 +365,11 @@ func buildResult(artifact *Artifact, graph *Graph, displayPath, status string) *
 	case StatusAwaitingEvaluator:
 		result.NextActions = []receipt.Action{{
 			ID:      "evaluation-evaluator-result",
-			Label:   "Submit the harness judgment result for the pending request",
+			Label:   "Submit harness judgment results for outstanding work requests",
 			Command: "qualitymd evaluation run --resume " + displayPath + " --evaluator-result - --json",
 		}, {
 			ID:      "evaluation-run-reemit",
-			Label:   "Recover the pending work request",
+			Label:   "Recover the outstanding work requests",
 			Command: "qualitymd evaluation run --resume " + displayPath + " --json",
 		}}
 	case StatusCancelled, StatusFailed:
@@ -391,7 +392,10 @@ func resolveConcurrency(configured *int, caps evaluator.Capabilities) (int, erro
 	if requested < 1 {
 		return 0, &UsageError{Err: fmt.Errorf("evaluation.concurrency must be a positive integer")}
 	}
-	if requested > 1 && !caps.Concurrent {
+	// Subagent delegation counts as concurrency support: a checkpointed
+	// evaluator never takes simultaneous in-process calls, but its outstanding
+	// window lets the harness judge that many requests at once.
+	if requested > 1 && !caps.Concurrent && !caps.Subagents {
 		return 1, nil
 	}
 	return requested, nil

@@ -557,9 +557,9 @@ func renderEvaluationStatus(cmd *cobra.Command, status evaluation.RunStatus) err
 			return err
 		}
 	}
-	if status.AwaitingEvaluator != nil {
+	for _, awaiting := range status.AwaitingEvaluator {
 		if _, err := fmt.Fprintf(out, "Awaiting harness judgment: %s (request %s, attempt %d)\n",
-			status.AwaitingEvaluator.WorkUnitID, status.AwaitingEvaluator.RequestID, status.AwaitingEvaluator.Attempt); err != nil {
+			awaiting.WorkUnitID, awaiting.RequestID, awaiting.Attempt); err != nil {
 			return err
 		}
 	}

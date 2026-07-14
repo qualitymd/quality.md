@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluation orchestration
 description: Runner-owned work graph, scheduling, persistence, resume, retry, and cancellation rules.
 tags: [evaluation, orchestration, runner]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # Evaluation orchestration
@@ -132,26 +132,43 @@ finish out of order.
 
 When the selected evaluator is harness-backed, a ready evaluator work unit
 **MUST** checkpoint instead of dispatching a subprocess: the runner persists
-the awaiting state atomically, returns the bounded work request, and schedules
-nothing further until a correlated result is submitted. Deterministic units
-**MUST** continue to execute on each invocation up to the next evaluator
-checkpoint or the terminal receipt, so deterministic work never leaks into the
-agent interface.
+the awaiting state atomically and returns the outstanding bounded work
+requests — up to the resolved [concurrency](runner.md#concurrency), drawn
+from the dependency-ready frontier — and schedules nothing further until
+correlated results are submitted. Deterministic units on the ready frontier
+**MUST** continue to execute on each invocation, so deterministic work never
+leaks into the agent interface.
 
-Harness-backed execution **MUST** run with resolved concurrency `1` until the
-runner defines multiple pending evaluator checkpoints.
+On each resume the runner **MUST** re-derive the outstanding set: it applies
+the submitted results, tops the window up with newly-ready requests, and
+re-emits every still-outstanding request. A resume without submitted results
+**MUST** re-emit the current outstanding set unchanged.
 
-A submitted result **MUST** advance the graph only when it correlates with the
-persisted pending request (request identity and input hash). A mismatched,
-duplicate, or unsolicited result **MUST** be rejected with `run_state_invalid`
-and leave the pending request recoverable. A pending request whose rebuilt
-input hash no longer matches its checkpoint **MUST** fail with
-`run_state_invalid` rather than bind judgment to changed evidence.
+A submission **MAY** carry results for any subset of the outstanding
+requests. The runner **MUST** accept the valid members, free the capacity
+they held, and leave the still-outstanding requests in place; a
+still-outstanding request that was not submitted **MUST NOT** consume retry
+budget.
 
-A schema-invalid or unparseable harness submission **MUST** consume the same
-[retry budget](#retry-and-failure) as any other evaluator attempt: the runner
-records the attempt, re-checkpoints with the next attempt's request, and fails
-the run when the budget is exhausted.
+> Rationale: partial submission is the normal path under a rolling window, so
+> "not yet judged" (still outstanding, no cost) and "failed" (re-emit, retry
+> cost) must stay distinct — otherwise a partial reply would burn a judgeable
+> unit's retry budget. — 0198
+
+A submitted result **MUST** advance the graph only when it correlates with a
+persisted pending request (request identity and input hash); envelope order
+**MUST NOT** affect binding. A mismatched, duplicate, or unsolicited result
+**MUST** be rejected with `run_state_invalid` without discarding or altering
+any other member's accepted result, leaving the outstanding requests
+recoverable. A pending request whose rebuilt input hash no longer matches its
+checkpoint **MUST** fail with `run_state_invalid` rather than bind judgment
+to changed evidence.
+
+A schema-invalid or unparseable member, or one carrying a classified
+retryable failure, **MUST** consume the same [retry budget](#retry-and-failure)
+as any other evaluator attempt: the runner records the attempt, re-emits that
+member with the next attempt's request identity, and fails the run when the
+budget is exhausted — without altering other members' accepted results.
 
 ## Persistence
 

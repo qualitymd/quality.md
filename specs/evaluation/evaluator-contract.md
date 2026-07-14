@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluator contract
 description: Capability, work-unit envelope, result envelope, and configuration contract for evaluation runner evaluators.
 tags: [evaluation, evaluator, agents]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # Evaluator contract
@@ -167,6 +167,23 @@ envelope is the ordinary result envelope; when the material the selector
 describes does not exist, the harness returns a classified
 `source_unavailable` failure instead of improvised evidence.
 
+The harness evaluator **MUST** declare subagent delegation: its checkpointed
+requests are self-contained bounded evidence boundaries the invoking harness
+may judge itself or fan out to native subagents. The runner **MUST NOT**
+reduce a harness run's resolved concurrency to `1` on capability grounds; the
+resolved concurrency bounds the outstanding checkpoint window per the
+[runner harness contract](runner.md#harness-checkpoints).
+
+> Rationale: the harness never takes simultaneous in-process calls, so
+> concurrent-call support is the wrong capability to gate on; what makes the
+> window serviceable is that each request is complete and independent, so the
+> harness can delegate members without sharing judgment state. — 0198
+
+A resume submission **MUST** be accepted as one result envelope or several —
+any subset of the outstanding requests, one envelope per request — with each
+member validated and correlated independently per the
+[orchestration checkpoint contract](orchestration.md#harness-checkpoints).
+
 The harness evaluator **MUST NOT** own run creation, scope expansion,
 work-graph ordering, retry policy, result validation, persistence, report
 generation, or final authority outside the result envelope it submits.
@@ -273,5 +290,7 @@ Evaluator resolution order and `auto` discovery are the
 command's contract.
 
 Evaluators **MUST** declare whether they support concurrent calls. The runner
-**MUST NOT** resolve concurrency above `1` for an evaluator that does not
-declare concurrent-call support.
+**MUST NOT** resolve concurrency above `1` for an evaluator that declares
+neither concurrent-call support nor subagent delegation; for a checkpointed
+evaluator, subagent delegation is the declaration that makes an outstanding
+window above `1` serviceable.

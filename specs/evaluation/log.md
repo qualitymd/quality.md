@@ -2,6 +2,28 @@
 
 ## 2026-07-11
 
+- **Revision**: Updated the [Runner](runner.md),
+  [Orchestration](orchestration.md),
+  [Evaluator contract](evaluator-contract.md), and
+  [evaluation.json](evaluation-json.md) contracts for
+  [0198 - Batched harness checkpoints](../../changes/0198-batched-harness-checkpoints.md).
+  The harness checkpoint transport becomes a bounded rolling window: the
+  runner keeps up to the resolved concurrency dependency-ready work requests
+  outstanding, topping the window up from the ready frontier as members are
+  accepted, and a resume submission carries one result envelope or several —
+  any subset of the outstanding set, each bound by request identity and input
+  hash and accepted independently through the unchanged per-result path.
+  Not-submitted members stay outstanding at no retry cost while failed
+  members re-emit under the next attempt's identity, consuming retry budget.
+  The harness evaluator declares subagent delegation, the runner no longer
+  clamps harness runs to concurrency 1 (concurrency resolution now gates on
+  concurrent-call support _or_ subagent delegation), and
+  [evaluation.json](evaluation-json.md) bumps to schema version 7 with the
+  plural `pendingEvaluatorCalls` checkpoint state (clean break: an awaiting
+  version-6 run is re-run, not migrated). The [Protocol](protocol.md) needed
+  no change — checkpoint transport lives in the runner and orchestration
+  contracts, and protocol moves and judgment semantics are unchanged.
+
 - **Revision**: Updated the [Runner](runner.md), [Protocol](protocol.md),
   [Orchestration](orchestration.md), [Evaluator contract](evaluator-contract.md),
   and [evaluation.json](evaluation-json.md) contracts for

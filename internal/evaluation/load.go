@@ -47,13 +47,14 @@ type RunStatus struct {
 	// (running, awaiting_evaluator, completed, failed, cancelled); empty for
 	// manual multi-file runs.
 	Lifecycle string `json:"lifecycle,omitempty"`
-	// AwaitingEvaluator summarizes the pending harness work request when
-	// Lifecycle is awaiting_evaluator: the run is resumable and incomplete,
-	// and submitting the harness judgment is the pending action.
-	AwaitingEvaluator *AwaitingEvaluatorCall `json:"awaitingEvaluator,omitempty"`
-	Data              DataStatus             `json:"data"`
-	Gaps              []RunGap               `json:"gaps"`
-	NextActions       []receipt.Action       `json:"nextActions"`
+	// AwaitingEvaluator summarizes the outstanding harness work requests, in
+	// emission order, when Lifecycle is awaiting_evaluator: the run is
+	// resumable and incomplete, and submitting harness judgment results is
+	// the pending action.
+	AwaitingEvaluator []AwaitingEvaluatorCall `json:"awaitingEvaluator,omitempty"`
+	Data              DataStatus              `json:"data"`
+	Gaps              []RunGap                `json:"gaps"`
+	NextActions       []receipt.Action        `json:"nextActions"`
 }
 
 // Load reads an evaluation run.

@@ -1,6 +1,114 @@
 # Changes update log
 
+## 2026-07-14
+
+- **Done**: Landed
+  [0198 - Batched harness checkpoints](archive/0198-batched-harness-checkpoints.md),
+  set it `Done`, and moved the case parent and child folder into
+  [`archive/`](archive/index.md). Updated the archive index, removed the case
+  from the bundle-root index, and retargeted the open 0199 dependency link to
+  the archived case.
+
+- **Design**: Opened
+  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  and advanced it from `Draft` to `Design` after reviewing its functional
+  [spec](0199-effect-typescript-cli-runtime/spec.md) against the requirement
+  quality and set-level bars. The case specifies one clean Go-to-TypeScript
+  cutover: preserve the command, artifact, evaluation, install, update, and
+  release contracts; detect a syntactically valid glob, then an existing path,
+  then fall back to a bounded source-resolution agent; freeze one area context and
+  assess each requirement in a fresh provider session; keep the runner in sole
+  control of scheduling, budgets, cancellation, validation, and persistence;
+  and expose provider capabilities without pretending Codex, Claude, direct
+  APIs, and harness checkpoints have identical controls. Added the design doc:
+  a pure TypeScript domain core inside an Effect v4 application, direct Codex
+  and Claude Agent SDK adapters using external authenticated provider runtimes,
+  Bun standalone executables behind a mandatory compatibility spike with Node
+  SEA as the no-sidecar fallback, differential Go/TypeScript acceptance, and one
+  release cutover that removes Go, GoReleaser, and `go install`. The three
+  implementation measurements — Bun/Codex compatibility, Linux glibc/musl
+  artifact selection, and acceptable binary size/startup — must be resolved by
+  the runtime spike before `In-Progress`; no production code changed.
+
 ## 2026-07-11
+
+- **In-Review**: Implemented
+  [0198 - Batched harness checkpoints](0198-batched-harness-checkpoints.md)
+  and set it `In-Review`. The runner's harness path now runs an
+  apply/top-up/emit loop over the concurrent scheduler's ready frontier:
+  `evaluation.json` bumps to schema 7 with plural `pendingEvaluatorCalls`,
+  awaiting receipts carry the outstanding `evaluatorRequests` set (each
+  request complete, with `lastFailure` on retries), `--evaluator-result`
+  accepts one envelope or a JSON array covering any subset (valid members
+  accepted independently and durably; unmatched members rejected without
+  touching them; not-submitted members stay outstanding at no retry cost),
+  the harness evaluator declares subagent delegation, and
+  `resolveConcurrency` no longer clamps harness runs to 1. Verified with new
+  runner tests (window cap, rolling top-up, partial/mixed/duplicate
+  submission, concurrency-parity of accepted results, single-request
+  degeneration at concurrency 1), the full gate, and a real-CLI end-to-end
+  harness run at window 3. Durable specs, the skill runtime docs, generated
+  CLI docs, and `CHANGELOG.md` (Unreleased) were brought into sync; the
+  Affected-artifacts index was reconciled — `specs/evaluation/protocol.md`,
+  `internal/runner/concurrent.go`, `internal/runner/dryrun.go`,
+  `internal/evaluator/evaluator.go`, and `internal/status/` deliberately
+  needed no edit, and
+  `specs/skills/quality-skill/workflows/evaluate.md` was added by the
+  implementation sweep.
+
+- **In-Progress**: Advanced
+  [0198 - Batched harness checkpoints](0198-batched-harness-checkpoints.md) from
+  `Design` to `In-Progress` to begin implementation of the rolling checkpoint
+  window per the settled [spec](0198-batched-harness-checkpoints/spec.md) and
+  [design doc](0198-batched-harness-checkpoints/design.md). Updated the
+  bundle-root [index](index.md).
+
+- **Design**: Advanced
+  [0198 - Batched harness checkpoints](0198-batched-harness-checkpoints.md) from
+  `Draft` to `Design` after a pass on the functional
+  [spec](0198-batched-harness-checkpoints/spec.md) (tightened R1-R7 to the
+  requirement quality bar, split independent-durability from parity, parked usage
+  aggregation under Open questions) and drafted the
+  [design doc](0198-batched-harness-checkpoints/design.md). On review the
+  transport model was settled as a **rolling window** (streaming) rather than a
+  per-checkpoint barrier: pending state becomes a set (artifact schema `6 → 7`),
+  the harness path reuses the concurrent scheduler's `nextReadyEvaluationStep`
+  frontier to keep up to `concurrency` requests outstanding — topping up as
+  members are accepted — and `--evaluator-result` accepts one or more envelopes
+  per resume call, bound per member by `(RequestID, InputHash)` through the
+  existing validation/persistence path. Partial submission is the normal path, so
+  not-submitted members stay outstanding at no retry cost while failed members
+  re-emit and consume retry budget. Alternatives (barrier-per-checkpoint, a
+  persistent JSON-RPC/JSONL transport, a separate harness cap,
+  singular-plus-side-table, not-submitted-as-failed) recorded as rejected or
+  deferred. No code touched; case work stays within its folder.
+
+- **Design**: Resolved the open questions on
+  [0198 - Batched harness checkpoints](0198-batched-harness-checkpoints.md).
+  Usage aggregation needs no change — usage is already logged per evaluator call
+  with no run total, so each accepted member preserves per-member usage logging
+  and parity extends to it; a run-total rollup is a separate observability
+  change. Default concurrency keeps 0195's shared default (no harness-specific
+  default) with resolved concurrency and window width surfaced in receipts and
+  dry-run. The only remaining open item is a soft implementation question — an
+  optional runner-internal receipt-size clamp below the concurrency cap, left
+  unclamped until a fixture shows it matters. The case is ready to advance to
+  `In-Progress`.
+
+- **Draft**: Opened
+  [0198 - Batched harness checkpoints](0198-batched-harness-checkpoints.md) to
+  design the multi-checkpoint harness work deferred by
+  [0194](archive/0194-harness-native-evaluator-dispatch.md) and
+  [0195](archive/0195-evaluation-concurrency.md). The case proposes emitting a
+  bounded batch of dependency-ready judgment requests per `awaiting_evaluator`
+  checkpoint — bounded by the run's resolved concurrency and the work-graph DAG —
+  and accepting a batch of correlated result envelopes on resume, so the
+  invoking harness can fan independent requests out to subagents while the runner
+  keeps sole ownership of scheduling, validation, and persistence. Added the
+  parent concept, child [index](0198-batched-harness-checkpoints/index.md), and a
+  functional-spec [sketch](0198-batched-harness-checkpoints/spec.md) (R1-R7 with
+  per-requirement durable-spec impact), and listed it in the bundle-root
+  [index](index.md).
 
 - **Done**: Landed
   [0197 - Resolver-dispatched source selectors](archive/0197-resolver-dispatched-source-selectors.md)

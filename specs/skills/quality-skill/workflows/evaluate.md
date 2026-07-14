@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality evaluate
 description: Behavioral component spec for running evaluation through the /quality skill as a wrapper around the deterministic evaluation runner.
 tags: [skill, quality, evaluate, evaluation, workflow]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # /quality evaluate
@@ -108,11 +108,14 @@ qualitymd evaluation run [--model <model>] [--area <area-ref>]
 ```
 
 While the receipt status is `awaiting_evaluator`, `evaluate` **MUST** service
-each harness checkpoint only from the runner-supplied bounded request — it
-**MAY** use the harness's ordinary reasoning or a native subagent to answer
-one request — submit the typed result envelope with
+each of the receipt's outstanding requests only from that request's
+runner-supplied bounded content — it **MAY** use the harness's ordinary
+reasoning or delegate independent requests to native subagents, and **MAY**
+submit results as they become ready rather than waiting for the whole set —
+submit one typed result envelope per request (one or several per call) with
 `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
-repeat until a terminal receipt. In unattended automation the loop **MUST NOT**
+repeat until a terminal receipt; each resume returns the window topped up
+with newly-ready requests. In unattended automation the loop **MUST NOT**
 add interactive gates: the run advances, returns a report, or stops with the
 runner's classified remedy.
 
@@ -127,7 +130,8 @@ runner-owned.
 
 An `awaiting_evaluator` receipt is expected progress, not a failure. If the
 checkpoint loop is interrupted, `evaluate` **MUST** recover by resuming the run
-without a result to re-obtain the same pending request.
+without a result to re-obtain the same outstanding requests; requests never
+submitted stay outstanding at no retry cost.
 
 When the runner reports `failed` or `cancelled`, `evaluate` **MUST** explain the
 receipt's stable failure category in user terms and offer

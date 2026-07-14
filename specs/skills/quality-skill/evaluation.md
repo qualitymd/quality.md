@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality evaluation workflow
 description: Behavioral component spec for how the /quality skill wraps the CLI-owned deterministic evaluation runner.
 tags: [skill, quality, evaluation, workflow]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # /quality evaluation workflow
@@ -64,17 +64,26 @@ the evaluation protocol itself, or write structured evaluation data.
 > architecture the deterministic runner removes. — 0192
 
 The one sanctioned judgment role is servicing harness checkpoints: when the
-run uses the `harness` evaluator, the skill **MUST** answer each checkpoint
-only from the runner-supplied bounded work request, submit the typed result
-envelope through `qualitymd evaluation run --resume <run> --evaluator-result`,
-and treat the runner's accepted state and terminal receipt as authoritative.
-It **MUST NOT** construct its own work graph, widen source beyond the
-request's bounded package, write evaluation records, or adjust accepted
-results, and it **MUST NOT** repair invalid output outside the runner's retry
-loop.
+run uses the `harness` evaluator, an awaiting receipt carries the runner's
+outstanding bounded work requests — up to the run's resolved concurrency.
+The skill **MUST** judge each outstanding request within that request's own
+bounded boundary and submit one correlated result envelope per request
+through `qualitymd evaluation run --resume <run> --evaluator-result`, and
+treat the runner's accepted state and terminal receipt as authoritative. It
+**MAY** submit results as they become ready — one envelope or several per
+resume call — rather than waiting for the whole outstanding set, and it
+**MAY** delegate independent requests to native subagents, since each request
+is a self-contained evidence boundary. It **MUST NOT** construct its own work
+graph, schedule work units, widen source beyond a request's bounded package,
+write evaluation records, or adjust accepted results, and it **MUST NOT**
+repair invalid output outside the runner's retry loop.
 
 > Rationale: the harness provides judgment, not a second evaluation workflow.
-> — 0194
+> The outstanding set is the entire boundary for the turn: the runner remains
+> the sole scheduler, and how the harness fans requests out is the harness's
+> concern. Streaming results back as they land keeps the runner's window
+> topped up; batching several into one call trades a little latency for fewer
+> resume round trips — either is conformant. — 0194, 0198
 
 Checkpoints carry two request kinds. For a **judgment** request the skill
 judges only the supplied bounded evidence. For a **`resolveSource`
@@ -203,7 +212,7 @@ flowchart TD
     Log --> Select[Resolve and explain evaluator selection<br/>optionally preview with --dry-run --json]
     Select --> Run[Invoke qualitymd evaluation run<br/>with explicit flags]
     Run --> Receipt{receipt status}
-    Receipt -->|awaiting_evaluator| Judge[Judge only the supplied request<br/>submit --evaluator-result]
+    Receipt -->|awaiting_evaluator| Judge[Judge the outstanding requests<br/>directly or via subagents<br/>submit --evaluator-result]
     Judge --> Run
     Receipt -->|terminal| Summarize[Summarize progress and the result receipt]
     Summarize --> Route([Route follow-up workflows])
@@ -225,11 +234,14 @@ flowchart TD
 7. **Invoke the runner** with explicit flags:
    `qualitymd evaluation run [--model <model>] [--area <area-ref>] [--factor <factor-ref>...] [--evaluator <name>] --json`.
 8. **Service harness checkpoints.** While the receipt status is
-   `awaiting_evaluator`, serve the supplied bounded request — judge a judgment
-   request from its bounded evidence only; gather a `resolveSource` request's
-   described material and return it verbatim — submit the result envelope with
+   `awaiting_evaluator`, serve each supplied bounded request — judge a
+   judgment request from its bounded evidence only; gather a `resolveSource`
+   request's described material and return it verbatim — directly or through
+   subagents for independent requests, submit result envelopes (one or
+   several per call, as results become ready) with
    `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
-   repeat until a terminal receipt. In unattended automation the loop adds no
+   repeat until a terminal receipt; each resume returns the window topped up
+   with newly-ready requests. In unattended automation the loop adds no
    interactive gates: the run advances, returns a report, or stops with the
    runner's classified remedy.
 9. **Summarize progress and the result receipt**, then route next workflows
@@ -239,7 +251,9 @@ flowchart TD
 
 An `awaiting_evaluator` receipt is expected progress, not a failure: an
 interrupted checkpoint loop **MUST** recover by resuming the run without a
-result to re-obtain the same pending request, then continue the loop.
+result to re-obtain the same outstanding requests, then continue the loop.
+Results already judged but not yet submitted may be submitted on a later
+resume; requests never submitted stay outstanding at no retry cost.
 
 When a run ends `failed` or `cancelled`, the workflow **MUST** explain the
 receipt's stable failure category in user terms and offer

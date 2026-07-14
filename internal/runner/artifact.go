@@ -15,8 +15,9 @@ const (
 	// Versions 1-3 belong to the historical multi-file data tree; version 4
 	// belongs to the strategy-named runner artifact; version 5 predates the
 	// per-area sources provenance record that resume reads pinned selector
-	// kinds from.
-	ArtifactSchemaVersion = 6
+	// kinds from; version 6 predates the multi-outstanding harness checkpoint
+	// window (its singular pending call is not read back).
+	ArtifactSchemaVersion = 7
 	// ArtifactKind marks the evaluation.json document kind.
 	ArtifactKind = "EvaluationRun"
 	// ArtifactFile is the run-root artifact file name.
@@ -172,18 +173,20 @@ type State struct {
 	CompletedAt string                `json:"completedAt,omitempty"`
 	// Cancelled records a user interruption observed mid-run.
 	Cancelled bool `json:"cancelled,omitempty"`
-	// PendingEvaluatorCall is the persisted harness checkpoint: correlation
-	// metadata for the one work request awaiting its result. It carries no
-	// raw prompt, source, or result bodies; the request itself is rebuilt
-	// deterministically on resume.
-	PendingEvaluatorCall *PendingEvaluatorCall `json:"pendingEvaluatorCall,omitempty"`
+	// PendingEvaluatorCalls is the persisted harness checkpoint: correlation
+	// metadata for every outstanding work request awaiting its result, in
+	// emission order, bounded by the run's resolved concurrency. It carries
+	// no raw prompt, source, or result bodies; each request is rebuilt
+	// deterministically on resume. This slice is the single source of truth
+	// for what is awaiting.
+	PendingEvaluatorCalls []*PendingEvaluatorCall `json:"pendingEvaluatorCalls,omitempty"`
 	// HarnessIdentity is the harness runtime the run's judgment is bound to,
 	// set by the first accepted harness result. Later results from a
 	// different runtime are refused.
 	HarnessIdentity *HarnessIdentity `json:"harnessIdentity,omitempty"`
 }
 
-// PendingEvaluatorCall is one awaiting harness work request's persisted
+// PendingEvaluatorCall is one outstanding harness work request's persisted
 // correlation metadata.
 type PendingEvaluatorCall struct {
 	RequestID     string `json:"requestId"`

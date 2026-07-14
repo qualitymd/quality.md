@@ -2,6 +2,19 @@
 
 ## 2026-07-11
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0198 - Batched harness checkpoints. An `awaiting_evaluator` receipt now
+  carries `evaluatorRequests` — the outstanding bounded work requests, up to
+  the run's resolved concurrency — so the checkpoint loop serves each request
+  from its own content (directly or via subagents), submits results as they
+  become ready (one envelope or a JSON array per `--evaluator-result` call,
+  any subset of the outstanding set), and names the window width on the first
+  windowed receipt. Not-yet-submitted requests stay outstanding at no retry
+  cost; a schema-invalid member re-emits with its `lastFailure` named;
+  resuming without a result recovers the same outstanding requests.
+
 - **Revision**: Updated [`workflows/evaluate.md`](workflows/evaluate.md) for
   0197 - Resolver-dispatched source selectors. The harness checkpoint loop
   now serves two request kinds: judgment requests are judged from the bounded

@@ -42,7 +42,7 @@ func newEvaluationRunCmd() *cobra.Command {
 	cmd.Flags().StringVar(&opts.Evaluator, "evaluator", "", "evaluator to use: auto (default), a built-in name, or a configured profile")
 	cmd.Flags().StringVar(&opts.Resume, "resume", "", "resume an existing run from its evaluation.json")
 	cmd.Flags().StringVar(&opts.EvaluatorResult, "evaluator-result", "",
-		"submit a harness result envelope for the awaiting work request, from a file or - for stdin (requires --resume)")
+		"submit one or more harness result envelopes (an object or a JSON array) for outstanding work requests, from a file or - for stdin (requires --resume)")
 	cmd.Flags().BoolVarP(&dryRun, "dry-run", "n", false, "preview the resolved run without invoking an evaluator or writing evaluation data")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run receipt")
 	return cmd
@@ -124,19 +124,34 @@ func renderEvaluationRunResult(cmd *cobra.Command, result *runner.Result) error 
 }
 
 func renderAwaitingEvaluator(out io.Writer, result *runner.Result) error {
-	if result.EvaluatorRequest != nil {
-		if _, err := fmt.Fprintf(out, "Awaiting harness judgment: %s (request %s, attempt %d)\n",
-			result.EvaluatorRequest.WorkUnitID, result.EvaluatorRequest.RequestID, result.EvaluatorRequest.Attempt); err != nil {
+	if len(result.EvaluatorRequests) > 0 {
+		if _, err := fmt.Fprintf(out, "Awaiting harness judgment: %d outstanding of up to %d work requests\n",
+			len(result.EvaluatorRequests), result.Concurrency); err != nil {
+			return err
+		}
+		if err := renderOutstandingRequests(out, result.EvaluatorRequests); err != nil {
 			return err
 		}
 	}
-	if result.Failure != nil {
-		if _, err := fmt.Fprintf(out, "Previous attempt: %s: %s\n", result.Failure.Category, result.Failure.Detail); err != nil {
-			return err
-		}
-	}
-	_, err := fmt.Fprintln(out, "Run with --json to receive the bounded work request.")
+	_, err := fmt.Fprintln(out, "Run with --json to receive the bounded work requests.")
 	return err
+}
+
+func renderOutstandingRequests(out io.Writer, requests []*runner.EvaluatorRequest) error {
+	for _, request := range requests {
+		if _, err := fmt.Fprintf(out, "- %s (request %s, attempt %d)\n",
+			request.WorkUnitID, request.RequestID, request.Attempt); err != nil {
+			return err
+		}
+		if request.LastFailure == nil {
+			continue
+		}
+		if _, err := fmt.Fprintf(out, "  previous attempt: %s: %s\n",
+			request.LastFailure.Category, request.LastFailure.Detail); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // mapRunnerError classifies runner errors onto CLI exit-code categories and,

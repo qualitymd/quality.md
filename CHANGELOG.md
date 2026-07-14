@@ -5,6 +5,36 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Harness-backed evaluation runs are no longer pinned to concurrency 1: the
+  runner now keeps a rolling window of dependency-ready work requests
+  outstanding — up to the run's resolved `evaluation.concurrency` — topping
+  the window up as results are accepted, so the invoking harness can judge
+  independent requests in parallel or fan them out to subagents.
+  Omitted-concurrency harness runs now use the shared automatic default
+  (`max(2, NumCPU*2)`) instead of forced 1; receipts, dry-run previews, and
+  progress output state the resolved concurrency and window width.
+- `awaiting_evaluator` receipts carry `evaluatorRequests` — the outstanding
+  bounded work-request set — replacing the singular `evaluatorRequest`, and
+  `--evaluator-result` accepts one result envelope or a JSON array covering
+  any subset of the outstanding requests. Not-yet-submitted requests stay
+  outstanding at no retry cost; a schema-invalid or failed member re-emits
+  for its retry attempt (with its `lastFailure` named) without touching other
+  members' accepted results.
+- `evaluation.json` bumps to schema version 7: the harness checkpoint state
+  is now the plural `pendingEvaluatorCalls`. Clean break: an in-flight
+  awaiting run created before the upgrade cannot resume across it — re-run
+  it; completed runs are unaffected. `qualitymd evaluation status` lists
+  every outstanding request for an awaiting run.
+
+### /quality skill
+
+- The evaluate workflow's checkpoint loop services the outstanding request
+  set: it may delegate independent requests to subagents, submits results as
+  they become ready (one envelope or several per call), and names the window
+  width on the first windowed receipt.
+
 ## v0.30.0 - 2026-07-11
 
 ### Specification

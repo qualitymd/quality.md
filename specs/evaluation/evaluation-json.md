@@ -3,7 +3,7 @@ type: Functional Specification
 title: evaluation.json
 description: Artifact contract for the authoritative run artifact written by the evaluation runner.
 tags: [evaluation, records, artifact]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # evaluation.json
@@ -29,7 +29,7 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 6,
+  "schemaVersion": 7,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
@@ -39,10 +39,12 @@ The document envelope is:
 }
 ```
 
-`schemaVersion` **MUST** be `6` and is a payload-shape marker only; versions
+`schemaVersion` **MUST** be `7` and is a payload-shape marker only; versions
 1–3 belong to the historical multi-file data tree, version 4 belongs to the
-strategy-named runner artifact, and version 5 predates the per-area `sources`
-record. `kind` **MUST** be `EvaluationRun`.
+strategy-named runner artifact, version 5 predates the per-area `sources`
+record, and version 6 predates the multi-outstanding harness checkpoint
+window (its singular pending call is not read back — an awaiting version-6
+run is re-run, not migrated). `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
 
@@ -62,17 +64,19 @@ kind), and `concurrency` (the resolved concurrency cap).
 - per-work-unit entries carrying status, attempts, input hash, failure, and
   timestamps;
 - a `cancelled` marker when a user interruption was observed mid-run;
-- `pendingEvaluatorCall` — the awaiting harness checkpoint's correlation
+- `pendingEvaluatorCalls` — the awaiting harness checkpoint's correlation
   metadata (request identity, work-unit identity, input hash, correlation ID,
-  and attempt), present exactly while a harness work request awaits its
-  result; and
+  and attempt) for every outstanding work request, in emission order, bounded
+  by the manifest's resolved `concurrency`, present exactly while harness
+  work requests await their results; and
 - `harnessIdentity` — the harness runtime the run's judgment is bound to, set
   by the first accepted harness result.
 
 `awaiting_evaluator` marks a resumable, incomplete checkpoint — never a
-failure. `pendingEvaluatorCall` **MUST NOT** carry raw prompt, source, or
-result bodies: the pending request is rebuilt from the model snapshot,
-work-graph state, and current source package per the
+failure. `pendingEvaluatorCalls` is the single source of truth for what is
+awaiting and **MUST NOT** carry raw prompt, source, or result bodies: each
+pending request is rebuilt from the model snapshot, work-graph state, and
+current source package per the
 [runner harness contract](runner.md#harness-checkpoints).
 
 `state` **MUST NOT** carry provider context identifiers or prompt-cache
@@ -156,10 +160,11 @@ and its manifest `model` resolves to the selected model. If compatibility
 verification fails, then resume **MUST** fail with `run_state_invalid` and
 report that starting a new run is the remedy.
 
-For a harness-backed run, resume compatibility additionally covers the pending
-request and identity: a pending request whose rebuilt input hash no longer
-matches `pendingEvaluatorCall`, or a result from a runtime other than the
-bound `harnessIdentity`, **MUST** fail with `run_state_invalid`.
+For a harness-backed run, resume compatibility additionally covers the
+pending requests and identity: a pending request whose rebuilt input hash no
+longer matches its `pendingEvaluatorCalls` entry, or a result from a runtime
+other than the bound `harnessIdentity`, **MUST** fail with
+`run_state_invalid`.
 
 Work-unit reuse on resume is decided by the
 [orchestration resume rules](orchestration.md#resume).

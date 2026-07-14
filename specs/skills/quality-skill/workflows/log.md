@@ -1,5 +1,18 @@
 # /quality skill workflows update log
 
+## 2026-07-11
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0198 - Batched harness checkpoints](../../../../changes/0198-batched-harness-checkpoints.md).
+  An awaiting receipt now carries the runner's outstanding bounded work
+  requests (up to the run's resolved concurrency), so the checkpoint loop
+  services each request from its own bounded content, may delegate
+  independent requests to native subagents, and may submit results as they
+  become ready — one envelope or several per `--evaluator-result` call — with
+  each resume returning the window topped up with newly-ready requests.
+  Interrupted loops recover the same outstanding set, and never-submitted
+  requests stay outstanding at no retry cost.
+
 ## 2026-07-10
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for

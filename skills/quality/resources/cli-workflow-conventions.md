@@ -82,8 +82,11 @@ Sequence an evaluation this way:
 6. Run the evaluation through `qualitymd evaluation run` with explicit flags
    and record the reported run path in the feedback log.
 7. For a harness-backed run, service each `awaiting_evaluator` receipt: judge
-   only the supplied bounded work request and submit the result envelope with
-   `--resume <run> --evaluator-result -`, repeating until a terminal receipt.
+   each outstanding bounded work request only from its own supplied content —
+   directly or via subagents — and submit result envelopes (one or several
+   per call) with `--resume <run> --evaluator-result -`, repeating until a
+   terminal receipt; each resume tops the window up with newly-ready
+   requests.
 8. Maintain workflow feedback for material process events.
 9. Summarize the receipt and the generated reports.
 
@@ -103,7 +106,7 @@ Sequence recovery work this way:
    `qualitymd evaluation run --resume <run>`, keeping the run's recorded
    evaluator; a different evaluator means a new run. A run awaiting harness
    judgment is resumable the same way: resuming without a result re-emits the
-   pending work request.
+   outstanding work requests unchanged.
 6. For a historical multi-file run with missing data, inspect data kinds,
    schemas, and examples; validate with dry-run; then persist through the CLI
    data write path.

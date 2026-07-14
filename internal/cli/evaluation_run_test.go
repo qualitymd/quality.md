@@ -112,14 +112,15 @@ func TestEvaluationRunHarnessCheckpointExitsSuccessfully(t *testing.T) {
 		t.Fatalf("Execute() error = %v, want success: an awaiting checkpoint is expected progress", err)
 	}
 	var receipt struct {
-		Status           string `json:"status"`
-		Evaluator        string `json:"evaluator"`
-		EvaluatorRequest *struct {
+		Status            string `json:"status"`
+		Evaluator         string `json:"evaluator"`
+		Concurrency       int    `json:"concurrency"`
+		EvaluatorRequests []struct {
 			RequestID  string          `json:"requestId"`
 			WorkUnitID string          `json:"workUnitId"`
 			InputHash  string          `json:"inputHash"`
 			Schema     json.RawMessage `json:"expectedSchema"`
-		} `json:"evaluatorRequest"`
+		} `json:"evaluatorRequests"`
 	}
 	if err := json.Unmarshal(out.Bytes(), &receipt); err != nil {
 		t.Fatalf("receipt is not JSON: %v\n%s", err, out.String())
@@ -127,9 +128,20 @@ func TestEvaluationRunHarnessCheckpointExitsSuccessfully(t *testing.T) {
 	if receipt.Status != "awaiting_evaluator" || receipt.Evaluator != "harness" {
 		t.Errorf("receipt = %+v, want awaiting_evaluator/harness", receipt)
 	}
-	if receipt.EvaluatorRequest == nil || receipt.EvaluatorRequest.RequestID == "" ||
-		receipt.EvaluatorRequest.InputHash == "" || len(receipt.EvaluatorRequest.Schema) == 0 {
-		t.Errorf("evaluatorRequest = %+v, want the complete bounded request", receipt.EvaluatorRequest)
+	if receipt.Concurrency < 1 {
+		t.Errorf("concurrency = %d, want the resolved window cap surfaced", receipt.Concurrency)
+	}
+	if len(receipt.EvaluatorRequests) == 0 {
+		t.Fatalf("evaluatorRequests = empty, want the outstanding bounded requests")
+	}
+	if len(receipt.EvaluatorRequests) > receipt.Concurrency {
+		t.Errorf("evaluatorRequests = %d, want at most the resolved concurrency %d",
+			len(receipt.EvaluatorRequests), receipt.Concurrency)
+	}
+	for _, request := range receipt.EvaluatorRequests {
+		if request.RequestID == "" || request.InputHash == "" || len(request.Schema) == 0 {
+			t.Errorf("evaluatorRequests entry = %+v, want the complete bounded request", request)
+		}
 	}
 }
 

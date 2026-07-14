@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluation runner
 description: CLI-owned deterministic evaluation engine, concurrency, run-local logging, and failure taxonomy.
 tags: [evaluation, runner, orchestration]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # Evaluation runner
@@ -32,9 +32,9 @@ agent- and model-mediated judgment as bounded evaluator work units. — 0192
 
 Deferred:
 
-- bounded parallel and subagent-backed execution — the strategy contract below
-  is normative now, and the first implementation slice resolves `auto` to
-  sequential execution only;
+- a persistent long-lived harness request/result transport (for example one
+  JSON-RPC or JSONL subprocess) as an alternative to discrete resume calls, and
+  adaptive window sizing beyond the resolved concurrency cap;
 - `shell` and `manual` evaluator implementations (reserved names);
 - raw prompt/response tracing beyond a future explicit opt-in;
 - compacting completed-run execution state in `evaluation.json`.
@@ -96,9 +96,14 @@ When `evaluation.concurrency` is absent, the runner **MUST** request automatic
 concurrency equal to `max(2, runtime.NumCPU()*2)`.
 
 The runner **MUST** resolve requested concurrency against the selected
-evaluator's declared support for concurrent calls before execution begins. If
-the selected evaluator does not support concurrent calls, then the resolved
-concurrency **MUST** be `1`.
+evaluator's declared capabilities before execution begins. If the selected
+evaluator declares neither concurrent-call support nor subagent delegation,
+then the resolved concurrency **MUST** be `1`.
+
+> Rationale: a checkpointed evaluator never takes simultaneous in-process
+> calls, so concurrent-call support alone would keep harness runs pinned to 1;
+> subagent delegation is the declared capability that makes an outstanding
+> window of checkpointed requests serviceable in parallel. — 0198
 
 The runner **MUST** surface the resolved concurrency in dry-run JSON,
 `evaluation.json`, run-local logs, and run receipts. The runner **MUST NOT**
@@ -121,34 +126,62 @@ context-reuse strategy under the
 and the invariant above: a dropped or unavailable session only costs
 re-transmitted tokens, never output changes.
 
-Harness-backed runs **MUST** resolve to `concurrency: 1` until the runner and
-harness contracts define multiple pending evaluator checkpoints.
+For a harness-backed run, the resolved concurrency is the cap on the number
+of outstanding checkpointed work requests, per the
+[harness checkpoints contract](#harness-checkpoints) below.
 
 ## Harness checkpoints
 
 For a harness-backed run, the runner **MUST** keep every ownership listed
-above across checkpoints: it builds the bounded work request, atomically
-persists an awaiting-evaluator checkpoint with the pending call's correlation
-metadata (request identity, work-unit identity, input hash, correlation ID,
-and attempt) before the request leaves stdout, and later validates the
-submitted result against that checkpoint.
+above across checkpoints: it builds each bounded work request, atomically
+persists the awaiting-evaluator checkpoint with every outstanding call's
+correlation metadata (request identity, work-unit identity, input hash,
+correlation ID, and attempt) before any request leaves stdout, and later
+validates each submitted result against its own checkpoint entry.
 
 > Rationale: the CLI command returns control to the invoking agent between
-> request and result, so the run must be resumable before the work request is
-> emitted. — 0194
+> request and result, so the run must be resumable before the work requests
+> are emitted. — 0194
+
+While a harness run has dependency-ready judgment work that is not yet
+outstanding, the runner **MUST** keep up to the run's resolved concurrency
+work requests outstanding — a rolling window drawn from the dependency-ready
+frontier — emitting each newly-ready request as capacity frees, without
+waiting for other outstanding requests to be judged first. Each emitted
+request **MUST** carry the same complete bounded work request a
+single-request checkpoint carries. At resolved concurrency `1`, the runner
+**MUST** keep exactly one request outstanding, preserving single-request
+behavior.
+
+> Rationale: the transport — not a configuration choice — was what pinned
+> harness runs to one judgment at a time. Requests are drawn only from the
+> dependency-ready frontier, so parallelism stays bounded by the work-graph
+> DAG, and emitting as capacity frees avoids the barrier-latency loss of
+> draining a whole wave before starting the next. The window is a transport
+> optimization only: the accepted results of a windowed run must match the
+> sequential path. — 0198
 
 Pending-call metadata **MUST NOT** persist raw prompt, source, or result
-bodies; the pending request is rebuilt deterministically from the model
+bodies; each pending request is rebuilt deterministically from the model
 snapshot, work-graph state, and current source package, and a rebuilt request
-whose input hash no longer matches the checkpoint **MUST** fail with
+whose input hash no longer matches its checkpoint entry **MUST** fail with
 `run_state_invalid` rather than accept judgment for changed input.
 
 The runner **MUST** normalize, schema-validate, retry, accept, log, and
-persist a harness payload through the same paths used for CLI- and API-backed
-evaluator payloads, **MUST** reject a mismatched, duplicate, or unsolicited
-result without advancing the work graph, and **MUST** enforce the
+persist each harness payload through the same paths used for CLI- and
+API-backed evaluator payloads, **MUST** accept each valid member of a
+submission independently and persist it atomically with its work unit's
+completion — so an interruption leaves every accepted member durable and
+every still-outstanding member recoverable for resume — **MUST** reject a
+mismatched, duplicate, or unsolicited result without discarding or altering
+any other member's accepted result, and **MUST** enforce the
 [harness identity binding](evaluator-contract.md#harness-evaluator) on
 resume. Invalid output is never repaired outside the runner.
+
+> Rationale: per-member binding by the runner's rebuilt-request hash means a
+> stale or mismatched result cannot be accepted against evidence it was not
+> judged against — the single-request integrity check, preserved per member.
+> — 0194, 0198
 
 Evaluator-call logging for harness dispatch **MUST** follow the same boundary
 as every other transport: hashes, identities, durations, attempt state, usage

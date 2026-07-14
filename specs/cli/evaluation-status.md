@@ -3,7 +3,7 @@ type: Functional Specification
 title: qualitymd evaluation status
 description: Inspect whether an evaluation run can be rendered into reports.
 tags: [cli, command, evaluation]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # qualitymd evaluation status
@@ -45,9 +45,9 @@ artifact-backed runs it **MUST** also include the runner `lifecycle` status.
 
 A run whose lifecycle is `awaiting_evaluator` **MUST** be identified as
 resumable and incomplete with harness judgment as the pending action —
-including the pending work-unit and request identity and the exact
-continuation command — distinct from a failed, cancelled, malformed, or
-generically incomplete run.
+including the work-unit and request identity of every outstanding work
+request, in emission order, and the exact continuation command — distinct
+from a failed, cancelled, malformed, or generically incomplete run.
 
 > Rationale: unattended or interrupted workflows use status as the recovery
 > surface; describing a normal checkpoint as an undifferentiated gap loses the

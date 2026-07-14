@@ -3,6 +3,27 @@
 ## 2026-07-11
 
 - **Revision**: Implemented durable spec changes for
+  [0198 - Batched harness checkpoints](../changes/0198-batched-harness-checkpoints.md).
+  The evaluation [Runner](evaluation/runner.md) and
+  [Orchestration](evaluation/orchestration.md) contracts replace the
+  single-request harness checkpoint with a bounded rolling window of
+  outstanding dependency-ready work requests, capped by resolved concurrency,
+  with per-member correlation, independent acceptance and durability, partial
+  submission at no retry cost for not-submitted members, and per-member retry
+  re-emission. The [Evaluator contract](evaluation/evaluator-contract.md)
+  gives the harness evaluator the subagent-delegation capability and lifts
+  the concurrency clamp; [evaluation.json](evaluation/evaluation-json.md)
+  bumps to schema version 7 with plural `pendingEvaluatorCalls`;
+  [qualitymd evaluation run](cli/evaluation-run.md) receipts carry the
+  outstanding request set and `--evaluator-result` accepts one or more
+  envelopes; [qualitymd evaluation status](cli/evaluation-status.md) lists
+  every outstanding request; and the
+  [/quality evaluation workflow](skills/quality-skill/evaluation.md) and
+  [/quality skill](skills/quality-skill/quality-skill.md) contracts adopt the
+  rolling checkpoint loop with streamed submission and optional subagent
+  delegation.
+
+- **Revision**: Implemented durable spec changes for
   [0197 - Resolver-dispatched source selectors](../changes/0197-resolver-dispatched-source-selectors.md).
   [`SPECIFICATION.md`](../SPECIFICATION.md) commits the format to
   non-filesystem source selectors: `source` stays a single string, and its

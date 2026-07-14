@@ -418,7 +418,7 @@ func TestHarnessResolvesProseSelector(t *testing.T) {
 	if result.Status != StatusAwaitingEvaluator {
 		t.Fatalf("status = %q, want awaiting_evaluator", result.Status)
 	}
-	first := result.EvaluatorRequest
+	first := soleRequest(t, result)
 	if first.Kind != string(KindResolveSource) || first.Subject != "area:root" {
 		t.Fatalf("first checkpoint = %s %s, want the resolution request", first.Kind, first.Subject)
 	}
@@ -437,28 +437,23 @@ func TestHarnessResolvesProseSelector(t *testing.T) {
 		if checkpoints > 20 {
 			t.Fatalf("run did not complete after %d checkpoints", checkpoints)
 		}
-		req := result.EvaluatorRequest
-		payload, err := scripted.payloadFor(workRequestFor(req))
-		if err != nil {
-			t.Fatalf("scripted payload for %s: %v", req.WorkUnitID, err)
-		}
-		if UnitKind(req.Kind) == KindAssessRateRequirement {
-			if len(req.Source) != 1 || req.Source[0].Path != "tickets/T-1" {
-				t.Fatalf("judgment request source = %v, want the captured bundle", req.Source)
+		envelopes := make([]evaluator.HarnessResultEnvelope, 0, len(result.EvaluatorRequests))
+		for _, req := range result.EvaluatorRequests {
+			if UnitKind(req.Kind) == KindAssessRateRequirement {
+				if len(req.Source) != 1 || req.Source[0].Path != "tickets/T-1" {
+					t.Fatalf("judgment request source = %v, want the captured bundle", req.Source)
+				}
+				sawCapturedSource = true
+				// A workspace write after capture must not invalidate the
+				// frozen prose bundle (reproducibility of record, no re-stat).
+				writeSourceFile(t, repo, "unrelated.md", "written mid-run")
 			}
-			sawCapturedSource = true
-			// A workspace write after capture must not invalidate the frozen
-			// prose bundle (reproducibility of record, no re-stat).
-			writeSourceFile(t, repo, "unrelated.md", "written mid-run")
+			envelopes = append(envelopes, envelopeFor(t, scripted, req))
 		}
-		result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-			RequestID: req.RequestID,
-			InputHash: req.InputHash,
-			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
-			Payload:   roundTripJSON(payload),
-		})
+		var err error
+		result, err = submitHarnessResults(t, repo, result.Path, envelopes)
 		if err != nil {
-			t.Fatalf("submit for %s error = %v", req.WorkUnitID, err)
+			t.Fatalf("submit batch error = %v", err)
 		}
 	}
 	if result.Status != StatusCompleted {
@@ -500,8 +495,9 @@ func TestHarnessProsePinsKindAcrossResume(t *testing.T) {
 	writeSourceFile(t, repo, "QUALITY.md", proseSourceModel)
 
 	first := startHarnessRun(t, repo)
-	if first.EvaluatorRequest.Kind != string(KindResolveSource) {
-		t.Fatalf("first checkpoint = %s, want resolveSource", first.EvaluatorRequest.Kind)
+	firstRequest := soleRequest(t, first)
+	if firstRequest.Kind != string(KindResolveSource) {
+		t.Fatalf("first checkpoint = %s, want resolveSource", firstRequest.Kind)
 	}
 	// The selector now names an existing filesystem entry.
 	writeSourceFile(t, repo, "open tickets in the support queue", "now a file")
@@ -515,10 +511,9 @@ func TestHarnessProsePinsKindAcrossResume(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Run(resume) error = %v", err)
 	}
-	if again.Status != StatusAwaitingEvaluator ||
-		again.EvaluatorRequest.Kind != string(KindResolveSource) ||
-		again.EvaluatorRequest.RequestID != first.EvaluatorRequest.RequestID {
-		t.Fatalf("resumed checkpoint = %+v, want the identical pinned resolution request", again.EvaluatorRequest)
+	againRequest := soleRequest(t, again)
+	if againRequest.Kind != string(KindResolveSource) || againRequest.RequestID != firstRequest.RequestID {
+		t.Fatalf("resumed checkpoint = %+v, want the identical pinned resolution request", againRequest)
 	}
 }
 

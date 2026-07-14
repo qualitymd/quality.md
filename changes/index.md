@@ -43,7 +43,12 @@ edit.
 
 # Open change cases
 
-None.
+- [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md) -
+  **Design**. Replace the Go implementation with one Effect v4 TypeScript
+  runtime, add capability-aware Codex and Claude SDK evaluators with immutable
+  area context and isolated requirement sessions, and preserve the CLI's
+  commands, artifacts, install channels, and multi-platform releases through a
+  clean cutover.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

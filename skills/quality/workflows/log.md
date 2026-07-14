@@ -2,6 +2,15 @@
 
 ## 2026-07-11
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0198 -
+  Batched harness checkpoints. Checkpoint servicing now covers the receipt's
+  outstanding request set (`evaluatorRequests`, capped by the run's resolved
+  concurrency): each request is judged from its own bounded content, directly
+  or via subagents; results stream back as one envelope or a JSON array per
+  `--evaluator-result` call covering any subset; each resume tops the window
+  up with newly-ready requests; and never-submitted requests stay outstanding
+  at no retry cost.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0197 -
   Resolver-dispatched source selectors. Checkpoint servicing distinguishes
   judgment requests (judge the bounded evidence only) from `resolveSource`

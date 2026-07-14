@@ -437,12 +437,16 @@ those to the user rather than inventing a fallback. Preview a run with
 `qualitymd evaluation run --dry-run --json` when the resolved model, scope,
 evaluator, or work-unit counts are worth confirming first.
 
-With `--evaluator harness`, the run checkpoints at each judgment work unit:
-the command exits `0` with `status: awaiting_evaluator` and the bounded work
-request. Judge only that request and submit the result with
+With `--evaluator harness`, the run checkpoints at judgment work: the command
+exits `0` with `status: awaiting_evaluator` and the outstanding bounded work
+requests, up to the run's resolved concurrency. Judge each request only from
+its own bounded content — directly or via subagents, since each request is
+self-contained — and submit results (one envelope or an array per call, any
+subset) with
 `qualitymd evaluation run --resume <run> --evaluator-result - --json`, looping
-until the terminal receipt (the evaluate workflow file has the full loop). An
-awaiting receipt is expected progress, not a failure.
+until the terminal receipt; each resume tops the window up with newly-ready
+requests (the evaluate workflow file has the full loop). An awaiting receipt
+is expected progress, not a failure.
 
 Failed or interrupted runs report `failed` or `cancelled` with a stable failure
 category and are resumable with `qualitymd evaluation run --resume <run>`.

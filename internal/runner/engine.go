@@ -50,15 +50,15 @@ type engine struct {
 	// bundle is identical to a re-packaged one (same hash); the memo only
 	// removes redundant filesystem work.
 	sourceBundles map[string]*SourceBundle
-	// harnessResult is the submitted --evaluator-result envelope, consumed by
-	// the pending harness work unit.
-	harnessResult *evaluator.HarnessResultEnvelope
-	// awaitingRequest is the bounded work request staged for an
-	// awaiting-evaluator receipt after a harness checkpoint.
-	awaitingRequest *EvaluatorRequest
-	// awaitingFailure classifies the rejected attempt an awaiting request is
-	// retrying, for the receipt.
-	awaitingFailure *Failure
+	// harnessResults are the submitted --evaluator-result envelopes, each
+	// consumed by the outstanding harness work request it correlates with.
+	harnessResults []*evaluator.HarnessResultEnvelope
+	// awaitingRequests is the outstanding bounded work-request set staged for
+	// an awaiting-evaluator receipt after a harness checkpoint.
+	awaitingRequests []*EvaluatorRequest
+	// retryFailures classifies the rejected attempt each re-emitted request
+	// is retrying, keyed by the retry request identity, for the receipt.
+	retryFailures map[string]*Failure
 }
 
 // payloadFor returns the first payload a work unit produced, or nil.
@@ -112,7 +112,10 @@ func (e *engine) execute(ctx context.Context) (string, error) {
 	if failure := e.unsupportedSelectorFailure(); failure != nil {
 		return e.markRunFailed(failure)
 	}
-	if e.artifact.Manifest.Concurrency > 1 && !e.harnessBacked() {
+	if e.harnessBacked() {
+		return e.executeHarness(ctx)
+	}
+	if e.artifact.Manifest.Concurrency > 1 {
 		return e.executeConcurrent(ctx)
 	}
 	for _, unit := range e.graph.Units {
@@ -131,11 +134,6 @@ func (e *engine) execute(ctx context.Context) (string, error) {
 		}
 		if err != nil {
 			return StatusFailed, err
-		}
-		if e.awaitingRequest != nil {
-			// The run checkpointed at a harness work request; the artifact
-			// already persists the awaiting state.
-			return StatusAwaitingEvaluator, nil
 		}
 		if ctx.Err() != nil {
 			return e.markCancelled()
@@ -281,9 +279,6 @@ func (e *engine) runEvaluatorUnit(ctx context.Context, unit *Unit) (bool, error)
 	if failure := e.resolveSourceGuard(unit); failure != nil {
 		return e.failUnit(unit, failure)
 	}
-	if e.harnessBacked() {
-		return e.runHarnessUnit(unit)
-	}
 	req, err := e.buildWorkRequest(unit)
 	if err != nil {
 		if failure := sourceUnavailableFailure(err); failure != nil {
@@ -346,8 +341,12 @@ func (e *engine) unitResultPresent(unit *Unit) bool {
 }
 
 // failUnit records one work unit's terminal classified failure and fails the
-// run without dispatching the unit.
+// run without dispatching the unit. A terminally failed unit never has an
+// outstanding harness pending call, so any entry it held is cleared.
 func (e *engine) failUnit(unit *Unit, failure *Failure) (bool, error) {
+	if pending := e.artifact.State.pendingCall(unit.ID); pending != nil {
+		e.artifact.State.clearPendingCall(pending.RequestID)
+	}
 	state := e.artifact.State.unit(unit.ID)
 	state.Status = UnitFailed
 	state.Failure = failure

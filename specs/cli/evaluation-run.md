@@ -3,7 +3,7 @@ type: Functional Specification
 title: qualitymd evaluation run
 description: Execute a complete evaluation run with the deterministic runner.
 tags: [cli, command, evaluation, runner]
-timestamp: 2026-07-09T00:00:00Z
+timestamp: 2026-07-11T00:00:00Z
 ---
 
 # qualitymd evaluation run
@@ -58,8 +58,9 @@ The command takes no positional arguments.
 - `--evaluator <name>` — evaluator to use: `auto`, a built-in name (including
   `harness`), or a configured profile.
 - `--resume <run>` — resume an existing run from its `evaluation.json`.
-- `--evaluator-result <path|->` — submit one harness result envelope for the
-  awaiting work request, from a file or stdin; valid only with `--resume`.
+- `--evaluator-result <path|->` — submit one or more harness result envelopes
+  (a single object or a JSON array) for outstanding work requests, from a
+  file or stdin; valid only with `--resume`.
 - `-n/--dry-run` — preview the resolved run without invoking an evaluator or
   writing evaluation data.
 - `--json` — emit a machine-readable receipt on stdout.
@@ -120,28 +121,36 @@ Evaluator names, profiles, and the configuration surface are defined by the
 judgment is supplied by the invoking agent harness through checkpoints, per
 the [evaluator contract](../evaluation/evaluator-contract.md#harness-evaluator).
 
-When a harness-backed run reaches an evaluator work unit, the command **MUST**
+When a harness-backed run reaches evaluator work, the command **MUST**
 persist the awaiting checkpoint, exit `0`, and emit a receipt with the stable
-status `awaiting_evaluator` carrying the complete bounded work request — run
-reference, request identity, work-unit identity and kind, subject,
-instructions, context, bounded source package, expected result schema, input
-hash, and correlation ID.
+status `awaiting_evaluator` carrying the outstanding bounded work requests in
+emission order — up to the run's resolved concurrency, per the
+[runner harness contract](../evaluation/runner.md#harness-checkpoints). Each
+carried request is complete: run reference, request identity, work-unit
+identity and kind, subject, instructions, context, bounded source package,
+expected result schema, input hash, correlation ID, and — for a retrying
+request — the classified failure of the rejected attempt.
 
 > Rationale: awaiting harness judgment is expected progress, not a failure
-> that automation should retry from the beginning. — 0194
+> that automation should retry from the beginning. Each request is complete
+> and self-contained so the harness can judge it directly or hand it to a
+> subagent without any other run context. — 0194, 0198
 
-`--resume <run> --evaluator-result <path|->` **MUST** accept exactly one
-harness result envelope from a file or stdin and **MUST** advance
-deterministic work until the next evaluator checkpoint or the terminal run
-receipt. Submitting a result for a run whose evaluator is not `harness`, or
-without `--resume`, **MUST** fail as a usage error; submitting when no request
-is pending **MUST** fail with `run_state_invalid`.
+`--resume <run> --evaluator-result <path|->` **MUST** accept one harness
+result envelope or a JSON array of them — any subset of the outstanding
+requests, one envelope per request — from a file or stdin, and **MUST**
+advance deterministic work and window top-up until the next awaiting
+checkpoint or the terminal run receipt. Submitting results for a run whose
+evaluator is not `harness`, or without `--resume`, **MUST** fail as a usage
+error; submitting when no request is pending **MUST** fail with
+`run_state_invalid`.
 
 Resuming an awaiting run without `--evaluator-result` **MUST** re-emit the
-same pending request when its rebuilt input hash matches the checkpoint, and
-**MUST** fail with `run_state_invalid` and recommend a new run when it cannot
-rebuild the same request. Result correlation, validation, retry, and identity
-binding are the [runner](../evaluation/runner.md#harness-checkpoints) and
+same outstanding request set when each rebuilt input hash matches its
+checkpoint entry, and **MUST** fail with `run_state_invalid` and recommend a
+new run when it cannot rebuild the same requests. Result correlation,
+validation, partial submission, retry, and identity binding are the
+[runner](../evaluation/runner.md#harness-checkpoints) and
 [orchestration](../evaluation/orchestration.md#harness-checkpoints) contracts.
 
 ### Dry run
@@ -149,7 +158,8 @@ binding are the [runner](../evaluation/runner.md#harness-checkpoints) and
 `qualitymd evaluation run --dry-run --json` **MUST** emit a deterministic
 machine-readable preview containing the resolved model, requested and planned
 scope, selected evaluator with its kind and selection reason, resolved
-concurrency, work-unit counts, the per-area source dispatch plan (each
+concurrency (for a harness-backed run, the outstanding-window cap),
+work-unit counts, the per-area source dispatch plan (each
 in-scope area's effective selector, detected kind, and serving resolver, per
 the [runner detection contract](../evaluation/runner.md#selector-kind-detection)),
 `expectedRunPath`, and `nextActions`. Run receipts carry the same per-area

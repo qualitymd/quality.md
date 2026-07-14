@@ -8,11 +8,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/qualitymd/quality.md/internal/evaluation"
 	"github.com/qualitymd/quality.md/internal/evaluator"
 )
 
@@ -680,13 +682,41 @@ func workRequestFor(req *runnerEvaluatorRequest) evaluator.WorkRequest {
 
 type runnerEvaluatorRequest = EvaluatorRequest
 
-// submitHarnessResult resumes an awaiting run with one result envelope.
+// soleRequest returns the receipt's single outstanding work request.
+func soleRequest(t *testing.T, result *Result) *EvaluatorRequest {
+	t.Helper()
+	if result.Status != StatusAwaitingEvaluator {
+		t.Fatalf("status = %q (failure: %+v), want awaiting_evaluator", result.Status, result.Failure)
+	}
+	if len(result.EvaluatorRequests) != 1 {
+		t.Fatalf("outstanding requests = %d, want exactly 1", len(result.EvaluatorRequests))
+	}
+	return result.EvaluatorRequests[0]
+}
+
+// submitHarnessResult resumes an awaiting run with one result envelope,
+// exercising the single-object submission shape.
 func submitHarnessResult(t *testing.T, repo, runPath string, envelope evaluator.HarnessResultEnvelope) (*Result, error) {
 	t.Helper()
 	raw, err := json.Marshal(envelope)
 	if err != nil {
 		t.Fatalf("marshaling envelope: %v", err)
 	}
+	return resumeWithResult(repo, runPath, raw)
+}
+
+// submitHarnessResults resumes an awaiting run with a batch of result
+// envelopes in one submission, exercising the JSON-array shape.
+func submitHarnessResults(t *testing.T, repo, runPath string, envelopes []evaluator.HarnessResultEnvelope) (*Result, error) {
+	t.Helper()
+	raw, err := json.Marshal(envelopes)
+	if err != nil {
+		t.Fatalf("marshaling envelopes: %v", err)
+	}
+	return resumeWithResult(repo, runPath, raw)
+}
+
+func resumeWithResult(repo, runPath string, raw []byte) (*Result, error) {
 	return Run(context.Background(), Options{
 		RepoRoot:        repo,
 		Model:           filepath.Join(repo, "QUALITY.md"),
@@ -695,6 +725,52 @@ func submitHarnessResult(t *testing.T, repo, runPath string, envelope evaluator.
 		Stdin:           bytes.NewReader(raw),
 		SelectEvaluator: harnessSelect(),
 	})
+}
+
+// envelopeFor builds the scripted result envelope answering one outstanding
+// request.
+func envelopeFor(t *testing.T, scripted *scriptedEvaluator, req *EvaluatorRequest) evaluator.HarnessResultEnvelope {
+	t.Helper()
+	payload, err := scripted.payloadFor(workRequestFor(req))
+	if err != nil {
+		t.Fatalf("scripted payload for %s: %v", req.WorkUnitID, err)
+	}
+	return evaluator.HarnessResultEnvelope{
+		RequestID: req.RequestID,
+		InputHash: req.InputHash,
+		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+		Payload:   roundTripJSON(payload),
+	}
+}
+
+// serviceHarnessRun services awaiting receipts until the run is terminal,
+// answering every outstanding request as one batch per resume. It returns the
+// terminal receipt and the number of awaiting receipts serviced.
+func serviceHarnessRun(t *testing.T, repo string, result *Result, scripted *scriptedEvaluator) (*Result, int) {
+	t.Helper()
+	checkpoints := 0
+	for result.Status == StatusAwaitingEvaluator {
+		checkpoints++
+		if checkpoints > 20 {
+			t.Fatalf("run did not complete after %d checkpoints", checkpoints)
+		}
+		if len(result.EvaluatorRequests) == 0 {
+			t.Fatalf("awaiting receipt carries no outstanding requests")
+		}
+		envelopes := make([]evaluator.HarnessResultEnvelope, 0, len(result.EvaluatorRequests))
+		for _, req := range result.EvaluatorRequests {
+			if req.RequestID == "" || req.InputHash == "" || len(req.ExpectedSchema) == 0 {
+				t.Fatalf("awaiting receipt lacks a complete bounded request: %+v", req)
+			}
+			envelopes = append(envelopes, envelopeFor(t, scripted, req))
+		}
+		var err error
+		result, err = submitHarnessResults(t, repo, result.Path, envelopes)
+		if err != nil {
+			t.Fatalf("submit batch error = %v", err)
+		}
+	}
+	return result, checkpoints
 }
 
 func startHarnessRun(t *testing.T, repo string) *Result {
@@ -713,28 +789,28 @@ func startHarnessRun(t *testing.T, repo string) *Result {
 
 func TestHarnessRunCheckpointsToCompletion(t *testing.T) {
 	repo := testRunnerRepo(t)
+	// Concurrency 1 preserves the single-request checkpoint loop: every
+	// awaiting receipt carries exactly one outstanding request.
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 1\n")
 	scripted := newScriptedEvaluator()
 	result := startHarnessRun(t, repo)
+	if result.Concurrency != 1 {
+		t.Fatalf("concurrency = %d, want configured 1", result.Concurrency)
+	}
 	checkpoints := 0
 	for result.Status == StatusAwaitingEvaluator {
 		checkpoints++
 		if checkpoints > 20 {
 			t.Fatalf("run did not complete after %d checkpoints", checkpoints)
 		}
-		req := result.EvaluatorRequest
-		if req == nil || req.RequestID == "" || req.InputHash == "" || len(req.ExpectedSchema) == 0 {
+		req := soleRequest(t, result)
+		if req.RequestID == "" || req.InputHash == "" || len(req.ExpectedSchema) == 0 {
 			t.Fatalf("awaiting receipt lacks the bounded request: %+v", req)
 		}
-		payload, err := scripted.payloadFor(workRequestFor(req))
-		if err != nil {
-			t.Fatalf("scripted payload for %s: %v", req.WorkUnitID, err)
-		}
-		result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-			RequestID: req.RequestID,
-			InputHash: req.InputHash,
-			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code", Model: "test-model"},
-			Payload:   roundTripJSON(payload),
-		})
+		envelope := envelopeFor(t, scripted, req)
+		envelope.Evaluator.Model = "test-model"
+		var err error
+		result, err = submitHarnessResult(t, repo, result.Path, envelope)
 		if err != nil {
 			t.Fatalf("submit for %s error = %v", req.WorkUnitID, err)
 		}
@@ -759,8 +835,96 @@ func TestHarnessRunCheckpointsToCompletion(t *testing.T) {
 	if artifact.State.HarnessIdentity == nil || artifact.State.HarnessIdentity.Runtime != "claude-code" {
 		t.Errorf("harness identity = %+v, want claude-code", artifact.State.HarnessIdentity)
 	}
-	if artifact.State.PendingEvaluatorCall != nil {
-		t.Errorf("completed run still has a pending evaluator call")
+	if len(artifact.State.PendingEvaluatorCalls) != 0 {
+		t.Errorf("completed run still has pending evaluator calls")
+	}
+}
+
+func TestHarnessWindowServicesConcurrentRequests(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 4\n")
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	if result.Concurrency != 4 {
+		t.Fatalf("concurrency = %d, want configured 4 (harness is no longer clamped to 1)", result.Concurrency)
+	}
+	// Both requirement judgments are dependency-ready and independent, so the
+	// first receipt carries both outstanding requests at once.
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("outstanding requests = %d, want the 2 independent requirement judgments", len(result.EvaluatorRequests))
+	}
+	for _, req := range result.EvaluatorRequests {
+		if UnitKind(req.Kind) != KindAssessRateRequirement {
+			t.Errorf("outstanding request kind = %s, want assessRateRequirement", req.Kind)
+		}
+	}
+	result, checkpoints := serviceHarnessRun(t, repo, result, scripted)
+	if result.Status != StatusCompleted {
+		t.Fatalf("status = %q (failure: %+v), want completed", result.Status, result.Failure)
+	}
+	// 7 evaluator units serviced over 5 receipts: the first batches the two
+	// independent requirement judgments, the second batches the factor
+	// analysis with the finding ranking (both depend only on the requirement
+	// judgments), and the rest are DAG-serial.
+	if checkpoints != 5 {
+		t.Errorf("checkpoints = %d, want 5", checkpoints)
+	}
+}
+
+func TestHarnessWindowMatchesSequentialResults(t *testing.T) {
+	accepted := func(t *testing.T, config string) (*Results, *evaluation.RatingResult) {
+		t.Helper()
+		repo := testRunnerRepo(t)
+		writeRunnerConfig(t, repo, config)
+		scripted := newScriptedEvaluator()
+		result, _ := serviceHarnessRun(t, repo, startHarnessRun(t, repo), scripted)
+		if result.Status != StatusCompleted {
+			t.Fatalf("status = %q (failure: %+v), want completed", result.Status, result.Failure)
+		}
+		artifact, err := NewStore(filepath.Join(repo, result.Path)).Load()
+		if err != nil {
+			t.Fatalf("Load() error = %v", err)
+		}
+		return &artifact.Results, result.RatingResult
+	}
+	sequential, sequentialRating := accepted(t, "evaluation:\n  concurrency: 1\n")
+	windowed, windowedRating := accepted(t, "evaluation:\n  concurrency: 4\n")
+	if len(sequential.Payloads) != len(windowed.Payloads) {
+		t.Fatalf("accepted payloads = %d vs %d, want identical sets", len(windowed.Payloads), len(sequential.Payloads))
+	}
+	// Recommendation IDs are randomly assigned per run, so payloads carrying
+	// them are compared after mapping each distinct qrec token, in first-seen
+	// order, to an ordinal placeholder.
+	qrecToken := regexp.MustCompile(`qrec_[a-z0-9]+`)
+	normalized := func(payload map[string]any) string {
+		raw, err := json.Marshal(payload)
+		if err != nil {
+			t.Fatalf("marshaling payload: %v", err)
+		}
+		seen := map[string]string{}
+		return qrecToken.ReplaceAllStringFunc(string(raw), func(id string) string {
+			if _, ok := seen[id]; !ok {
+				seen[id] = fmt.Sprintf("qrec_%04d", len(seen))
+			}
+			return seen[id]
+		})
+	}
+	for i, want := range sequential.Payloads {
+		got := windowed.Payloads[i]
+		if got.WorkUnit != want.WorkUnit {
+			t.Fatalf("payload %d work unit = %s, want %s (order must be graph order)", i, got.WorkUnit, want.WorkUnit)
+		}
+		// The evaluation frame embeds run identity (evaluationId, createdAt),
+		// which legitimately differs between two runs.
+		if want.WorkUnit == string(KindFrameEvaluation) {
+			continue
+		}
+		if normalized(got.Payload) != normalized(want.Payload) {
+			t.Errorf("payload for %s differs between window sizes", want.WorkUnit)
+		}
+	}
+	if sequentialRating == nil || windowedRating == nil || windowedRating.Level != sequentialRating.Level {
+		t.Errorf("rating = %+v vs %+v, want identical", windowedRating, sequentialRating)
 	}
 }
 
@@ -780,17 +944,21 @@ func TestHarnessAwaitingRunStatusSurfacesPendingRequest(t *testing.T) {
 	if status.Lifecycle != StatusAwaitingEvaluator {
 		t.Errorf("lifecycle = %q, want awaiting_evaluator", status.Lifecycle)
 	}
-	if status.AwaitingEvaluator == nil ||
-		status.AwaitingEvaluator.WorkUnitID != result.EvaluatorRequest.WorkUnitID ||
-		status.AwaitingEvaluator.RequestID != result.EvaluatorRequest.RequestID {
-		t.Errorf("awaitingEvaluator = %+v, want the pending request %+v", status.AwaitingEvaluator, result.EvaluatorRequest)
+	if len(status.AwaitingEvaluator) != len(result.EvaluatorRequests) {
+		t.Fatalf("awaitingEvaluator = %+v, want the %d outstanding requests", status.AwaitingEvaluator, len(result.EvaluatorRequests))
+	}
+	for i, awaiting := range status.AwaitingEvaluator {
+		request := result.EvaluatorRequests[i]
+		if awaiting.WorkUnitID != request.WorkUnitID || awaiting.RequestID != request.RequestID {
+			t.Errorf("awaitingEvaluator[%d] = %+v, want the outstanding request %+v", i, awaiting, request)
+		}
 	}
 	if len(status.NextActions) == 0 || status.NextActions[0].ID != "evaluation-run-reemit" {
 		t.Errorf("nextActions = %+v, want the resume continuation first", status.NextActions)
 	}
 }
 
-func TestHarnessResumeWithoutResultReemitsSameRequest(t *testing.T) {
+func TestHarnessResumeWithoutResultReemitsSameRequests(t *testing.T) {
 	repo := testRunnerRepo(t)
 	first := startHarnessRun(t, repo)
 	if first.Status != StatusAwaitingEvaluator {
@@ -808,9 +976,14 @@ func TestHarnessResumeWithoutResultReemitsSameRequest(t *testing.T) {
 	if again.Status != StatusAwaitingEvaluator {
 		t.Fatalf("resumed status = %q, want awaiting_evaluator", again.Status)
 	}
-	if again.EvaluatorRequest.RequestID != first.EvaluatorRequest.RequestID ||
-		again.EvaluatorRequest.InputHash != first.EvaluatorRequest.InputHash {
-		t.Errorf("re-emitted request %+v differs from original %+v", again.EvaluatorRequest, first.EvaluatorRequest)
+	if len(again.EvaluatorRequests) != len(first.EvaluatorRequests) {
+		t.Fatalf("re-emitted set = %d requests, want %d", len(again.EvaluatorRequests), len(first.EvaluatorRequests))
+	}
+	for i, request := range again.EvaluatorRequests {
+		original := first.EvaluatorRequests[i]
+		if request.RequestID != original.RequestID || request.InputHash != original.InputHash {
+			t.Errorf("re-emitted request %+v differs from original %+v", request, original)
+		}
 	}
 }
 
@@ -819,7 +992,7 @@ func TestHarnessRejectsMismatchedResult(t *testing.T) {
 	result := startHarnessRun(t, repo)
 	_, err := submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
 		RequestID: "req_other",
-		InputHash: result.EvaluatorRequest.InputHash,
+		InputHash: result.EvaluatorRequests[0].InputHash,
 		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
 		Payload:   map[string]any{"any": true},
 	})
@@ -827,7 +1000,7 @@ func TestHarnessRejectsMismatchedResult(t *testing.T) {
 	if err == nil || !errors.As(err, &runErr) || runErr.Category != evaluator.FailureRunStateInvalid {
 		t.Fatalf("submit(mismatched) error = %v, want run_state_invalid", err)
 	}
-	// The pending request is untouched and recoverable.
+	// The outstanding requests are untouched and recoverable.
 	again, err := Run(context.Background(), Options{
 		RepoRoot:        repo,
 		Model:           filepath.Join(repo, "QUALITY.md"),
@@ -835,8 +1008,9 @@ func TestHarnessRejectsMismatchedResult(t *testing.T) {
 		SelectEvaluator: harnessSelect(),
 	})
 	if err != nil || again.Status != StatusAwaitingEvaluator ||
-		again.EvaluatorRequest.RequestID != result.EvaluatorRequest.RequestID {
-		t.Fatalf("pending request not recoverable after rejected submit: %+v, %v", again, err)
+		len(again.EvaluatorRequests) != len(result.EvaluatorRequests) ||
+		again.EvaluatorRequests[0].RequestID != result.EvaluatorRequests[0].RequestID {
+		t.Fatalf("outstanding requests not recoverable after rejected submit: %+v, %v", again, err)
 	}
 }
 
@@ -847,8 +1021,8 @@ func TestHarnessRejectsStaleInput(t *testing.T) {
 		t.Fatalf("WriteFile error = %v", err)
 	}
 	_, err := submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-		RequestID: result.EvaluatorRequest.RequestID,
-		InputHash: result.EvaluatorRequest.InputHash,
+		RequestID: result.EvaluatorRequests[0].RequestID,
+		InputHash: result.EvaluatorRequests[0].InputHash,
 		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
 		Payload:   map[string]any{"any": true},
 	})
@@ -862,22 +1036,14 @@ func TestHarnessRefusesMixedRuntimes(t *testing.T) {
 	repo := testRunnerRepo(t)
 	scripted := newScriptedEvaluator()
 	result := startHarnessRun(t, repo)
-	payload, err := scripted.payloadFor(workRequestFor(result.EvaluatorRequest))
-	if err != nil {
-		t.Fatalf("payload error = %v", err)
-	}
-	result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-		RequestID: result.EvaluatorRequest.RequestID,
-		InputHash: result.EvaluatorRequest.InputHash,
-		Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
-		Payload:   roundTripJSON(payload),
-	})
+	result, err := submitHarnessResult(t, repo, result.Path,
+		envelopeFor(t, scripted, result.EvaluatorRequests[0]))
 	if err != nil || result.Status != StatusAwaitingEvaluator {
 		t.Fatalf("first submit: %+v, %v", result, err)
 	}
 	_, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-		RequestID: result.EvaluatorRequest.RequestID,
-		InputHash: result.EvaluatorRequest.InputHash,
+		RequestID: result.EvaluatorRequests[0].RequestID,
+		InputHash: result.EvaluatorRequests[0].InputHash,
 		Evaluator: evaluator.HarnessIdentity{Runtime: "codex"},
 		Payload:   map[string]any{"any": true},
 	})
@@ -889,21 +1055,20 @@ func TestHarnessRefusesMixedRuntimes(t *testing.T) {
 
 func TestHarnessRetriesInvalidPayloadThenFails(t *testing.T) {
 	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 1\n")
 	result := startHarnessRun(t, repo)
 	for attempt := 1; attempt <= maxUnitAttempts; attempt++ {
-		if result.Status != StatusAwaitingEvaluator {
-			t.Fatalf("attempt %d: status = %q, want awaiting_evaluator", attempt, result.Status)
-		}
-		if got := result.EvaluatorRequest.Attempt; got != attempt {
+		request := soleRequest(t, result)
+		if got := request.Attempt; got != attempt {
 			t.Fatalf("request attempt = %d, want %d", got, attempt)
 		}
-		if attempt > 1 && result.Failure == nil {
-			t.Errorf("retry receipt lacks the classified previous-attempt failure")
+		if attempt > 1 && request.LastFailure == nil {
+			t.Errorf("retry request lacks the classified previous-attempt failure")
 		}
 		var err error
 		result, err = submitHarnessResult(t, repo, result.Path, evaluator.HarnessResultEnvelope{
-			RequestID: result.EvaluatorRequest.RequestID,
-			InputHash: result.EvaluatorRequest.InputHash,
+			RequestID: request.RequestID,
+			InputHash: request.InputHash,
 			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
 			Payload:   map[string]any{"broken": true},
 		})
@@ -916,6 +1081,201 @@ func TestHarnessRetriesInvalidPayloadThenFails(t *testing.T) {
 	}
 	if result.Failure == nil || result.Failure.Category != evaluator.FailureInvalidEvaluatorOutput {
 		t.Fatalf("failure = %+v, want invalid_evaluator_output", result.Failure)
+	}
+}
+
+func TestHarnessPartialSubmissionKeepsRemainderOutstanding(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 4\n")
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("outstanding requests = %d, want 2", len(result.EvaluatorRequests))
+	}
+	// Answer the has-tests judgment: accepting it makes the reliability
+	// factor analysis dependency-ready, so the window must top up without the
+	// unanswered member being touched.
+	var held, answered *EvaluatorRequest
+	for _, request := range result.EvaluatorRequests {
+		if strings.HasSuffix(request.WorkUnitID, "has-tests") {
+			answered = request
+		} else {
+			held = request
+		}
+	}
+	if held == nil || answered == nil {
+		t.Fatalf("outstanding requests = %+v, want both requirement judgments", result.EvaluatorRequests)
+	}
+	result, err := submitHarnessResult(t, repo, result.Path, envelopeFor(t, scripted, answered))
+	if err != nil {
+		t.Fatalf("partial submit error = %v", err)
+	}
+	if result.Status != StatusAwaitingEvaluator || len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("receipt after partial submit = %+v, want the held request plus the topped-up analysis", result)
+	}
+	var remainder, toppedUp *EvaluatorRequest
+	for _, request := range result.EvaluatorRequests {
+		if request.WorkUnitID == held.WorkUnitID {
+			remainder = request
+		} else {
+			toppedUp = request
+		}
+	}
+	if remainder == nil || remainder.RequestID != held.RequestID || remainder.Attempt != held.Attempt {
+		t.Fatalf("remainder = %+v, want the unanswered request unchanged %+v", remainder, held)
+	}
+	if remainder.LastFailure != nil {
+		t.Errorf("unanswered request carries a failure: %+v", remainder.LastFailure)
+	}
+	if toppedUp == nil || UnitKind(toppedUp.Kind) != KindAnalyzeFactor {
+		t.Errorf("topped-up request = %+v, want the newly-ready factor analysis", toppedUp)
+	}
+	// A not-yet-judged member consumes no retry budget.
+	artifact, err := NewStore(filepath.Join(repo, result.Path)).Load()
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	if attempts := artifact.State.WorkUnits[held.WorkUnitID].Attempts; attempts != 0 {
+		t.Errorf("unanswered unit attempts = %d, want 0 (not submitted is not a failed attempt)", attempts)
+	}
+	if state := artifact.State.WorkUnits[answered.WorkUnitID]; state.Status != UnitCompleted {
+		t.Errorf("answered unit state = %+v, want completed and durable", state)
+	}
+}
+
+func TestHarnessMixedSubmissionAcceptsValidAndRetriesFailed(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 4\n")
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("outstanding requests = %d, want 2", len(result.EvaluatorRequests))
+	}
+	valid := result.EvaluatorRequests[0]
+	broken := result.EvaluatorRequests[1]
+	result, err := submitHarnessResults(t, repo, result.Path, []evaluator.HarnessResultEnvelope{
+		envelopeFor(t, scripted, valid),
+		{
+			RequestID: broken.RequestID,
+			InputHash: broken.InputHash,
+			Evaluator: evaluator.HarnessIdentity{Runtime: "claude-code"},
+			Payload:   map[string]any{"broken": true},
+		},
+	})
+	if err != nil {
+		t.Fatalf("mixed submit error = %v", err)
+	}
+	retry := soleRequest(t, result)
+	if retry.WorkUnitID != broken.WorkUnitID || retry.Attempt != 2 {
+		t.Fatalf("retry request = %+v, want %s attempt 2", retry, broken.WorkUnitID)
+	}
+	if retry.LastFailure == nil || retry.LastFailure.Category != evaluator.FailureInvalidEvaluatorOutput {
+		t.Errorf("retry lastFailure = %+v, want invalid_evaluator_output", retry.LastFailure)
+	}
+	artifact, err := NewStore(filepath.Join(repo, result.Path)).Load()
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	if state := artifact.State.WorkUnits[valid.WorkUnitID]; state.Status != UnitCompleted {
+		t.Errorf("valid member state = %+v, want completed despite the failed sibling", state)
+	}
+}
+
+func TestHarnessDuplicateEnvelopeRejectedAfterValidMembers(t *testing.T) {
+	repo := testRunnerRepo(t)
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 4\n")
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("outstanding requests = %d, want 2", len(result.EvaluatorRequests))
+	}
+	answered := result.EvaluatorRequests[0]
+	envelope := envelopeFor(t, scripted, answered)
+	_, err := submitHarnessResults(t, repo, result.Path, []evaluator.HarnessResultEnvelope{envelope, envelope})
+	var runErr *RunError
+	if err == nil || !errors.As(err, &runErr) || runErr.Category != evaluator.FailureRunStateInvalid {
+		t.Fatalf("submit(duplicate) error = %v, want run_state_invalid", err)
+	}
+	// The first member's acceptance is durable; the duplicate touched nothing.
+	again, err := Run(context.Background(), Options{
+		RepoRoot:        repo,
+		Model:           filepath.Join(repo, "QUALITY.md"),
+		Resume:          result.Path,
+		SelectEvaluator: harnessSelect(),
+	})
+	if err != nil {
+		t.Fatalf("Run(resume) error = %v", err)
+	}
+	for _, request := range again.EvaluatorRequests {
+		if request.WorkUnitID == answered.WorkUnitID {
+			t.Errorf("accepted member re-emitted after duplicate rejection: %+v", request)
+		}
+	}
+	artifact, err := NewStore(filepath.Join(repo, again.Path)).Load()
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	if state := artifact.State.WorkUnits[answered.WorkUnitID]; state.Status != UnitCompleted {
+		t.Errorf("accepted member state = %+v, want completed", state)
+	}
+}
+
+func TestHarnessWindowBoundedByResolvedConcurrency(t *testing.T) {
+	const threeRequirementModel = `---
+title: Window bound model
+ratingScale:
+  - level: target
+    title: Target
+    description: Target.
+    criterion: Meets it.
+  - level: minimum
+    title: Minimum
+    description: Minimum.
+    criterion: Barely meets it.
+factors:
+  reliability:
+    title: Reliability
+requirements:
+  has-tests:
+    title: Has tests
+    assessment: Inspect tests.
+    factors: [reliability]
+  has-docs:
+    title: Has docs
+    assessment: Inspect docs.
+    factors: [reliability]
+  has-ci:
+    title: Has CI
+    assessment: Inspect CI.
+    factors: [reliability]
+source: src
+---
+`
+	repo := testRunnerRepo(t)
+	if err := os.WriteFile(filepath.Join(repo, "QUALITY.md"), []byte(threeRequirementModel), 0o644); err != nil {
+		t.Fatalf("WriteFile(QUALITY.md) error = %v", err)
+	}
+	writeRunnerConfig(t, repo, "evaluation:\n  concurrency: 2\n")
+	scripted := newScriptedEvaluator()
+	result := startHarnessRun(t, repo)
+	// Three requirement judgments are dependency-ready, but the window is
+	// capped at the resolved concurrency.
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("outstanding requests = %d, want the window capped at 2", len(result.EvaluatorRequests))
+	}
+	result, err := submitHarnessResult(t, repo, result.Path,
+		envelopeFor(t, scripted, result.EvaluatorRequests[0]))
+	if err != nil {
+		t.Fatalf("submit error = %v", err)
+	}
+	// Accepting one member frees capacity, and the window tops up with the
+	// deferred third judgment without waiting for the whole wave.
+	if len(result.EvaluatorRequests) != 2 {
+		t.Fatalf("topped-up requests = %d, want 2", len(result.EvaluatorRequests))
+	}
+	terminal, _ := serviceHarnessRun(t, repo, result, scripted)
+	if terminal.Status != StatusCompleted {
+		t.Fatalf("status = %q (failure: %+v), want completed", terminal.Status, terminal.Failure)
 	}
 }
 

@@ -18,7 +18,12 @@ func (e *harnessEvaluator) Kind() string { return "harness" }
 
 func (e *harnessEvaluator) Capabilities() Capabilities {
 	return Capabilities{
+		// Concurrent stays false: the runner never calls Evaluate on the
+		// harness evaluator, so simultaneous in-process calls are meaningless.
+		// Subagent delegation is what lets the runner keep a window of
+		// checkpointed requests outstanding above concurrency 1.
 		Concurrent:       false,
+		Subagents:        true,
 		SourceResolution: true,
 		ReusableContext:  []string{"session"},
 		ReportsUsage:     true,
@@ -39,9 +44,11 @@ type HarnessIdentity struct {
 }
 
 // HarnessResultEnvelope is the transport envelope the invoking harness
-// submits for one pending work request. It wraps the same judgment payload an
-// in-process evaluator would return, plus the correlation the runner uses to
-// bind the result to the request it emitted.
+// submits for one outstanding work request. It wraps the same judgment
+// payload an in-process evaluator would return, plus the correlation the
+// runner uses to bind the result to the request it emitted. A resume
+// submission carries one envelope or several — any subset of the outstanding
+// requests.
 type HarnessResultEnvelope struct {
 	// RequestID echoes the pending request identifier from the awaiting
 	// receipt.
