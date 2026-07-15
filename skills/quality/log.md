@@ -2,6 +2,10 @@
 
 ## 2026-07-15
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.35.0`
+  and its compatible CLI line to `qualitymd >=0.35.0 <0.36.0` for the
+  intent-faithful evaluator-selection release.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0206 - Intent-faithful
   evaluator selection. Provider-named requests now disambiguate current-session

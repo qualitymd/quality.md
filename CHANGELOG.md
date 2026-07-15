@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.35.0 - 2026-07-15
+
 ### CLI
 
 - Automatic evaluator discovery now probes and reports both Codex and Claude
@@ -24,6 +26,23 @@ QUALITY.md specification.
   default precedence selects in-session `harness` judgment, the explanation
   names the fresh independent SDK alternative and its one-run and durable
   configuration paths.
+- Skill metadata advances to `0.35.0` and requires the matching
+  `qualitymd >=0.35.0 <0.36.0` CLI line for intent-faithful evaluator selection
+  and receipt interpretation.
+
+### Compatibility / migration
+
+- Automatic evaluator receipts add `authenticationBasis` to every candidate
+  and now report every built-in candidate, including usable runtimes not
+  selected by deterministic ordering. Consumers of JSON receipts should accept
+  the expanded candidate array and additive field; no persisted evaluation
+  artifact migration is required.
+
+Compatibility:
+
+- CLI: `v0.35.0`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.35.0`, requires `qualitymd >=0.35.0 <0.36.0`
 
 ## v0.34.0 - 2026-07-15
 
