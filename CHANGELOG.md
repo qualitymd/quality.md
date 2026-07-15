@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.35.1 - 2026-07-15
+
 ### /quality skill
 
 - Evaluation progress now reports preflight, evidence review, report
@@ -17,11 +19,26 @@ QUALITY.md specification.
   offered current-run change is a real wait-for-answer choice. Evaluator
   selection now precedes the first feedback-log write, so the pre-mutation
   progress boundary matches the actual workflow.
+- Skill metadata advances to `0.35.1` and retains
+  `qualitymd >=0.35.0 <0.36.0` compatibility because this patch changes the
+  agent-mediated interface without changing the skill-facing CLI surface.
 
 ### Documentation
 
 - The agent-mediated UX guide now defines the implementation boundary and shows
   how to translate protocol state into task phases and meaningful coverage.
+
+### Compatibility / migration
+
+- No CLI command, receipt, persisted evaluation artifact, or QUALITY.md format
+  behavior changes. Existing `0.35.x` CLI installations remain compatible with
+  the updated skill.
+
+Compatibility:
+
+- CLI: `v0.35.1`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.35.1`, requires `qualitymd >=0.35.0 <0.36.0`
 
 ## v0.35.0 - 2026-07-15
 

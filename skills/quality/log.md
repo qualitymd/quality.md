@@ -2,6 +2,10 @@
 
 ## 2026-07-15
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.35.1`
+  while retaining `qualitymd >=0.35.0 <0.36.0` compatibility for the
+  user-facing evaluation-progress patch release.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0207 - User-facing
   evaluation progress. The skill now keeps request-window, payload, worker,
