@@ -1,5 +1,15 @@
 # Docs update log
 
+## 2026-07-15
+
+- **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0207 - User-facing evaluation progress](../changes/archive/0207-user-facing-evaluation-progress.md).
+  User-facing progress now protects the implementation boundary: it presents
+  task phases, meaningful coverage, attention, results, and next actions while
+  keeping protocol, payload, worker, concurrency, and resume-loop mechanics
+  internal unless a decision or recovery action needs them.
+
 ## 2026-07-14
 
 - **Revision**: Updated the README and Codex/Claude automation guides for

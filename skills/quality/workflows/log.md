@@ -2,6 +2,15 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [evaluate](evaluate.md) for 0207 - User-facing
+  evaluation progress. Preflight, evidence review, report generation, and
+  completion are now the user-facing progress phases; model areas or
+  requirements are the only ordinary quantitative coverage. Request windows,
+  payload schemas, concurrency caps, worker/subagent orchestration, and resume
+  calls remain internal unless a decision or recovery action needs them.
+  Evaluator selection now precedes feedback-log creation, and current-run
+  alternatives are real wait-for-answer gates.
+
 - **Revision**: Updated [evaluate](evaluate.md) for 0206 - Intent-faithful
   evaluator selection. Same-provider harness-versus-SDK requests now use a
   single-select transport choice, and default in-session harness selection

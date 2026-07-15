@@ -2,6 +2,14 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0207 - User-facing
+  evaluation progress. The skill now keeps request-window, payload, worker,
+  concurrency, and resume-loop mechanics behind the interface; presents
+  healthy evaluation progress as quality-task phases and meaningful coverage;
+  treats default evaluator alternatives as information or real gates; and
+  resolves evaluator selection before the first feedback-log write.
+
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.35.0`
   and its compatible CLI line to `qualitymd >=0.35.0 <0.36.0` for the
   intent-faithful evaluator-selection release.

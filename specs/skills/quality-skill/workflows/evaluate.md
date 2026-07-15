@@ -86,25 +86,31 @@ Before invoking the runner, `evaluate` **MUST**:
 - resolve the model file and requested scope to canonical references;
 - run lint and stop on errors;
 - inspect relevant evaluation history when present;
-- open the evaluate feedback log; and
-- explain evaluator selection.
+- explain evaluator selection;
+- emit an accurate pre-mutation progress beat; and
+- open the evaluate feedback log.
 
 For evaluator selection, `evaluate` **MUST** resolve and explain the transport
 per the shared [selection precedence](../evaluation.md#evaluator-selection):
 an explicit user request, then a non-`auto` configured
 `evaluation.evaluator`, then `--evaluator harness` when the current agent can
-service harness checkpoints, then CLI `auto` discovery. It **MAY** preview the
-resolved model, scope, evaluator, and work-unit counts with
-`qualitymd evaluation run --dry-run --json`, and **MAY** ask the user to choose
+service harness checkpoints, then CLI `auto` discovery. It **MAY** inspect a
+`qualitymd evaluation run --dry-run --json` receipt to confirm the resolved
+model, scope, evaluator, and coverage, but any user-facing preview **MUST**
+translate that receipt into model areas or requirements rather than work-unit,
+request-window, or concurrency counts. It **MAY** ask the user to choose
 an evaluator when the CLI reports a missing evaluator, presenting the CLI's
 remedies as the options. When a provider-named request is ambiguous between the
 same-provider current harness and SDK evaluator, it **MUST** ask a single-select
 closed choice before selection, explain in-session versus fresh independent
 execution, and name the explicit-request and `evaluation.evaluator` paths for
 both choices. When default precedence selects `harness`, the explanation
-**MUST** name the independent SDK alternative and both paths for choosing it.
-It **MUST NOT** silently cross to a different provider after harness selection
-or failure.
+**MUST** state that judgment uses the current session and **MAY** name the
+explicit-request and configured independent-evaluator paths for a future
+invocation. It **MUST NOT** invite a current-run change and continue without
+waiting; if it offers that change, it **MUST** present a real choice and wait
+before mutation. It **MUST NOT** silently cross to a different provider after
+harness selection or failure.
 
 When selection fails because an agent runtime or requested capability is
 missing, `evaluate` **MUST** surface the runner's concrete installation,
@@ -137,8 +143,8 @@ runner's classified remedy.
 A delegated worker **MUST** receive exactly one self-contained request. It
 **MUST NOT** receive the whole outstanding set, `evaluation.json`, artifact
 write authority, an alternate QC task, or recursive delegation authority.
-Progress **MUST** describe up to `N` outstanding requests or the cap; it **MUST
-NOT** claim `N` active workers unless those workers were actually dispatched.
+These request-window, payload, worker, and resume details are operating
+procedure and **MUST NOT** be narrated as ordinary user-facing progress.
 
 While the runner executes and after it returns, `evaluate` **MUST NOT**
 independently collect evidence, run a parallel QC loop, second-guess the
@@ -169,11 +175,22 @@ new run.
 
 `evaluate` **SHOULD** re-emit a short, factual progress beat at phase boundaries
 where the user's mental model would otherwise drift — not only in the opening
-frame. It **MUST** include a beat before invoking the runner (the first
-mutation), and **SHOULD** also show progress after scope resolution and at
-closeout. The runner writes its own progress diagnostics to stderr; `evaluate`
-summarizes rather than duplicates them. Progress output **MUST** remain factual
-and user-facing, not a transcript of internal reasoning.
+frame. It **MUST** include a beat after evaluator selection and immediately
+before creating the feedback log and invoking the runner (the first mutations),
+and **SHOULD** also show progress at evidence-review, report-generation, and
+closeout phase changes when the user's mental model would otherwise drift. The
+runner writes its own progress diagnostics to stderr; `evaluate` summarizes
+rather than duplicates them. Progress output **MUST** remain factual and
+user-facing, state whether attention is needed when unclear, and use only
+meaningful model coverage such as in-scope areas or requirements when it
+includes counts. It **MUST NOT** narrate work units, outstanding requests,
+concurrency caps, payload schemas, worker assignment, subagent fan-out, or
+resume-loop mechanics during a healthy run.
+
+> Rationale: users need to know whether preflight passed, evidence is being
+> reviewed, a report is being generated, or recovery input is required. Runner
+> graph and serialization details are useful only when they change a decision
+> or recovery action. — 0207
 
 ## Stop conditions
 

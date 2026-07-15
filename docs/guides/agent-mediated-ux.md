@@ -3,7 +3,7 @@ type: How-to Guide
 title: Designing agent-mediated UX
 description: How to design workflows that users experience through an AI assistant or coding agent.
 tags: [agents, ux, workflows, contributing]
-timestamp: 2026-06-24T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Designing agent-mediated UX
@@ -44,6 +44,50 @@ wants adjusted, asks for concerns, or names a confirmation phrase such as
 `looks good`, the agent must wait for the response before mutating. Do not offer
 agency in one sentence and remove it in the next by saying the agent is
 proceeding anyway.
+
+## Protect the implementation boundary
+
+Present the user's task state, not the protocol that implements it.
+
+An agent may need to inspect schemas, dispatch workers, construct payloads,
+resume a command loop, or translate machine receipts. Those mechanics belong in
+the operating procedure. Ordinary user-facing progress should instead name the
+stable task concepts the user can act on:
+
+- current phase or result;
+- scope or meaningful coverage;
+- whether attention is needed;
+- artifact or outcome produced; and
+- next action.
+
+Surface an exact protocol detail only when it changes a user decision or is
+needed to recover from a failure. Even then, translate the state first and
+include only the mechanic needed for the action. Do not narrate internal
+planning, schema inspection, payload construction, worker or subagent fan-out,
+request windows, concurrency caps, or resume loops as routine progress.
+
+For example, an evaluation runner may report outstanding evaluator requests and
+a concurrency limit. The ordinary progress state is evidence review, not the
+request-window protocol:
+
+```text
+**Evaluation in progress**
+
+Evidence review is underway across all 10 areas. Nothing needs your attention;
+I’ll return at the next meaningful phase or if recovery input is needed.
+```
+
+Avoid:
+
+```text
+The run has four outstanding requests with a concurrency cap of four. I’ll fan
+them out to subagents, assemble schema-valid payloads, and resume the loop.
+```
+
+This boundary is progressive disclosure, not secrecy. A user diagnosing a
+failed run may need the failure category, evaluator identity, or exact resume
+command. A user watching a healthy run does not need its serialization or
+scheduling design.
 
 ## Channels and progressive enhancement
 
@@ -239,8 +283,8 @@ files and runs commands first and only frames the work afterward.
 
 - **Model file:** `QUALITY.md`
 - **Scope:** full evaluation
-- **Mutation:** evaluation artifacts and feedback log under `.quality/`
-- **Artifacts:** numbered evaluation run, structured data, Markdown report tree
+- **Mutation:** evaluation artifacts and local feedback log under `.quality/`; no source or model edits
+- **Artifacts:** evaluation report with supporting detail reports and records
 - **Next gate:** report findings, ratings, and limits before any follow-up action
 ```
 
@@ -285,7 +329,10 @@ Verify: pending
 Keep progress factual. Do not turn it into a transcript of internal reasoning.
 Update progress when the user's mental model would otherwise drift, especially
 before a long context scan, after a tool-dependent phase, and before a mutation
-gate.
+gate. Prefer domain phases and meaningful coverage over command counts or
+implementation units. A useful count names something the user understands —
+areas, requirements, files, or reviewed items — and does not imply that
+heterogeneous internal units form a trustworthy percentage.
 
 ## Discovery questions
 

@@ -849,3 +849,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   authentication evidence, explains ordering-decided selection, and
   disambiguates in-session harness judgment from independent SDK evaluation
   (`Done`).
+- [0207 — User-facing evaluation progress](0207-user-facing-evaluation-progress.md) -
+  keeps evaluator protocol and worker orchestration behind the agent interface
+  while presenting evaluation choices, phases, coverage, and recovery in
+  user-facing language (`Done`).

@@ -3,6 +3,14 @@
 ## 2026-07-15
 
 - **Revision**: Implemented the durable contract changes for
+  [0207 - User-facing evaluation progress](../changes/archive/0207-user-facing-evaluation-progress.md).
+  The `/quality` interaction contract now keeps protocol, payload, worker,
+  concurrency, and resume-loop mechanics behind the agent interface. Evaluate
+  progress uses quality-task phases and meaningful model coverage, default
+  evaluator alternatives are informational or real wait-for-answer gates, and
+  evaluator selection precedes the first workflow write.
+
+- **Revision**: Implemented the durable contract changes for
   [0206 - Intent-faithful evaluator selection](../changes/0206-intent-faithful-evaluator-selection.md).
   Automatic discovery now probes and reports every built-in candidate with a
   structured authentication basis, explains ordering-decided selection, and

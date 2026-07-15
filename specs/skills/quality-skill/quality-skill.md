@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality skill
 description: Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # /quality skill
@@ -288,6 +288,21 @@ When output contains multiple independent facts, the skill **MUST** use labeled
 blocks, bullets, or numbered lists rather than dense paragraphs. The result,
 importance, boundary, and next action **SHOULD** be visible in a five-second
 scan.
+
+The skill **MUST** keep implementation protocol behind the agent-mediated
+interface during ordinary workflow progress. User-facing status **MUST** name
+the quality-task state, scope or meaningful coverage, attention needed, result
+or artifact, and next action as applicable; it **MUST NOT** narrate private
+planning, evaluator request windows, serialized payload or schema mechanics,
+worker or subagent orchestration, concurrency caps, or command resume loops.
+Where a protocol detail is necessary for a user decision or recovery action,
+the skill **MUST** translate the task state first and surface only the detail
+needed to act.
+
+> Rationale: the agent is the interface. Exact implementation detail can be
+> correct while forcing the user to reverse-engineer the workflow state;
+> progressive disclosure preserves actionable diagnostics without making
+> healthy-run plumbing the product experience. — 0207
 
 When a user must answer, choose, approve, correct, or act, the interaction block
 **MUST** make the shortest acceptable response explicit with an `Answer` line or

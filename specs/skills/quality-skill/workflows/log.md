@@ -3,6 +3,14 @@
 ## 2026-07-15
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0207 - User-facing evaluation progress](../../../../changes/archive/0207-user-facing-evaluation-progress.md).
+  Healthy-run progress now reports preflight, evidence-review,
+  report-generation, and closeout phases with meaningful model coverage instead
+  of work-unit, request-window, payload, concurrency, or worker mechanics.
+  Default evaluator selection is informational unless a real current-run gate
+  waits for an answer, and selection now precedes the first feedback-log write.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0206 - Intent-faithful evaluator selection](../../../../changes/0206-intent-faithful-evaluator-selection.md).
   Provider-named requests now disambiguate same-provider in-session harness
   judgment from a fresh SDK subprocess, and default-harness explanations name

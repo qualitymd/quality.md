@@ -3,6 +3,52 @@
 ## 2026-07-15
 
 - **Done**: Completed and archived
+  [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md).
+  All R1-R5 requirements passed the review ledger: shared implementation
+  boundary, quality-task progress phases, meaningful model coverage,
+  informational-or-gated evaluator alternatives, truthful first-write ordering,
+  and the complete repository gate.
+
+- **In-Review**: Completed implementation for
+  [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md).
+  Shared UX and `/quality` contracts now protect the implementation boundary;
+  evaluate progress uses quality-task phases and meaningful model coverage;
+  default evaluator alternatives are informational or real gates; and evaluator
+  selection precedes the first feedback-log write. Durable specs, runtime
+  guidance, UX docs, release notes, and the R1-R5
+  [review ledger](archive/0207-user-facing-evaluation-progress/review.md) are in sync.
+  The full `mise run check` gate passes 19 test files and 86 tests.
+
+- **In-Progress**: Advanced
+  [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md)
+  from `Design` with the implementation boundary, phase translation,
+  informational-or-gated evaluator posture, and pre-mutation sequence settled.
+  Runtime guidance and durable contracts may now be updated.
+
+- **Design**: Advanced
+  [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md)
+  from `Draft` after R1-R5 passed the per-requirement quality bar and the
+  consistent/complete/validatable set check. Added the
+  [design doc](archive/0207-user-facing-evaluation-progress/design.md): preserve the
+  runner protocol internally, add one shared implementation boundary, translate
+  evaluate updates into preflight/evidence-review/report phases, use only
+  meaningful model coverage counts, make default evaluator copy informational
+  unless a real current-run gate is offered, and move evaluator selection ahead
+  of the first write. Updated the case parent, child index, and bundle index.
+
+- **Creation**: Added change
+  [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0207-user-facing-evaluation-progress/spec.md) (R1-R5).
+  Motivated by an evaluation transcript that exposed work-unit, request-window,
+  payload-schema, concurrency, worker, and resume-loop mechanics while offering
+  an evaluator preference without waiting. The case requires a shared
+  implementation boundary, phase-based evaluation progress, meaningful coverage
+  counts, informational-or-gated evaluator alternatives, and truthful
+  pre-mutation ordering. Runner mechanics and the CLI contract stay unchanged.
+  Updated the bundle [index](index.md).
+
+- **Done**: Completed and archived
   [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md).
   All R1–R7 requirements passed the review ledger: probe-all discovery,
   ordering-decided reasons, structured authentication basis, verified Claude

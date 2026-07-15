@@ -44,8 +44,8 @@ Hard boundaries:
    **QUALITY.md · evaluate**
    - **Model file:** <invocation-derived path>
    - **Scope:** <full evaluation | area/factor narrowing | resolving…>
-   - **Mutation:** evaluation run artifacts written by `qualitymd evaluation run` + workflow feedback log under .quality/logs/
-   - **Artifacts:** numbered evaluation run with evaluation.json, generated Markdown report tree, .quality/logs/<timestamp>-evaluate-feedback-log.md
+   - **Mutation:** evaluation artifacts and local feedback log under `.quality/`; no source or model edits
+   - **Artifacts:** evaluation report with supporting detail reports and records
    - **Next gate:** report rating, top findings, limits, and next actions
    ```
 
@@ -60,10 +60,7 @@ Hard boundaries:
    clarification question only when a label is ambiguous (see `SKILL.md`
    Arguments). Summarize relevant evaluation history as context only.
 4. Run `qualitymd lint [path]`; stop on lint errors and report the findings.
-5. Create the current run's evaluate feedback log under
-   `.quality/logs/<timestamp>-evaluate-feedback-log.md` (see
-   [Evaluate feedback log](#evaluate-feedback-log)).
-6. Resolve and explain evaluator selection, in this precedence:
+5. Resolve and explain evaluator selection, in this precedence:
 
    1. an explicit user evaluator request;
    2. a non-`auto` `evaluation.evaluator` in `.quality/config.yaml`;
@@ -95,22 +92,48 @@ Hard boundaries:
    Explain the selected transport before the first mutation, and never
    silently switch providers after harness selection or failure. When default
    precedence selects `harness`, say that judgment runs in the current session
-   with its context and authentication; name the fresh independent SDK
-   alternative and how to request it now or set it through
-   `evaluation.evaluator`. Optionally
+   with its context and authentication. You may name the explicit-request and
+   `evaluation.evaluator` paths for a fresh independent SDK evaluator on a
+   future invocation, but do not invite a current-run change and continue
+   without waiting. If you offer changing the evaluator for the current run,
+   render a real closed choice and wait for the answer before mutation.
+   Optionally
    preview with
    `qualitymd evaluation run --dry-run --json [--model ...] [--area ...] [--factor ...]`,
    which reports the resolved model, scope, evaluator (with readiness evidence
    for `auto` candidates), concurrency, work-unit counts, and the per-area
    effective source selectors and inspection policy
-   without invoking an evaluator. Ask the user to choose only when selection fails or
-   is ambiguous — for example a `missing_evaluator` failure — presenting the
-   CLI's remedies as the options. Explain capability, authentication,
-   executable, sandbox, turn-limit, or cost-limit failures concretely; never
-   claim an unsupported control is enforced.
+   without invoking an evaluator. When presenting preview information to the
+   user, translate coverage into model areas or requirements; do not expose
+   work-unit, request-window, or concurrency counts as ordinary progress. Ask
+   the user to choose only when selection fails or is ambiguous — for example a
+   `missing_evaluator` failure — presenting the CLI's remedies as the options.
+   Explain capability, authentication, executable, sandbox, turn-limit, or
+   cost-limit failures concretely; never claim an unsupported control is
+   enforced.
 
-7. Emit a short progress beat (the first mutation is next), then invoke the
-   runner with explicit flags:
+6. Emit a short pre-mutation progress beat: preflight is complete, name the
+   selected evaluator concisely, say that evaluation artifacts and the local
+   feedback log are about to be written, and state that no user attention is
+   needed unless a gate has already been presented. Then create the current
+   run's evaluate feedback log under
+   `.quality/logs/<timestamp>-evaluate-feedback-log.md` (see
+   [Evaluate feedback log](#evaluate-feedback-log)).
+
+   Example:
+
+   ```text
+   **Ready to evaluate**
+
+   Preflight is complete and all in-scope sources resolve.
+   Evaluator: this session (default). It uses the context and authentication
+   already available here; no separate evaluator process will start.
+
+   The evaluation report and local feedback log are being created now.
+   Nothing needs your attention; I’ll return with the result or a recovery step.
+   ```
+
+7. Invoke the runner with explicit flags:
 
    ```sh
    qualitymd evaluation run [--model <model>] [--area <area-ref>] \
@@ -127,10 +150,12 @@ Hard boundaries:
    complete and self-contained: instructions, context, body guidance,
    authorized workspace inspection policy, expected result schema, `requestId`,
    and `inputHash`. On the first
-   windowed receipt, name the outstanding cap in a progress beat (for example
-   "2 requests outstanding, with a cap of 4"). Do not claim the cap is active
-   concurrency unless you actually dispatched that many workers. Loop until
-   the receipt is terminal:
+   windowed receipt, translate the state into a user-facing evidence-review
+   beat when the user's mental model would otherwise drift. Name useful model
+   coverage such as in-scope areas or requirements when available, and state
+   whether attention is needed. Do not expose the outstanding cap, request
+   count, worker count, payload shape, or resume loop as ordinary progress.
+   Loop until the receipt is terminal:
 
    1. Serve each outstanding request by its `kind`. Requests are independent
       and self-contained, so you may answer them with your own reasoning or
@@ -179,9 +204,14 @@ Hard boundaries:
       outstanding at no retry cost. If the loop is interrupted, resume
       without `--evaluator-result` to recover the same outstanding requests.
 
-   Keep the loop factual with periodic progress beats (work units completed
-   versus total). In unattended automation, add no interactive gates: the run
-   advances, returns a report, or stops with the runner's classified remedy.
+   Keep the internal loop quiet. Emit factual progress only at meaningful
+   quality-task phase changes — preflight, evidence review, report generation,
+   and completion — or when the user's mental model would otherwise drift. If
+   a quantitative update helps, use model areas or requirements, not work units,
+   request windows, payloads, concurrency caps, worker assignment, subagent
+   fan-out, or resume calls. In unattended automation, add no interactive gates:
+   the run advances, returns a report, or stops with the runner's classified
+   remedy.
 
 9. On failure or cancellation, explain the receipt's failure category in user
    terms (for example `missing_evaluator`, `evaluator_unauthenticated`,
@@ -248,9 +278,10 @@ remedies instead of diagnosing past it.
 
 ## Evaluate feedback log
 
-Evaluate creates a workflow feedback log during preflight after CLI support is
-verified, the model file is resolved, and the run frame is emitted. Update the
-current run's log as the workflow progresses when there is material
+Evaluate creates a workflow feedback log after CLI support, the model file,
+scope, lint, history, and evaluator selection are resolved and after the run
+frame and pre-mutation progress beat are emitted. Update the current run's log
+as the workflow progresses when there is material
 workflow-experience information to record: scope ambiguity, history inspection
 friction, evaluator-selection friction, interruption or resume, retries,
 tooling failures, slow phases, redaction decisions, UX/AX observations,

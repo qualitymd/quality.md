@@ -36,6 +36,12 @@ the current in-session harness or a fresh SDK subprocess, and silently choosing
 between them changes the independence premise under which the user reads the
 result. — 0206
 
+The same interface must keep runner protocol behind the user's quality task.
+Healthy-run progress names preflight, evidence review, report generation,
+meaningful model coverage, and any attention needed; request windows, payloads,
+worker orchestration, and resume mechanics surface only when a decision or
+recovery action needs them. — 0207
+
 ## Operating model
 
 `qualitymd evaluation run` is the evaluation engine. It owns run creation,
@@ -214,12 +220,15 @@ explicit user decision and a new run.
 
 When the workflow selects `harness` by default precedence rather than an
 explicit request or configuration, its pre-mutation explanation **MUST** state
-that judgment runs in the current session and **MUST** name the independent SDK
-evaluator alternative, including how to request it for the current run and set
-it as the durable `evaluation.evaluator` default.
+that judgment runs in the current session. It **MAY** name the explicit-request
+and durable `evaluation.evaluator` paths for an independent evaluator on a
+future invocation, but **MUST NOT** invite a current-run change and continue
+without waiting. If it offers changing the evaluator for the current run, it
+**MUST** render a real closed choice and wait for the answer before mutation.
 
-> Rationale: a default is correctable only when the user can see both the
-> transport received and the independent alternative. — 0206
+> Rationale: the transport stays observable without turning “unless you prefer
+> otherwise” into a false choice. A current-run alternative is a gate; a settled
+> default is information. — 0206, 0207
 
 For `codex` and `claude`, the workflow **MUST** treat the provider agent runtime
 as a runner-owned evaluator implementation detail. Authentication belongs to
@@ -238,11 +247,12 @@ flowchart TD
     Verify --> Resolve[Resolve model file and requested scope]
     Resolve --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
-    Lint -->|valid| Log[Open the evaluate feedback log]
-    Log --> Select[Resolve and explain evaluator selection<br/>optionally preview with --dry-run --json]
-    Select --> Run[Invoke qualitymd evaluation run<br/>with explicit flags]
+    Lint -->|valid| Select[Resolve and explain evaluator selection<br/>optionally preview with --dry-run --json]
+    Select --> Start[Announce the first mutation]
+    Start --> Log[Open the evaluate feedback log]
+    Log --> Run[Invoke qualitymd evaluation run<br/>with explicit flags]
     Run --> Receipt{receipt status}
-    Receipt -->|awaiting_evaluator| Judge[Judge the outstanding requests<br/>directly or via subagents<br/>submit --evaluator-result]
+    Receipt -->|awaiting_evaluator| Judge[Review evidence and serve the runner requests]
     Judge --> Run
     Receipt -->|terminal| Summarize[Summarize progress and the result receipt]
     Summarize --> Route([Route follow-up workflows])
@@ -255,13 +265,16 @@ flowchart TD
    introspection for canonical references.
 4. **Validate** with `qualitymd lint`, stopping on errors (see
    [Driving the CLI](quality-skill.md#driving-the-cli)).
-5. **Open the evaluate feedback log** for workflow-experience events.
-6. **Resolve and explain evaluator selection** per the
+5. **Resolve and explain evaluator selection** per the
    [selection precedence](#evaluator-selection). It **MAY** preview the
    resolved run with `qualitymd evaluation run --dry-run --json`, and **MAY**
    ask the user to choose an evaluator when the CLI reports a missing or
    ambiguous evaluator.
-7. **Invoke the runner** with explicit flags:
+6. **Announce the first mutation** in user-facing terms: preflight is complete,
+   evaluation artifacts and the local feedback log are about to be written,
+   and no user attention is needed unless a gate has already been presented.
+7. **Open the evaluate feedback log** for workflow-experience events, then
+   **invoke the runner** with explicit flags:
    `qualitymd evaluation run [--model <model>] [--area <area-ref>] [--factor <factor-ref>...] [--evaluator <name>] --json`.
 8. **Service harness checkpoints.** While the receipt status is
    `awaiting_evaluator`, serve each supplied request — inspect and judge a
@@ -275,9 +288,14 @@ flowchart TD
    interactive gates: the run advances, returns a report, or stops with the
    runner's classified remedy.
 
-   Progress **MUST** describe the receipt as up to `N` outstanding requests or
-   name `N` as the cap. It **MUST NOT** claim `N` active or concurrent workers
-   unless the harness actually dispatched them.
+   The request-window, envelope, worker, concurrency, and resume mechanics are
+   operating procedure, not ordinary progress copy. User-facing progress
+   **MUST** describe meaningful quality-task phases such as preflight, evidence
+   review, report generation, and completion, and **MUST** state whether the
+   user needs to act when that is not otherwise obvious. Quantitative progress
+   **MUST** use interpretable model coverage such as in-scope areas or
+   requirements and **MUST NOT** expose work-unit, outstanding-request,
+   payload, or worker counts.
 
 9. **Summarize progress and the result receipt**, then route next workflows
    (review, improve, recommendation follow-up).

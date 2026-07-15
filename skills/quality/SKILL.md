@@ -191,6 +191,15 @@ When output carries multiple independent facts, use labeled blocks, bullets, or
 numbered lists rather than dense paragraphs. The user should be able to scan the
 result, importance, boundary, and next action in a few seconds.
 
+Keep implementation protocol behind the agent-mediated interface during
+ordinary progress. Present the quality-task state, scope or meaningful coverage,
+attention needed, result or artifact, and next action as applicable. Do not
+narrate private planning, evaluator request windows, serialized payload or
+schema mechanics, worker or subagent orchestration, concurrency caps, or command
+resume loops. When a protocol detail is necessary for a user decision or
+recovery action, translate the task state first and surface only the detail
+needed to act.
+
 Treat each interaction as an intent — a single-select closed choice, a
 multi-select, a binary confirmation, an open-ended correction — and render it
 through the richest fit-for-purpose native affordance you have (an option picker,
@@ -446,15 +455,20 @@ fit-for-purpose native affordance exists. Explicit `harness`, `claude`, and
 
 Explain the selected transport before the first mutation and never silently
 switch providers afterward. When default precedence selects `harness`, state
-that judgment runs in the current session with its context and authentication,
-then name the fresh independent SDK alternative and how to request it now or
-set it through `evaluation.evaluator`. The names
+that judgment runs in the current session with its context and authentication.
+You may name the explicit-request and `evaluation.evaluator` paths for a fresh
+independent SDK evaluator on a future invocation, but do not invite a current-run
+change and continue without waiting. If you offer changing the evaluator for
+the current run, render a real closed choice and wait for the answer before any
+evaluation mutation. The names
 `auto`, `harness`, `codex`, and `claude` cannot be shadowed by configured
 profiles. When selection fails,
 the CLI reports a typed `missing_evaluator` failure with remedies; present
 those to the user rather than inventing a fallback. Preview a run with
 `qualitymd evaluation run --dry-run --json` when the resolved model, scope,
-evaluator, or work-unit counts are worth confirming first.
+evaluator, or coverage are worth confirming first. Translate any user-facing
+preview into model areas or requirements rather than work-unit, request-window,
+or concurrency counts.
 
 `codex` and `claude` are SDK-backed agent evaluators using their authenticated
 local runtimes. Authentication may be login-, subscription-, or runtime-managed
@@ -478,7 +492,9 @@ per call, any subset) with
 `qualitymd evaluation run --resume <run> --evaluator-result - --json`, looping
 until the terminal receipt; each resume tops the window up with newly-ready
 requests (the evaluate workflow file has the full loop). An awaiting receipt
-is expected progress, not a failure.
+is expected progress, not a failure. These request-window, envelope, worker,
+concurrency, and resume mechanics are operating instructions; do not narrate
+them as ordinary user-facing progress.
 
 Failed or interrupted runs report `failed` or `cancelled` with a stable failure
 category and are resumable with `qualitymd evaluation run --resume <run>`.

@@ -5,6 +5,24 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality skill
+
+- Evaluation progress now reports preflight, evidence review, report
+  generation, meaningful model coverage, and whether attention is needed.
+  Request windows, work units, payload schemas, concurrency caps, worker or
+  subagent orchestration, and resume loops stay behind the agent interface
+  unless a decision or recovery step requires them.
+- Default in-session evaluator selection is now concise information. An
+  independent evaluator remains discoverable for future invocations; any
+  offered current-run change is a real wait-for-answer choice. Evaluator
+  selection now precedes the first feedback-log write, so the pre-mutation
+  progress boundary matches the actual workflow.
+
+### Documentation
+
+- The agent-mediated UX guide now defines the implementation boundary and shows
+  how to translate protocol state into task phases and meaningful coverage.
+
 ## v0.35.0 - 2026-07-15
 
 ### CLI
