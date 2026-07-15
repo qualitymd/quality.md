@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.30.0 <0.31.0.
+compatibility: Requires qualitymd CLI >=0.31.0 <0.32.0.
 metadata:
-  version: "0.30.0"
-  requires-qualitymd-cli: ">=0.30.0 <0.31.0"
+  version: "0.31.0"
+  requires-qualitymd-cli: ">=0.31.0 <0.32.0"
 ---
 
 ## Purpose
@@ -427,7 +427,7 @@ Evaluator selection order: an explicit user request, then a non-`auto` config
 `evaluation.evaluator`, then `--evaluator harness` when you can service
 harness checkpoints (the normal agent case — the run uses your session's own
 judgment and authentication, no nested agent or API key), then CLI `auto`
-discovery (a ready Codex CLI, then a ready Claude CLI, then configured API
+discovery (a ready Codex agent runtime, then a ready Claude agent runtime, then configured API
 profiles whose key env var is present). Explain the selected transport before
 the first mutation and never silently switch providers afterward. The reserved
 names `auto`, `harness`, `codex`, `claude`, `openai`, `anthropic`, `shell`,
@@ -437,10 +437,16 @@ those to the user rather than inventing a fallback. Preview a run with
 `qualitymd evaluation run --dry-run --json` when the resolved model, scope,
 evaluator, or work-unit counts are worth confirming first.
 
+`codex` and `claude` are SDK-backed agent evaluators using their authenticated
+local runtimes; `openai` and `anthropic` are direct API evaluators. Present a
+capability, authentication, executable, sandbox, turn-limit, or cost-limit
+failure with the CLI's concrete remedy, and never claim an unsupported control
+is enforced.
+
 With `--evaluator harness`, the run checkpoints at judgment work: the command
 exits `0` with `status: awaiting_evaluator` and the outstanding bounded work
 requests, up to the run's resolved concurrency. Judge each request only from
-its own bounded content — directly or via subagents, since each request is
+its immutable bounded area context — directly or via subagents, since each request is
 self-contained — and submit results (one envelope or an array per call, any
 subset) with
 `qualitymd evaluation run --resume <run> --evaluator-result - --json`, looping
@@ -499,7 +505,7 @@ evaluators:
     model: <provider model, for API-backed kinds>
     apiKeyEnv: <env var holding the API key; never the value>
     baseUrl: <API base URL override, optional>
-    command: <CLI executable override, for CLI-backed kinds>
+    command: <provider runtime executable override, for SDK-backed kinds>
 ```
 
 Rules:

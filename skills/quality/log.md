@@ -1,5 +1,17 @@
 # /quality runtime skill update log
 
+## 2026-07-14
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0199 - Effect TypeScript CLI runtime. Evaluation guidance distinguishes
+  SDK-backed Codex and Claude agent runtimes from direct API profiles and
+  harness checkpoints, reports capability remedies, keeps source-resolution
+  access read-only and bounded, and treats immutable area context plus fresh
+  requirement sessions as runner-owned isolation boundaries. Bumped the skill
+  metadata to `0.31.0` with `qualitymd >=0.31.0 <0.32.0` compatibility.
+
 ## 2026-07-11
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md),

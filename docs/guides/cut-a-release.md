@@ -175,16 +175,14 @@ The release check:
 - verifies `skills/quality/SKILL.md` `metadata.version` matches the tag without
   `v`, that `metadata.requires-qualitymd-cli` has the expected range shape, and
   that any `/quality skill` changelog compatibility line mirrors the metadata;
-- runs `mise run fmt`, `mise run test`, `mise run vet`, `mise run snapshot`, and
+- runs `mise run fmt`, `mise run typecheck`, `mise run lint`, `mise run test`, `mise run snapshot`, and
   `mise run npm-build`.
 
 Inspect generated artifacts enough to catch packaging mistakes before pushing the
 tag.
 
-Pre-tag Goreleaser snapshots can mention the latest existing tag in their log
-while `release-check` is validating the candidate tag. That is expected before
-the new tag exists; trust the final `release checks passed for <tag>` line and
-the release-note preview for the candidate version.
+The snapshot compiles all Bun standalone targets and verifies the generated
+archives before the candidate tag exists.
 
 After `release-check` passes, push the release-prep commit and wait for the
 hosted `main` CI run for that exact commit to pass before creating the tag:
@@ -193,6 +191,19 @@ hosted `main` CI run for that exact commit to pass before creating the tag:
 git push origin main
 gh run list --branch main --limit 5
 ```
+
+Then run the hosted pre-tag credential and target-availability check and wait
+for it to pass:
+
+```sh
+gh workflow run release-preflight.yml -f tag=v0.3.0
+gh run list --workflow release-preflight.yml --limit 3
+gh run watch <run-id> --exit-status
+```
+
+This uses repository secrets to verify GitHub access, npm authentication and
+version availability, and Homebrew tap write access without exposing those
+credentials to the local shell.
 
 ## Tag and publish
 
@@ -207,7 +218,7 @@ The release workflow runs from `.github/workflows/release.yml`. It publishes:
 
 - a draft GitHub Release with the curated body from the matching
   `CHANGELOG.md` section;
-- GitHub release archives through Goreleaser;
+- GitHub release archives through `scripts/build-release.ts`;
 - Homebrew cask updates through `scripts/update-homebrew-cask.mjs`;
 - npm / npx packages through `scripts/build-npm.mjs`;
 - a final verification pass through `scripts/release-verify.mjs`;

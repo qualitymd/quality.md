@@ -57,7 +57,13 @@ if [ -z "$version" ]; then
   exit 70
 fi
 
-archive="qualitymd_${os}_${arch}.tar.gz"
+libc_suffix=""
+if [ "$os" = "linux" ]; then
+  if (ldd --version 2>&1 || true) | grep -qi musl || ls /lib/ld-musl-*.so.1 >/dev/null 2>&1; then
+    libc_suffix="_musl"
+  fi
+fi
+archive="qualitymd_${os}_${arch}${libc_suffix}.tar.gz"
 base_url="https://github.com/$repo/releases/download/$version"
 tmp="${TMPDIR:-/tmp}/qualitymd-install.$$"
 stage="$install_root/releases/$version"
@@ -81,20 +87,19 @@ sha256_of() {
 }
 
 curl -fsSL "$base_url/$archive" -o "$tmp/$archive"
-if curl -fsSL "$base_url/checksums.txt" -o "$tmp/checksums.txt"; then
-  expected="$(grep " $archive\$" "$tmp/checksums.txt" | awk '{print $1}')"
-  if [ -z "$expected" ]; then
-    echo "warning: $archive not listed in checksums.txt; skipping checksum verification" >&2
-  elif actual="$(sha256_of "$tmp/$archive")"; then
-    if [ "$expected" != "$actual" ]; then
-      echo "checksum mismatch for $archive" >&2
-      exit 70
-    fi
-  else
-    echo "warning: no SHA-256 tool (sha256sum, shasum, or openssl) found; skipping checksum verification" >&2
-  fi
-else
-  echo "warning: could not download checksums.txt; skipping checksum verification" >&2
+curl -fsSL "$base_url/checksums.txt" -o "$tmp/checksums.txt"
+expected="$(grep " $archive\$" "$tmp/checksums.txt" | awk '{print $1}')"
+if [ -z "$expected" ]; then
+  echo "$archive is not listed in checksums.txt" >&2
+  exit 70
+fi
+if ! actual="$(sha256_of "$tmp/$archive")"; then
+  echo "no SHA-256 tool (sha256sum, shasum, or openssl) found" >&2
+  exit 70
+fi
+if [ "$expected" != "$actual" ]; then
+  echo "checksum mismatch for $archive" >&2
+  exit 70
 fi
 
 tar -xzf "$tmp/$archive" -C "$stage"

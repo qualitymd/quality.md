@@ -50,15 +50,19 @@ There is no `upgrade` alias.
 ## Install ownership and apply
 
 Install-method detection **MUST** distinguish at least npm, Homebrew, managed
-standalone, Go/source, archive, and unknown installs when evidence is available.
+standalone, archive, and unknown installs when evidence is available.
 Where a launcher can mark ownership, the command **SHOULD** prefer that explicit
 marker over path guessing.
 
 npm installs **MUST** apply through `npm install -g quality.md@latest`.
 Homebrew installs **MUST** apply through the documented Homebrew command.
 Managed standalone installs **MUST** apply by invoking the managed installer
-non-interactively. Unknown, archive, and source installs **MUST** refuse direct
-mutation and print manual guidance.
+non-interactively. Unknown and archive installs **MUST** refuse direct mutation
+and print manual guidance. Go/source is not a supported install owner, and live
+recovery guidance **MUST NOT** recommend `go install`.
+
+The complete install-channel and standalone-platform contract lives in
+[`qualitymd` runtime and distribution](runtime-distribution.md).
 
 After applying, `update` **MUST** verify the visible `qualitymd --version` and
 **MUST** report honestly when the visible version did not advance to the target

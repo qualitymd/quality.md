@@ -27,12 +27,12 @@ capitals.
 
 ## Background / motivation
 
-[`internal/schema`](../internal/schema/schema.go) already expresses the
-structural frontmatter schema in Go for the linter to consume. External consumers
+[`src/domain/model/schema.ts`](../src/domain/model/schema.ts) expresses the
+structural frontmatter schema in TypeScript for the linter to consume. External consumers
 — editor validation and autocomplete for hand-authors (via a
 `# yaml-language-server: $schema=…` reference), and third-party tools that
 exchange QUALITY.md documents — have no portable schema to point at without
-running the Go linter. `quality.schema.json` fills that gap.
+running the linter. `quality.schema.json` fills that gap.
 
 It can only fill the _structural_ layer: shapes, required/optional presence,
 recursion, `minItems`, map-keyed entries, strict model-name patterns where JSON
@@ -74,7 +74,7 @@ requirements, and rating levels, matching the structure in
 [`SPECIFICATION.md`](../SPECIFICATION.md#frontmatter-schema).
 
 `quality.schema.json` **MUST** encode the structural constraints the linter
-enforces from [`internal/schema`](../internal/schema/schema.go): per-property
+enforces from [`src/domain/model/schema.ts`](../src/domain/model/schema.ts): per-property
 shape (scalar / map / sequence), required vs. optional presence, the rating-scale
 `minItems` of 2, map-keyed entries for `factors` / `requirements` / `areas`,
 strict `propertyNames` patterns for `factors`, `requirements`, and `areas`, the
@@ -92,7 +92,7 @@ omit one it does. The repository **MUST** carry a check that fails when the
 shipped artifact and the structural schema disagree.
 
 > Rationale: two hand-maintained copies drift; binding the artifact to
-> `internal/schema` keeps the structural contract single-sourced. — 0049
+> `src/domain/model/schema.ts` keeps the structural contract single-sourced. — 0049
 
 `quality.schema.json` **MUST** identify itself as structural-only and
 non-normative, and point to [`SPECIFICATION.md`](../SPECIFICATION.md) as the

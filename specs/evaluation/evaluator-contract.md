@@ -38,10 +38,12 @@ typed work-unit result they return.
 
 ## Capability declaration
 
-Every evaluator **MUST** declare its execution capabilities — supported
-execution strategies, subagent support, source-resolution support,
-reusable-context kinds, and usage reporting — and the runner **MUST** read
-the declaration before dispatching work.
+Every evaluator **MUST** declare structured output, source resolution, tool use,
+concurrent calls, nested subagents, fresh-session isolation, cancellation,
+usage reporting, turn limits, token or cost limits, context-window visibility,
+compaction control, sandbox control, and executable override. Unsupported
+controls **MUST** be represented as unsupported rather than silently ignored,
+and the runner **MUST** read the declaration before dispatching work.
 
 > Rationale: the runner can only choose strategies an evaluator provably
 > supports; assuming undeclared capabilities reintroduces harness-dependent
@@ -58,6 +60,10 @@ with `selector_unsupported` per the
 > for judgment work; serving a distinct request kind is a different promise,
 > and conflating them would make every subagent-capable evaluator implicitly
 > claim resolution. — 0197
+
+When a requested policy depends on an unsupported capability, planning **MUST**
+choose a documented safe fallback that preserves the policy or fail before
+evaluator work with an actionable classified error.
 
 ## Work-unit envelope
 
@@ -110,17 +116,19 @@ failure and retry only per the
 ## Built-in evaluators
 
 The built-in evaluator kinds are `harness` (checkpointed dispatch to the
-invoking agent harness), `codex` (Codex CLI subprocess), `claude` (Claude Code
-CLI subprocess), `openai` (direct OpenAI API), and `anthropic` (direct
-Anthropic API). `shell` and `manual` are reserved names with no
-implementations.
+invoking agent harness), `codex` (Codex SDK and authenticated local runtime),
+`claude` (Claude Agent SDK and authenticated local runtime), `openai` (direct
+OpenAI API), and `anthropic` (direct Anthropic API). `shell` and `manual` are
+reserved names with no implementations.
 
-CLI-backed evaluators **MUST** be invoked non-interactively with
-machine-readable structured output — Claude Code in print mode with JSON
-output, Codex in exec mode with JSON output — which the runner validates
-against the work unit's expected schema.
+SDK-backed agent evaluators **MUST** be invoked non-interactively with
+machine-readable structured output and a fresh isolated judgment session. A
+provider-managed child runtime remains inside the evaluator boundary; it is not
+a project-owned sidecar and **MUST NOT** be required when another evaluator or a
+non-evaluation command is used. The runner validates every result against the
+work unit's expected schema.
 
-Where a supported CLI advertises JSON Schema output enforcement or ephemeral /
+Where a supported SDK advertises JSON Schema output enforcement or ephemeral /
 no-session-persistence controls for its non-interactive mode, its built-in
 evaluator adapter **MUST** use those controls for bounded work requests,
 detecting the capability from the installed CLI before the first judgment
@@ -129,7 +137,7 @@ call. The runner still **MUST** validate the returned payload independently.
 > Rationale: prompt-only JSON and retained one-off sessions add avoidable
 > output failures and local state without replacing runner validation. — 0194
 
-If an installed CLI cannot honor non-interactive structured invocation, then
+If an installed provider runtime cannot honor non-interactive structured invocation, then
 evaluator selection **MUST** fail with `evaluator_incompatible` and report
 remediation, including any other available evaluators.
 
@@ -141,8 +149,8 @@ API-backed evaluators **MUST** read their API key from the profile's configured
 environment variable. If that variable is unset when an API-backed evaluator is
 selected, then selection **MUST** fail with `missing_api_key`.
 
-Evaluator credentials are not interchangeable across kinds: CLI
-subscription/access-token authentication belongs to the CLI evaluators, direct
+Evaluator credentials are not interchangeable across kinds: local
+subscription/access-token authentication belongs to SDK-backed agent evaluators, direct
 provider API keys belong to the API evaluators, and the harness evaluator uses
 the invoking agent's own authentication and **MUST NOT** require a provider
 API key. Guidance and configuration **MUST** reference secrets by
@@ -160,8 +168,8 @@ submits a typed result envelope through resume.
 The harness evaluator is the built-in evaluator that declares
 source-resolution support: alongside judgment requests, its checkpoint
 transport carries `resolveSource` work requests — the selector, its detected
-kind, the area frame, and an empty source bundle — whose returned files the
-runner validates and captures per the
+kind, the area frame, and an empty source bundle — whose returned
+workspace-relative file paths the runner validates, rereads, and captures per the
 [runner source contract](runner.md#source-packaging). A resolution result
 envelope is the ordinary result envelope; when the material the selector
 describes does not exist, the harness returns a classified
@@ -208,7 +216,7 @@ resume, or validation dependency.
 
 ## Subagent-backed work
 
-Where a CLI-backed evaluator exposes native subagents or worker threads,
+Where an evaluator exposes native subagents or worker threads,
 subagent-backed work **MUST** return the same typed result envelope as any
 other evaluator-backed work, and subagents **MUST NOT** write run artifacts,
 expand scope, change dependency ordering, or produce final authority outside
@@ -236,12 +244,10 @@ Where an API-backed evaluator supports provider prompt caching, that evaluator
 > time-dependent: correctness comes from the work graph and persisted
 > artifacts, not from a cache hit. — 0192, 0193
 
-Where an evaluator supports reusable conversation, thread, session, or previous
-response state, the runner **MAY** create shared base context and fork or chain
-work units from it. In particular, where a CLI-backed evaluator supports
-session or thread continuation, the runner **MAY** reuse one session per area
-so the area's stable prefix is transmitted once and later work units in that
-area send only their deltas.
+Where an evaluator supports reusable prompt or prefix state, the runner **MAY**
+reuse the immutable area prefix. Every requirement still **MUST** run in a fresh
+session or thread; one requirement's transcript **MUST NOT** become another's
+context. Correctness **MUST NOT** depend on a provider cache hit.
 
 Reusable evaluator context **MUST** be treated as reconstructible execution
 metadata, not as authoritative run state. A resumed run **MUST NOT** require a
@@ -294,3 +300,43 @@ Evaluators **MUST** declare whether they support concurrent calls. The runner
 neither concurrent-call support nor subagent delegation; for a checkpointed
 evaluator, subagent delegation is the declaration that makes an outstanding
 window above `1` serviceable.
+
+## Runner authority and cancellation
+
+The runner is the sole owner of the work graph, dependency readiness,
+top-level concurrency, timeout, cancellation, retry budget, accepted-result
+validation, deterministic persistence, and final report assembly. SDK agent
+loops are workers inside one work unit.
+
+Requirement judgment **MUST** disable nested provider subagents by default. A
+source-resolution profile may opt in only when the adapter declares support and
+the profile supplies explicit depth and concurrency caps.
+
+Adapters **MUST** propagate runner cancellation to SDK streams and provider
+child processes. A late result after cancellation or request supersession
+**MUST NOT** be accepted. Provider session identifiers are diagnostic only;
+resume remains based on runner input hashes and accepted artifacts.
+
+## Safety, environment, and observability
+
+Evaluators **MUST** treat captured source and tool output as untrusted data, not
+instructions, and use the least tools, workspace access, network access,
+sandbox authority, and approval authority needed for the work kind.
+
+Provider child environments **MUST** be allowlisted. They may inherit common
+process variables plus the selected evaluator's documented authentication and
+configuration variables, but **MUST NOT** inherit unrelated credentials.
+Configuration continues to store secret locators rather than secret values.
+
+Evaluator-call logs and run metadata **MUST** identify evaluator kind/profile,
+provider model when reported, duration, attempt, classified failure, declared
+capabilities, and provider-reported usage when available. They **MUST NOT**
+record raw prompts, source bodies, tool transcripts, result bodies, secrets, or
+environment values.
+
+`qualitymd` adds no project telemetry and does not enable provider telemetry on
+the user's behalf. Provider data behavior inherent to a selected SDK or local
+runtime belongs to that evaluator's documented boundary.
+
+The complete agent session and context contract lives in
+[Agent evaluators](agent-evaluators.md).

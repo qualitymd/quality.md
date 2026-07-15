@@ -40,16 +40,12 @@ try {
   $archivePath = Join-Path $tmp $archive
   Invoke-WebRequest -Uri "$baseUrl/$archive" -OutFile $archivePath
   $checksumsPath = Join-Path $tmp "checksums.txt"
-  try {
-    Invoke-WebRequest -Uri "$baseUrl/checksums.txt" -OutFile $checksumsPath
-    $expected = (Select-String -Path $checksumsPath -Pattern " $([regex]::Escape($archive))$" | Select-Object -First 1).Line.Split(" ")[0]
-    if ($expected) {
-      $actual = (Get-FileHash -Algorithm SHA256 $archivePath).Hash.ToLowerInvariant()
-      if ($expected.ToLowerInvariant() -ne $actual) { throw "checksum mismatch for $archive" }
-    }
-  } catch {
-    if ($_.Exception.Message -like "checksum mismatch*") { throw }
-  }
+  Invoke-WebRequest -Uri "$baseUrl/checksums.txt" -OutFile $checksumsPath
+  $checksumLine = Select-String -Path $checksumsPath -Pattern " $([regex]::Escape($archive))$" | Select-Object -First 1
+  if (-not $checksumLine) { throw "$archive is not listed in checksums.txt" }
+  $expected = $checksumLine.Line.Split(" ")[0]
+  $actual = (Get-FileHash -Algorithm SHA256 $archivePath).Hash.ToLowerInvariant()
+  if ($expected.ToLowerInvariant() -ne $actual) { throw "checksum mismatch for $archive" }
 
   Expand-Archive -Force -Path $archivePath -DestinationPath $stage
   $binary = Get-ChildItem -Path $stage -Filter "qualitymd.exe" -Recurse | Select-Object -First 1

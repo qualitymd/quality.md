@@ -28,6 +28,8 @@ The format-tooling commands specified for this phase. See the parent
 
 # Components
 
+- [Runtime and distribution](runtime-distribution.md) - standalone runtime,
+  target matrix, install ownership, release provenance, and repair contract.
 - [qualitymd lint rules](lint-rules.md) - rule-system, rule-authoring, and rule
   catalog contract for `qualitymd lint`.
 - [qualitymd lint output](lint-output.md) - finding, JSON, repair-result, and

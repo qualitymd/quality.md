@@ -15,42 +15,76 @@ export const targets = [
     arch: "arm64",
     npm: "@qualitymd/cli-darwin-arm64",
     asset: "qualitymd_darwin_arm64.tar.gz",
+    bunTarget: "bun-darwin-arm64",
+    homebrew: true,
   },
   {
     os: "darwin",
     arch: "x64",
     npm: "@qualitymd/cli-darwin-x64",
     asset: "qualitymd_darwin_amd64.tar.gz",
+    bunTarget: "bun-darwin-x64-baseline",
+    homebrew: true,
   },
   {
     os: "linux",
     arch: "arm64",
     npm: "@qualitymd/cli-linux-arm64",
     asset: "qualitymd_linux_arm64.tar.gz",
+    bunTarget: "bun-linux-arm64",
+    libc: "glibc",
+    homebrew: true,
   },
   {
     os: "linux",
     arch: "x64",
     npm: "@qualitymd/cli-linux-x64",
     asset: "qualitymd_linux_amd64.tar.gz",
+    bunTarget: "bun-linux-x64-baseline",
+    libc: "glibc",
+    homebrew: true,
+  },
+  {
+    os: "linux",
+    arch: "arm64",
+    npm: "@qualitymd/cli-linux-arm64-musl",
+    asset: "qualitymd_linux_arm64_musl.tar.gz",
+    bunTarget: "bun-linux-arm64-musl",
+    libc: "musl",
+    homebrew: false,
+  },
+  {
+    os: "linux",
+    arch: "x64",
+    npm: "@qualitymd/cli-linux-x64-musl",
+    asset: "qualitymd_linux_amd64_musl.tar.gz",
+    bunTarget: "bun-linux-x64-musl-baseline",
+    libc: "musl",
+    homebrew: false,
   },
   {
     os: "win32",
     arch: "arm64",
     npm: "@qualitymd/cli-win32-arm64",
     asset: "qualitymd_windows_arm64.zip",
+    bunTarget: "bun-windows-arm64",
+    homebrew: false,
   },
   {
     os: "win32",
     arch: "x64",
     npm: "@qualitymd/cli-win32-x64",
     asset: "qualitymd_windows_amd64.zip",
+    bunTarget: "bun-windows-x64-baseline",
+    homebrew: false,
   },
 ];
 
 export const launcherPackage = "quality.md";
 export const expectedReleaseAssets = [
+  "artifacts.json",
   "checksums.txt",
+  "metadata.json",
   ...targets.map((target) => target.asset),
 ].sort();
 
@@ -279,5 +313,8 @@ export function packageVersionExists(pkg, version, env = {}) {
 export function currentPlatformTarget() {
   const os = process.platform;
   const arch = process.arch;
-  return targets.find((target) => target.os === os && target.arch === arch);
+  const libc = os === "linux" && !process.report?.getReport?.().header?.glibcVersionRuntime ? "musl" : "glibc";
+  return targets.find(
+    (target) => target.os === os && target.arch === arch && (os !== "linux" || target.libc === libc),
+  );
 }

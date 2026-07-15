@@ -212,12 +212,14 @@ area **MUST** inherit its nearest ancestor's effective selector.
 
 ### Selector kind detection
 
-The runner **MUST** detect each effective selector's kind from the bare
-selector string, in this order: a selector containing glob metacharacters is
-a **glob**; otherwise a selector that names an existing filesystem entry is a
-**path**; otherwise the selector is **prose**. A selector that is absolute or
-escapes the workspace **MUST** remain a filesystem selector under the
-workspace-containment rules below and **MUST NOT** fall back to prose.
+The runner **MUST** detect each effective selector's kind from the bare selector
+string, in this order: a selector containing supported glob metacharacters that
+successfully parses under the supported glob grammar is a **glob**; otherwise a
+selector that names an existing filesystem entry is a **path**; otherwise the
+selector is **prose**. A string with malformed glob syntax is not a glob. A
+selector that is absolute or lexically escapes the workspace **MUST** remain a
+filesystem selector under the workspace-containment rules below and **MUST
+NOT** fall back to prose.
 
 > Rationale: detection order makes the filesystem interpretation always win,
 > so prose is only ever the meaning of a selector that cannot be filesystem
@@ -254,10 +256,14 @@ evaluator dispatch can serve source resolution
 ([evaluator contract](evaluator-contract.md#capability-declaration)), the
 runner **MUST** dispatch a `resolveSource` work unit for the area through the
 same checkpoint transport as harness judgment, and **MUST** validate and
-capture the returned material into the bundle — unique non-empty file paths,
-the packaging caps below with truncation marks, SHA-256 per file, and the
-shared bundle hash — before any dependent judgment work is dispatched. The
-resolution request carries the selector, its kind, and the area frame, and an
+capture the selected material into the bundle — the resolver returns only
+unique non-empty workspace-relative file paths, then the runner rereads those
+files, applies the packaging caps below with truncation marks, and records
+SHA-256 per file plus the shared bundle hash — before any dependent judgment
+work is dispatched.
+SDK-backed agents may use several bounded read-only tool actions, but return
+only the finite selected file set; their exploration transcript is never
+judgment context. The resolution request carries the selector, its kind, and the area frame, and an
 empty source bundle: the resolver is fed a description, never pre-gathered
 evidence.
 
@@ -337,10 +343,12 @@ Packaged source **MUST** be presented to evaluators as data accompanied by
 standing safety instructions, applying the source-as-data invariant in
 [Evaluation](evaluation.md#shared-invariants).
 
-The runner **MUST** package an area's source once per run and reuse that
-bundle for every work unit in the area, with determinism, truncation, and
-hashing unchanged: the reused bundle is byte-identical to a re-packaged one
-and carries the same bundle hash.
+The runner **MUST** package an area's source once per run and combine it with
+the area frame, applicable rating criteria, and body guidance into one immutable
+area-context package and content hash. It **MUST** reuse that bundle for every
+work unit in the area, with determinism, truncation, and hashing unchanged: the
+reused bundle is byte-identical to a re-packaged one and carries the same bundle
+hash.
 
 > Rationale: packaging is deterministic, so re-packaging per requirement only
 > repeats filesystem work; one bundle per area also gives evaluators a stable
@@ -362,8 +370,8 @@ decisions, report build, and run completion.
 The runner **MUST** write evaluator-call metadata to a run-local structured log
 at `logs/evaluator-calls.jsonl`. Call metadata **SHOULD** include evaluator
 kind, model when known, work-unit kind, attempt number, duration, input hash,
-output hash, resolved concurrency, context/cache metadata when available, and
-usage when available. When the evaluator reports cached input tokens, the
+output hash, resolved concurrency, context/cache metadata when available,
+declared capabilities, and usage when available. When the evaluator reports cached input tokens, the
 runner **MUST** include the cached-input-token count in the call's usage
 metadata.
 

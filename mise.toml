@@ -1,87 +1,62 @@
 [tools]
-"npm:prettier" = "3.9.4"
-go = "1.26"
-goreleaser = "latest"
-golangci-lint = "2"
+bun = "1.3.14"
 node = "22"
+"npm:prettier" = "3.9.5"
+
+[tasks.install]
+description = "Install exact TypeScript dependencies"
+run = "bun install --frozen-lockfile"
 
 [tasks.build]
-description = "Build the qualitymd binary into ./dist"
-run = "go build -o dist/qualitymd ./cmd/qualitymd"
+description = "Build the host qualitymd standalone executable into ./dist"
+run = "bun run build"
 
 [tasks.run]
-description = "Run the QUALITY.md CLI"
-run = "go run ./cmd/qualitymd"
+description = "Run the qualitymd CLI from TypeScript source"
+run = "bun run src/main.ts"
 
 [tasks.test]
-description = "Run the test suite"
-run = "go test ./..."
+description = "Run the TypeScript test suite"
+run = "bun run test"
 
-[tasks.vet]
-description = "Vet the codebase"
-run = "go vet ./..."
+[tasks.typecheck]
+description = "Type-check the TypeScript runtime"
+run = "bun run typecheck"
 
 [tasks.lint]
-description = "Lint the Go codebase with golangci-lint"
-run = "golangci-lint run"
-
-[tasks.fmt-go-check]
-description = "Check Go formatting without writing (CI-friendly)"
-run = '''
-unformatted="$(gofmt -l .)"
-if [ -n "$unformatted" ]; then
-	printf 'Go files need gofmt:\n%s\n' "$unformatted"
-	exit 1
-fi
-'''
+description = "Lint the TypeScript runtime and tests"
+run = "bun run lint"
 
 [tasks.check]
-description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, generated docs check, docs links check, npm package check)"
-depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "docs-links-check", "npm-pack-check"]
+description = "Run the complete local gate"
+depends = ["typecheck", "lint", "test", "fmt-check", "fmt-md-check", "schema-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "docs-links-check", "npm-pack-check"]
 
 [tasks.fmt]
-description = "Format the codebase (Go + Markdown/MDX)"
-run = ["gofmt -w .", "prettier --write \"**/*.{md,mdx}\""]
+description = "Format TypeScript, JavaScript, Markdown, and MDX"
+run = ["bun run fmt", "prettier --write \"**/*.{md,mdx}\""]
+
+[tasks.fmt-check]
+description = "Check TypeScript formatting"
+run = "bun run fmt:check"
 
 [tasks.fmt-md]
-description = "Format Markdown and MDX files with prettier"
+description = "Format Markdown and MDX files"
 run = "prettier --write \"**/*.{md,mdx}\""
 
 [tasks.fmt-md-check]
-description = "Check Markdown/MDX formatting without writing (CI-friendly)"
+description = "Check Markdown and MDX formatting"
 run = "prettier --check \"**/*.{md,mdx}\""
 
 [tasks.hooks]
-description = "Install the repo's git hooks (run once after clone)"
+description = "Install the repository git hooks"
 run = "git config core.hooksPath .githooks"
 
-[tasks.tidy]
-description = "Tidy module dependencies"
-run = "go mod tidy"
-
-[tasks.tidy-check]
-description = "Verify go mod tidy leaves go.mod and go.sum unchanged"
-run = '''
-tmpdir="$(mktemp -d)"
-cp go.mod "$tmpdir/go.mod"
-cp go.sum "$tmpdir/go.sum"
-trap 'rm -rf "$tmpdir"' EXIT
-
-go mod tidy -modfile="$tmpdir/go.mod"
-if ! cmp -s "$tmpdir/go.mod" go.mod || ! cmp -s "$tmpdir/go.sum" go.sum; then
-	printf 'go mod tidy changed go.mod or go.sum. Review and stage the changes.\n'
-	diff -u --label go.mod --label 'go.mod (tidied)' go.mod "$tmpdir/go.mod" || true
-	diff -u --label go.sum --label 'go.sum (tidied)' go.sum "$tmpdir/go.sum" || true
-	exit 1
-fi
-'''
-
 [tasks.snapshot]
-description = "Build a local goreleaser snapshot (no publish)"
-run = "goreleaser release --snapshot --clean"
+description = "Build all standalone release targets without publishing"
+run = "bun scripts/build-release.ts v0.0.0-dev dev"
 
 [tasks.npm-build]
-description = "Cross-compile and assemble the npm packages (no publish)"
+description = "Cross-compile and assemble the npm packages without publishing"
 usage = 'arg "[version]" default="0.0.0-dev"'
 run = 'node scripts/build-npm.mjs "${usage_version?}"'
 
@@ -91,11 +66,19 @@ run = "node scripts/check-npm-package.mjs"
 
 [tasks.report-gallery]
 description = "Regenerate the checked-in evaluation report gallery examples"
-run = "go run ./scripts/report-gallery"
+run = "bun scripts/report-gallery.ts"
+
+[tasks.schema]
+description = "Regenerate the companion QUALITY.md JSON Schema"
+run = "bun scripts/quality-schema.ts"
+
+[tasks.schema-check]
+description = "Verify the companion JSON Schema is current"
+run = "bun run test test/integration/quality-schema.test.ts"
 
 [tasks.report-gallery-check]
 description = "Verify generated report gallery examples are current"
-run = ["mise run report-gallery", "git diff --exit-code examples/report-gallery"]
+run = "node scripts/check-generated.mjs bun scripts/report-gallery.ts -- examples/report-gallery"
 
 [tasks.sync-spec-docs]
 description = "Regenerate the Mintlify specification page from SPECIFICATION.md"
@@ -103,23 +86,23 @@ run = "node scripts/sync-spec-docs.mjs"
 
 [tasks.sync-spec-docs-check]
 description = "Verify the generated Mintlify specification page is current"
-run = ["mise run sync-spec-docs", "git diff --exit-code mintlify/specification.mdx"]
+run = "node scripts/check-generated.mjs node scripts/sync-spec-docs.mjs -- mintlify/specification.mdx"
 
 [tasks.cli-docs]
-description = "Regenerate the Mintlify CLI reference page from the Cobra command tree"
-run = "go run ./scripts/cli-docs"
+description = "Regenerate the Mintlify CLI reference page"
+run = "bun scripts/cli-docs.ts"
 
 [tasks.cli-docs-check]
 description = "Verify the generated Mintlify CLI reference page is current"
-run = ["mise run cli-docs", "git diff --exit-code mintlify/cli.mdx"]
+run = "node scripts/check-generated.mjs bun scripts/cli-docs.ts -- mintlify/cli.mdx"
 
 [tasks.docs-deps]
-description = "Install the Mintlify docs toolchain (pinned mint CLI) if missing"
+description = "Install the pinned Mintlify docs toolchain if missing"
 dir = "mintlify"
 run = "[ -d node_modules ] || npm ci --no-audit --no-fund"
 
 [tasks.docs-links-check]
-description = "Check the Mintlify docs site for broken links (after docs regeneration)"
+description = "Check the Mintlify docs site for broken links"
 depends = ["docs-deps", "sync-spec-docs-check", "cli-docs-check"]
 dir = "mintlify"
 run = "npm exec --no -- mint broken-links"

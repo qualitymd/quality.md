@@ -198,6 +198,13 @@ evaluation mutation and **MUST NOT** silently cross to a different provider
 after harness selection or a harness failure; switching evaluators is an
 explicit user decision and a new run.
 
+For `codex` and `claude`, the workflow **MUST** treat the provider agent runtime
+as a runner-owned evaluator implementation detail. For `openai` and
+`anthropic`, it **MUST** explain that direct API credentials are required. A
+capability, authentication, executable, sandbox, turn-limit, or cost-limit
+failure **MUST** be presented with the runner's concrete remedy; the workflow
+**MUST NOT** claim an unsupported control is enforced.
+
 ## Workflow
 
 For an `evaluate` invocation the skill's process wraps the runner:
@@ -235,8 +242,9 @@ flowchart TD
    `qualitymd evaluation run [--model <model>] [--area <area-ref>] [--factor <factor-ref>...] [--evaluator <name>] --json`.
 8. **Service harness checkpoints.** While the receipt status is
    `awaiting_evaluator`, serve each supplied bounded request — judge a
-   judgment request from its bounded evidence only; gather a `resolveSource`
-   request's described material and return it verbatim — directly or through
+   judgment request from its immutable bounded area context only; gather a
+   `resolveSource` request's described workspace files with read-only tools and
+   return the finite workspace-relative file set, never the exploration transcript — directly or through
    subagents for independent requests, submit result envelopes (one or
    several per call, as results become ready) with
    `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
@@ -259,6 +267,11 @@ When a run ends `failed` or `cancelled`, the workflow **MUST** explain the
 receipt's stable failure category in user terms and offer
 `qualitymd evaluation run --resume <run>` as the recovery path when the run is
 resumable.
+
+Resume **MUST** preserve the recorded evaluator. Provider session IDs are not a
+recovery dependency; the runner rebuilds incomplete work from captured evidence
+and input hashes. Switching an evaluator after accepted results requires a new
+run.
 
 The workflow **MUST NOT** repair a failed run by hand-authoring run artifacts or
 by re-deriving results itself. When the CLI reports a `missing_evaluator` or

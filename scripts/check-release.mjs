@@ -50,10 +50,10 @@ try {
   if (!skipGates) {
     run("mise", ["run", "fmt"]);
     run("mise", ["run", "test"]);
-    run("mise", ["run", "vet"]);
+    run("mise", ["run", "typecheck"]);
     run("mise", ["run", "lint"]);
     run("mise", ["run", "snapshot"]);
-    run("mise", ["run", "npm-build"]);
+    run("mise", ["run", "npm-build", "--", tag.replace(/^v/, "")]);
   }
 
   if (!skipClean) {

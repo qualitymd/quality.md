@@ -402,17 +402,19 @@ one; if no ancestor declares one, it inherits the document's default source
 defined in [Document structure](#document-structure).
 
 An effective source selector is interpreted by kind, detected from the bare
-selector string in this order: a selector containing glob metacharacters
-(`*`, `?`, `[`) is a glob; otherwise a selector that names an existing
-filesystem entry relative to the containing QUALITY.md file is a path;
-otherwise the selector is prose — a description of the evaluated material
-that filesystem resolution cannot serve. The filesystem interpretation always
-wins, so prose is only ever the meaning of a selector that cannot be
-filesystem material. Tools resolve path and glob selectors deterministically
-and MAY resolve prose selectors through their own gathering means; a tool
-that cannot resolve a selector's kind MUST report that inability distinctly,
-rather than treating the named material as missing or evaluating the area
-against no material.
+selector string in this order: a selector containing supported glob
+metacharacters (`*`, `?`, `[`) is a glob only when it parses under the supported
+glob grammar; otherwise a selector that names an existing filesystem entry
+relative to the containing QUALITY.md file is a path; otherwise the selector is
+prose — a description of the evaluated material that filesystem resolution
+cannot serve. Malformed glob syntax does not make a glob. An absolute selector
+or one that lexically escapes the workspace remains filesystem intent and fails
+containment rather than falling back to prose. An empty glob result, unreadable
+existing path, or deterministic collection failure remains a filesystem-source
+failure. Tools resolve path and glob selectors deterministically and MAY resolve
+prose selectors through their own gathering means; a tool that cannot resolve a
+selector's kind MUST report that inability distinctly, rather than treating the
+named material as missing or evaluating the area against no material.
 
 ### Requirement scope
 

@@ -5,8 +5,36 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.31.0 - 2026-07-14
+
+### Specification
+
+- Source selectors containing glob metacharacters are treated as globs only
+  when they parse as supported glob syntax. Malformed globs fall through to an
+  existing relative path and then prose inference; absolute or escaping paths,
+  empty glob results, unreadable paths, and collection failures remain explicit
+  filesystem-source failures.
+
 ### CLI
 
+- Replaced the Go implementation and GoReleaser pipeline with one Effect v4
+  TypeScript application compiled by pinned Bun into standalone executables.
+  The command tree, JSON and exit contracts, evaluation artifacts, and generated
+  reports remain compatible; the repository no longer ships Go source,
+  `go install`, a Go fallback, or a Node sidecar.
+- Codex and Claude evaluations now use their supported TypeScript agent SDKs;
+  direct OpenAI and Anthropic API profiles and harness checkpoints remain
+  available. Evaluator capabilities, readiness evidence, bounded source access,
+  cancellation, retry, and call metadata are explicit rather than normalized
+  across providers.
+- Each area gets one immutable, hashed context assembled from its source bundle,
+  frame, rating criteria, and body guidance. Every requirement judgment runs in
+  a fresh provider session or thread so sibling transcripts cannot leak into one
+  another, and resume reconstructs context without provider-retained sessions.
+- Release archives and npm platform packages now cover Darwin, Windows, Linux
+  glibc, and Linux musl on arm64 and x64. Checksums are mandatory, installers
+  detect libc, and release repair preserves already-published Bun artifacts
+  because compiled output is not byte-reproducible.
 - Harness-backed evaluation runs are no longer pinned to concurrency 1: the
   runner now keeps a rolling window of dependency-ready work requests
   outstanding — up to the run's resolved `evaluation.concurrency` — topping
@@ -30,10 +58,33 @@ QUALITY.md specification.
 
 ### /quality skill
 
+- Skill metadata is now `0.31.0` and requires `qualitymd >=0.31.0 <0.32.0`.
+  Evaluation guidance distinguishes SDK agent runtimes from direct API
+  evaluators, reports capability remedies, and treats area context and
+  requirement session isolation as runner-owned boundaries.
 - The evaluate workflow's checkpoint loop services the outstanding request
   set: it may delegate independent requests to subagents, submits results as
   they become ready (one envelope or several per call), and names the window
   width on the first windowed receipt.
+
+### Compatibility / migration
+
+- The Go implementation, `go install` path, and GoReleaser assets are removed.
+  Install the standalone archive, npm launcher, or Homebrew cask instead.
+- In-flight runner artifacts awaiting evaluator input use a clean schema break
+  from version 6 to version 7 and should be started fresh; completed evaluation
+  artifacts remain readable.
+- Harness clients should read `evaluatorRequests` and
+  `pendingEvaluatorCalls`, and may submit one result envelope or an array. The
+  former singular fields are no longer emitted.
+- The QUALITY.md specification stays at `0.11 (Draft)`; malformed-glob handling
+  clarifies source-selection behavior without changing the document schema.
+
+Compatibility:
+
+- CLI: `v0.31.0`
+- QUALITY.md specification: `0.11 (Draft)`
+- /quality skill: `0.31.0`, requires `qualitymd >=0.31.0 <0.32.0`
 
 ## v0.30.0 - 2026-07-11
 

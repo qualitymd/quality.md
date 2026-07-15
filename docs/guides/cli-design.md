@@ -61,12 +61,10 @@ wins.
 
 A few things every command does, no exceptions:
 
-- **Use a real argument parser.** Don't hand-roll flag parsing. Our stack is
-  [Cobra](https://github.com/spf13/cobra) for command and flag structure,
-  [Charm Fang](https://github.com/charmbracelet/fang) for the invocation harness,
-  and [Lip Gloss](https://github.com/charmbracelet/lipgloss) for terminal output.
-  A requirement that can only be met by fighting these libraries is a signal to
-  reshape the requirement.
+- **Use a real argument parser.** Don't hand-roll flag parsing. The command tree
+  uses `effect/unstable/cli` behind the project-owned adapter in
+  `src/cli/app.ts`; compatibility normalization and output policy stay in that
+  boundary so upstream beta churn does not leak into command handlers.
 - **Exit zero on success, non-zero on failure.** And do it through stable,
   documented categories — see [Errors and exit codes](#errors-and-exit-codes).
 - **Primary output to `stdout`, everything else to `stderr`.** The result is the

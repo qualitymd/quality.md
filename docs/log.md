@@ -1,5 +1,19 @@
 # Docs update log
 
+## 2026-07-14
+
+- **Creation**: Added [Write Effect TypeScript](guides/effect-typescript-style.md)
+  for [0200 - Effect runtime acceptance](../changes/0200-effect-runtime-acceptance.md),
+  documenting source layers, Effect service and error conventions, scoped
+  resources, the mirrored package-local test tree, generated-artifact owners,
+  and phase-appropriate validation. Routed agents and contributors to it.
+
+- **Revision**: Updated contributor, install, quickstart, CLI-design, and release
+  guidance for [0199 - Effect TypeScript CLI runtime](../changes/0199-effect-typescript-cli-runtime.md).
+  Live docs now describe the pinned Bun/TypeScript workflow and standalone
+  executable, remove `go install` and Go-only package/style guides, and route
+  releases through the eight-target Bun build and verification pipeline.
+
 ## 2026-07-09
 
 - **Revision**: Updated

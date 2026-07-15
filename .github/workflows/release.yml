@@ -41,9 +41,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
+      - uses: jdx/mise-action@v4
+
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
 
       - uses: actions/setup-node@v6
         with:
@@ -65,13 +66,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # GitHub release archives only. Homebrew and npm publish in separate jobs.
-      - uses: goreleaser/goreleaser-action@v7
-        with:
-          version: "~> v2"
-          args: release --clean --draft --release-notes "${{ runner.temp }}/release-notes.md"
+      - name: Build standalone release archives
+        run: bun scripts/build-release.ts "$GITHUB_REF_NAME" "$GITHUB_SHA"
+
+      - name: Create draft GitHub release
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          dist/*.tar.gz dist/*.zip dist/checksums.txt dist/metadata.json dist/artifacts.json
+          --draft --title "$GITHUB_REF_NAME" --notes-file "${{ runner.temp }}/release-notes.md"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   homebrew:
     runs-on: ubuntu-latest
@@ -95,9 +99,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
+      - uses: jdx/mise-action@v4
+
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
 
       - uses: actions/setup-node@v6
         with:

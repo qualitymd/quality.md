@@ -107,7 +107,7 @@ async function verifyHomebrew(version, checksums) {
   if (!content.includes(`version "${version}"`)) {
     throw new Error(`Homebrew cask does not declare version ${version}`);
   }
-  for (const target of targets.filter((target) => target.os !== "win32")) {
+  for (const target of targets.filter((target) => target.homebrew)) {
     const checksum = checksums.get(target.asset);
     if (!content.includes(`sha256 "${checksum}"`)) {
       throw new Error(`Homebrew cask checksum mismatch for ${target.asset}`);

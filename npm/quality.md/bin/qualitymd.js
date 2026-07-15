@@ -7,7 +7,10 @@
 
 const { spawnSync } = require("node:child_process");
 
-const platformKey = `${process.platform}-${process.arch}`;
+const isMusl =
+  process.platform === "linux" &&
+  !process.report?.getReport?.().header?.glibcVersionRuntime;
+const platformKey = `${process.platform}-${process.arch}${isMusl ? "-musl" : ""}`;
 const pkg = `@qualitymd/cli-${platformKey}`;
 const ext = process.platform === "win32" ? ".exe" : "";
 
@@ -18,8 +21,8 @@ try {
   console.error(
     `quality.md: no prebuilt binary for ${platformKey}.\n` +
       `The optional dependency ${pkg} is missing. If you installed with ` +
-      `--no-optional, reinstall without it, or use:\n` +
-      `  go install github.com/qualitymd/quality.md/cmd/qualitymd@latest`,
+      `--no-optional, reinstall without it, or use the managed installer:\n` +
+      `  curl -fsSL https://getquality.md/install.sh | sh`,
   );
   process.exit(1);
 }

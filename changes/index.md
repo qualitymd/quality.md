@@ -44,11 +44,15 @@ edit.
 # Open change cases
 
 - [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md) -
-  **Design**. Replace the Go implementation with one Effect v4 TypeScript
+  **In-Review**. Replace the Go implementation with one Effect v4 TypeScript
   runtime, add capability-aware Codex and Claude SDK evaluators with immutable
   area context and isolated requirement sessions, and preserve the CLI's
   commands, artifacts, install channels, and multi-platform releases through a
   clean cutover.
+- [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) -
+  **In-Review**. Prove the TypeScript cutover's behavioral and native-platform
+  acceptance, make its Effect testing and architecture conventions explicit and
+  agent-operable, and carry the verified runtime through the v0.31.0 release.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

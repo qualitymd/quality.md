@@ -3,7 +3,7 @@ title: CLI reference
 description: The qualitymd command-line interface that the /quality skill builds on.
 ---
 
-{/* Generated from the Cobra command tree by scripts/cli-docs. Do not edit directly. Run `mise run cli-docs`. */}
+{/* Generated from the Effect CLI command tree by scripts/cli-docs.ts. Do not edit directly. Run `mise run cli-docs`. */}
 
 The `/quality` skill drives the `qualitymd` CLI for you. This reference is for
 when you want to run commands directly. It is generated from the CLI's own
@@ -13,191 +13,22 @@ command definitions, so it always matches the installed binary.
 
 | Command | Description |
 | --- | --- |
+| `qualitymd evaluation` | Work with QUALITY.md evaluation runs |
 | `qualitymd init` | Scaffold a starter QUALITY.md |
 | `qualitymd lint` | Validate a QUALITY.md file |
 | `qualitymd model` | Query a quality model's structure and canonical reference IDs |
 | `qualitymd spec` | Emit the QUALITY.md format specification |
 | `qualitymd schema` | Emit the companion JSON Schema for QUALITY.md frontmatter |
-| `qualitymd evaluation` | Work with QUALITY.md evaluation runs |
-| `qualitymd version` | Show structured qualitymd version metadata |
-| `qualitymd update` | Update the qualitymd CLI through its owning install channel |
 | `qualitymd status` | Show a QUALITY.md workspace status snapshot |
-
-## `qualitymd init`
-
-Scaffold a starter QUALITY.md
-
-```bash
-qualitymd init [path] [flags]
-```
-
-**Flags**
-
-| Flag | Description |
-| --- | --- |
-| `--force` | overwrite an existing file |
-| `--json` | emit a machine-readable JSON init receipt |
-| `--minimal` | write a minimal valid skeleton without the guided template prose |
-| `--no-agent-instructions` | do not create or update agent instruction files |
-
-**Examples**
-
-```bash
-qualitymd init
-qualitymd init docs/QUALITY.md
-qualitymd init --minimal
-qualitymd init --no-agent-instructions
-qualitymd init - > QUALITY.md
-qualitymd init --force
-```
-
-## `qualitymd lint`
-
-Validate a QUALITY.md file
-
-```bash
-qualitymd lint [path] [flags]
-```
-
-**Flags**
-
-| Flag | Description |
-| --- | --- |
-| `--fix` | apply deterministic in-place repairs |
-| `--json` | emit a machine-readable JSON lint result |
-
-**Examples**
-
-```bash
-qualitymd lint
-qualitymd lint docs/QUALITY.md
-qualitymd lint --fix
-qualitymd lint --json
-```
-
-## `qualitymd model`
-
-Query a quality model's structure and canonical reference IDs
-
-```bash
-qualitymd model
-```
-
-**Subcommands**
-
-| Command | Description |
-| --- | --- |
-| `qualitymd model tree` | Render the model as a containment hierarchy |
-| `qualitymd model list` | Enumerate model elements with their canonical IDs |
-| `qualitymd model get` | Show one element's detail and immediate relations |
-
-### `qualitymd model tree`
-
-Render the model as a containment hierarchy
-
-```bash
-qualitymd model tree [path] [flags]
-```
-
-**Flags**
-
-| Flag | Description |
-| --- | --- |
-| `--area` | root the tree at a canonical area reference (area:&lt;path>) |
-| `--depth` | limit nesting depth; 0 emits only the rooted node (default: `-1`) |
-| `--json` | emit the tree as nested JSON |
-
-**Examples**
-
-```bash
-qualitymd model tree
-qualitymd model tree --area area:agent-harness
-qualitymd model tree --depth 1 --json
-```
-
-### `qualitymd model list`
-
-Enumerate model elements with their canonical IDs
-
-```bash
-qualitymd model list [path] [flags]
-```
-
-**Flags**
-
-| Flag | Description |
-| --- | --- |
-| `--area` | restrict output to one area's subtree (area:&lt;path>) |
-| `--json` | emit the enumeration as a JSON array |
-| `--type` | restrict output to kinds: area, factor, requirement |
-
-**Examples**
-
-```bash
-qualitymd model list
-qualitymd model list --type factor
-qualitymd model list --area area:agent-harness --type requirement --json
-```
-
-### `qualitymd model get`
-
-Show one element's detail and immediate relations
-
-```bash
-qualitymd model get <id> [path] [flags]
-```
-
-**Flags**
-
-| Flag | Description |
-| --- | --- |
-| `--json` | emit the element detail as a JSON object |
-
-**Examples**
-
-```bash
-qualitymd model get area:root
-qualitymd model get factor:client-app::performance
-qualitymd model get requirement:agent-harness::has-tests --json
-```
-
-## `qualitymd spec`
-
-Emit the QUALITY.md format specification
-
-```bash
-qualitymd spec
-```
-
-**Examples**
-
-```bash
-qualitymd spec
-qualitymd spec | glow
-qualitymd spec > SPECIFICATION.md
-```
-
-## `qualitymd schema`
-
-Emit the companion JSON Schema for QUALITY.md frontmatter
-
-```bash
-qualitymd schema
-```
-
-**Examples**
-
-```bash
-qualitymd schema
-qualitymd schema > quality.schema.json
-```
+| `qualitymd update` | Update the qualitymd CLI through its owning install channel |
+| `qualitymd version` | Show structured qualitymd version metadata |
 
 ## `qualitymd evaluation`
 
 Work with QUALITY.md evaluation runs
 
 ```bash
-qualitymd evaluation
+qualitymd evaluation &lt;subcommand> [flags]
 ```
 
 **Subcommands**
@@ -223,42 +54,33 @@ qualitymd evaluation run [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--area` | canonical area reference for the evaluation scope |
-| `--dry-run`, `-n` | preview the resolved run without invoking an evaluator or writing evaluation data |
-| `--evaluation-dir` | override the model-relative evaluation directory |
-| `--evaluator` | evaluator to use: auto (default), a built-in name, or a configured profile |
-| `--evaluator-result` | submit one or more harness result envelopes (an object or a JSON array) for outstanding work requests, from a file or - for stdin (requires --resume) |
-| `--factor` | canonical factor reference for a scoped evaluation; repeatable |
-| `--json` | emit a machine-readable run receipt |
 | `--model` | QUALITY.md file to evaluate |
-| `--resume` | resume an existing run from its evaluation.json |
-
-**Examples**
-
-```bash
-qualitymd evaluation run
-qualitymd evaluation run --area area:docs --evaluator claude
-qualitymd evaluation run --dry-run --json
-qualitymd evaluation run --resume .quality/evaluations/0007-full-eval
-```
+| `--evaluation-dir` | Override the model-relative evaluation directory |
+| `--area` | Canonical area reference for the evaluation scope |
+| `--factor` | Canonical factor reference for a scoped evaluation; repeatable |
+| `--evaluator` | Evaluator to use: auto (default), a built-in name, or a configured profile |
+| `--resume` | Resume an existing run from its evaluation.json |
+| `--evaluator-result` | Submit harness result envelopes for outstanding work requests |
+| `--dry-run`, `-n` | Preview the resolved run without invoking an evaluator or writing evaluation data |
+| `--json` | Emit a machine-readable run receipt |
 
 ### `qualitymd evaluation create`
 
 Create a numbered evaluation run folder
 
 ```bash
-qualitymd evaluation create [model] [flags]
+qualitymd evaluation create [flags] [&lt;model>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--area` | canonical area reference for the evaluation scope |
-| `--evaluation-dir` | override the model-relative evaluation directory |
-| `--factor` | canonical factor reference for a scoped evaluation; repeatable |
-| `--json` | emit a machine-readable run creation receipt |
 | `--model` | QUALITY.md file to snapshot |
+| `--area` | Canonical area reference for the evaluation scope |
+| `--factor` | Canonical factor reference for a scoped evaluation; repeatable |
+| `--evaluation-dir` | Override the model-relative evaluation directory |
+| `--json` | Emit a machine-readable run creation receipt |
 
 ### `qualitymd evaluation list`
 
@@ -272,34 +94,34 @@ qualitymd evaluation list [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--evaluation-dir` | override the model-relative evaluation directory |
-| `--json` | emit a machine-readable run list |
 | `--model` | QUALITY.md file that anchors evaluation history |
-| `--state` | filter runs: all, reportable, incomplete, awaiting (default: `all`) |
+| `--evaluation-dir` | Override the model-relative evaluation directory |
+| `--state` | Filter runs: all, reportable, incomplete, awaiting |
+| `--json` | Emit a machine-readable run list |
 
 ### `qualitymd evaluation status`
 
 Show whether an evaluation run is reportable
 
 ```bash
-qualitymd evaluation status <run> [flags]
+qualitymd evaluation status [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--json` | emit a machine-readable status document |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
+| `--json` | Emit a machine-readable status document |
 
 ### `qualitymd evaluation data`
 
 Work with evaluation structured data
 
 ```bash
-qualitymd evaluation data
+qualitymd evaluation data &lt;subcommand> [flags]
 ```
 
 **Subcommands**
@@ -319,58 +141,58 @@ qualitymd evaluation data
 Validate and persist a batch of evaluation JSON payloads
 
 ```bash
-qualitymd evaluation data set <run> [flags]
+qualitymd evaluation data set [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--dry-run`, `-n` | validate and report intended write without persisting |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--json` | emit a machine-readable write receipt |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
+| `--dry-run`, `-n` | Validate and report intended write without persisting |
+| `--json` | Emit a machine-readable write receipt |
 
 #### `qualitymd evaluation data list`
 
 List stored evaluation JSON payloads
 
 ```bash
-qualitymd evaluation data list <run> [flags]
+qualitymd evaluation data list [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--json` | emit a machine-readable data list |
-| `--kind` | filter by evaluation data kind |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
+| `--kind` | Filter by evaluation data kind |
+| `--json` | Emit a machine-readable data list |
 
 #### `qualitymd evaluation data get`
 
 Print one stored evaluation JSON payload
 
 ```bash
-qualitymd evaluation data get <run> [flags]
+qualitymd evaluation data get [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--area` | area ref for area-scoped payloads |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--factor` | factor ref for factor-scoped payloads |
-| `--json` | not supported: data get already emits JSON |
-| `--kind` | evaluation data kind |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
-| `--requirement` | requirement ref for requirement-scoped payloads |
-| `--selector` | optional sub-result selector |
+| `--kind` | Evaluation data kind |
+| `--area` | Area ref |
+| `--factor` | Factor ref |
+| `--requirement` | Requirement ref |
+| `--selector` | Optional sub-result selector |
+| `--json` | Not supported: data get already emits JSON |
 
 #### `qualitymd evaluation data kinds`
 
@@ -384,97 +206,207 @@ qualitymd evaluation data kinds [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--json` | emit a machine-readable data kind list |
+| `--json` | Emit a machine-readable data kind list |
 
 #### `qualitymd evaluation data example`
 
 Print a complete evaluation example JSON payload
 
 ```bash
-qualitymd evaluation data example <kind> [flags]
+qualitymd evaluation data example [flags] &lt;kind>
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--json` | not supported: data example already emits JSON |
+| `--json` | Not supported: data example already emits JSON |
 
 #### `qualitymd evaluation data schema`
 
 Print the evaluation structured data JSON Schema
 
 ```bash
-qualitymd evaluation data schema [kind] [flags]
+qualitymd evaluation data schema [flags] [&lt;kind>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--json` | not supported: data schema already emits JSON |
+| `--json` | Not supported: data schema already emits JSON |
 
 #### `qualitymd evaluation data verify`
 
 Validate persisted evaluation JSON payloads
 
 ```bash
-qualitymd evaluation data verify <run> [flags]
+qualitymd evaluation data verify [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--json` | emit a machine-readable verification receipt |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
+| `--json` | Emit a machine-readable verification receipt |
 
 ### `qualitymd evaluation report`
 
 Build evaluation reports
 
 ```bash
-qualitymd evaluation report
+qualitymd evaluation report &lt;subcommand> [flags]
 ```
 
 **Subcommands**
 
 | Command | Description |
 | --- | --- |
-| `qualitymd evaluation report build` | Build deterministic evaluation reports |
+| `qualitymd evaluation report build` | Build the complete Markdown report tree for an evaluation run |
 
 #### `qualitymd evaluation report build`
 
-Build deterministic evaluation reports
+Build the complete Markdown report tree for an evaluation run
 
 ```bash
-qualitymd evaluation report build <run> [flags]
+qualitymd evaluation report build [flags] [&lt;run>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--evaluation-dir` | override the model-relative evaluation directory when using --latest |
-| `--json` | emit a machine-readable build receipt |
-| `--latest` | use the most recent evaluation run |
+| `--latest` | Use the most recent evaluation run |
+| `--evaluation-dir` | Override the model-relative evaluation directory when using --latest |
 | `--model` | QUALITY.md file that anchors model-relative run paths |
+| `--json` | Emit a machine-readable report build receipt |
 
-## `qualitymd version`
+## `qualitymd init`
 
-Show structured qualitymd version metadata
+Scaffold a starter QUALITY.md
 
 ```bash
-qualitymd version [flags]
+qualitymd init [flags] [&lt;path>]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--json` | emit machine-readable version metadata |
+| `--force` | Overwrite an existing file |
+| `--json` | Emit a machine-readable JSON init receipt |
+| `--minimal` | Write a minimal valid skeleton without the guided template prose |
+| `--no-agent-instructions` | Do not create or update agent instruction files |
+
+## `qualitymd lint`
+
+Validate a QUALITY.md file
+
+```bash
+qualitymd lint [flags] [&lt;path>]
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--json` | Emit a machine-readable JSON lint result |
+| `--fix` | Apply deterministic in-place repairs |
+
+## `qualitymd model`
+
+Query a quality model's structure and canonical reference IDs
+
+```bash
+qualitymd model &lt;subcommand> [flags]
+```
+
+**Subcommands**
+
+| Command | Description |
+| --- | --- |
+| `qualitymd model tree` | Render the model as a containment hierarchy |
+| `qualitymd model list` | Enumerate model elements with their canonical IDs |
+| `qualitymd model get` | Show one element's detail and immediate relations |
+
+### `qualitymd model tree`
+
+Render the model as a containment hierarchy
+
+```bash
+qualitymd model tree [flags] [&lt;path>]
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--json` | Emit the tree as nested JSON |
+| `--area` | Root the tree at a canonical area reference (area:&lt;path>) |
+| `--depth` | Limit nesting depth; 0 emits only the rooted node |
+
+### `qualitymd model list`
+
+Enumerate model elements with their canonical IDs
+
+```bash
+qualitymd model list [flags] [&lt;path>]
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--json` | Emit the enumeration as a JSON array |
+| `--area` | Restrict output to one area's subtree (area:&lt;path>) |
+| `--type` | Restrict output to kinds: area, factor, requirement |
+
+### `qualitymd model get`
+
+Show one element's detail and immediate relations
+
+```bash
+qualitymd model get [flags] &lt;id [path]...>
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--json` | Emit the element detail as a JSON object |
+
+## `qualitymd spec`
+
+Emit the QUALITY.md format specification
+
+```bash
+qualitymd spec [flags] &lt;argument...>
+```
+
+## `qualitymd schema`
+
+Emit the companion JSON Schema for QUALITY.md frontmatter
+
+```bash
+qualitymd schema [flags] &lt;argument...>
+```
+
+## `qualitymd status`
+
+Show a QUALITY.md workspace status snapshot
+
+```bash
+qualitymd status [flags] [&lt;path>]
+```
+
+**Flags**
+
+| Flag | Description |
+| --- | --- |
+| `--json` | Emit a machine-readable workspace status snapshot |
 
 ## `qualitymd update`
 
@@ -488,27 +420,19 @@ qualitymd update [flags]
 
 | Flag | Description |
 | --- | --- |
-| `--check` | check whether a newer CLI release is available without applying it |
-| `--json` | emit a machine-readable update result |
+| `--check` | Check for a newer release without applying it |
+| `--json` | Emit a machine-readable update result |
 
-## `qualitymd status`
+## `qualitymd version`
 
-Show a QUALITY.md workspace status snapshot
+Show structured qualitymd version metadata
 
 ```bash
-qualitymd status [path] [flags]
+qualitymd version [flags]
 ```
 
 **Flags**
 
 | Flag | Description |
 | --- | --- |
-| `--json` | emit a machine-readable workspace status snapshot |
-
-**Examples**
-
-```bash
-qualitymd status
-qualitymd status docs/QUALITY.md
-qualitymd status --json
-```
+| `--json` | Emit machine-readable version metadata |

@@ -24,6 +24,10 @@ npx skills add qualitymd/quality.md
 npm install -g quality.md
 ```
 
+The npm launcher installs a standalone platform executable. Managed installers,
+Homebrew, and direct release archives are also supported; the executable does
+not require Node.js, Bun, or Go at runtime.
+
 **Stay up to date**: Invoke `/quality update` to update both the skill and CLI to the latest compatible versions to take advantage of the latest improvements.
 
 ## Getting started

@@ -658,6 +658,11 @@ summaries, and next-workflow routing — while the runner creates the evaluation
 artifacts. The workflow writes only its evaluate feedback log directly, and
 does not apply recommendations or edit evaluated source.
 
+The runtime behind `qualitymd` is not part of the user workflow. The skill
+selects the active harness when appropriate, services bounded checkpoints,
+explains evaluator capability or installation failures with concrete remedies,
+and never silently switches evaluators after accepted results.
+
 ### Review
 
 [`review`](workflows/review.md) inspects an evaluation result, the `QUALITY.md`

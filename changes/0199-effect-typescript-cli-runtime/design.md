@@ -34,7 +34,9 @@ launches Claude Code. Those are replaceable evaluator workers, not a second
 
 ## Decision summary
 
-- Use strict TypeScript and pin an exact Effect v4 beta across the repository.
+- Use strict TypeScript and pin `effect@4.0.0-beta.98` and the matching Effect
+  platform packages, the version published from the current Effect `main`
+  branch at implementation start.
 - Use Effect for I/O boundaries, services, resources, structured concurrency,
   cancellation, retry, timeouts, and typed failures.
 - Keep model projection, reference resolution, graph construction, hashes,
@@ -50,12 +52,12 @@ launches Claude Code. Those are replaceable evaluator workers, not a second
 - Do not adopt Mastra in this cutover. Its new `OpenAISDKAgent` uses the OpenAI
   Agents SDK, not the Codex SDK, and the deterministic runner already supplies
   the orchestration layer this application needs.
-- Build standalone executables with Bun compile after a mandatory compatibility
-  spike. If the spike fails a hard gate, use Node's single-executable application
-  path without changing the application/service design.
-- Preserve existing release asset names and install owners. Add libc-specific
-  Linux assets only if native testing shows one Linux executable cannot retain
-  current glibc and musl coverage.
+- Build standalone executables with Bun 1.3.14. The mandatory compatibility
+  spike passed; Node's single-executable application path remains the proven
+  no-sidecar fallback without changing the application/service design.
+- Preserve existing release asset names and install owners, and add two
+  libc-specific musl Linux assets because native testing proved one Linux
+  executable cannot retain current glibc and musl coverage.
 - Develop against the Go implementation as a differential oracle, then remove
   Go, GoReleaser, and `go install` in one cutover release.
 
@@ -555,9 +557,51 @@ cannot be enforced.
 
 ## Packaging and distribution
 
+### Runtime spike result
+
+The 2026-07-14 spike used Effect `4.0.0-beta.98` from Effect `main` at
+`8ce4795c`, with alchemy-effect `main` at `573bb646` as an additional idiom
+reference. It pinned Bun `1.3.14`, `@openai/codex-sdk@0.144.4`, and
+`@anthropic-ai/claude-agent-sdk@0.3.209`. The throwaway spike remains under
+`tmp/0199-spike/` during implementation and is not a repository test fixture.
+
+The compiled Darwin arm64 executable exercised Effect CLI, Schema, filesystem,
+HTTP, child-process, scoped runtime, and signal facilities. It used external
+authenticated Codex and Claude executables through the SDK path overrides,
+received schema-constrained streamed results, and cancelled each provider with
+no matching child process left behind. The provider packages installed 297 MiB
+and 229 MiB native payloads respectively, while the compiled application was
+63 MiB, confirming those native payloads were not embedded.
+
+Bun 1.3.14 compiled all Darwin, Linux, and Windows arm64/x64 targets, including
+Windows arm64. Native Darwin execution and Dockerized arm64 Debian glibc and
+Alpine musl execution passed; Alpine requires its normal `libstdc++` and
+`libgcc` runtime packages. The glibc executable does not run on musl, and the
+musl executable does not run on glibc, so releases add the two musl assets and
+select by libc. The fallback Node SEA path also ran Effect and both external
+provider SDKs on Darwin, but it was larger and slower and is not selected.
+
+The full-provider Darwin arm64 spike measured 63 MiB raw and 23 MiB in a gzip
+archive. The completed eight-target build produced 23–37 MiB archives, with the
+larger Linux and Windows runtime bases establishing the cross-target bound. A
+no-op invocation averaged 79.0 ms and about 70 MiB maximum RSS, compared with
+11.4 ms, 16 MiB raw, and about 24 MiB maximum RSS for the current Go release.
+The accepted cutover gates are at most 100 MiB raw per executable, 40 MiB per
+compressed archive, 100 ms mean no-op cold start on the Darwin arm64 reference
+host, and 128 MiB maximum RSS for that invocation. These are material
+regressions but keep ordinary command startup sub-100-ms while buying the one
+SDK-capable runtime this case requires. Release builds enforce and record the
+raw and archive size budgets; the reference-host spike records startup and RSS.
+
+Two identical Bun inputs produced different executable checksums even after
+removing the Darwin ad-hoc signature. Release repair therefore treats the first
+published checksum as target identity and reuses that artifact; it never
+silently rebuilds an already published target. Reproducibility remains a
+measured builder limitation rather than a claimed property.
+
 ### Primary builder: Bun compile
 
-Use a pinned Bun release to compile `src/main.ts` into a standalone executable.
+Use pinned Bun 1.3.14 to compile `src/main.ts` into a standalone executable.
 Bun documents cross-compilation for Darwin, Linux, and Windows on arm64 and x64,
 including baseline x64 and Linux musl targets. Disable runtime loading of
 `.env`, `bunfig.toml`, `package.json`, and `tsconfig.json` so the released
@@ -576,13 +620,12 @@ Build this matrix:
 | Windows x64       | `bun-windows-x64-baseline` | `qualitymd_windows_amd64.zip`   |
 
 Also build and test `bun-linux-arm64-musl` and
-`bun-linux-x64-musl-baseline`. If the musl executable runs correctly across the
-supported Linux fixture matrix, it may become the binary inside the existing
-Linux asset names. Otherwise keep the existing names for glibc and add
+`bun-linux-x64-musl-baseline`. Keep the existing names for glibc and add
 `qualitymd_linux_arm64_musl.tar.gz` and
 `qualitymd_linux_amd64_musl.tar.gz`; managed installers and npm platform
-selection detect libc and choose them. The release cannot cut over until Alpine
-and representative glibc distributions pass.
+selection detect libc and choose them. Alpine jobs install the system
+`libstdc++` and `libgcc` packages required by Bun's musl executable. The release
+cannot cut over until Alpine and representative glibc distributions pass.
 
 The executable bundles application JavaScript and the Bun runtime, not provider
 agent binaries. Selecting `codex` or `claude` discovers the user's installed
@@ -614,7 +657,7 @@ ship a sidecar. The fallback is Node SEA.
 
 ### Fallback builder: Node SEA
 
-If Bun fails a hard spike gate, bundle the same ESM application to one JavaScript
+If a future pinned Bun fails a hard gate, bundle the same ESM application to one JavaScript
 file and create per-target Node single-executable applications in native CI
 jobs. Node SEA supports embedded ESM and assets and runs without a separately
 installed Node runtime, but is marked active development and has more
@@ -857,19 +900,14 @@ isolation and allow runner-owned parallelism.
   upgrade/repair rehearsal reduces channel risk. There is no runtime fallback
   after release by design.
 
-## Open questions
+## Resolved spike decisions
 
-Only implementation measurements remain; none changes the functional contract:
-
-- Can one musl Bun build serve both musl and glibc hosts reliably enough to stay
-  under the current six-asset matrix, or are two extra Linux assets required?
-- Does the pinned Codex SDK pass every Bun-compiled target with its external
-  executable override, or does the project select Node SEA at the first spike?
-- What archive-size and cold-start regression is acceptable relative to the Go
-  release? Record measured baselines before implementation status advances.
-
-These are resolved by the runtime spike before the case advances to
-`In-Progress`; they are not deferred until release.
+- Bun 1.3.14 is the selected builder; the compiled external-runtime Codex and
+  Claude paths passed, and Node SEA remains the no-sidecar fallback.
+- Releases add distinct arm64 and x64 musl assets; libc detection chooses them.
+- The accepted size, cold-start, and RSS gates are recorded in
+  [Runtime spike result](#runtime-spike-result) and enforced by distribution
+  checks.
 
 ## Informational references
 

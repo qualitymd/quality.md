@@ -109,7 +109,7 @@ factors:
             title: core project standards are backed by enforceable checks or reviewable gates
             assessment: >
               Inspect mise.toml, .github/workflows/, .githooks/, .prettierrc.json,
-              .golangci.yml, specs, and qualitymd lint behavior to confirm
+              .oxfmtrc.json, specs, and qualitymd lint behavior to confirm
               formatting, code quality, schema validity, packaging, and release
               expectations are enforced or explicitly routed through review.
       containment-of-action:
@@ -264,7 +264,7 @@ areas:
       The deterministic support tooling for validating models, reporting status,
       managing evaluation records, exposing the active spec, and maintaining the
       skill/CLI compatibility pair.
-    source: ./cmd/qualitymd
+    source: ./src
     factors:
       specification-conformance:
         title: Specification Conformance
@@ -275,7 +275,7 @@ areas:
           the-cli-follows-its-functional-specifications:
             title: the CLI follows its functional specifications
             assessment: >
-              Assess cmd/qualitymd/, internal/, and tests against specs/cli.md,
+              Assess src/, test/, and built executables against specs/cli.md,
               specs/cli/, specs/evaluation-records.md, and SPECIFICATION.md for
               command behavior, flags, exit codes, output contracts, workspace
               resolution, lint rules, and evaluation-record mechanics.
@@ -305,16 +305,16 @@ areas:
       maintainability:
         title: Maintainability
         description: >
-          The Go implementation can be changed safely by maintainers and agents
-          beyond what deterministic checks alone enforce.
+          The Effect/TypeScript implementation can be changed safely by
+          maintainers and agents beyond what deterministic checks alone enforce.
         requirements:
-          the-go-implementation-follows-the-project-go-style-guide:
-            title: the Go implementation follows the project Go style guide
+          the-runtime-keeps-domain-application-and-infrastructure-boundaries-explicit:
+            title: the runtime keeps domain, application, and infrastructure boundaries explicit
             assessment: >
-              Assess cmd/qualitymd/ and internal/ against docs/guides/go-style.md,
-              focusing on naming, package boundaries, error handling, interfaces,
-              state, tests, and comments while leaving formatting and mechanical
-              gates to mise run check.
+              Assess src/domain/, src/application/, src/services/, src/adapters/,
+              and src/cli/ for explicit Effect services, typed failures, isolated
+              unstable CLI imports, deterministic state transitions, and tests,
+              leaving formatting and mechanical gates to mise run check.
 
   docs:
     title: Documentation and Examples
@@ -378,7 +378,7 @@ areas:
           tooling-specs-identify-the-behavior-they-govern-and-stay-linked-to-runtime-artifacts:
             title: tooling specs identify the behavior they govern and stay linked to runtime artifacts
             assessment: >
-              Inspect specs/, internal/ tests, skills/quality/, and report
+              Inspect specs/, src/, test/, skills/quality/, and report
               examples to confirm specs name the command, workflow, record, or
               guide behavior they govern and runtime artifacts cite the right
               specs or guides.
@@ -411,7 +411,7 @@ areas:
             title: supported install and update paths are documented, tested, and package the expected binary
             assessment: >
               Inspect install/, npm/quality.md/, scripts/build-npm.mjs,
-              scripts/check-npm-package.mjs, .goreleaser.yaml, .github/workflows/,
+              scripts/check-npm-package.mjs, scripts/build-release.ts, .github/workflows/,
               install.md, and README.md for cross-platform install behavior,
               managed-install markers, package contents, and update guidance.
       release-readiness:
@@ -612,7 +612,7 @@ iteration, but not when it misrepresents the domain-agnostic model or hides the
 agent-first use context.
 
 Out of scope by design: dependencies and services the project does not own,
-including the Go toolchain, package registries, Agent Skills installers,
+including the Bun toolchain, package registries, Agent Skills installers,
 Homebrew infrastructure, GitHub platform behavior, and third-party libraries.
 
 _Unknowns_ — release-readiness thresholds beyond the visible repo checks are not
@@ -687,7 +687,7 @@ _Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-
 
 The model is composite by design. `format-spec` covers the normative format
 contract. `quality-skill` covers the runtime agent skill and its judgment-bearing
-workflow guidance. `cli` covers deterministic command behavior and Go
+workflow guidance. `cli` covers deterministic command behavior and Effect/TypeScript
 implementation quality. `docs` covers README, install, guides, examples, and
 domain-range communication. `specs-bundle` covers durable functional specs for
 tools, records, reports, and skills. `distribution` covers install, packaging,

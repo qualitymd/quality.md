@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds the npm distribution for QUALITY.md.
 //
-// For each supported platform it cross-compiles the Go binary into a
+// For each supported platform it cross-compiles the Bun standalone executable into a
 // per-platform package (@qualitymd/cli-<os>-<arch>) gated by npm `os`/`cpu`
 // fields, then stamps the shared version across every package.json.
 //
@@ -17,21 +17,22 @@
 //   npm/platforms/<os>-<arch>/      generated per-platform packages (gitignored)
 
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync, rmSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const MODULE = "github.com/qualitymd/quality.md";
-
-// node platform/arch -> Go GOOS/GOARCH
+const MAX_EXECUTABLE_BYTES = 100 * 1024 * 1024;
+// Node platform/arch/libc -> Bun standalone target.
 const TARGETS = [
-  { os: "darwin", arch: "arm64", goos: "darwin", goarch: "arm64" },
-  { os: "darwin", arch: "x64", goos: "darwin", goarch: "amd64" },
-  { os: "linux", arch: "arm64", goos: "linux", goarch: "arm64" },
-  { os: "linux", arch: "x64", goos: "linux", goarch: "amd64" },
-  { os: "win32", arch: "arm64", goos: "windows", goarch: "arm64" },
-  { os: "win32", arch: "x64", goos: "windows", goarch: "amd64" },
+  { os: "darwin", arch: "arm64", bunTarget: "bun-darwin-arm64" },
+  { os: "darwin", arch: "x64", bunTarget: "bun-darwin-x64-baseline" },
+  { os: "linux", arch: "arm64", bunTarget: "bun-linux-arm64", libc: "glibc" },
+  { os: "linux", arch: "x64", bunTarget: "bun-linux-x64-baseline", libc: "glibc" },
+  { os: "linux", arch: "arm64", bunTarget: "bun-linux-arm64-musl", libc: "musl", suffix: "-musl" },
+  { os: "linux", arch: "x64", bunTarget: "bun-linux-x64-musl-baseline", libc: "musl", suffix: "-musl" },
+  { os: "win32", arch: "arm64", bunTarget: "bun-windows-arm64" },
+  { os: "win32", arch: "x64", bunTarget: "bun-windows-x64-baseline" },
 ];
 
 const args = process.argv.slice(2);
@@ -54,7 +55,7 @@ function platformName(t) {
     win32: "Windows",
   }[t.os];
 
-  return `${osName} ${t.arch}`;
+  return `${osName} ${t.arch}${t.libc ? ` ${t.libc}` : ""}`;
 }
 
 function platformPackageDescription(t) {
@@ -114,7 +115,7 @@ run(process.execPath, [join(root, "scripts", "sync-npm-readme.mjs")], {
 });
 
 for (const t of TARGETS) {
-  const key = `${t.os}-${t.arch}`;
+  const key = `${t.os}-${t.arch}${t.suffix ?? ""}`;
   const pkgName = `@qualitymd/cli-${key}`;
   const pkgDir = join(root, "npm", "platforms", key);
   const binDir = join(pkgDir, "bin");
@@ -123,26 +124,30 @@ for (const t of TARGETS) {
   rmSync(pkgDir, { recursive: true, force: true });
   mkdirSync(binDir, { recursive: true });
 
-  const ldflags = [
-    "-s",
-    "-w",
-    `-X ${MODULE}/internal/cli.version=${version}`,
-  ].join(" ");
-
-  console.log(`  ${pkgName}  (${t.goos}/${t.goarch})`);
+  console.log(`  ${pkgName}  (${t.bunTarget})`);
   run(
-    "go",
+    "bun",
     [
       "build",
-      "-trimpath",
-      "-ldflags",
-      ldflags,
-      "-o",
-      join(binDir, `qualitymd${ext}`),
-      "./cmd/qualitymd",
+      "--compile",
+      `--target=${t.bunTarget}`,
+      "--minify",
+      "--define",
+      `__QUALITYMD_VERSION__=${JSON.stringify(version)}`,
+      "--define",
+      `__QUALITYMD_COMMIT__=${JSON.stringify(process.env.GITHUB_SHA ?? "none")}`,
+      `--outfile=${join(binDir, `qualitymd${ext}`)}`,
+      "src/main.ts",
     ],
-    { env: { GOOS: t.goos, GOARCH: t.goarch, CGO_ENABLED: "0" } },
+    { cwd: root },
   );
+  const executable = join(binDir, `qualitymd${ext}`);
+  const executableBytes = statSync(executable).size;
+  if (executableBytes > MAX_EXECUTABLE_BYTES) {
+    throw new Error(
+      `${pkgName} executable is ${executableBytes} bytes; budget is ${MAX_EXECUTABLE_BYTES}`,
+    );
+  }
 
   writeFileSync(
     join(pkgDir, "package.json"),
@@ -158,6 +163,7 @@ for (const t of TARGETS) {
         bugs: { url: "https://github.com/qualitymd/quality.md/issues" },
         os: [t.os],
         cpu: [t.arch],
+        ...(t.libc ? { libc: [t.libc] } : {}),
         files: ["bin"],
         publishConfig: { access: "public" },
       },
@@ -177,7 +183,7 @@ const launcherPath = join(root, "npm", "quality.md", "package.json");
 const launcher = JSON.parse(readFileSync(launcherPath, "utf8"));
 launcher.version = version;
 for (const t of TARGETS) {
-  launcher.optionalDependencies[`@qualitymd/cli-${t.os}-${t.arch}`] = version;
+  launcher.optionalDependencies[`@qualitymd/cli-${t.os}-${t.arch}${t.suffix ?? ""}`] = version;
 }
 writeFileSync(launcherPath, JSON.stringify(launcher, null, 2) + "\n");
 console.log(`Stamped launcher and ${TARGETS.length} platform packages @ ${version}`);

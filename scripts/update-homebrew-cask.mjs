@@ -49,7 +49,7 @@ function updateTap(version, token, checksums) {
     const caskPath = join(checkout, "Casks", "qualitymd.rb");
     let cask = readFileSync(caskPath, "utf8");
     cask = cask.replace(/version "[^"]+"/, `version "${version}"`);
-    for (const target of targets.filter((target) => target.os !== "win32")) {
+    for (const target of targets.filter((target) => target.homebrew)) {
       const checksum = checksums.get(target.asset);
       const assetPattern = target.asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const pattern = new RegExp(

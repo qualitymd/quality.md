@@ -2,7 +2,7 @@
 /dist/
 /qualitymd
 
-# Go
+# Test and coverage output
 *.test
 *.out
 coverage.*

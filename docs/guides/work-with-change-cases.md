@@ -116,7 +116,7 @@ is always the one you forgot existed. Don't author the list from intuition;
 _derive_ it. Start from the concrete things the work changes — command and flag
 names, type and function names, file and artifact paths, and the names it
 _renames away from_ — and search the whole repo for each one across every bundle:
-the code (`cmd/`, `internal/`), the [`specs/`](../../specs/index.md) bundle and
+the code (`src/`, `test/`), the [`specs/`](../../specs/index.md) bundle and
 [`SPECIFICATION.md`](../../SPECIFICATION.md), the [`docs/`](../index.md) guides,
 the bundled [`skills/`](../../skills/), `README.md`, install/scaffold files, and
 `CHANGELOG.md`. Follow inbound cross-references too: a renamed or deleted spec

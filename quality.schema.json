@@ -1,5 +1,5 @@
 {
-  "$comment": "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). Structural-only: passing this schema does not imply full conformance. Semantic rules (factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, and rating-level uniqueness) are enforced by `qualitymd lint`, not here. Generated from internal/schema and guarded against drift by a consistency test; do not edit by hand — run `go generate ./...`.",
+  "$comment": "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). Structural-only: passing this schema does not imply full conformance. Semantic rules (factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, and rating-level uniqueness) are enforced by `qualitymd lint`, not here. Generated from src/domain/model/schema.ts and guarded against drift by a consistency test; do not edit by hand — run `mise run schema`.",
   "$defs": {
     "area": {
       "properties": {

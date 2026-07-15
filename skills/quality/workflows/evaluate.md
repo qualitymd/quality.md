@@ -73,7 +73,7 @@ Hard boundaries:
       run successive CLI commands and answer JSON work requests, which is the
       normal case: the run then uses your session's own judgment and
       authentication, with no nested agent process or provider API key; and
-   4. CLI `auto` discovery (a ready Codex CLI, then a ready Claude CLI, then
+   4. CLI `auto` discovery (a ready Codex agent runtime, then a ready Claude agent runtime, then
       configured API profiles with their key env var present) only when no
       harness transport is available.
 
@@ -86,7 +86,9 @@ Hard boundaries:
    source dispatch plan (each area's selector, detected kind, and resolver)
    without invoking an evaluator. Ask the user to choose only when selection fails or
    is ambiguous — for example a `missing_evaluator` failure — presenting the
-   CLI's remedies as the options.
+   CLI's remedies as the options. Explain capability, authentication,
+   executable, sandbox, turn-limit, or cost-limit failures concretely; never
+   claim an unsupported control is enforced.
 
 7. Emit a short progress beat (the first mutation is next), then invoke the
    runner with explicit flags:
@@ -115,21 +117,22 @@ Hard boundaries:
       the request's own content — and submit results as they become ready
       rather than waiting for the whole set:
       - **Judgment requests**: judge only the supplied request — its
-        instructions, context, and source are the entire evaluation boundary
+        instructions, immutable area context, and source are the entire evaluation boundary
         for that request — and produce one JSON object valid against
         `expectedSchema`.
       - **`resolveSource` requests** (emitted for an area whose source
         selector describes material the runner cannot walk, such as prose):
-        gather exactly the material the request's `sourceSelector` describes,
-        using your tools, and return it verbatim as the requested
-        `{"files": [{"path", "content"}]}` envelope — stable unique labels as
-        paths (repo-relative path, ticket ID, or URL), the material itself as
-        content. Do not assess, rate, filter by quality, or widen beyond the
+        gather exactly the workspace material the request's `sourceSelector`
+        describes, using bounded read-only tools, and return the requested
+        `{"files": [{"path"}]}` envelope of unique workspace-relative file
+        paths. The runner rereads, bounds, hashes, and persists those files; do
+        not return file content or the exploration transcript. Do not assess,
+        rate, filter by quality, or widen beyond the
         selector. If the described material does not exist — including when
         the selector reads like a filesystem path that names nothing — submit
         a classified `source_unavailable` failure naming the selector instead
         of improvising evidence. The runner validates, caps, hashes, and
-        captures the returned material as the area's evidence of record
+        captures the selected files as the area's evidence of record
         before any dependent judgment.
    2. Submit result envelopes on stdin — a single object, or a JSON array
       covering any subset of the outstanding requests, one envelope per
@@ -167,7 +170,8 @@ Hard boundaries:
    terms (for example `missing_evaluator`, `evaluator_unauthenticated`,
    `rate_limited`, `cancelled`) and offer
    `qualitymd evaluation run --resume <run>` when the run is resumable. Do not
-   pass `--resume` with a different `--evaluator` than the run recorded; a
+   pass `--resume` with a different `--evaluator` than the run recorded; provider
+   session IDs are diagnostic and are not required for resume. A
    different evaluator means a new run. Do not repair a failed run by hand.
    An `awaiting_evaluator` receipt is expected progress, not a failure.
 10. Summarize the receipt: run status, headline rating, and the `report.md`

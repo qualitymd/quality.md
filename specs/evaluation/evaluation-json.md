@@ -118,8 +118,9 @@ Walked (path/glob) records **MUST NOT** carry file `content` — their material
 is re-readable from the workspace, and resume re-packages it. Harness-resolved
 records **MUST** carry file `content`: the captured bundle is the evidence of
 record, and resume **MUST** rebuild dependent requests from it rather than
-re-gather. Captured prose file paths are labels for gathered material (a
-ticket ID, a URL, a repo-relative path), recorded and hashed verbatim.
+re-gather. Captured prose file paths are unique workspace-relative paths for
+the gathered files, recorded and hashed verbatim. Absolute paths, URLs,
+external identifiers, and paths that escape the workspace are invalid.
 
 > Rationale: one record serves kind pinning, resume for harness-resolved
 > areas, and audit provenance — a reviewer reads the same shape for walked and
@@ -159,6 +160,12 @@ run root, its `schemaVersion` is supported by the running `qualitymd` version,
 and its manifest `model` resolves to the selected model. If compatibility
 verification fails, then resume **MUST** fail with `run_state_invalid` and
 report that starting a new run is the remedy.
+
+Changing the implementation runtime does not by itself invalidate a current
+artifact. A conforming runtime **MUST** accept every current-schema completed or
+resumable run accepted by the immediately prior release. A real artifact-shape
+change requires one explicit schema-version break and refusal of incompatible
+resume, not a dual reader or migration shim.
 
 For a harness-backed run, resume compatibility additionally covers the
 pending requests and identity: a pending request whose rebuilt input hash no

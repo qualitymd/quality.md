@@ -1,5 +1,20 @@
 # Specs update log
 
+## 2026-07-14
+
+- **Revision**: Implemented the durable contract changes for
+  [0199 - Effect TypeScript CLI runtime](../changes/0199-effect-typescript-cli-runtime.md).
+  Added the CLI [runtime and distribution](cli/runtime-distribution.md) contract
+  for the standalone Effect/TypeScript executable, eight-target Darwin/Linux
+  glibc/Linux musl/Windows matrix, install ownership, provenance, readiness,
+  and repair behavior. Added the evaluation
+  [agent evaluator](evaluation/agent-evaluators.md) contract for SDK-backed
+  agent loops, bounded read-only source resolution, immutable area context,
+  fresh requirement sessions, capability policy, cancellation, secret
+  boundaries, and telemetry. Updated the CLI, runner, evaluator,
+  orchestration, evaluation artifact, source semantics, and `/quality` skill
+  specifications for the clean runtime cutover and valid-glob detection.
+
 ## 2026-07-11
 
 - **Revision**: Implemented durable spec changes for

@@ -82,7 +82,7 @@ Sequence an evaluation this way:
 6. Run the evaluation through `qualitymd evaluation run` with explicit flags
    and record the reported run path in the feedback log.
 7. For a harness-backed run, service each `awaiting_evaluator` receipt: judge
-   each outstanding bounded work request only from its own supplied content —
+   each outstanding bounded work request only from its immutable supplied area context —
    directly or via subagents — and submit result envelopes (one or several
    per call) with `--resume <run> --evaluator-result -`, repeating until a
    terminal receipt; each resume tops the window up with newly-ready

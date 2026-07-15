@@ -108,16 +108,20 @@ or Homebrew:
 brew install qualitymd/tap/qualitymd
 ```
 
-Or build the current CLI from source:
+Or build the current CLI from the repository with the pinned Bun toolchain:
 
 ```sh
-go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
+git clone https://github.com/qualitymd/quality.md.git
+cd quality.md
+mise install
+bun install --frozen-lockfile
+mise run build
 ```
 
 After installation, `qualitymd update --check` reports the detected install
 method, latest known version, release readiness, and the recommended update
 action. `qualitymd update` applies by default through supported owner channels
-such as managed standalone, npm, and Homebrew; unknown, source, and archive
+such as managed standalone, npm, and Homebrew; unknown and archive
 installs receive manual guidance. Set `QUALITYMD_NO_UPDATE_CHECK=1` to disable
 explicit update checks, the ambient cached update notice, and background cache
 refresh.
@@ -166,7 +170,7 @@ When the `/quality` skill runs an evaluation inside an agent (Claude Code,
 Codex, and similar), it selects the `harness` evaluator by default: judgment
 comes from the invoking agent itself through checkpoints, using that agent's
 own authentication — no provider API key needed. For direct CLI use, `auto`
-discovers a ready Codex CLI, then a ready Claude CLI (verifying
+discovers a ready Codex agent runtime, then a ready Claude agent runtime (verifying
 authentication and non-interactive structured output, not just installation),
 then configured API profiles whose key environment variable is present. API
 profiles reference secrets by environment-variable name only — for example

@@ -1,0 +1,721 @@
+{
+  "AreaAnalysisFrame": {
+    "derivedContext": {
+      "emptySignalPolicy": "ignore_empty",
+      "expectedEvaluationLimits": [
+        {
+          "description": "Only available factor and child area analyses are synthesized.",
+          "id": "area-rollup-limit",
+          "impact": "Roll-up confidence is limited."
+        }
+      ],
+      "stopConditions": [
+        {
+          "description": "Stop if in-scope factor analyses are unavailable.",
+          "id": "missing-factor-analysis",
+          "impact": "Area analysis becomes incomplete."
+        }
+      ],
+      "synthesisGuidanceRef": "protocol:area-synthesis-default-v0"
+    },
+    "inputs": {
+      "childAreaAnalysisRefs": [
+        {
+          "kind": "AreaAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "areaId": "area:operations"
+          }
+        }
+      ],
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:root::verification"
+          }
+        }
+      ]
+    },
+    "kind": "AreaAnalysisFrame",
+    "schemaVersion": 3,
+    "subject": {
+      "areaId": "area:root"
+    }
+  },
+  "AreaAnalysisResult": {
+    "areaId": "area:root",
+    "kind": "AreaAnalysisResult",
+    "localAnalysis": {
+      "confidence": "medium",
+      "confidenceReason": "Evidence is representative but partial.",
+      "evaluationLimits": [
+        {
+          "description": "Only local evidence was inspected.",
+          "id": "source-limit",
+          "impact": "Rating may change with more sources."
+        }
+      ],
+      "incompleteInputs": [
+        {
+          "description": "One descendant input was unavailable.",
+          "id": "missing-descendant",
+          "impact": "Roll-up confidence is lower."
+        }
+      ],
+      "inputRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        }
+      ],
+      "ratingDrivers": [
+        {
+          "description": "Representative driver.",
+          "effect": "supports target",
+          "inputRefs": [
+            {
+              "kind": "RequirementRatingResult",
+              "subject": {
+                "requirementId": "requirement:root::has-tests"
+              }
+            }
+          ],
+          "ratingLevelId": "rating:target"
+        }
+      ],
+      "ratingLevelId": "rating:target",
+      "rationale": "Local signal satisfies the target criterion.",
+      "status": "analyzed",
+      "statusReason": "Local inputs were synthesized."
+    },
+    "localAndDescendantAnalysis": {
+      "confidence": "medium",
+      "confidenceReason": "Roll-up uses available inputs only.",
+      "evaluationLimits": [
+        {
+          "description": "The roll-up used available inputs only.",
+          "id": "rollup-limit",
+          "impact": "Confidence is limited."
+        }
+      ],
+      "incompleteInputs": [
+        {
+          "description": "One child input was unavailable.",
+          "id": "missing-child",
+          "impact": "Roll-up is provisional."
+        }
+      ],
+      "inputRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        }
+      ],
+      "ratingDrivers": [
+        {
+          "description": "Representative roll-up driver.",
+          "effect": "supports target",
+          "inputRefs": [
+            {
+              "kind": "RequirementRatingResult",
+              "subject": {
+                "requirementId": "requirement:root::has-tests"
+              }
+            }
+          ],
+          "ratingLevelId": "rating:target"
+        }
+      ],
+      "ratingLevelId": "rating:target",
+      "rationale": "Available local and descendant signal satisfies the target criterion.",
+      "status": "analyzed",
+      "statusReason": "Local and descendant inputs were synthesized."
+    },
+    "schemaVersion": 3
+  },
+  "AreaEvaluationFrame": {
+    "derivedContext": {
+      "expectedEvaluationLimits": [
+        {
+          "description": "A child area source was not inspected.",
+          "id": "area-source-gap",
+          "impact": "Child roll-up confidence is lower."
+        }
+      ],
+      "scope": "root area"
+    },
+    "inputs": {
+      "childAreaIds": ["area:operations"],
+      "localRequirementIds": ["requirement:root::has-tests"],
+      "rootFactorIds": ["factor:root::verification"],
+      "sourceRefs": ["QUALITY.md", "tests/example_test.go"]
+    },
+    "kind": "AreaEvaluationFrame",
+    "schemaVersion": 3,
+    "subject": {
+      "areaId": "area:root"
+    }
+  },
+  "EvaluationFrame": {
+    "derivedContext": {
+      "evaluationPolicies": ["source-as-data", "secret-redaction"],
+      "expectedEvaluationLimits": [
+        {
+          "description": "One source was unavailable.",
+          "id": "source-gap",
+          "impact": "Confidence is lower."
+        }
+      ],
+      "rigor": "standard"
+    },
+    "inputs": {
+      "ratingLevelIds": ["rating:target", "rating:unacceptable"]
+    },
+    "kind": "EvaluationFrame",
+    "schemaVersion": 3,
+    "subject": {
+      "modelLocator": "QUALITY.md"
+    }
+  },
+  "EvaluationManifest": {
+    "createdAt": "2026-06-29T12:00:00Z",
+    "evaluationId": "20260629T120000Z-0123456789ab",
+    "kind": "EvaluationManifest",
+    "model": "QUALITY.md",
+    "plannedScope": {
+      "areaId": "area:root",
+      "factorFilter": ["factor:root::verification"]
+    },
+    "requestedScope": {
+      "areaId": "area:root",
+      "factorFilter": ["factor:root::verification"]
+    },
+    "run": {
+      "label": "0001-full-eval",
+      "number": 1
+    },
+    "schemaVersion": 3
+  },
+  "EvaluationOutputResult": {
+    "areaOutputs": [
+      {
+        "areaAnalysisResultRef": {
+          "kind": "AreaAnalysisResult",
+          "subject": {
+            "areaId": "area:root"
+          }
+        },
+        "areaEvaluationFrameRef": {
+          "kind": "AreaEvaluationFrame",
+          "subject": {
+            "areaId": "area:root"
+          }
+        },
+        "areaId": "area:root",
+        "factorAnalysisRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:root::verification"
+            }
+          }
+        ],
+        "reportRefs": [
+          {
+            "areaId": "area:root",
+            "kind": "area",
+            "path": "root-area.md"
+          },
+          {
+            "areaId": "area:root",
+            "factorId": "factor:root::verification",
+            "kind": "factor",
+            "path": "factors/verification/verification-factor.md"
+          },
+          {
+            "areaId": "area:root",
+            "kind": "requirement",
+            "path": "requirements/has-tests/has-tests-requirement.md",
+            "requirementId": "requirement:root::has-tests"
+          }
+        ],
+        "requirementAssessmentRefs": [
+          {
+            "kind": "RequirementAssessmentResult",
+            "subject": {
+              "requirementId": "requirement:root::has-tests"
+            }
+          }
+        ],
+        "requirementRatingRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:root::has-tests"
+            }
+          }
+        ]
+      }
+    ],
+    "kind": "EvaluationOutputResult",
+    "reportOutputs": [
+      {
+        "kind": "run",
+        "path": "report.md"
+      },
+      {
+        "kind": "findings",
+        "path": "findings.md"
+      },
+      {
+        "areaId": "area:root",
+        "kind": "area",
+        "path": "root-area.md"
+      },
+      {
+        "areaId": "area:root",
+        "factorId": "factor:root::verification",
+        "kind": "factor",
+        "path": "factors/verification/verification-factor.md"
+      },
+      {
+        "areaId": "area:root",
+        "kind": "requirement",
+        "path": "requirements/has-tests/has-tests-requirement.md",
+        "requirementId": "requirement:root::has-tests"
+      }
+    ],
+    "rootAreaAnalysisRef": {
+      "kind": "AreaAnalysisResult",
+      "selector": "localAndDescendantAnalysis",
+      "subject": {
+        "areaId": "area:root"
+      }
+    },
+    "runReportRef": {
+      "kind": "run",
+      "path": "report.md"
+    },
+    "schemaVersion": 3,
+    "scopedAreaAnalysisRef": {
+      "kind": "AreaAnalysisResult",
+      "selector": "localAndDescendantAnalysis",
+      "subject": {
+        "areaId": "area:root"
+      }
+    }
+  },
+  "FactorAnalysisFrame": {
+    "derivedContext": {
+      "emptySignalPolicy": "ignore_empty",
+      "expectedEvaluationLimits": [
+        {
+          "description": "Only direct requirement ratings and child factor analyses are synthesized.",
+          "id": "factor-source-limit",
+          "impact": "Other evidence is out of scope."
+        }
+      ],
+      "stopConditions": [
+        {
+          "description": "Stop if direct requirement ratings are unavailable.",
+          "id": "missing-ratings",
+          "impact": "Factor analysis becomes incomplete."
+        }
+      ],
+      "synthesisGuidanceRef": "protocol:factor-synthesis-default-v0"
+    },
+    "inputs": {
+      "childFactorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:root::verification/coverage"
+          }
+        }
+      ],
+      "directRequirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        }
+      ]
+    },
+    "kind": "FactorAnalysisFrame",
+    "schemaVersion": 3,
+    "subject": {
+      "areaId": "area:root",
+      "factorId": "factor:root::verification"
+    }
+  },
+  "FactorAnalysisResult": {
+    "factorId": "factor:root::verification",
+    "kind": "FactorAnalysisResult",
+    "localAnalysis": {
+      "status": "empty",
+      "statusReason": "This factor has no direct requirements, so there is no local signal to analyze."
+    },
+    "localAndDescendantAnalysis": {
+      "confidence": "medium",
+      "confidenceReason": "Roll-up uses available child inputs only.",
+      "evaluationLimits": [
+        {
+          "description": "Only available child factor analyses were synthesized.",
+          "id": "rollup-limit",
+          "impact": "Confidence is limited."
+        }
+      ],
+      "incompleteInputs": [
+        {
+          "description": "One child factor analysis was unavailable.",
+          "id": "missing-child",
+          "impact": "Roll-up is provisional."
+        }
+      ],
+      "inputRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:root::verification/coverage"
+          }
+        }
+      ],
+      "ratingDrivers": [
+        {
+          "description": "The child factor's roll-up is the binding input.",
+          "effect": "supports target",
+          "inputRefs": [
+            {
+              "kind": "FactorAnalysisResult",
+              "selector": "localAndDescendantAnalysis",
+              "subject": {
+                "factorId": "factor:root::verification/coverage"
+              }
+            }
+          ],
+          "ratingLevelId": "rating:target"
+        }
+      ],
+      "ratingLevelId": "rating:target",
+      "rationale": "The child factor roll-up satisfies the target criterion.",
+      "status": "analyzed",
+      "statusReason": "Child factor analyses were rolled up."
+    },
+    "schemaVersion": 3
+  },
+  "FindingRankingResult": {
+    "kind": "FindingRankingResult",
+    "orderedFindings": [
+      {
+        "findingRef": {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-001]",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        },
+        "rank": 1,
+        "rationale": "The gap most directly shapes the next quality-management move.",
+        "tier": "P1"
+      },
+      {
+        "findingRef": {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-001]",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        },
+        "rank": 2,
+        "rationale": "The strength is useful context but less urgent than the gap.",
+        "tier": "P3"
+      },
+      {
+        "findingRef": {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-002]",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        },
+        "rank": 3,
+        "rationale": "Minor and not advice-driving; ranked at the lowest tier only because the ranking accounts for every finding.",
+        "tier": "P4"
+      }
+    ],
+    "rationale": "The ranking accounts for every requirement finding; tier and order express relative priority, and the lowest-tier entries are not dropped.",
+    "schemaVersion": 3,
+    "subject": {
+      "scopeRef": "run"
+    }
+  },
+  "RecommendationRankingResult": {
+    "findingCoverage": [
+      {
+        "disposition": "addressed_by_recommendation",
+        "findingRef": {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[gap-001]",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        },
+        "recommendationRefs": ["qrec_nextbar1"]
+      },
+      {
+        "disposition": "not_advice_driving",
+        "findingRef": {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-001]",
+          "subject": {
+            "requirementId": "requirement:root::has-tests"
+          }
+        },
+        "rationale": "The strength is context only and does not change the next quality-management move."
+      }
+    ],
+    "kind": "RecommendationRankingResult",
+    "orderedRecommendations": [
+      {
+        "confidence": "medium",
+        "impact": "high",
+        "rank": 1,
+        "rationale": "This recommendation has the strongest expected quality-management impact.",
+        "recommendationRef": "qrec_nextbar1"
+      }
+    ],
+    "rationale": "Recommendation ranking closes Advice after finding coverage is accounted for.",
+    "schemaVersion": 3
+  },
+  "RecommendationResult": {
+    "background": "The current evidence suggests the evaluated entity may already meet the present bar.",
+    "confidence": "medium",
+    "description": "Review whether the next evaluation should use sharper criteria.",
+    "doneCriterion": "The review records either an updated bar or a rationale for keeping the current bar.",
+    "expectedValue": "The model stays useful as the evaluated entity improves.",
+    "id": "qrec_nextbar1",
+    "impact": "high",
+    "kind": "RecommendationResult",
+    "schemaVersion": 3,
+    "title": "Review the next quality bar",
+    "traceRefs": [
+      {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-001]",
+        "subject": {
+          "requirementId": "requirement:root::has-tests"
+        }
+      }
+    ]
+  },
+  "RequirementAssessmentResult": {
+    "confidence": "medium",
+    "confidenceReason": "Evidence is relevant but narrow.",
+    "evaluationLimits": [
+      {
+        "description": "Only test evidence was reviewed.",
+        "id": "test-only",
+        "impact": "Confidence remains medium."
+      }
+    ],
+    "evidenceSummary": "A focused test was found.",
+    "evidenceTargetCoverage": [
+      {
+        "description": "Test evidence was inspected.",
+        "id": "tests"
+      }
+    ],
+    "findings": [
+      {
+        "basis": {
+          "statement": "No separate basis beyond the cited evidence is claimed for this strength.",
+          "status": "not_applicable"
+        },
+        "condition": "A focused test covers the requirement's primary path.",
+        "confidence": "medium",
+        "criteria": [
+          {
+            "criterion": "Tests cover the requirement.",
+            "ratingLevelId": "rating:target",
+            "rationale": "The target criterion is the relevant bar for the observed test coverage.",
+            "requirementId": "requirement:root::has-tests"
+          }
+        ],
+        "effect": {
+          "ratingEffect": "supports target",
+          "statement": "The evidence supports the target rating for the primary path."
+        },
+        "evidence": [
+          {
+            "rationale": "The evidence directly addresses the target.",
+            "sourceRef": "tests/example_test.go",
+            "statement": "A focused test file exists for the requirement."
+          }
+        ],
+        "id": "strength-001",
+        "statement": "Focused test coverage is present.",
+        "type": "strength"
+      },
+      {
+        "basis": {
+          "evidence": [
+            {
+              "sourceRef": "tests/example_test.go",
+              "statement": "The example test evidence is narrow."
+            }
+          ],
+          "rationale": "No broader test inventory was inspected in this example.",
+          "statement": "The visible tests focus on the primary path.",
+          "status": "plausible"
+        },
+        "candidateActions": [
+          {
+            "description": "Add focused tests for the boundary and error paths.",
+            "id": "action-001",
+            "rationale": "Closing the untested edge cases would lift coverage of the requirement."
+          }
+        ],
+        "condition": "Edge-case paths around the requirement lack visible tests.",
+        "confidence": "medium",
+        "criteria": [
+          {
+            "criterion": "Tests cover the requirement, including meaningful boundary behavior.",
+            "ratingLevelId": "rating:target",
+            "rationale": "Boundary behavior is needed to satisfy the target criterion.",
+            "requirementId": "requirement:root::has-tests"
+          }
+        ],
+        "effect": {
+          "ratingEffect": "holds below target",
+          "rationale": "The observed gap prevents distinguishing target from acceptable.",
+          "statement": "The requirement cannot be rated above acceptable without boundary evidence."
+        },
+        "evidence": [
+          {
+            "sourceRef": "tests/example_test.go",
+            "statement": "Only narrow test evidence was reviewed."
+          }
+        ],
+        "id": "gap-001",
+        "severity": "medium",
+        "statement": "Edge-case behavior is not covered by tests.",
+        "type": "gap"
+      }
+    ],
+    "kind": "RequirementAssessmentResult",
+    "requirementId": "requirement:root::has-tests",
+    "schemaVersion": 3,
+    "status": "assessed",
+    "statusReason": "Evidence target was addressed.",
+    "unknowns": [
+      {
+        "description": "Broader edge-case coverage was not inspected.",
+        "id": "coverage-depth"
+      }
+    ]
+  },
+  "RequirementEvaluationFrame": {
+    "derivedContext": {
+      "appliedRatingCriteria": [
+        {
+          "adaptationRationale": "Applies the model criterion to this requirement.",
+          "criterion": "Tests cover the requirement.",
+          "ratingLevelId": "rating:target",
+          "source": "model_default"
+        }
+      ],
+      "evidenceTargets": [
+        {
+          "id": "tests",
+          "purpose": "Assessment basis",
+          "question": "Do tests exist?",
+          "required": true,
+          "sourceRefs": ["tests/example_test.go"]
+        }
+      ],
+      "expectedEvaluationLimits": [
+        {
+          "description": "Only test files are in scope for this example.",
+          "id": "narrow-test-review",
+          "impact": "Runtime behavior may remain uninspected."
+        }
+      ],
+      "stopConditions": [
+        {
+          "description": "Stop if required evidence cannot be inspected.",
+          "id": "missing-required-evidence",
+          "impact": "Requirement status becomes blocked or partial."
+        }
+      ]
+    },
+    "inputs": {
+      "ratingLevelIds": ["rating:target", "rating:unacceptable"],
+      "ratingOverrides": {
+        "target": "Focused tests cover the stated behavior."
+      },
+      "requirementAssessmentBasis": "Inspect tests."
+    },
+    "kind": "RequirementEvaluationFrame",
+    "schemaVersion": 3,
+    "subject": {
+      "factorIds": ["factor:root::verification"],
+      "requirementId": "requirement:root::has-tests"
+    }
+  },
+  "RequirementRatingResult": {
+    "confidence": "medium",
+    "confidenceReason": "Rating follows a narrow assessment.",
+    "criteriaResults": [
+      {
+        "matched": true,
+        "ratingLevelId": "rating:target",
+        "rationale": "Criterion is satisfied."
+      }
+    ],
+    "evaluationLimits": [
+      {
+        "description": "Review was narrow.",
+        "id": "narrow-review",
+        "impact": "Confidence remains medium."
+      }
+    ],
+    "kind": "RequirementRatingResult",
+    "missingEvidence": [
+      {
+        "description": "Edge-case evidence was not reviewed.",
+        "id": "edge-cases"
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Focused evidence satisfies the target criterion.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementAssessmentResult",
+            "subject": {
+              "requirementId": "requirement:root::has-tests"
+            }
+          }
+        ],
+        "ratingLevelId": "rating:target"
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Evidence satisfies the target criterion.",
+    "requirementId": "requirement:root::has-tests",
+    "schemaVersion": 3,
+    "status": "rated",
+    "statusReason": "Assessment maps to a rating level."
+  }
+}

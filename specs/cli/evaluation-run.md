@@ -87,10 +87,10 @@ omitted `--evaluator` **MUST** behave exactly as `--evaluator auto`.
 > Claude users without requiring a config file on first use. — 0192
 
 `auto` **MUST** use deterministic local discovery, in order: a ready `codex`
-CLI, then a ready `claude` CLI, then configured API profiles in alphabetical
-order whose API key environment variable is present.
+agent runtime, then a ready `claude` agent runtime, then configured API profiles
+in alphabetical order whose API key environment variable is present.
 
-`auto` **MUST** consider a CLI-backed candidate usable only after verifying
+`auto` **MUST** consider an SDK-backed candidate usable only after verifying
 that its executable, authentication state, and required non-interactive
 structured-output capabilities are available; where a CLI documents no
 non-interactive authentication probe, readiness assumes authentication and the
@@ -114,6 +114,10 @@ available remedies.
 
 Evaluator names, profiles, and the configuration surface are defined by the
 [evaluator contract](../evaluation/evaluator-contract.md).
+
+The built-in names remain `harness`, `codex`, `claude`, `openai`, and
+`anthropic`. `codex` and `claude` use their supported agent SDK and authenticated
+local runtime; `openai` and `anthropic` remain direct API evaluators.
 
 ### Harness checkpoints
 

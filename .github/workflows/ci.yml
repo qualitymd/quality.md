@@ -20,10 +20,57 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # Installs the tools pinned in mise.toml (go, golangci-lint, prettier, …)
+      # Installs the runtime and tools pinned in mise.toml.
       # so CI and `mise run check` stay in lockstep.
       - uses: jdx/mise-action@v4
 
-      # format, tidy, vet, lint, test, Markdown, and npm package checks.
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
+
+      # Format, type-check, lint, test, generated-doc, and package checks.
       - name: Run checks
         run: mise run check
+
+  native-host:
+    name: native host (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v4
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
+      - name: Build and exercise the host executable
+        shell: bash
+        run: |
+          mise run build
+          binary=./dist/qualitymd
+          if [[ "$RUNNER_OS" == Windows ]]; then binary=./dist/qualitymd.exe; fi
+          "$binary" --version
+          "$binary" spec > /dev/null
+          "$binary" schema > /dev/null
+          QUALITYMD_NO_UPDATE_CHECK=1 NO_COLOR=1 "$binary" lint QUALITY.md --json > /dev/null
+
+  release-targets:
+    name: release target matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v4
+      - name: Install pinned dependencies
+        run: bun install --frozen-lockfile
+      - name: Compile every declared release target
+        run: mise run snapshot
+      - name: Exercise the Linux musl executable on Alpine
+        run: |
+          docker run --rm \
+            -v "$PWD/dist/qualitymd_linux_amd64_musl.tar.gz:/qualitymd.tar.gz:ro" \
+            alpine:3.22 sh -eu -c '
+              apk add --no-cache libstdc++ libgcc >/dev/null
+              tar -xzf /qualitymd.tar.gz -C /tmp
+              /tmp/qualitymd --version
+              /tmp/qualitymd spec >/dev/null
+            '

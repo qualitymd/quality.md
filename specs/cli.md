@@ -72,16 +72,19 @@ evaluator for bounded judgment work units.
 
 These constraints bind every command regardless of its behavior.
 
-**Idiomatic to the tech stack.** Every functional requirement in this spec and
-its command sub-specs must be satisfiable through the idiomatic capabilities of
-the chosen CLI stack — Go, with [Cobra](https://github.com/spf13/cobra) for
-command and flag structure, [Charm Fang](https://github.com/charmbracelet/fang)
-for the invocation harness, and [Lip Gloss](https://github.com/charmbracelet/lipgloss)
-for terminal output. A requirement that can only be met by working against the
-grain of these libraries — hand-rolling flag parsing, replacing the framework's
-help and error rendering, or reimplementing what the harness already provides —
-is a signal to reshape the requirement, not the stack. Where a command
-deliberately diverges from a stack default, its sub-spec should say so and why.
+**Runtime-independent contract.** Command and flag names, defaults, argument
+validation, help-visible semantics, stdout/stderr placement, human and JSON
+payloads, TTY behavior, next actions, and exit categories are public behavior,
+independent of the implementation runtime. A runtime cutover **MUST** preserve
+those behaviors unless an active specification explicitly changes one.
+
+The production runtime and packaging boundary is specified by
+[`qualitymd` runtime and distribution](cli/runtime-distribution.md). Framework
+defaults do not override the common CLI contract.
+
+Unexpected runtime defects **MUST NOT** expose raw JavaScript stack traces in
+ordinary output. They **MUST** use the internal-error presentation and exit
+category; debug mode may retain the underlying diagnostic detail.
 
 ## Agent accessibility
 
@@ -112,8 +115,7 @@ Every in-scope command:
 - **MUST** signal its outcome through the exit-code categories below.
 - **MUST** emit plain human output with no color or terminal escape sequences
   when the destination stream is not a terminal, honoring `NO_COLOR` across
-  stdout and stderr human surfaces. The Fang / Lip Gloss stack's idiomatic
-  non-TTY behavior is the expected mechanism for this.
+  stdout and stderr human surfaces.
 
 ### Exit codes
 
@@ -161,7 +163,7 @@ exit category.
 
 Structured-input validation **MUST** aggregate every problem the command can
 detect in one pass. Each problem **MUST** name the offending field in caller
-vocabulary: the JSON key path from the payload, not an internal Go struct field
+vocabulary: the JSON key path from the payload, not an internal implementation field
 or type name. Where useful, the diagnostic should state the expected JSON type
 and allowed enum values.
 
@@ -243,14 +245,10 @@ over a canonical plain form:
   load-bearing: it is skipped when stdout is not a terminal or no pager is
   available, and the artifact is written directly instead.
 
-**Binary version.** `qualitymd --version` reports the version stamped into the
-binary at release. For a binary built without that stamp — `go install` or a
-local build — it **MUST** fall back to the module build information the Go
-toolchain embeds (the module version for an installed release, otherwise a
-development label carrying the VCS revision). If a local development invocation
-does not expose the revision through embedded build information but can resolve
-it from the local VCS checkout, it should use that revision rather than
-reporting a bare placeholder.
+**Binary version.** `qualitymd --version` reports the version and commit stamped
+into the standalone executable at release. A source or development build
+**MUST** report a development version and **SHOULD** carry the local VCS revision
+when the build supplies it rather than inventing release provenance.
 
 `qualitymd version --json` **MUST** expose the CLI version, commit when known,
 development-build state, and bundled `SPECIFICATION.md` version as structured

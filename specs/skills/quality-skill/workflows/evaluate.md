@@ -100,6 +100,11 @@ an evaluator when the CLI reports a missing or ambiguous evaluator, presenting
 the CLI's remedies as the options. It **MUST NOT** silently cross to a
 different provider after harness selection or failure.
 
+When selection fails because an agent runtime or requested capability is
+missing, `evaluate` **MUST** surface the runner's concrete installation,
+authentication, configuration, or selector remedy. It **MUST NOT** silently
+fall back after a run has accepted results.
+
 `evaluate` **MUST** then invoke the runner with explicit flags:
 
 ```text
@@ -109,7 +114,7 @@ qualitymd evaluation run [--model <model>] [--area <area-ref>]
 
 While the receipt status is `awaiting_evaluator`, `evaluate` **MUST** service
 each of the receipt's outstanding requests only from that request's
-runner-supplied bounded content — it **MAY** use the harness's ordinary
+runner-supplied immutable area context — it **MAY** use the harness's ordinary
 reasoning or delegate independent requests to native subagents, and **MAY**
 submit results as they become ready rather than waiting for the whole set —
 submit one typed result envelope per request (one or several per call) with
@@ -125,6 +130,12 @@ runner's authoritative result, judge anything beyond a checkpoint's supplied
 request, or write structured evaluation data. The evaluation protocol —
 coverage, verification, roll-up, advice, and report generation — is
 runner-owned.
+
+A `resolveSource` checkpoint is the exception to judgment's no-exploration
+rule: it may use bounded read-only workspace tools to identify the selector's
+files, then returns only the finite workspace-relative file set. Requirement
+judgment never receives that exploration transcript and never reads outside the
+captured area context.
 
 ## Failure and resume
 

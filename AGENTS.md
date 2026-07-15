@@ -23,7 +23,7 @@ CLI if necessary.
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | QUALITY.md format | [`SPECIFICATION.md`](SPECIFICATION.md) is the source of truth for the model schema, Markdown body guidance, and evaluation semantics.                                 |
 | `/quality` skill  | Runtime files live in [`skills/quality/`](skills/quality/); functional specs and guide outlines live in [`specs/skills/quality-skill/`](specs/skills/quality-skill/). |
-| `qualitymd` CLI   | Source starts at [`cmd/qualitymd/`](cmd/qualitymd/) and [`internal/`](internal/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).    |
+| `qualitymd` CLI   | Source starts at [`src/`](src/) and [`test/`](test/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).                                |
 
 ## Working rules
 
@@ -74,8 +74,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 | Designing or reshaping an agent-run workflow      | [Designing agent-mediated UX](docs/guides/agent-mediated-ux.md)                |
 | Adding or reviewing example quality-model content | [Modeling quality across domains](docs/guides/model-quality-across-domains.md) |
 | Designing or reshaping a CLI command              | [Designing CLI interfaces](docs/guides/cli-design.md)                          |
-| Adding a type or package to the Go code           | [Designing Go packages](docs/guides/design-go-packages.md)                     |
-| Writing Go code                                   | [Go style](docs/guides/go-style.md)                                            |
+| Writing Effect TypeScript or tests                | [Write Effect TypeScript](docs/guides/effect-typescript-style.md)              |
 
 ## Repository conventions
 
@@ -104,8 +103,8 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
   than capitalize: in the spec, bare "requirement" means the model object;
   write "conformance requirement" or "normative requirement" for the RFC 2119
   sense.
-- Go exported identifiers keep Go casing; this rule covers prose, including
-  prose strings in code (help text, descriptions, error messages).
+- Exported code identifiers keep their language-native casing; this rule covers
+  prose, including help text, descriptions, and error messages.
 
 ### Heading capitalization
 

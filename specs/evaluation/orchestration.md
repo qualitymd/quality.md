@@ -80,6 +80,10 @@ captured and persisted — before any of the area's `assessRateRequirement`
 units are dispatched. Analysis and advice units consume prior results, not
 source, and take no dependency on it.
 
+After source resolution, the runner **MUST** freeze one immutable area-context
+package and hash. Every requirement in that area depends on that package and
+receives it unchanged.
+
 `RequirementRatingResult`s **MUST** exist before a factor node that depends on
 those direct requirements can be analyzed. The combined
 `assessRateRequirement` unit satisfies this dependency: its accepted result
@@ -119,6 +123,10 @@ an alternate orchestration engine.
 
 Parallel execution **MUST** be observationally equivalent to deterministic
 sequential execution in model order.
+
+Each requirement judgment **MUST** use a fresh evaluator session. It **MUST
+NOT** receive a resolver transcript or sibling requirement transcript, so
+session scheduling and completion order cannot affect judgment context.
 
 Parallel execution **MUST NOT** change ratings, report content, output
 ordering, artifact paths, or persisted payload shapes.
@@ -225,6 +233,10 @@ or SIGTERM), the runner **MUST** cancel in-flight evaluator calls, leave
 `evaluation.json` valid and resumable, record the interruption in run state and
 the event log, and report the run as `cancelled` rather than failed.
 Interrupted work units keep their attempt counts and stay incomplete.
+
+SDK streams and provider child runtimes **MUST** receive cancellation and close
+their scoped resources. The runner **MUST NOT** accept an event or result that
+arrives after its request was cancelled, completed, or superseded.
 
 > Rationale: stopping a long evaluation is an expected user action, not an
 > internal error; accepted work must survive for `--resume`. — 0192

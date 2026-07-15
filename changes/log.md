@@ -2,6 +2,81 @@
 
 ## 2026-07-14
 
+- **In-Review**: Implemented
+  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) and set
+  it `In-Review`. Added mirrored Effect/Vitest coverage, deterministic host and
+  updater services, typed expected failures, scoped evaluator resources,
+  provider-schema adaptation, honest Claude concurrency, static architecture
+  enforcement, full TypeScript checking, native CI coverage, and active Effect
+  TypeScript guidance. The review ledger now accounts for every former Go suite
+  and records v0.30.0 differential, eight-target snapshot/npm, Darwin,
+  glibc/musl, npm install, interruption/resume, and full external Codex and
+  Claude evidence. Local acceptance is green; hosted release-commit and
+  published-channel evidence remain before `Done` and archival.
+
+- **In-Progress**: Advanced
+  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) from
+  `Design` to `In-Progress` after settling its acceptance-ledger, test,
+  architecture, toolchain, native-validation, and release design. Implementation
+  may now update code, tests, workflows, and active guidance.
+
+- **Design**: Advanced
+  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) from
+  `Draft` to `Design` after reviewing its R1–R8 requirements individually and
+  as a set. Added the design doc: one acceptance ledger and former-behavior
+  inventory; mirrored package-local tests with `@effect/vitest`; deterministic
+  Layers and an `UpdateRuntime` boundary for the clearest application I/O leak;
+  complete TypeScript checking and active Effect/agent guidance; native,
+  provider, install, updater, and repair evidence; and an ordered v0.31.0 landing
+  and publication sequence. No production code changed in this phase.
+
+- **Draft**: Opened
+  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) to close
+  the proof gap between 0199's completed TypeScript port and a release-ready
+  cutover. The functional spec requires former Go behavior disposition,
+  representative differential checks, idiomatic package-local Effect tests,
+  deterministic services and scoped resources, complete TypeScript toolchain
+  coverage, active agent guidance, native/provider/distribution evidence, and a
+  verified v0.31.0 release before 0199 and 0200 archive. No production code
+  changed in this phase.
+
+- **In-Review**: Implemented
+  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  and set it `In-Review`. Replaced all Go source, tests, generators, toolchain,
+  and GoReleaser configuration with one layered Effect v4 TypeScript runtime;
+  ported the complete command and evaluation surfaces; added SDK-backed Codex
+  and Claude evaluators, direct API and harness adapters, immutable area
+  context, fresh requirement sessions, capability/readiness records, typed
+  cancellation/retry, bounded source capture, and classified failures. Replaced
+  schema, CLI-doc, and report-gallery generators with TypeScript, retained
+  byte-stable report gallery output, and moved builds, installers, npm,
+  Homebrew metadata, updater, repair, and CI/release workflows to the eight Bun
+  targets spanning Darwin, Windows, Linux glibc, and Linux musl on arm64/x64.
+  Added durable runtime/distribution and agent-evaluator specs, synchronized the
+  project model, skill, docs, and release notes, and verified TypeScript checks,
+  real CLI subprocess tests, native smoke behavior, and cross-target builds.
+
+- **In-Progress**: Advanced
+  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  from `Design` to `In-Progress` after completing the mandatory runtime spike.
+  Pinned the implementation target to Effect `4.0.0-beta.98` from the current
+  Effect `main` branch and Bun `1.3.14`; verified the Effect CLI, Schema,
+  filesystem, HTTP, process, and signal surfaces in a compiled executable;
+  verified schema-constrained streaming and cancellation through external Codex
+  `0.144.4` and Claude Agent SDK `0.3.209` runtimes with no orphaned provider
+  process; and compiled the full Darwin, Linux, and Windows arm64/x64 matrix.
+  The spike selected Bun over the working Node SEA fallback, selected separate
+  glibc and musl Linux assets because neither executable crosses libc families,
+  and accepted measured caps of 100 MiB executable size, 40 MiB compressed
+  archive size, 100 ms no-op cold start, and 128 MiB maximum RSS. The Darwin
+  arm64 spike measured 63 MiB raw, 23 MiB compressed, 79.0 ms mean cold start,
+  and about 70 MiB maximum RSS versus the Go release's 16 MiB, 11.4 ms, and
+  about 24 MiB. Repeated Bun builds were not byte-identical, so release repair
+  must preserve the originally published checksum rather than rebuild an
+  existing target. Cloned Effect at `8ce4795c` and alchemy-effect at `573bb646`
+  under `tmp/0199-reference/` for implementation reference. No production code
+  changed before this phase advance.
+
 - **Done**: Landed
   [0198 - Batched harness checkpoints](archive/0198-batched-harness-checkpoints.md),
   set it `Done`, and moved the case parent and child folder into

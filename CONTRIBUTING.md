@@ -16,26 +16,28 @@ Thanks for your interest in improving QUALITY.md.
 
 ## Prerequisites
 
-The project uses [mise](https://mise.jdx.dev) to pin tools (Go, Node, prettier,
-goreleaser) and define tasks. With mise installed:
+The project uses [mise](https://mise.jdx.dev) to pin Bun, Node, and Prettier and
+define tasks. TypeScript, Effect, provider SDKs, the formatter, linter, and test
+runner are pinned in `package.json` and `bun.lock`. With mise installed:
 
 ```sh
 mise install        # install pinned tool versions
 ```
 
-If you prefer not to use mise, install Go 1.26+, Node 22+, and prettier
-yourself; the `mise run …` commands below map to plain `go`, `npm`, and
-`prettier` invocations.
+If you prefer not to use mise, install Bun 1.3.14, Node 22+, and Prettier 3.9.5
+yourself. Run `bun install --frozen-lockfile` before the tasks below.
 
 ## Development tasks
 
 ```sh
 mise run run -- init -   # run the current CLI scaffold command to stdout
 mise run build           # build ./dist/qualitymd
-mise run test            # go test ./...
-mise run vet             # go vet ./...
-mise run fmt             # gofmt -w . and prettier --write
+mise run typecheck       # strict TypeScript check
+mise run test            # Vitest suite
+mise run lint            # oxlint with warnings denied
+mise run fmt             # oxfmt and prettier writes
 mise run check           # run the same gate as CI and git hooks
+mise run schema          # regenerate quality.schema.json from TypeScript
 mise run fmt-md-check    # prettier --check
 mise run npm-pack-check  # verify npm package README packaging
 mise run report-gallery  # regenerate checked-in example evaluation reports
@@ -46,13 +48,32 @@ mise run docs-links-check  # check the Mintlify docs for broken links
 mise run docs-deps       # install the pinned Mintlify CLI under mintlify/
 mise run release-notes -- v0.3.0  # print curated release notes
 mise run release-check -- v0.3.0  # run pre-tag release checks
-mise run tidy            # go mod tidy
 mise run hooks           # install repo-managed git hooks
 ```
 
 Please run `mise run fmt` before committing formatting-sensitive changes, then
 `mise run check` before opening a pull request. For docs-only changes,
 `mise run fmt-md-check` is the quick formatting gate.
+
+### Test layout and targeted checks
+
+Tests live in the package-local sibling `test/` tree and mirror `src/` by
+boundary. Pure domain tests use ordinary Vitest. Effect workflows use
+`@effect/vitest`; executable, real-filesystem, and cross-boundary contracts live
+under `test/integration/`. See
+[Write Effect TypeScript](docs/guides/effect-typescript-style.md).
+
+Run one file while iterating:
+
+```sh
+mise run test -- test/domain/model/model.test.ts
+mise run test -- test/services/source.test.ts
+mise run test -- test/integration/cli.test.ts
+```
+
+Generated outputs are edited through their owning tasks: `schema`, `cli-docs`,
+`sync-spec-docs`, and `report-gallery`. Their `*-check` tasks verify drift.
+`mise run check` remains the one complete local/CI gate.
 
 ### Git hooks
 
@@ -78,25 +99,29 @@ When testing that behavior against the latest local source, build a temporary
 binary from the repo, then run that binary from the directory you want to test:
 
 ```sh
-go build -o /tmp/qualitymd-dev ./cmd/qualitymd
+mise run build
 
 mkdir -p /tmp/qualitymd-init-test
 cd /tmp/qualitymd-init-test
-/tmp/qualitymd-dev init
+<repo>/dist/qualitymd init
 ```
 
-Avoid `go run ./cmd/qualitymd init` from the repo root for this case: the command
-would run with the repo as its working directory, so `init` would target the repo
-root rather than your test directory.
+Running `mise run run -- init` from the repo root keeps the repo as its working
+directory, so use the standalone executable when testing another directory.
 
 ## Project layout
 
 ```
-cmd/qualitymd        entry point
-internal/cli         Cobra commands, run through Charm Fang
-internal/document    QUALITY.md frontmatter parsing, rendering, and file writes
-internal/scaffold    embedded starter `QUALITY.md` used by qualitymd init
-internal/model       typed QUALITY.md frontmatter model
+src/main.ts            standalone executable entry point
+src/cli                Effect CLI adapter and command tree
+src/application        command use cases and evaluation runner
+src/domain             pure model, evaluation, validation, and report logic
+src/services           filesystem, evaluator, workspace, and output boundaries
+src/adapters           provider SDK, process, and direct HTTP implementations
+test/domain            pure deterministic unit tests
+test/application       Effect workflow and selection tests
+test/services          deterministic service/Layer tests
+test/integration       filesystem, executable, architecture, and provider contracts
 scripts/build-npm.mjs   assembles the npm distribution
 scripts/extract-release-notes.mjs   extracts a tagged CHANGELOG.md section
 scripts/check-release.mjs   runs strict pre-tag release checks
@@ -106,11 +131,9 @@ scripts/check-release.mjs   runs strict pre-tag release checks
 
 Releases ship through three channels from a single git tag:
 
-- **GitHub release archives** and a **Homebrew cask** — built by goreleaser
-  (`.goreleaser.yaml`). A cask (not a formula) is deliberate: it is the
-  GoReleaser-recommended path for a self-published pre-built binary (the formula
-  `brews` path was deprecated in v2.10 and is removed in v3), and the cask's
-  quarantine post-install hook is the documented pattern for an unsigned binary.
+- **GitHub release archives** and a **Homebrew cask** — Bun compiles the
+  standalone platform matrix through `scripts/build-release.ts`; the release
+  workflow publishes checksum-verified archives and updates the tap cask.
 - **npm / npx** — `scripts/build-npm.mjs` cross-compiles a native binary per
   platform into a `@qualitymd/cli-<os>-<arch>` package gated by npm `os`/`cpu`
   fields, with the `quality.md` launcher selecting the right one at runtime
@@ -128,7 +151,7 @@ changelog guidance live in [Cut a release](docs/guides/cut-a-release.md).
 ### Local dry runs
 
 ```sh
-mise run snapshot                 # goreleaser build, no publish
+mise run snapshot                 # build every standalone target, no publish
 mise run npm-build                # assemble npm packages under npm/platforms, no publish
 mise run release-notes -- v0.3.0  # preview GitHub Release notes from CHANGELOG.md
 mise run release-check -- v0.3.0  # strict pre-tag release gate
