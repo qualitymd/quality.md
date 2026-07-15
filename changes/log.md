@@ -1,5 +1,29 @@
 # Changes update log
 
+## 2026-07-15
+
+- **In-Progress**: Advanced
+  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  from `Design` to `In-Progress` after settling prompt-part boundaries,
+  canonical rendering, usage mapping, Claude system-prefix shaping, isolation,
+  and verification. Implementation may now update the affected runtime, tests,
+  durable evaluation specs, and release notes.
+
+- **Design**: Advanced
+  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  from `Draft` to `Design` after R1–R6 passed individual requirement-quality
+  and set-level review. Added the design doc: explicit prompt parts with a stable
+  boundary, canonical JSON blocks, pure provider usage mapping, Claude's preset
+  dynamic-section split, unchanged fresh-session isolation, and repeated scoped
+  live evidence. No production code changed in this phase.
+
+- **Draft**: Opened
+  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  with a functional spec for layered deterministic prompt prefixes, canonical
+  structured blocks, separate cache-read/cache-write telemetry, Claude's
+  cache-stable preset system prefix, fresh-session independence, and bounded
+  repeated live verification. No production code changed.
+
 ## 2026-07-14
 
 - **Done**: Completed and archived
