@@ -5,8 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.34.0 - 2026-07-15
+
 ### CLI
 
+- Atomic evaluation, report, lint-repair, and cancellation writes no longer
+  leave orphaned temporary directories behind. Provider result files are now
+  scoped to each completed evaluator call and cleaned up immediately after the
+  checkpoint consumes them.
 - Evaluation advice now synthesizes one stakeholder-facing executive summary
   after finding and recommendation ranking. The run report `## Summary` renders
   its bottom-line headline, concise narrative, and concrete key points instead
@@ -16,11 +22,23 @@ QUALITY.md specification.
   Report build and status require that advice payload before treating a run as
   reportable.
 
+### /quality skill
+
+- Skill metadata advances to `0.34.0` and requires the matching
+  `qualitymd >=0.34.0 <0.35.0` CLI line for the schema-10 evaluation artifact
+  and executive-summary work unit.
+
 ### Compatibility / migration
 
 - In-flight schema-version-9 evaluation runs cannot resume under this release
   and must be started again. Completed version-9 artifacts remain historical
   data; there is no migration or dual reader.
+
+Compatibility:
+
+- CLI: `v0.34.0`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.34.0`, requires `qualitymd >=0.34.0 <0.35.0`
 
 ## v0.33.0 - 2026-07-15
 

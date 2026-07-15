@@ -2,6 +2,10 @@
 
 ## 2026-07-15
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.34.0`
+  and its compatible CLI line to `qualitymd >=0.34.0 <0.35.0` for the schema-10
+  executive-summary release.
+
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.33.0`
   and its compatible CLI line to `qualitymd >=0.33.0 <0.34.0` for the schema-9
   transport-concurrency release.
