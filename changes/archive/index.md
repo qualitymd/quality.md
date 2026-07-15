@@ -840,3 +840,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   resolves and enforces evaluator concurrency from transport capabilities,
   keeps direct scheduling completion-driven and durable, and bounds harness
   delegation without surrendering runner authority (`Done`).
+- [0205 — Evaluation executive summary](0205-evaluation-executive-summary.md) -
+  adds a stakeholder-facing advice summary after ranked findings and
+  recommendations, renders it deterministically into the run report, and
+  advances runner artifacts to schema version 10 (`Done`).

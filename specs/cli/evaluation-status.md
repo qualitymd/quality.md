@@ -66,6 +66,6 @@ schema-incompatible, or structurally incomplete payloads as typed gaps.
 For evaluation runs, missing or incomplete advice payloads **MUST** make the run
 non-reportable. Required advice payloads include `FindingRankingResult`, at
 least one `RecommendationResult`, and `RecommendationRankingResult` with finding
-coverage accounting.
+coverage accounting, plus one `EvaluationSummaryResult`.
 
 Status **MUST NOT** expose planned coverage gaps or compatibility transforms.

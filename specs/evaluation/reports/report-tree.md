@@ -290,7 +290,7 @@ The run-level `report.md` **MUST** render as the scoped area report described by
 - top 10 ranked recommendations;
 - link to the findings report;
 - link to the recommendations report;
-- summary from the scoped area result;
+- the persisted evaluation executive summary;
 - Model evaluation table for the scoped area;
 - requested evaluation scope in Key details; and
 - `Evaluation links:` navigation.
@@ -299,8 +299,19 @@ The run-level `report.md` **MUST NOT** render the visible top `Run:` context
 line used by detail reports. It **MUST NOT** render the top `Area:` context line
 used by detail reports.
 
-The run report `## Summary` section **MUST** render the scoped area summary.
-It **MUST NOT** render a `Recommended next action:` sentence.
+The run report `## Summary` section **MUST** render the persisted
+`EvaluationSummaryResult` headline, summary narrative, and key points. It
+**MUST NOT** render the scoped area roll-up rationale or a `Recommended next
+action:` sentence.
+
+Report generation **MUST** render this section deterministically from the
+persisted `EvaluationSummaryResult` without inference, workspace inspection, or
+new evidence gathering. Detail area, factor, and requirement report summaries
+**MUST** keep their existing scoped analysis or assessment sources.
+
+> Rationale: the root roll-up rationale remains an audit trace; the advice phase
+> owns stakeholder-facing synthesis, and report generation only renders it.
+> — 0205
 
 The run report `## Key details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that

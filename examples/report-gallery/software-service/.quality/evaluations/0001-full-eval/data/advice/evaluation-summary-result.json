@@ -1,0 +1,12 @@
+{
+  "headline": "LedgerLite is at Minimum because replay, rollback, and enforcement gaps constrain otherwise strong financial integrity.",
+  "keyPoints": [
+    "Ledger persistence integrity is Outstanding and provides a strong foundation for money-safe operation.",
+    "Public API replay behavior is the highest-priority correctness gap because interrupted writes lack a defined, tested outcome.",
+    "Operations and ledger persistence need a rehearsed rollback path before recoverability can meet the target.",
+    "Agent workflows need enforceable merge gates and durable handoffs so known quality gaps cannot silently pass or disappear."
+  ],
+  "kind": "EvaluationSummaryResult",
+  "schemaVersion": 3,
+  "summary": "LedgerLite is at the Minimum level overall. Its financial core is strong, with Outstanding ledger integrity and several areas meeting the target, but the service is held back by undefined replay behavior, unrehearsed rollback, and checks that cannot block a merge. Those gaps concentrate risk in the Public API, Operations, ledger persistence, and agent workflow. The next focus should be explicit replay contracts, practiced recovery, and enforceable quality gates."
+}

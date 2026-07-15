@@ -13,7 +13,14 @@ run: 0001-full-eval
 
 ## Summary
 
-LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas and agent loop below the target margin the model's body requires.
+**LedgerLite is at Minimum because replay, rollback, and enforcement gaps constrain otherwise strong financial integrity.**
+
+LedgerLite is at the Minimum level overall. Its financial core is strong, with Outstanding ledger integrity and several areas meeting the target, but the service is held back by undefined replay behavior, unrehearsed rollback, and checks that cannot block a merge. Those gaps concentrate risk in the Public API, Operations, ledger persistence, and agent workflow. The next focus should be explicit replay contracts, practiced recovery, and enforceable quality gates.
+
+- Ledger persistence integrity is Outstanding and provides a strong foundation for money-safe operation.
+- Public API replay behavior is the highest-priority correctness gap because interrupted writes lack a defined, tested outcome.
+- Operations and ledger persistence need a rehearsed rollback path before recoverability can meet the target.
+- Agent workflows need enforceable merge gates and durable handoffs so known quality gaps cannot silently pass or disappear.
 
 ## Key details
 
@@ -118,3 +125,4 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
+- [data/advice/evaluation-summary-result.json](data/advice/evaluation-summary-result.json)

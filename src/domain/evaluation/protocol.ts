@@ -1,5 +1,6 @@
 import evaluationSchema from "../../assets/evaluation-data.schema.json"
 import type { SourceKind } from "../evaluator/types.ts"
+import type { RatingLevel } from "../model/model.ts"
 import type { WorkUnit } from "./graph.ts"
 import type { EvaluationPlan, PlannedFactor } from "./plan.ts"
 
@@ -217,6 +218,14 @@ const instructions = {
     "Rank the recommendations and account for finding coverage, and return one RecommendationRankingResult JSON object.\n" +
     "- orderedRecommendations must contain exactly one entry per recommendation in the recommendations context, using each recommendation's id as recommendationRef, with 1-based unique ranks, impact, confidence, and rationale.\n" +
     "- findingCoverage must contain exactly one entry per finding in the findings context: copy findingRef verbatim, set disposition to addressed_by_recommendation (with recommendationRefs listing covering recommendation ids) or not_advice_driving (with a short rationale).",
+  summarizeEvaluation:
+    "Write a stakeholder-facing executive summary of the whole evaluation from the overall analysis, ranked findings, and ranked recommendations, and return one EvaluationSummaryResult JSON object.\n" +
+    "- headline: one sentence giving the bottom line — name the overall rating by its scale label and the single biggest reason it lands there.\n" +
+    "- summary: 3-5 sentences (~120 words max), professional and plain-spoken. Say where the entity stands overall, what is working well, what most limits it, and where to focus next. Lead with the bottom line, not the method.\n" +
+    "- keyPoints: 3-5 short, self-contained takeaways drawn from the highest-ranked findings and recommendations; each names a concrete area and what it means for a reader, not a metric or an id.\n" +
+    "- Write for a non-specialist stakeholder. Use the rating scale's level labels in plain language; do not use mechanism terms (worst-bound, roll-up, work unit) or unexplained internal jargon.\n" +
+    "- Synthesize only the given inputs. Do not introduce claims, counts, or risks absent from the findings, analyses, or recommendations, and do not overstate — reflect the evaluation's stated confidence.\n" +
+    "- Be specific: name the areas and risks that drive the rating rather than describing them generically. Do not inspect new evidence.",
 } as const
 
 interface ProtocolParts {
@@ -235,8 +244,9 @@ const protocolParts = (options: {
     Record<string, { readonly selector: string; readonly kind: SourceKind }>
   >
   readonly bodyGuidance: string
+  readonly ratingScale: ReadonlyArray<RatingLevel>
 }): ProtocolParts => {
-  const { unit, plan, payloads, areaSources, bodyGuidance } = options
+  const { unit, plan, payloads, areaSources, bodyGuidance, ratingScale } = options
   if (unit.kind === "assessRateRequirement") {
     const requirement = plan.requirements.find((entry) => entry.ref === unit.subject)!
     const source = areaSources[requirement.areaId]!
@@ -341,6 +351,20 @@ const protocolParts = (options: {
       },
     }
   }
+  if (unit.kind === "summarizeEvaluation") {
+    return {
+      instructions: instructions.summarizeEvaluation,
+      context: {
+        overallAnalysis: payloadFor(payloads, `analyzeArea:${plan.areas[0]!.ref}`),
+        evaluationFrame: payloadFor(payloads, "frameEvaluation"),
+        ratingScale,
+        findings: findingIndex(plan, payloads),
+        findingRanking: payloadFor(payloads, "rankFindings"),
+        recommendations: payloadsFor(payloads, "recommend"),
+        recommendationRanking: payloadFor(payloads, "rankRecommendations"),
+      },
+    }
+  }
   throw new Error(`no protocol request for ${unit.id}`)
 }
 
@@ -352,6 +376,7 @@ export const buildProtocolRequest = (options: {
     Record<string, { readonly selector: string; readonly kind: SourceKind }>
   >
   readonly bodyGuidance: string
+  readonly ratingScale: ReadonlyArray<RatingLevel>
   readonly evaluationId: string
 }): ProtocolRequestDraft => {
   const { unit, evaluationId } = options

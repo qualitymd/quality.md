@@ -1966,6 +1966,10 @@
     "kind": "run",
     "path": "report.md"
   },
+  "evaluationSummaryResultRef": {
+    "kind": "EvaluationSummaryResult",
+    "subject": {}
+  },
   "schemaVersion": 3,
   "scopedAreaAnalysisRef": {
     "kind": "AreaAnalysisResult",

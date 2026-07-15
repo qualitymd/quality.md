@@ -29,7 +29,7 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 9,
+  "schemaVersion": 10,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
@@ -39,14 +39,16 @@ The document envelope is:
 }
 ```
 
-`schemaVersion` **MUST** be `9` and is a payload-shape marker only; versions
+`schemaVersion` **MUST** be `10` and is a payload-shape marker only; versions
 1–3 belong to the historical multi-file data tree, version 4 belongs to the
 strategy-named runner artifact, version 5 predates the per-area `sources`
 record, and version 6 predates the multi-outstanding harness checkpoint
 window. Version 7 contains runner-resolved per-area source bundles; it is not
 read back or migrated. Version 8 predates structured direct/delegated dispatch
 capabilities and selected-evaluator-first creation; an in-flight version-8 run
-is not read back or migrated. Completed older artifacts remain historical
+is not read back or migrated. Version 9 predates the required
+`EvaluationSummaryResult` work unit and output reference; an in-flight version-9
+run is not read back or migrated. Completed older artifacts remain historical
 records. `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
@@ -163,7 +165,8 @@ payload kinds and field contracts are the shared vocabulary defined in
 
 `outputs` **MUST** be written at report build and include `reportMd` (the
 generated run-level report reference), the CLI-owned `EvaluationOutputResult`
-payload, and the scoped area rating carried into command receipts.
+payload with its `EvaluationSummaryResult` reference, and the scoped area rating
+carried into command receipts.
 
 ## Persistence
 
@@ -189,8 +192,8 @@ report that starting a new run is the remedy.
 Changing the implementation runtime does not by itself invalidate a current
 artifact. A real artifact-shape change requires one explicit schema-version
 break and refusal of incompatible resume, not a dual reader or migration shim.
-The schema-9 runtime **MUST** refuse an in-flight schema-8 run with the existing
-start-new-run remedy; it **MUST NOT** add a version-8 reader or migration path.
+The schema-10 runtime **MUST** refuse an in-flight schema-9 run with the existing
+start-new-run remedy; it **MUST NOT** add a version-9 reader or migration path.
 
 For a harness-backed run, resume compatibility additionally covers the
 pending requests and identity: a pending request whose rebuilt input hash no

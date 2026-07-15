@@ -114,6 +114,9 @@ const payloadFor = (request: EvaluationRequest): Record<string, unknown> => {
     ) as Record<string, unknown>
     return result
   }
+  if (request.kind === "summarizeEvaluation") {
+    return clone(evaluationExamples.EvaluationSummaryResult)
+  }
   throw new Error(`unexpected evaluator work ${request.kind}`)
 }
 
@@ -524,7 +527,7 @@ factors:
           { observations: ReadonlyArray<{ path: string; sha256: string }>; manifestHash: string }
         >
       }
-      assert.strictEqual(artifact.schemaVersion, 9)
+      assert.strictEqual(artifact.schemaVersion, 10)
       assert.strictEqual(artifact.manifest.concurrency, 1)
       assert.strictEqual(artifact.state.status, "completed")
       const evidence = Object.values(artifact.evidence)[0]!

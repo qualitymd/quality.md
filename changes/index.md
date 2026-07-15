@@ -43,10 +43,7 @@ edit.
 
 # Open change cases
 
-- [0205 - Evaluation executive summary](0205-evaluation-executive-summary.md)
-  (`status: Design`) - add an advice-phase executive-summary step so the run
-  report Summary reads as a stakeholder-facing narrative instead of the root
-  roll-up trace.
+No open change cases.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

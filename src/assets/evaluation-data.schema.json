@@ -97,6 +97,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -147,6 +148,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -303,6 +305,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -369,6 +372,7 @@
                             "FindingRankingResult",
                             "RecommendationResult",
                             "RecommendationRankingResult",
+                            "EvaluationSummaryResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -522,6 +526,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -588,6 +593,7 @@
                             "FindingRankingResult",
                             "RecommendationResult",
                             "RecommendationRankingResult",
+                            "EvaluationSummaryResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -946,6 +952,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -993,6 +1000,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1045,6 +1053,7 @@
                         "FindingRankingResult",
                         "RecommendationResult",
                         "RecommendationRankingResult",
+                        "EvaluationSummaryResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1135,6 +1144,7 @@
                         "FindingRankingResult",
                         "RecommendationResult",
                         "RecommendationRankingResult",
+                        "EvaluationSummaryResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1185,6 +1195,7 @@
                         "FindingRankingResult",
                         "RecommendationResult",
                         "RecommendationRankingResult",
+                        "EvaluationSummaryResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1229,6 +1240,21 @@
             "type": "object"
           },
           "type": "array"
+        },
+        "evaluationSummaryResultRef": {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "EvaluationSummaryResult",
+              "type": "string"
+            },
+            "subject": {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          },
+          "required": ["kind", "subject"],
+          "type": "object"
         },
         "kind": {
           "enum": ["EvaluationOutputResult"],
@@ -1292,6 +1318,7 @@
                 "FindingRankingResult",
                 "RecommendationResult",
                 "RecommendationRankingResult",
+                "EvaluationSummaryResult",
                 "EvaluationOutputResult"
               ],
               "type": "string"
@@ -1379,6 +1406,7 @@
                 "FindingRankingResult",
                 "RecommendationResult",
                 "RecommendationRankingResult",
+                "EvaluationSummaryResult",
                 "EvaluationOutputResult"
               ],
               "type": "string"
@@ -1412,6 +1440,7 @@
       "required": [
         "schemaVersion",
         "kind",
+        "evaluationSummaryResultRef",
         "runReportRef",
         "scopedAreaAnalysisRef",
         "areaOutputs",
@@ -1516,6 +1545,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1566,6 +1596,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1726,6 +1757,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1792,6 +1824,7 @@
                             "FindingRankingResult",
                             "RecommendationResult",
                             "RecommendationRankingResult",
+                            "EvaluationSummaryResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -1945,6 +1978,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -2011,6 +2045,7 @@
                             "FindingRankingResult",
                             "RecommendationResult",
                             "RecommendationRankingResult",
+                            "EvaluationSummaryResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -2117,6 +2152,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -2210,6 +2246,7 @@
                       "FindingRankingResult",
                       "RecommendationResult",
                       "RecommendationRankingResult",
+                      "EvaluationSummaryResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -2296,6 +2333,37 @@
       "required": ["schemaVersion", "kind", "orderedRecommendations", "findingCoverage"],
       "type": "object"
     },
+    "EvaluationSummaryResult": {
+      "additionalProperties": false,
+      "properties": {
+        "headline": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "keyPoints": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 3,
+          "type": "array"
+        },
+        "kind": {
+          "const": "EvaluationSummaryResult",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "summary": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": ["schemaVersion", "kind", "headline", "summary", "keyPoints"],
+      "type": "object"
+    },
     "RecommendationResult": {
       "additionalProperties": false,
       "properties": {
@@ -2351,6 +2419,7 @@
                   "FindingRankingResult",
                   "RecommendationResult",
                   "RecommendationRankingResult",
+                  "EvaluationSummaryResult",
                   "EvaluationOutputResult"
                 ],
                 "type": "string"
@@ -2981,6 +3050,7 @@
                         "FindingRankingResult",
                         "RecommendationResult",
                         "RecommendationRankingResult",
+                        "EvaluationSummaryResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -3094,6 +3164,9 @@
     },
     {
       "$ref": "#/$defs/RecommendationRankingResult"
+    },
+    {
+      "$ref": "#/$defs/EvaluationSummaryResult"
     },
     {
       "$ref": "#/$defs/EvaluationOutputResult"

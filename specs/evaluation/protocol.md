@@ -31,8 +31,9 @@ An evaluation run **MUST** perform these protocol moves:
 9. `recommend`
 10. `accountForFindingCoverage`
 11. `rankRecommendations`
-12. `assembleEvaluationOutputResult`
-13. `generateEvaluationReports`
+12. `summarizeEvaluation`
+13. `assembleEvaluationOutputResult`
+14. `generateEvaluationReports`
 
 The protocol **MUST NOT** require a specific execution engine. Sequential
 execution and parallel worker execution are both valid when they satisfy the same
@@ -172,3 +173,19 @@ the advice addresses binding constraints. Ranking recommendation refs **MUST**
 use `RecommendationResult.id`. It **MUST NOT** use effort, ROI,
 quick-win status, backlog priority, or numeric score fields as required
 evaluation data.
+
+`summarizeEvaluation` **MUST** produce one `EvaluationSummaryResult` from the
+scoped root area analysis, finding ranking, persisted recommendations, and
+recommendation ranking. It **MUST** use the model's rating-scale labels, name
+the concrete areas and risks that drive the overall standing, and use plain
+stakeholder-facing language rather than roll-up mechanism terms or unexplained
+internal jargon.
+
+`summarizeEvaluation` **MUST** be tools-off synthesis over only its supplied
+structured inputs. It **MUST NOT** inspect the workspace, gather new evidence,
+or introduce claims, counts, areas, or risks absent from those inputs, and it
+**MUST** reflect recorded confidence without overstating.
+
+> Rationale: the root area rationale is an aggregation audit trace, not a
+> whole-evaluation narrative. Summary inference belongs after ranked advice so
+> the deterministic report renderer does not have to invent prose. — 0205

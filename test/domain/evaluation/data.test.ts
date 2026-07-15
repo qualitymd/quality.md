@@ -26,4 +26,10 @@ describe("evaluation data", () => {
     example.priority = "high"
     expect(() => validateDataPayload(example)).toThrow(/priority|additional properties/)
   })
+
+  it("requires three to five executive-summary key points", () => {
+    const example = structuredClone(evaluationDataExample("EvaluationSummaryResult"))
+    example.keyPoints = ["Only one"]
+    expect(() => validateDataPayload(example)).toThrow(/keyPoints|fewer than 3/)
+  })
 })

@@ -2,6 +2,14 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated the shared evaluation, protocol, orchestration, routine,
+  artifact, payload, data-layout, and report contracts for
+  [0205 - Evaluation executive summary](../../changes/archive/0205-evaluation-executive-summary.md).
+  The advice phase now persists one stakeholder-facing
+  `EvaluationSummaryResult` after ranked findings and recommendations, report
+  generation renders it deterministically into the run report `## Summary`, and
+  `evaluation.json` advances to schema version 10 with no version-9 reader.
+
 - **Revision**: Updated the [Runner](runner.md),
   [Orchestration](orchestration.md), [Evaluator contract](evaluator-contract.md),
   [Agent evaluators](agent-evaluators.md), and

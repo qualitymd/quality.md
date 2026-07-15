@@ -178,9 +178,9 @@ export const resumeEvaluationRun = (
     if (!(yield* fs.exists(artifactPath)))
       return failureResult(`${displayRun} is not a resumable evaluation run`, ExitCode.usage)
     const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as Artifact
-    if (artifact.schemaVersion !== 9 || artifact.kind !== "EvaluationRun")
+    if (artifact.schemaVersion !== 10 || artifact.kind !== "EvaluationRun")
       return failureResult(
-        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 9; start a new run`,
+        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 10; start a new run`,
       )
     let workspaceRoot = ""
     if (paths.isAbsolute(artifact.manifest.model)) {
@@ -248,6 +248,7 @@ export const resumeEvaluationRun = (
           payloads: artifact.results.payloads,
           areaSources: artifact.manifest.areaSources,
           bodyGuidance,
+          ratingScale: model.ratingScale,
           evaluationId: artifact.manifest.evaluationId,
         })
         const protocol = completeProtocolRequest(draft, yield* hashJsonEffect(draft.hashInput))
@@ -442,6 +443,7 @@ export const resumeEvaluationRun = (
           payloads: artifact.results.payloads,
           areaSources: artifact.manifest.areaSources,
           bodyGuidance,
+          ratingScale: model.ratingScale,
           evaluationId: artifact.manifest.evaluationId,
         })
         const protocol = completeProtocolRequest(draft, yield* hashJsonEffect(draft.hashInput))

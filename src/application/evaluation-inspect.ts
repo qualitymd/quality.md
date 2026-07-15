@@ -143,15 +143,36 @@ const inspect = (run: ResolvedRun) =>
     const hasScopedAnalysis = payloads.some(
       (entry) => entry.payload?.kind === "AreaAnalysisResult" && entry.payload.areaId === areaId,
     )
-    const gaps = hasScopedAnalysis
-      ? []
-      : [
-          {
-            kind: "missing-evaluation-data",
-            ref: areaDataPath(areaId),
-            detail: "required scoped area analysis payload is missing",
-          },
-        ]
+    const payloadKinds = new Set(payloads.map((entry) => entry.payload?.kind ?? ""))
+    const gaps = [
+      ...(hasScopedAnalysis
+        ? []
+        : [
+            {
+              kind: "missing-evaluation-data",
+              ref: areaDataPath(areaId),
+              detail: "required scoped area analysis payload is missing",
+            },
+          ]),
+      ...(
+        [
+          ["FindingRankingResult", "data/advice/finding-ranking-result.json"],
+          ["RecommendationResult", "data/advice/recommendations/"],
+          ["RecommendationRankingResult", "data/advice/recommendation-ranking-result.json"],
+          ["EvaluationSummaryResult", "data/advice/evaluation-summary-result.json"],
+        ] as const
+      ).flatMap(([kind, ref]) =>
+        payloadKinds.has(kind)
+          ? []
+          : [
+              {
+                kind: "missing-evaluation-data",
+                ref,
+                detail: `required ${kind} payload is missing`,
+              },
+            ],
+      ),
+    ]
     const lifecycle = artifact.state.status
     const reportable = gaps.length === 0
     const awaiting =

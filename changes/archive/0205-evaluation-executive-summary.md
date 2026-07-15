@@ -2,16 +2,16 @@
 type: Change Case
 title: Evaluation executive summary
 description: Add an advice-phase executive-summary synthesis step so the run report's Summary reads as a stakeholder-facing narrative instead of the root roll-up trace.
-status: Design
+status: Done
 tags: [evaluation, advice, reports, summary, agents]
 timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Evaluation executive summary
 
-Status note: case is in **Design**. The functional spec and design doc are
-authored; no production code or durable current-behavior spec has changed yet.
-Code work begins only after the case advances to **In-Progress**.
+Status note: case is **Done** and archived. Implementation, durable contracts,
+generated artifacts, release notes, R1–R8 review evidence, and the full local
+gate are complete.
 
 ## Motivation
 
@@ -93,7 +93,10 @@ specs.
   `specs/evaluation/protocol.md`, `specs/evaluation/records/payload-kinds.md`,
   `specs/evaluation/records/data-layout.md`,
   `specs/evaluation/reports/report-tree.md`, and
-  `specs/evaluation/evaluation-json.md` — detailed per requirement in the
+  `specs/evaluation/evaluation-json.md`, plus the shared advice invariant in
+  `specs/evaluation/evaluation.md`, the prompt contract in
+  `specs/evaluation/routines/routine-contracts.md`, and reportability in
+  `specs/cli/evaluation-status.md` — detailed per requirement in the
   spec's [Durable spec changes](0205-evaluation-executive-summary/spec.md#durable-spec-changes).
   `specs/evaluation/log.md` and the relevant sub-index `log.md` files record the
   revision.
@@ -108,9 +111,10 @@ specs.
 - **Application code:** `src/application/evaluation-report.ts` advances the
   artifact schema version and includes the summary reference in
   `EvaluationOutputResult`; `src/application/evaluation-data.ts` validates the new
-  kind if it carries kind-specific acceptance rules. `evaluation-execute.ts` and
-  `evaluation-resume.ts` require no change beyond the graph gaining the unit, and
-  that assumption is verified in test.
+  kind if it carries kind-specific acceptance rules;
+  `src/application/evaluation-inspect.ts` treats the summary as required advice;
+  `evaluation-execute.ts` and `evaluation-resume.ts` thread rating-scale labels
+  into protocol requests while the graph drives scheduling.
 - **Tests:** work-graph and protocol unit tests for the new unit; a report
   snapshot covering the executive-summary `## Summary`; and an integration
   execution test confirming the unit runs after ranking and before report build.
@@ -137,7 +141,6 @@ specs.
 
 ## Status
 
-`Design`. Spec and design authored; code not started. Durable specs are listed in
-Affected artifacts and specified in the functional spec's Durable spec changes,
-but not yet edited — they will be brought into sync during implementation, before
-**In-Review**.
+`Done`. The [review ledger](0205-evaluation-executive-summary/review.md) records
+passing R1–R8 evidence and the full local gate. The case and its child bundle are
+archived together.

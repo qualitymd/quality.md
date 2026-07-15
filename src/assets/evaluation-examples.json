@@ -264,6 +264,10 @@
         ]
       }
     ],
+    "evaluationSummaryResultRef": {
+      "kind": "EvaluationSummaryResult",
+      "subject": {}
+    },
     "kind": "EvaluationOutputResult",
     "reportOutputs": [
       {
@@ -311,6 +315,17 @@
         "areaId": "area:root"
       }
     }
+  },
+  "EvaluationSummaryResult": {
+    "headline": "The service is at Minimum because replay and recovery gaps still constrain otherwise strong ledger integrity.",
+    "keyPoints": [
+      "Ledger integrity is an established strength and gives the service a sound foundation.",
+      "Public API replay behavior remains the highest-priority correctness risk.",
+      "Recovery rehearsal and enforceable merge gates are the clearest next improvements."
+    ],
+    "kind": "EvaluationSummaryResult",
+    "schemaVersion": 3,
+    "summary": "The service is operating at the Minimum level overall. Ledger integrity is notably strong, but replay behavior is unspecified and rollback readiness is not sufficiently rehearsed. Advisory merge gates also leave important checks unable to prevent nonconforming changes. The next focus should be explicit replay contracts, recovery rehearsal, and enforceable quality gates."
   },
   "FactorAnalysisFrame": {
     "derivedContext": {

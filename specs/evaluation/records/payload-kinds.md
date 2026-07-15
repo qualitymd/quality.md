@@ -35,6 +35,7 @@ runner's result validation **MUST** accept these kinds:
 - `FindingRankingResult`
 - `RecommendationResult`
 - `RecommendationRankingResult`
+- `EvaluationSummaryResult`
 
 In runner runs, one combined requirement judgment call (the orchestration
 contract's
@@ -80,9 +81,13 @@ requested `areaId` and `factorFilter` fields only when scope was supplied.
 **MUST** include the local run `number` and folder `label`.
 
 `EvaluationOutputResult` **MUST** include `runReportRef`,
-`scopedAreaAnalysisRef`, `areaOutputs`, and `reportOutputs`.
+`evaluationSummaryResultRef`, `scopedAreaAnalysisRef`, `areaOutputs`, and
+`reportOutputs`.
 
 `runReportRef` **MUST** reference the run-level `report.md`.
+
+`evaluationSummaryResultRef` **MUST** reference the persisted
+`EvaluationSummaryResult` rendered by the run report.
 
 `scopedAreaAnalysisRef` **MUST** reference the area analysis result selector used
 as `report.md`'s scoped area result.
@@ -184,6 +189,21 @@ requirement finding in the effective run data exactly once. It **MUST NOT**
 claim coverage by a recommendation ID that has no corresponding
 `RecommendationResult`. Recommendation ranking and coverage references **MUST**
 use `RecommendationResult.id`.
+
+`EvaluationSummaryResult` **MUST** include:
+
+- a non-empty one-sentence `headline` stating the overall standing;
+- a non-empty `summary` narrative of roughly 120 words or fewer; and
+- `keyPoints`, an array of three to five non-empty, self-contained takeaways.
+
+The text **MUST** use the model's rating-scale level label in plain language and
+name the concrete areas and risks that drive the standing. The payload **MUST
+NOT** carry ratings, counts, finding IDs, or recommendation IDs as structural
+fields.
+
+> Rationale: a bounded headline, narrative, and takeaway shape lets the run
+> report lead with stakeholder-readable judgment without duplicating or drifting
+> from the ranked tables that own counts and identities. — 0205
 
 ## Finding core
 

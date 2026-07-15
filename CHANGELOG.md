@@ -5,6 +5,23 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation advice now synthesizes one stakeholder-facing executive summary
+  after finding and recommendation ranking. The run report `## Summary` renders
+  its bottom-line headline, concise narrative, and concrete key points instead
+  of exposing the scoped root's aggregation trace.
+- `evaluation.json` advances to schema version 10 and
+  `EvaluationOutputResult` references the persisted `EvaluationSummaryResult`.
+  Report build and status require that advice payload before treating a run as
+  reportable.
+
+### Compatibility / migration
+
+- In-flight schema-version-9 evaluation runs cannot resume under this release
+  and must be started again. Completed version-9 artifacts remain historical
+  data; there is no migration or dual reader.
+
 ## v0.33.0 - 2026-07-15
 
 ### CLI

@@ -710,6 +710,7 @@ const renderRun = (
   const scopedArea =
     plan.areas.find((area) => area.ref === manifest.plannedScope.areaId) ?? plan.areas[0]!
   const analysis = index.one("AreaAnalysisResult", "areaId", scopedArea.ref) ?? {}
+  const evaluationSummary = index.one("EvaluationSummaryResult") ?? {}
   const overall = scoped(analysis, "localAndDescendantAnalysis")
   const heading =
     manifest.requestedScope.areaId === undefined
@@ -722,7 +723,10 @@ const renderRun = (
     ["run", manifest.run.label],
   ])
   output += `# ${heading}\n\n${evaluationLinks("report.md", runRel)}`
-  output += `## Summary\n\n${summary(overall)}\n\n## Key details\n\n`
+  const keyPoints = Array.isArray(evaluationSummary.keyPoints)
+    ? evaluationSummary.keyPoints.map((point) => `- ${string(point)}`).join("\n")
+    : ""
+  output += `## Summary\n\n**${field(evaluationSummary, "headline")}**\n\n${field(evaluationSummary, "summary")}\n\n${keyPoints}\n\n## Key details\n\n`
   output +=
     row("Overall rating", "Confidence", "Scope", "Findings", "Recommendations") +
     row("---", "---", "---", "---", "---") +
@@ -764,6 +768,7 @@ const renderRun = (
       dataPathForPayload("AreaAnalysisResult", analysis),
       "data/advice/finding-ranking-result.json",
       "data/advice/recommendation-ranking-result.json",
+      "data/advice/evaluation-summary-result.json",
     ])
   )
 }
@@ -1247,7 +1252,12 @@ export const buildReportTree = (input: {
     throw new Error(
       `run is not reportable: missing-evaluation-data ${input.manifest.plannedScope.areaId}: required scoped area analysis payload is missing`,
     )
-  for (const kind of ["EvaluationFrame", "FindingRankingResult", "RecommendationRankingResult"])
+  for (const kind of [
+    "EvaluationFrame",
+    "FindingRankingResult",
+    "RecommendationRankingResult",
+    "EvaluationSummaryResult",
+  ])
     if (index.one(kind) === undefined)
       throw new Error(
         `run is not reportable: missing-evaluation-data ${kind}: required evaluation payload is missing`,
@@ -1420,6 +1430,7 @@ export const buildReportTree = (input: {
         }
       : {}),
     runReportRef: ref("run", "report.md"),
+    evaluationSummaryResultRef: routineRef("EvaluationSummaryResult", {}),
     schemaVersion: 3,
     scopedAreaAnalysisRef: routineRef(
       "AreaAnalysisResult",

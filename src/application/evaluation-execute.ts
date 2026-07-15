@@ -106,6 +106,7 @@ const execute = Effect.fn("qualitymd.executeEvaluationRun")(function* (
           payloads,
           areaSources,
           bodyGuidance,
+          ratingScale: model.ratingScale,
           evaluationId: identity.evaluationId,
         })
         const protocol = completeProtocolRequest(draft, yield* hashJsonEffect(draft.hashInput))

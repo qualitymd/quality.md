@@ -56,6 +56,7 @@ describe("evaluation protocol assembly", () => {
       ],
       areaSources: { "area:root": { selector: ".", kind: "path" } },
       bodyGuidance: "",
+      ratingScale: [{ level: "target", title: "Target", criterion: "Meets the target." }],
       evaluationId: "eval",
     })
 
@@ -76,6 +77,52 @@ describe("evaluation protocol assembly", () => {
       subject: unit.subject,
       inputHash: "input-hash",
       correlationId: `eval#${unit.id}`,
+    })
+  })
+
+  it("assembles an inputs-only stakeholder summary request", () => {
+    const summaryUnit: WorkUnit = {
+      id: "summarizeEvaluation",
+      kind: "summarizeEvaluation",
+      subject: "",
+      dependsOn: ["analyzeArea:area:root", "rankFindings", "rankRecommendations"],
+      evaluatorBacked: true,
+      dataKind: "EvaluationSummaryResult",
+    }
+    const draft = buildProtocolRequest({
+      unit: summaryUnit,
+      plan,
+      payloads: [
+        { workUnit: "frameEvaluation", payload: { kind: "EvaluationFrame" } },
+        { workUnit: "analyzeArea:area:root", payload: { kind: "AreaAnalysisResult" } },
+        { workUnit: "rankFindings", payload: { kind: "FindingRankingResult" } },
+        { workUnit: "recommend", payload: { kind: "RecommendationResult" } },
+        {
+          workUnit: "rankRecommendations",
+          payload: { kind: "RecommendationRankingResult" },
+        },
+      ],
+      areaSources: { "area:root": { selector: ".", kind: "path" } },
+      bodyGuidance: "",
+      ratingScale: [{ level: "target", title: "Target", criterion: "Meets the target." }],
+      evaluationId: "eval",
+    })
+
+    expect(draft).not.toHaveProperty("inspection")
+    expect(draft.instructions).toContain("stakeholder-facing executive summary")
+    expect(draft.context).toMatchObject({
+      overallAnalysis: { kind: "AreaAnalysisResult" },
+      evaluationFrame: { kind: "EvaluationFrame" },
+      ratingScale: [{ level: "target", title: "Target" }],
+      findingRanking: { kind: "FindingRankingResult" },
+      recommendations: [{ kind: "RecommendationResult" }],
+      recommendationRanking: { kind: "RecommendationRankingResult" },
+    })
+    expect(draft.expectedSchema).toMatchObject({
+      properties: {
+        kind: { const: "EvaluationSummaryResult" },
+        keyPoints: { minItems: 3, maxItems: 5 },
+      },
     })
   })
 })

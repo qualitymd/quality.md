@@ -323,8 +323,8 @@ factors:
       expect(receipt.evaluatorRequests[0]).not.toHaveProperty("source")
       const artifactPath = join(directory, receipt.path, "evaluation.json")
       const artifact = JSON.parse(await readFile(artifactPath, "utf8"))
-      expect(artifact).toMatchObject({ schemaVersion: 9, evidence: {} })
-      await writeFile(artifactPath, JSON.stringify({ ...artifact, schemaVersion: 8 }))
+      expect(artifact).toMatchObject({ schemaVersion: 10, evidence: {} })
+      await writeFile(artifactPath, JSON.stringify({ ...artifact, schemaVersion: 9 }))
       const incompatible = run(
         "evaluation",
         "run",
@@ -333,7 +333,7 @@ factors:
         "--json",
       )
       expect(incompatible.status).not.toBe(0)
-      expect(incompatible.stderr).toContain("schema 8 is incompatible with schema 9")
+      expect(incompatible.stderr).toContain("schema 9 is incompatible with schema 10")
     } finally {
       await rm(directory, { recursive: true })
     }

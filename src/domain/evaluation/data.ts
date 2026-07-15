@@ -34,6 +34,11 @@ export const dataKinds = [
     true,
     "Advice-phase ranking of recommendations and final finding coverage accounting.",
   ],
+  [
+    "EvaluationSummaryResult",
+    true,
+    "Advice-phase stakeholder-facing executive summary of the completed evaluation.",
+  ],
   ["EvaluationManifest", false, "CLI-owned evaluation manifest written at create time."],
   [
     "EvaluationOutputResult",
@@ -223,6 +228,8 @@ export const dataPathForPayload = (kind: DataKind, payload: Record<string, unkno
     }
     case "RecommendationRankingResult":
       return "data/advice/recommendation-ranking-result.json"
+    case "EvaluationSummaryResult":
+      return "data/advice/evaluation-summary-result.json"
     case "EvaluationOutputResult":
       return "data/evaluation-output-result.json"
   }
@@ -266,6 +273,8 @@ export const dataPathForQuery = (query: DataQuery) => {
       return `data/advice/recommendations/${query.selector}/recommendation-result.json`
     case "RecommendationRankingResult":
       return "data/advice/recommendation-ranking-result.json"
+    case "EvaluationSummaryResult":
+      return "data/advice/evaluation-summary-result.json"
     case "EvaluationOutputResult":
       return "data/evaluation-output-result.json"
   }

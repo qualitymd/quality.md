@@ -12,6 +12,7 @@ export type WorkKind =
   | "rankFindings"
   | "recommend"
   | "rankRecommendations"
+  | "summarizeEvaluation"
   | "buildReports"
 
 export interface WorkUnit {
@@ -146,6 +147,13 @@ export const buildGraph = (plan: EvaluationPlan): ReadonlyArray<WorkUnit> => {
     true,
     "RecommendationRankingResult",
   )
+  const summarizeEvaluation = makeUnit(
+    "summarizeEvaluation",
+    "",
+    [unitId("analyzeArea", plan.areas[0]!.ref), rankFindings.id, rankRecommendations.id],
+    true,
+    "EvaluationSummaryResult",
+  )
   const beforeReports = [
     evaluationFrame,
     ...areaEvaluationFrames,
@@ -155,6 +163,7 @@ export const buildGraph = (plan: EvaluationPlan): ReadonlyArray<WorkUnit> => {
     rankFindings,
     recommend,
     rankRecommendations,
+    summarizeEvaluation,
   ]
   const buildReports = makeUnit(
     "buildReports",

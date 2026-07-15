@@ -2,8 +2,26 @@
 
 ## 2026-07-15
 
+- **Done**: Completed and archived
+  [0205 - Evaluation executive summary](archive/0205-evaluation-executive-summary.md).
+  All R1-R8 requirements passed the review ledger: advice ordering and context,
+  payload shape and persistence, stakeholder-facing register, deterministic run
+  report rendering, status/reportability coverage, schema-version-10 refusal,
+  durable contracts, generated gallery output, and the complete repository gate.
+
+- **In-Review**: Completed implementation for
+  [0205 - Evaluation executive summary](archive/0205-evaluation-executive-summary.md).
+  Added `summarizeEvaluation`, `EvaluationSummaryResult`, deterministic run-report
+  rendering, schema-version-10 refusal, status/reportability coverage, durable
+  contracts, generated gallery output, release notes, and an R1–R8 review ledger.
+  The full `mise run check` gate passes 19 test files and 82 tests.
+
+- **In-Progress**: Advanced
+  [0205 - Evaluation executive summary](archive/0205-evaluation-executive-summary.md) to
+  implementation after settling the R1–R8 functional spec and design.
+
 - **Design**: Opened
-  [0205 - Evaluation executive summary](0205-evaluation-executive-summary.md) with
+  [0205 - Evaluation executive summary](archive/0205-evaluation-executive-summary.md) with
   a functional spec (R1–R8) and design doc, and set `status: Design`. Adds an
   advice-phase `summarizeEvaluation` unit and `EvaluationSummaryResult` payload
   that synthesize a stakeholder-facing executive summary from the ranked findings,

@@ -102,7 +102,7 @@ describe("evaluation run directory classification", () => {
         payloads: [{ workUnit: "frameEvaluation", payload: { kind: "EvaluationFrame" } }],
       }),
     ).toMatchObject({
-      schemaVersion: 9,
+      schemaVersion: 10,
       kind: "EvaluationRun",
       manifest: { ...identity, run: { number: 1, label: "0001-full-eval" } },
       state: { status: "awaiting_evaluator", pendingEvaluatorCalls: [pending] },

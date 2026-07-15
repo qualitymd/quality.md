@@ -1,5 +1,14 @@
 # Specs update log
 
+## 2026-07-15
+
+- **Revision**: Implemented the durable contract changes for
+  [0205 - Evaluation executive summary](../changes/archive/0205-evaluation-executive-summary.md).
+  Evaluation advice gains the `summarizeEvaluation` move and
+  `EvaluationSummaryResult` payload; run reports render its headline, narrative,
+  and key points deterministically; status requires it for reportability; and
+  schema-version-10 runner artifacts refuse in-flight version-9 runs.
+
 ## 2026-07-14
 
 - **Revision**: Implemented the durable contract changes for

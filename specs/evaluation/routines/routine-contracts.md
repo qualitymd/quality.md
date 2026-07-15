@@ -49,6 +49,7 @@ Evaluation **MUST** define prompt contracts for:
 - `recommend`
 - `accountForFindingCoverage`
 - `rankRecommendations`
+- `summarizeEvaluation`
 - `assembleEvaluationOutputResult`
 - `generateEvaluationReports`
 
@@ -147,6 +148,14 @@ quality-bar relevance, trace strength, confidence, and relationship to binding
 constraints. Ranking entries **MUST** reference recommendations by
 `RecommendationResult.id`. It **MUST NOT** require effort, ROI, quick-win status,
 backlog priority, or numeric score fields.
+
+`summarizeEvaluation` **MUST** produce one `EvaluationSummaryResult` after
+recommendation ranking. It **MUST** synthesize only the scoped root analysis and
+persisted ranked advice supplied to it, use the model's rating-scale labels, and
+write concise stakeholder-facing prose that names the concrete areas and risks
+driving the overall standing. It **MUST NOT** inspect new evidence, introduce
+unsupported claims or counts, or use roll-up mechanism terms as reader-facing
+explanation.
 
 Recommendations **MAY** be concrete work or recommended review. When the
 evaluation meets the current bar and has no gap/risk requiring work, the advice

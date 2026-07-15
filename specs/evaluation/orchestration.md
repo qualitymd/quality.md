@@ -32,7 +32,8 @@ The runner **MUST** build a deterministic work graph in model order:
 6. `rankFindings`;
 7. `recommend`;
 8. `rankRecommendations`; and
-9. `buildReports`.
+9. `summarizeEvaluation`; and
+10. `buildReports`.
 
 Work-unit IDs **MUST** be deterministic strings: `<kind>` for run-wide units
 and `<kind>:<canonical-ref>` for subject-scoped units, for example
@@ -99,6 +100,15 @@ recommendation ranking **MUST** reference recommendations by
 
 `RecommendationRankingResult` **MUST** exist before `EvaluationOutputResult`
 and reports are generated.
+
+`summarizeEvaluation` **MUST** depend on the scoped root
+`AreaAnalysisResult`, `FindingRankingResult`, and `RecommendationRankingResult`.
+It **MUST** produce one valid `EvaluationSummaryResult` before
+`EvaluationOutputResult` and reports are generated.
+
+> Rationale: the run summary needs the whole evaluation and ranked advice, while
+> report generation remains a deterministic projection over persisted outputs.
+> — 0205
 
 Report generation **MUST** require a valid run manifest, a valid evaluation
 frame, the analysis outputs required by the manifest's `plannedScope`, and the

@@ -72,7 +72,7 @@ interface EvaluationRunOptions {
 }
 
 export const evaluationRunArtifact = (options: EvaluationRunOptions) => ({
-  schemaVersion: 9,
+  schemaVersion: 10,
   kind: "EvaluationRun",
   manifest: {
     ...options.identity,

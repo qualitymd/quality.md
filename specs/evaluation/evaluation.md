@@ -104,14 +104,15 @@ routine JSON.
 `schemaVersion` **MUST** be treated as a payload-shape marker only. The current
 evaluation routine payload schema version is `3`; the
 [`evaluation.json`](evaluation-json.md) run artifact carries its own artifact
-`schemaVersion`, currently `8`. Evaluation does not define migrations,
+`schemaVersion`, currently `10`. Evaluation does not define migrations,
 compatibility transforms, or mixed-version run support; older evaluation runs
 remain schema-incompatible historical data.
 
 Advice **MUST** be produced after analysis and before report generation. Advice
 **MUST** include finding ranking, recommendation generation, finding coverage
-accounting, and recommendation ranking. Recommendations may describe concrete
-improvement work or a recommended review of the next quality bar.
+accounting, recommendation ranking, and a stakeholder-facing executive summary.
+Recommendations may describe concrete improvement work or a recommended review
+of the next quality bar.
 
 Determinism covers graph construction, scheduling constraints, validation,
 atomic persistence, output ordering, and report projection. It does **NOT**

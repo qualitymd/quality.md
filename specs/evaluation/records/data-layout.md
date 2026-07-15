@@ -70,6 +70,7 @@ data/advice/
 
 The advice folder **MUST** contain:
 
+- `evaluation-summary-result.json`
 - `finding-ranking-result.json`
 - `recommendation-ranking-result.json`
 - `recommendations/`

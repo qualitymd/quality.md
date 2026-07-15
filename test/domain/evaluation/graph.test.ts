@@ -37,10 +37,16 @@ describe("evaluation graph", () => {
   it("starts requirement judgment from its frame and reports last", () => {
     const graph = buildGraph(plan)
     const requirement = graph.find((unit) => unit.kind === "assessRateRequirement")!
+    const summary = graph.find((unit) => unit.kind === "summarizeEvaluation")!
     const report = graph.at(-1)!
 
     expect(requirement.dependsOn).toEqual(["frameRequirementEvaluation:requirement:root::recovers"])
     expect(graph.map((unit) => unit.kind)).not.toContain("resolveSource")
+    expect(summary).toMatchObject({
+      dataKind: "EvaluationSummaryResult",
+      dependsOn: ["analyzeArea:area:root", "rankFindings", "rankRecommendations"],
+      evaluatorBacked: true,
+    })
     expect(report.kind).toBe("buildReports")
     expect(report.dependsOn).toEqual(graph.slice(0, -1).map((unit) => unit.id))
     expect(new Set(graph.map((unit) => unit.id)).size).toBe(graph.length)

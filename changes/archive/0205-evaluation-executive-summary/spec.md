@@ -12,12 +12,12 @@ timestamp: 2026-07-15T00:00:00Z
 Functional spec for the
 [0205 - Evaluation executive summary](../0205-evaluation-executive-summary.md)
 change case. It states the delta only; the durable contracts it lands in are the
-evaluation [orchestration](../../specs/evaluation/orchestration.md),
-[protocol](../../specs/evaluation/protocol.md),
-[payload kinds](../../specs/evaluation/records/payload-kinds.md),
-[data layout](../../specs/evaluation/records/data-layout.md),
-[report tree](../../specs/evaluation/reports/report-tree.md), and
-[evaluation.json](../../specs/evaluation/evaluation-json.md) specs (normative).
+evaluation [orchestration](../../../specs/evaluation/orchestration.md),
+[protocol](../../../specs/evaluation/protocol.md),
+[payload kinds](../../../specs/evaluation/records/payload-kinds.md),
+[data layout](../../../specs/evaluation/records/data-layout.md),
+[report tree](../../../specs/evaluation/reports/report-tree.md), and
+[evaluation.json](../../../specs/evaluation/evaluation-json.md) specs (normative).
 
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
 described in BCP 14 when, and only when, they appear in all capitals.
@@ -51,7 +51,7 @@ the schema-version advance. Deferred and non-goals are recorded in the
 
 - The advice phase already runs `rankFindings`, `recommend`, and
   `rankRecommendations` as evaluator-backed units before the deterministic
-  `buildReports` unit ([orchestration](../../specs/evaluation/orchestration.md)).
+  `buildReports` unit ([orchestration](../../../specs/evaluation/orchestration.md)).
   A change to that ordering would invalidate R1.
 - The root area analysis (`analyzeArea` for the scoped root) records the overall
   rating level and drivers the summary reads. A change to that payload's identity
@@ -76,7 +76,9 @@ the evaluation work graph. It **MUST** depend on the scoped root
 > > Durable spec: modify `specs/evaluation/orchestration.md` — add
 > > `summarizeEvaluation` to the work-graph order and its dependency rules;
 > > modify `specs/evaluation/protocol.md` — add the `summarizeEvaluation` move to
-> > protocol order and the advice flow.
+> > protocol order and the advice flow; modify
+> > `specs/evaluation/routines/routine-contracts.md` — add its evaluator prompt
+> > contract.
 
 ### R2 — Single persisted summary payload
 
@@ -184,7 +186,10 @@ version.
 > > Durable spec: modify `specs/evaluation/evaluation-json.md` — advance the
 > > artifact schema version and add the `EvaluationSummaryResult` reference to
 > > `EvaluationOutputResult`; modify `specs/evaluation/orchestration.md` — add the
-> > summary to the advice outputs required before report generation.
+> > summary to the advice outputs required before report generation; modify
+> > `specs/evaluation/evaluation.md` — add executive summary synthesis to the
+> > shared advice invariant; modify `specs/cli/evaluation-status.md` — require the
+> > summary for reportability.
 
 ## Requirement-set check
 
@@ -208,9 +213,9 @@ version.
 
 None. `EvaluationSummaryResult` is an advice payload of the same family as
 `FindingRankingResult` and `RecommendationRankingResult`; its kind contract is
-owned by [`payload-kinds.md`](../../specs/evaluation/records/payload-kinds.md) and
+owned by [`payload-kinds.md`](../../../specs/evaluation/records/payload-kinds.md) and
 its artifact path by
-[`data-layout.md`](../../specs/evaluation/records/data-layout.md), matching the
+[`data-layout.md`](../../../specs/evaluation/records/data-layout.md), matching the
 existing advice payloads. No 1:1 artifact spec is warranted.
 
 ### To modify
@@ -230,6 +235,12 @@ existing advice payloads. No 1:1 artifact spec is warranted.
   detail-report summaries unchanged (per R6, R7).
 - `specs/evaluation/evaluation-json.md` — advance the artifact schema version and
   add the `EvaluationSummaryResult` reference to `EvaluationOutputResult` (per R8).
+- `specs/evaluation/evaluation.md` — add summary synthesis to the shared advice
+  invariant and record the new runner artifact version (per R8).
+- `specs/evaluation/routines/routine-contracts.md` — add the
+  `summarizeEvaluation` prompt contract (per R1).
+- `specs/cli/evaluation-status.md` — require `EvaluationSummaryResult` among the
+  advice payloads needed for reportability (per R8).
 
 ### To rename
 
