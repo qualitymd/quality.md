@@ -73,10 +73,13 @@ treat the runner's accepted state and terminal receipt as authoritative. It
 **MAY** submit results as they become ready — one envelope or several per
 resume call — rather than waiting for the whole outstanding set, and it
 **MAY** delegate independent requests to native subagents, since each request
-is a self-contained inspection boundary. It **MUST NOT** construct its own work
-graph, schedule work units, widen the judged source or requirement, write
-evaluation records, or adjust accepted results, and it **MUST NOT**
-repair invalid output outside the runner's retry loop.
+is a self-contained inspection boundary. One delegated worker **MUST** receive
+exactly one request and **MUST NOT** receive the full outstanding set,
+`evaluation.json`, artifact-write authority, an alternate QC assignment, or
+permission to delegate recursively. The skill **MUST NOT** construct its own
+work graph, schedule work units, widen the judged source or requirement, write
+evaluation records, or adjust accepted results, and it **MUST NOT** repair
+invalid output outside the runner's retry loop.
 
 > Rationale: the harness provides judgment, not a second evaluation workflow.
 > The outstanding set is the entire boundary for the turn: the runner remains
@@ -238,13 +241,18 @@ flowchart TD
    `awaiting_evaluator`, serve each supplied request — inspect and judge a
    requirement using its authorized workspace and return the combined result
    plus evidence proposal; synthesize other work from supplied structured data
-   only — directly or through subagents for independent requests, submit result envelopes (one or
-   several per call, as results become ready) with
+   only — directly or through one-request subagents for independent requests,
+   submit result envelopes (one or several per call, as results become ready) with
    `qualitymd evaluation run --resume <run> --evaluator-result - --json`, and
    repeat until a terminal receipt; each resume returns the window topped up
    with newly-ready requests. In unattended automation the loop adds no
    interactive gates: the run advances, returns a report, or stops with the
    runner's classified remedy.
+
+   Progress **MUST** describe the receipt as up to `N` outstanding requests or
+   name `N` as the cap. It **MUST NOT** claim `N` active or concurrent workers
+   unless the harness actually dispatched them.
+
 9. **Summarize progress and the result receipt**, then route next workflows
    (review, improve, recommendation follow-up).
 

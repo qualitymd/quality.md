@@ -29,7 +29,7 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 8,
+  "schemaVersion": 9,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
@@ -39,12 +39,15 @@ The document envelope is:
 }
 ```
 
-`schemaVersion` **MUST** be `8` and is a payload-shape marker only; versions
+`schemaVersion` **MUST** be `9` and is a payload-shape marker only; versions
 1–3 belong to the historical multi-file data tree, version 4 belongs to the
 strategy-named runner artifact, version 5 predates the per-area `sources`
 record, and version 6 predates the multi-outstanding harness checkpoint
 window. Version 7 contains runner-resolved per-area source bundles; it is not
-read back or migrated. `kind` **MUST** be `EvaluationRun`.
+read back or migrated. Version 8 predates structured direct/delegated dispatch
+capabilities and selected-evaluator-first creation; an in-flight version-8 run
+is not read back or migrated. Completed older artifacts remain historical
+records. `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
 
@@ -52,8 +55,14 @@ read back or migrated. `kind` **MUST** be `EvaluationRun`.
 `evaluationId`, `createdAt`, `model`, `requestedScope`, `plannedScope`, `run`
 (the local run `number` and folder `label`), `evaluator` (the selected
 evaluator or profile name), `evaluatorKind` (the selected evaluator's runtime
-kind), `concurrency` (the resolved concurrency cap), and `areaSources` (each
-planned area's effective selector and detected path, glob, or prose form).
+kind), `evaluatorCapabilities` (including the structured dispatch capability),
+`concurrency` (the resolved concurrency cap), and `areaSources` (each planned
+area's effective selector and detected path, glob, or prose form).
+
+The runner **MUST** select and validate the evaluator and resolve concurrency
+before writing this manifest or staging requests. Evaluator name, kind,
+capabilities, and concurrency are immutable after request issue; a provider run
+**MUST NOT** be created as harness-backed and patched afterward.
 
 ## State
 
@@ -65,20 +74,23 @@ planned area's effective selector and detected path, glob, or prose form).
 - per-work-unit entries carrying status, attempts, input hash, failure,
   timestamps, and the accepted evidence manifest hash for requirement units;
 - a `cancelled` marker when a user interruption was observed mid-run;
-- `pendingEvaluatorCalls` — the awaiting harness checkpoint's correlation
-  metadata (request identity, work-unit identity, input hash, correlation ID,
-  and attempt) for every outstanding work request, in emission order, bounded
-  by the manifest's resolved `concurrency`, present exactly while harness
-  work requests await their results; and
+- `pendingEvaluatorCalls` — correlation metadata (request identity, work-unit
+  identity, input hash, correlation ID, and attempt) for every issued but
+  unaccepted evaluator request, in emission order and bounded by the manifest's
+  resolved `concurrency`; for direct transports it is the resumable boundary
+  around active or completed-but-unaccepted calls, and for harness transport it
+  is the outstanding checkpoint window; and
 - `harnessIdentity` — the harness runtime the run's judgment is bound to, set
   by the first accepted harness result.
 
-`awaiting_evaluator` marks a resumable, incomplete checkpoint — never a
-failure. `pendingEvaluatorCalls` is the single source of truth for what is
-awaiting and **MUST NOT** carry raw prompt, source, or result bodies: each
-pending request is rebuilt from the model snapshot, work-graph state, effective
-source selector, and inspection policy per the
-[runner harness contract](runner.md#harness-checkpoints).
+`awaiting_evaluator` marks a resumable harness checkpoint — never a failure.
+Direct dispatch uses `running`; cancellation may persist `cancelled` while
+leaving unaccepted pending calls resumable. `pendingEvaluatorCalls` is the
+single source of truth for issued but unaccepted work and **MUST NOT** carry raw
+prompt, source, or result bodies: each request is rebuilt from the model
+snapshot, work-graph state, effective source selector, and inspection policy.
+At every persisted boundary its length **MUST NOT** exceed manifest
+`concurrency`.
 
 `state` **MUST NOT** carry provider context identifiers or prompt-cache
 status; those live only in run-local logs.
@@ -161,7 +173,10 @@ work-unit result, before the unit counts as complete, per the
 [orchestration persistence rules](orchestration.md#persistence).
 
 While parallel execution is active, `evaluation.json` writes **MUST** be
-serialized by a single store so concurrent merges cannot interleave.
+serialized by a single store so concurrent merges cannot interleave. One
+accepted result **MUST** be persisted before its slot is released or dependent
+work is dispatched; persisted payload arrays **MUST** be reprojected in graph
+order after every merge.
 
 ## Resume compatibility
 
@@ -172,10 +187,10 @@ verification fails, then resume **MUST** fail with `run_state_invalid` and
 report that starting a new run is the remedy.
 
 Changing the implementation runtime does not by itself invalidate a current
-artifact. A conforming runtime **MUST** accept every current-schema completed or
-resumable run accepted by the immediately prior release. A real artifact-shape
-change requires one explicit schema-version break and refusal of incompatible
-resume, not a dual reader or migration shim.
+artifact. A real artifact-shape change requires one explicit schema-version
+break and refusal of incompatible resume, not a dual reader or migration shim.
+The schema-9 runtime **MUST** refuse an in-flight schema-8 run with the existing
+start-new-run remedy; it **MUST NOT** add a version-8 reader or migration path.
 
 For a harness-backed run, resume compatibility additionally covers the
 pending requests and identity: a pending request whose rebuilt input hash no

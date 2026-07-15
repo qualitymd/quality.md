@@ -2,16 +2,16 @@
 type: Change Case
 title: Transport-aware evaluator concurrency
 description: Resolve and enforce evaluator concurrency from transport capabilities while keeping CLI scheduling authoritative and agent/subagent judgment bounded.
-status: In-Progress
+status: Done
 tags: [evaluation, evaluator, concurrency, agents, runner]
 timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Transport-aware evaluator concurrency
 
-Status note: **In-Progress**; R1–R8 passed individual requirement-quality and
-requirement-set review, the technical design is settled, and implementation is
-underway.
+Status note: case is **Done**. Implementation, durable contracts, skill
+guidance, focused acceptance coverage, the full repository gate, and the R1–R8
+review ledger passed; the completed case is archived.
 
 ## Motivation
 
@@ -82,10 +82,10 @@ Derived from repository searches for concurrency configuration and resolution,
 evaluator capabilities, provider and harness dispatch, checkpoint windows,
 receipts, artifact manifests, progress wording, and tests.
 
-- **Change record:** this parent, `spec.md`, and `design.md` under
-  `changes/0204-transport-aware-evaluator-concurrency/`; `changes/index.md` and
-  `changes/log.md`; a later review ledger during implementation; all archived
-  together when done.
+- **Change record:** this parent, `spec.md`, `design.md`, and `review.md` under
+  `changes/archive/0204-transport-aware-evaluator-concurrency/`;
+  `changes/index.md`, `changes/archive/index.md`, and `changes/log.md`; archived
+  together with this parent.
 - **Durable evaluation specs:** `specs/evaluation/runner.md`,
   `specs/evaluation/orchestration.md`,
   `specs/evaluation/evaluator-contract.md`,
@@ -151,9 +151,12 @@ receipts, artifact manifests, progress wording, and tests.
 - [Design doc](0204-transport-aware-evaluator-concurrency/design.md) — capability
   model, shared run preparation, coordinator-owned provider pool, harness
   boundary, persistence, and verification design.
+- [Review ledger](0204-transport-aware-evaluator-concurrency/review.md) — R1–R8
+  implementation evidence, test matrix, durable-artifact rollup, and full local
+  gate.
 
 ## Status
 
-`In-Progress`. The functional spec and design are settled; implementation now
-advances the runtime, durable current-behavior specs, skill guidance, and tests
-together before review.
+`Done`. The implementation and durable-artifact footprint are reconciled; all
+focused acceptance checks and the complete repository gate pass, with evidence
+recorded in the archived review ledger.

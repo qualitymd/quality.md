@@ -59,7 +59,9 @@ interface Artifact {
     run: { number: number; label: string }
     evaluator: string
     evaluatorKind: string
-    evaluatorCapabilities: JsonObject
+    evaluatorCapabilities: JsonObject & {
+      dispatch: { delegatedRequests: boolean }
+    }
     concurrency: number
     areaSources: Record<string, AreaSource>
   }
@@ -158,7 +160,7 @@ const mergePayloads = (
 const appendCallLog = (fs: FileSystem.FileSystem, path: string, entry: JsonObject) =>
   fs.writeFileString(path, `${JSON.stringify(entry)}\n`, { flag: "a", mode: 0o600 })
 
-export const resumeHarnessRun = (
+export const resumeEvaluationRun = (
   input: EvaluationRunInput,
 ): Effect.Effect<
   CommandResult,
@@ -175,9 +177,9 @@ export const resumeHarnessRun = (
     if (!(yield* fs.exists(artifactPath)))
       return failureResult(`${displayRun} is not a resumable evaluation run`, ExitCode.usage)
     const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as Artifact
-    if (artifact.schemaVersion !== 8 || artifact.kind !== "EvaluationRun")
+    if (artifact.schemaVersion !== 9 || artifact.kind !== "EvaluationRun")
       return failureResult(
-        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 8; start a new run`,
+        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 9; start a new run`,
       )
     let workspaceRoot = ""
     if (paths.isAbsolute(artifact.manifest.model)) {
@@ -479,7 +481,10 @@ export const resumeHarnessRun = (
     }
     const pending = artifact.state.pendingEvaluatorCalls ?? []
     if (artifact.state.status !== "failed") {
-      if (pending.length > 0) artifact.state.status = "awaiting_evaluator"
+      if (pending.length > 0)
+        artifact.state.status = artifact.manifest.evaluatorCapabilities.dispatch.delegatedRequests
+          ? "awaiting_evaluator"
+          : "running"
       else if (graph.every((unit) => artifact.state.workUnits[unit.id]?.status === "completed")) {
         artifact.state.status = "completed"
         artifact.state.completedAt = now

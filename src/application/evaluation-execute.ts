@@ -5,6 +5,7 @@ import * as Path from "effect/Path"
 import { FileSystemFailure } from "../domain/errors.ts"
 import { commandResult, type CommandResult } from "../domain/command-result.ts"
 import { initialFramePayloads } from "../domain/evaluation/frames.ts"
+import { resolveConcurrency } from "../domain/evaluation/concurrency.ts"
 import { buildGraph, readyUnits } from "../domain/evaluation/graph.ts"
 import { planEvaluation } from "../domain/evaluation/plan.ts"
 import {
@@ -13,9 +14,9 @@ import {
   protocolRequestReceipt,
 } from "../domain/evaluation/protocol.ts"
 import {
-  harnessRunArtifact,
-  harnessRunEvents,
-  harnessRunReceipt,
+  evaluationRunArtifact,
+  evaluationRunEvents,
+  evaluationRunReceipt,
   renderHarnessAwaiting,
   newEvaluationIdentity,
   resolveScope,
@@ -25,6 +26,7 @@ import { jsonDocument } from "../domain/json.ts"
 import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { harnessCapabilities } from "../adapters/evaluator.ts"
+import type { EvaluatorCapabilities, EvaluatorKind } from "../domain/evaluator/types.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
 import { detectSourceKind, validateSourceSelector, type AreaSource } from "../services/source.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
@@ -43,7 +45,16 @@ const atomicWrite = Effect.fn("qualitymd.atomicEvaluationWrite")(function* (
   yield* fs.rename(temp, path)
 })
 
-const execute = Effect.fn("qualitymd.executeHarnessRun")(function* (input: EvaluationRunInput) {
+export interface RunEvaluator {
+  readonly name: string
+  readonly kind: EvaluatorKind
+  readonly capabilities: EvaluatorCapabilities
+}
+
+const execute = Effect.fn("qualitymd.executeEvaluationRun")(function* (
+  input: EvaluationRunInput,
+  evaluator: RunEvaluator,
+) {
   const fs = yield* FileSystem.FileSystem
   const paths = yield* Path.Path
   const runtime = yield* HostRuntime
@@ -57,11 +68,10 @@ const execute = Effect.fn("qualitymd.executeHarnessRun")(function* (input: Evalu
   const model = decodeModel(document)
   const scope = resolveScope(model, input.area, input.factors)
   const plan = planEvaluation(model, scope.plannedScope)
-  const concurrency = workspace.evaluation.concurrency ?? runtime.hardwareConcurrency * 2
-  const resolvedConcurrency =
-    concurrency > 1 && !harnessCapabilities.concurrent && !harnessCapabilities.subagents
-      ? 1
-      : concurrency
+  const concurrency = resolveConcurrency(
+    workspace.evaluation.concurrency,
+    evaluator.capabilities.dispatch,
+  )
   const number = yield* nextEvaluationRunNumber(workspace.evaluations.abs)
   const label = `${String(number).padStart(4, "0")}-${scopeSlug(scope.plannedScope)}-eval`
   const runAbs = paths.join(workspace.evaluations.abs, label)
@@ -97,7 +107,7 @@ const execute = Effect.fn("qualitymd.executeHarnessRun")(function* (input: Evalu
   const sourcePlans = sourceEntries.map(({ area, source }) => ({ area, ...source }))
   const graph = buildGraph(plan)
   const initialRequests = yield* Effect.forEach(
-    readyUnits(graph, new Set(Object.keys(completedWorkUnits)), resolvedConcurrency),
+    readyUnits(graph, new Set(Object.keys(completedWorkUnits)), concurrency.resolved),
     (unit) =>
       Effect.gen(function* () {
         const draft = buildProtocolRequest({
@@ -125,14 +135,14 @@ const execute = Effect.fn("qualitymd.executeHarnessRun")(function* (input: Evalu
     ...completedWorkUnits,
     ...Object.fromEntries(pending.map((entry) => [entry.workUnitId, { status: "pending" }])),
   }
-  const artifact = harnessRunArtifact({
+  const artifact = evaluationRunArtifact({
     identity,
     model: workspace.model.rel,
     scope,
     number,
     label,
-    capabilities: harnessCapabilities,
-    concurrency: resolvedConcurrency,
+    evaluator,
+    concurrency,
     areaSources,
     workUnits,
     pending,
@@ -148,32 +158,36 @@ const execute = Effect.fn("qualitymd.executeHarnessRun")(function* (input: Evalu
   })
   yield* fs.writeFileString(
     paths.join(runAbs, "logs/events.jsonl"),
-    harnessRunEvents(timestamp, identity.evaluationId, harnessCapabilities, pending.length),
+    evaluationRunEvents(timestamp, identity.evaluationId, evaluator, concurrency, pending.length),
     { mode: 0o600 },
   )
-  const result = harnessRunReceipt({
+  const result = evaluationRunReceipt({
     path: runRel,
-    concurrency: resolvedConcurrency,
+    evaluator: evaluator.name,
+    evaluatorKind: evaluator.kind,
+    concurrency: concurrency.resolved,
     total: graph.length,
     evaluatorUnits: graph.filter((unit) => unit.evaluatorBacked).length,
     completed: Object.keys(workUnits).length,
     sources: sourcePlans,
     requests,
+    dispatchMode: concurrency.mode,
   })
   if (input.json) return commandResult(jsonDocument(result))
   return commandResult("", {
-    stderr: renderHarnessAwaiting(requests, resolvedConcurrency, result.nextActions[0]!.command),
+    stderr: renderHarnessAwaiting(requests, concurrency.resolved, result.nextActions[0]!.command),
   })
 })
 
-export const executeHarnessRun = (
+export const executeEvaluationRun = (
   input: EvaluationRunInput,
+  evaluator: RunEvaluator,
 ): Effect.Effect<
   CommandResult,
   FileSystemFailure,
   FileSystem.FileSystem | Path.Path | HostRuntime
 > =>
-  execute(input).pipe(
+  execute(input, evaluator).pipe(
     Effect.mapError(
       (cause) =>
         new FileSystemFailure({
@@ -181,3 +195,10 @@ export const executeHarnessRun = (
         }),
     ),
   )
+
+export const executeHarnessRun = (input: EvaluationRunInput) =>
+  executeEvaluationRun(input, {
+    name: "harness",
+    kind: "harness",
+    capabilities: harnessCapabilities,
+  })

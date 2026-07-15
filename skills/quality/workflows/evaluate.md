@@ -106,15 +106,17 @@ Hard boundaries:
    complete and self-contained: instructions, context, body guidance,
    authorized workspace inspection policy, expected result schema, `requestId`,
    and `inputHash`. On the first
-   windowed receipt, name the window width in a progress beat (for example
-   "servicing 4 work requests concurrently"). Loop until the receipt is
-   terminal:
+   windowed receipt, name the outstanding cap in a progress beat (for example
+   "2 requests outstanding, with a cap of 4"). Do not claim the cap is active
+   concurrency unless you actually dispatched that many workers. Loop until
+   the receipt is terminal:
 
    1. Serve each outstanding request by its `kind`. Requests are independent
       and self-contained, so you may answer them with your own reasoning or
       fan them out to subagents — one request per subagent, passing exactly
-      the request's own content — and submit results as they become ready
-      rather than waiting for the whole set:
+      the request's own content, never the whole outstanding set, run artifact,
+      separate QC assignment, or recursive delegation authority — and submit
+      results as they become ready rather than waiting for the whole set:
       - **Requirement judgment requests**: use read/search tools iteratively
         within `inspection.workspaceRoot`; do not write, use network, escalate
         approval, or execute commands when verification is unavailable. Treat

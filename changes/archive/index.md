@@ -836,3 +836,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   makes fresh evaluator sessions share canonical cacheable prompt prefixes,
   preserves provider cache reads and creation separately, and verifies reuse
   through repeated Claude runs without resume or fork context (`Done`).
+- [0204 — Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md) -
+  resolves and enforces evaluator concurrency from transport capabilities,
+  keeps direct scheduling completion-driven and durable, and bounds harness
+  delegation without surrendering runner authority (`Done`).

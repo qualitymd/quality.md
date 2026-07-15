@@ -112,6 +112,15 @@ concurrently, up to the resolved [concurrency](runner.md#concurrency) cap.
 Concurrency is a scheduling choice under the runner contract; it never becomes
 an alternate orchestration engine.
 
+For a direct-call transport, the runner **MUST** use completion-driven dispatch:
+fill available slots from the deterministic ready frontier, receive individual
+worker completions, validate and persist one accepted result through the single
+runner-owned store, execute newly ready deterministic work, and refill that slot
+without waiting for unrelated calls. Each worker receives exactly one
+runner-issued ready request and returns one correlated result or failure. A
+worker **MUST NOT** construct or advance the graph, choose sibling work, write
+run state, or delegate evaluation orchestration recursively.
+
 Parallel execution **MUST** be observationally equivalent to deterministic
 sequential execution in model order.
 
@@ -148,6 +157,12 @@ requests. The runner **MUST** accept the valid members, free the capacity
 they held, and leave the still-outstanding requests in place; a
 still-outstanding request that was not submitted **MUST NOT** consume retry
 budget.
+
+The invoking harness **MAY** judge a request in the parent or place one request
+with one native worker. That worker receives only the self-contained request;
+it **MUST NOT** receive the full frontier, `evaluation.json`, artifact-write
+authority, an alternate quality-control pass, or recursive orchestration
+authority.
 
 > Rationale: partial submission is the normal path under a rolling window, so
 > "not yet judged" (still outstanding, no cost) and "failed" (re-emit, retry
@@ -218,7 +233,8 @@ output; the runner **MUST NOT** persist a partial requirement result.
 > break the rating dependency above. — 0193
 
 If a work unit exhausts its attempts or fails with a non-retryable category,
-then the run **MUST** finish with status `failed` and remain resumable.
+then the run **MUST** stop new dispatch, interrupt active siblings, finish with
+status `failed`, keep already accepted results durable, and remain resumable.
 
 Failure categories are the [runner failure taxonomy](runner.md#failure-taxonomy).
 
@@ -229,6 +245,10 @@ or SIGTERM), the runner **MUST** cancel in-flight evaluator calls, leave
 `evaluation.json` valid and resumable, record the interruption in run state and
 the event log, and report the run as `cancelled` rather than failed.
 Interrupted work units keep their attempt counts and stay incomplete.
+
+The runner **MUST** stop new dispatch before interrupting workers. A result is
+eligible to unblock dependents only after serialized acceptance and persistence;
+late or queued but unaccepted output remains incomplete on resume.
 
 SDK streams and provider child runtimes **MUST** receive cancellation and close
 their scoped resources. The runner **MUST NOT** accept an event or result that

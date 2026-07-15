@@ -62,6 +62,9 @@ The command takes no positional arguments.
   writing evaluation data.
 - `--json` — emit a machine-readable receipt on stdout.
 
+Concurrency remains workspace configuration through `evaluation.concurrency`;
+the command **MUST NOT** add a `--concurrency` flag.
+
 ## Requirements
 
 The command **MUST** execute a complete evaluation run for the resolved model.
@@ -160,7 +163,7 @@ validation, partial submission, retry, and identity binding are the
 `qualitymd evaluation run --dry-run --json` **MUST** emit a deterministic
 machine-readable preview containing the resolved model, requested and planned
 scope, selected evaluator with its kind and selection reason, resolved
-concurrency (for a harness-backed run, the outstanding-window cap),
+concurrency as a cap (for a harness-backed run, the outstanding-window cap),
 work-unit counts, selected evaluator capabilities, the read-only/network/
 approval/verification/instruction inspection policy, each in-scope area's
 effective selector and detected path, glob, or prose form, `expectedRunPath`,
@@ -170,6 +173,12 @@ same effective source metadata pinned at creation.
 
 A dry run **MUST NOT** create the run folder and **MUST NOT** invoke an
 evaluator for judgment.
+
+The command **MUST** resolve the cap from the selected evaluator before run
+creation: a configured positive integer is the requested cap; otherwise the
+selected evaluator's automatic cap applies; an optional evaluator maximum
+clamps it. Host CPU count **MUST NOT** affect the preview or run. Receipts and
+human diagnostics **MUST NOT** describe the cap as observed active concurrency.
 
 ### Resume
 
@@ -198,6 +207,10 @@ Human progress diagnostics **MUST** go to stderr; stdout stays reserved for the
 command payload. Under `--json`, stdout **MUST** carry the run receipt,
 including the run path, status, generated report reference, rating when
 available, classified failure when present, and `nextActions`.
+
+Harness progress **MUST** say that the receipt carries up to `N` outstanding
+requests, or name `N` as the concurrency cap. It **MUST NOT** claim `N` active
+workers unless the invoking harness has actually dispatched them.
 
 If evaluator selection or another pre-run failure prevents the run, then under
 `--json` the command **MUST** emit a failure receipt of the shape

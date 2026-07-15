@@ -5,6 +5,7 @@ import * as Path from "effect/Path"
 
 import { FileSystemFailure } from "../domain/errors.ts"
 import { commandResult, ExitCode, type CommandResult } from "../domain/command-result.ts"
+import { resolveConcurrency } from "../domain/evaluation/concurrency.ts"
 import { resolveScope, scopeSlug } from "../domain/evaluation/run.ts"
 import { jsonDocument } from "../domain/json.ts"
 import {
@@ -23,7 +24,7 @@ import { resolveWorkspace, type Workspace } from "../services/workspace.ts"
 import { detectSourceKind, validateSourceSelector } from "../services/source.ts"
 import { executeHarnessRun } from "./evaluation-execute.ts"
 import { executeProviderRun, resumeProviderRun } from "./evaluation-provider.ts"
-import { resumeHarnessRun } from "./evaluation-resume.ts"
+import { resumeEvaluationRun } from "./evaluation-resume.ts"
 import { nextEvaluationRunNumber } from "./evaluation-runs.ts"
 
 export interface EvaluationRunInput {
@@ -59,7 +60,7 @@ const resumeRun = (input: EvaluationRunInput) =>
     const runtime = yield* HostRuntime
     const runAbs = paths.resolve(input.resume)
     const artifactPath = paths.join(runAbs, "evaluation.json")
-    if (!(yield* fs.exists(artifactPath))) return yield* resumeHarnessRun(input)
+    if (!(yield* fs.exists(artifactPath))) return yield* resumeEvaluationRun(input)
     const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as {
       readonly manifest?: {
         readonly model?: string
@@ -73,7 +74,7 @@ const resumeRun = (input: EvaluationRunInput) =>
       return usage(
         `run evaluator is pinned to ${JSON.stringify(evaluatorName)}; omit --evaluator or start a new run`,
       )
-    if (evaluatorKind === "harness") return yield* resumeHarnessRun(input)
+    if (evaluatorKind === "harness") return yield* resumeEvaluationRun(input)
     if (input.evaluatorResult !== "")
       return usage("--evaluator-result is only accepted for a harness evaluation run")
     const model = artifact.manifest?.model ?? "QUALITY.md"
@@ -271,13 +272,10 @@ const dryRun = (input: EvaluationRunInput) =>
     )
     const total = 1 + areas.length * 3 + factors.length * 2 + requirements.length * 2 + 4
     const evaluatorUnits = areas.length + factors.length + requirements.length + 3
-    const configured = workspace.evaluation.concurrency
-    const concurrency = configured ?? runtime.hardwareConcurrency * 2
-    if (concurrency < 1) throw new Error("evaluation.concurrency must be a positive integer")
-    const resolvedConcurrency =
-      concurrency > 1 && !selected.capabilities.concurrent && !selected.capabilities.subagents
-        ? 1
-        : concurrency
+    const concurrency = resolveConcurrency(
+      workspace.evaluation.concurrency,
+      selected.capabilities.dispatch,
+    )
     const number = yield* nextEvaluationRunNumber(workspace.evaluations.abs)
     const label = `${String(number).padStart(4, "0")}-${scopeSlug(scope.plannedScope)}-eval`
     const command = [
@@ -304,7 +302,7 @@ const dryRun = (input: EvaluationRunInput) =>
         verification: "unavailable",
         repositoryInstructions: "untrusted-data",
       },
-      concurrency: resolvedConcurrency,
+      concurrency: concurrency.resolved,
       workUnits: { total, evaluatorUnits, completed: 0 },
       sources,
       expectedRunPath: `${workspace.evaluations.rel}/${label}`,

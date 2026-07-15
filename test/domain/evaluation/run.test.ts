@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
 import {
-  harnessRunArtifact,
-  harnessRunEvents,
-  harnessRunReceipt,
+  evaluationRunArtifact,
+  evaluationRunEvents,
+  evaluationRunReceipt,
   renderHarnessAwaiting,
   runDirectoryNumber,
 } from "../../../src/domain/evaluation/run.ts"
@@ -52,7 +52,7 @@ describe("evaluation run directory classification", () => {
     }
     const identity = { evaluationId: "eval", createdAt: "2026-07-14T00:00:00Z" }
     expect(
-      harnessRunArtifact({
+      evaluationRunArtifact({
         identity,
         model: "QUALITY.md",
         scope: {
@@ -61,33 +61,107 @@ describe("evaluation run directory classification", () => {
         },
         number: 1,
         label: "0001-full-eval",
-        capabilities: { concurrent: true },
-        concurrency: 2,
+        evaluator: {
+          name: "harness",
+          kind: "harness",
+          capabilities: {
+            structuredOutput: true,
+            workspaceInspection: true,
+            instructionIsolation: true,
+            verification: false,
+            networkAccess: "disabled",
+            tools: true,
+            dispatch: {
+              concurrentCalls: false,
+              delegatedRequests: true,
+              automaticConcurrency: 4,
+            },
+            freshContext: true,
+            cancellation: true,
+            usage: true,
+            maxTurns: "supported",
+            tokenBudget: "supported",
+            costBudget: "supported",
+            contextWindow: "unknown",
+            compaction: "opaque",
+            sandbox: "host",
+            executableOverride: false,
+          },
+        },
+        concurrency: {
+          source: "configured",
+          requested: 2,
+          automatic: 4,
+          resolved: 2,
+          clamped: false,
+          mode: "delegated",
+        },
         areaSources: { "area:root": { selector: ".", kind: "path" } },
         workUnits: { frameEvaluation: { status: "completed" } },
         pending: [pending],
         payloads: [{ workUnit: "frameEvaluation", payload: { kind: "EvaluationFrame" } }],
       }),
     ).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
       kind: "EvaluationRun",
       manifest: { ...identity, run: { number: 1, label: "0001-full-eval" } },
       state: { status: "awaiting_evaluator", pendingEvaluatorCalls: [pending] },
     })
-    expect(harnessRunEvents(identity.createdAt, "eval", { concurrent: true }, 1)).toBe(
-      '{"timestamp":"2026-07-14T00:00:00Z","event":"run_created","evaluationId":"eval","evaluator":"harness","evaluatorKind":"harness","capabilities":{"concurrent":true}}\n' +
-        '{"timestamp":"2026-07-14T00:00:00Z","event":"run_status","status":"awaiting_evaluator","outstanding":1}\n',
-    )
+    expect(
+      evaluationRunEvents(
+        identity.createdAt,
+        "eval",
+        {
+          name: "harness",
+          kind: "harness",
+          capabilities: {
+            structuredOutput: true,
+            workspaceInspection: true,
+            instructionIsolation: true,
+            verification: false,
+            networkAccess: "disabled",
+            tools: true,
+            dispatch: {
+              concurrentCalls: false,
+              delegatedRequests: true,
+              automaticConcurrency: 4,
+            },
+            freshContext: true,
+            cancellation: true,
+            usage: true,
+            maxTurns: "supported",
+            tokenBudget: "supported",
+            costBudget: "supported",
+            contextWindow: "unknown",
+            compaction: "opaque",
+            sandbox: "host",
+            executableOverride: false,
+          },
+        },
+        {
+          source: "configured",
+          requested: 2,
+          automatic: 4,
+          resolved: 2,
+          clamped: false,
+          mode: "delegated",
+        },
+        1,
+      ),
+    ).toContain('"peakOutstanding":1')
     const request = { requestId: "req_1", workUnitId: pending.workUnitId, attempt: 1 }
     expect(
-      harnessRunReceipt({
+      evaluationRunReceipt({
         path: ".quality/evaluations/0001-full-eval",
+        evaluator: "harness",
+        evaluatorKind: "harness",
         concurrency: 2,
         total: 4,
         evaluatorUnits: 1,
         completed: 3,
         sources: [],
         requests: [request],
+        dispatchMode: "delegated",
       }),
     ).toMatchObject({ status: "awaiting_evaluator", evaluatorRequests: [request] })
     expect(renderHarnessAwaiting([request], 2, "qualitymd evaluation run --resume run")).toContain(

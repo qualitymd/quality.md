@@ -88,27 +88,30 @@ units.
 > names are an implementation detail. — 0192, 0195
 
 The workspace config **MAY** set `evaluation.concurrency` in
-`.quality/config.yaml`. When it is present, it **MUST** be a positive integer. A
-configured value of `1` selects sequential execution; a configured value greater
-than `1` permits concurrent execution of dependency-ready evaluator-backed work
-units up to that limit.
+`.quality/config.yaml`. When present, it **MUST** be a positive integer and is
+the requested hard cap. When absent, the runner **MUST** use the selected
+evaluator's positive `automaticConcurrency`; host CPU count **MUST NOT** enter
+evaluation concurrency resolution.
 
-When `evaluation.concurrency` is absent, the runner **MUST** request automatic
-concurrency equal to `max(2, runtime.NumCPU()*2)`.
+The runner **MUST** select the evaluator, validate its dispatch capability, and
+resolve concurrency before it stages evaluator work or writes the initial run
+artifact. It **MUST** clamp the requested or automatic value to an evaluator's
+optional `maxConcurrency`. An evaluator that supports neither concurrent direct
+calls nor delegated requests **MUST** declare automatic and maximum concurrency
+of `1`, and the runner **MUST** resolve it to `1`.
 
-The runner **MUST** resolve requested concurrency against the selected
-evaluator's declared capabilities before execution begins. If the selected
-evaluator declares neither concurrent-call support nor subagent delegation,
-then the resolved concurrency **MUST** be `1`.
+> Rationale: provider sessions and harness worker slots are remote transport
+> constraints, not local CPU work. Direct calls and external delegation need
+> separate capability claims because they have different dispatch and progress
+> semantics. — 0198, 0204
 
-> Rationale: a checkpointed evaluator never takes simultaneous in-process
-> calls, so concurrent-call support alone would keep harness runs pinned to 1;
-> subagent delegation is the declared capability that makes an outstanding
-> window of checkpointed requests serviceable in parallel. — 0198
-
-The runner **MUST** surface the resolved concurrency in dry-run JSON,
-`evaluation.json`, run-local logs, and run receipts. The runner **MUST NOT**
-expose public execution-strategy or strategy-fallback fields.
+The runner **MUST** surface resolved concurrency as a cap in dry-run JSON,
+`evaluation.json`, and run receipts. Run-local events **MUST** additionally
+record whether resolution was configured or automatic, the requested,
+automatic, optional maximum, and resolved values, whether clamping occurred,
+the dispatch mode, and the observed peak active direct calls or outstanding
+harness requests. The runner **MUST NOT** expose a `--concurrency` flag or
+public scheduler-strategy names.
 
 Concurrent execution **MUST** preserve the
 [observational equivalence](orchestration.md#scheduling-and-parallelism) the
@@ -125,9 +128,18 @@ reuse stable request instructions and schema, but a provider conversation,
 workspace transcript, or selected evidence **MUST NOT** be shared between
 requirements.
 
-For a harness-backed run, the resolved concurrency is the cap on the number
-of outstanding checkpointed work requests, per the
-[harness checkpoints contract](#harness-checkpoints) below.
+For a direct-call evaluator, the runner **MUST** keep up to resolved concurrency
+fresh calls active. It **MUST** accept and atomically persist each completed
+result before releasing that slot, advance deterministic dependencies, and
+immediately top up newly ready evaluator work without waiting for unrelated
+active calls. Terminal failure or cancellation stops new dispatch and
+interrupts active calls; accepted results remain durable and unaccepted work
+remains resumable.
+
+For a harness-backed run, resolved concurrency is the cap on outstanding
+checkpointed work requests, per the [harness checkpoints
+contract](#harness-checkpoints) below. Outstanding requests are eligible for
+parallel service; they do not prove that the harness has active workers.
 
 ## Harness checkpoints
 
@@ -247,9 +259,10 @@ Run-local logs **MUST** be separate from `evaluation.json`.
 > keeps logs from becoming evaluation data. — 0192
 
 The runner **MUST** write a run-local structured event log at
-`logs/events.jsonl` recording lifecycle events: run creation, work-unit
-start/completion/failure, strategy selection and fallback, retry, resume
-decisions, report build, and run completion.
+`logs/events.jsonl` recording lifecycle events: run creation, concurrency
+resolution and dispatch mode, observed peak activity, work-unit
+start/completion/failure, retry, resume decisions, report build, and run
+completion.
 
 The runner **MUST** write evaluator-call metadata to a run-local structured log
 at `logs/evaluator-calls.jsonl`. Call metadata **SHOULD** include evaluator

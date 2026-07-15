@@ -8,7 +8,7 @@ timestamp: 2026-07-15T00:00:00Z
 
 # Transport-aware evaluator concurrency — functional spec
 
-Companion to the
+Archived companion to the
 [Transport-aware evaluator concurrency](../0204-transport-aware-evaluator-concurrency.md)
 Change Case. This spec defines what must change; the
 [design doc](design.md) owns the capability representation, shared run-

@@ -1,5 +1,15 @@
 # /quality skill workflows update log
 
+## 2026-07-15
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0204 - Transport-aware evaluator concurrency](../../../../changes/archive/0204-transport-aware-evaluator-concurrency.md).
+  Each delegated worker now receives exactly one self-contained evaluator
+  request and cannot receive the full outstanding set, mutate run artifacts,
+  run quality control, or recursively delegate. Progress reports distinguish
+  the runner's outstanding-window cap from requests actually dispatched to
+  workers.
+
 ## 2026-07-11
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for

@@ -278,6 +278,14 @@ factors:
         "--json",
       )
       expect(JSON.parse(preview.stdout)).toMatchObject({
+        evaluatorCapabilities: {
+          dispatch: {
+            concurrentCalls: false,
+            delegatedRequests: true,
+            automaticConcurrency: 4,
+          },
+        },
+        concurrency: 4,
         inspectionPolicy: {
           workspace: "read-only",
           network: "disabled",
@@ -287,6 +295,18 @@ factors:
         },
         sources: [{ selector: "*.missing", kind: "glob" }],
       })
+      const unsupportedConcurrency = run(
+        "evaluation",
+        "run",
+        "--model",
+        model,
+        "--evaluator",
+        "harness",
+        "--concurrency",
+        "2",
+      )
+      expect(unsupportedConcurrency.status).toBe(2)
+      expect(unsupportedConcurrency.stderr).toContain("Unrecognized flag")
       const result = run("evaluation", "run", "--model", model, "--evaluator", "harness", "--json")
       expect(result.status).toBe(0)
       const receipt = JSON.parse(result.stdout) as {
@@ -301,10 +321,19 @@ factors:
       })
       expect(receipt.evaluatorRequests[0]).toHaveProperty("inspection")
       expect(receipt.evaluatorRequests[0]).not.toHaveProperty("source")
-      const artifact = JSON.parse(
-        await readFile(join(directory, receipt.path, "evaluation.json"), "utf8"),
+      const artifactPath = join(directory, receipt.path, "evaluation.json")
+      const artifact = JSON.parse(await readFile(artifactPath, "utf8"))
+      expect(artifact).toMatchObject({ schemaVersion: 9, evidence: {} })
+      await writeFile(artifactPath, JSON.stringify({ ...artifact, schemaVersion: 8 }))
+      const incompatible = run(
+        "evaluation",
+        "run",
+        "--resume",
+        join(directory, receipt.path),
+        "--json",
       )
-      expect(artifact).toMatchObject({ schemaVersion: 8, evidence: {} })
+      expect(incompatible.status).not.toBe(0)
+      expect(incompatible.stderr).toContain("schema 8 is incompatible with schema 9")
     } finally {
       await rm(directory, { recursive: true })
     }

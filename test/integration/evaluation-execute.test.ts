@@ -61,7 +61,6 @@ Body guidance.
         Layer.succeed(HostRuntime, {
           cwd: directory,
           environment: {},
-          hardwareConcurrency: 2,
           currentTimeMillis: Effect.succeed(Date.UTC(2026, 6, 14)),
           randomBytes: (length) => Effect.succeed(new Uint8Array(length).fill(7)),
           readStdin: Effect.succeed(""),
@@ -97,8 +96,8 @@ Body guidance.
           stdout: "b63713fb24e9c5883d8f60e3cff60637e8833ae69ada58f31d3fe1826d699759",
           stderr: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
           files: [
-            "2729e257c1d9bf0501b9cb1579eb035e7c398c0b6405d3b02d85020acda72e2e",
-            "6c15831d65ed4af8143f1c69152a46c40248bb0bdf2ba669b02d879aacb89d0a",
+            "ee46d18722a0cf76388908def50ab9c83f55a925f63b3dbad774d4bc9e6b2b00",
+            "a0d9e8f0baccf74661146372b1f3fddedd070fb2ca13b83c99c6d23f173b57d7",
             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             "6b247c30352ac60048741350d5d7326dc73f19cc3779d571ce5d05687a94fdc5",
           ],

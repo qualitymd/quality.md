@@ -2,6 +2,18 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated the [Runner](runner.md),
+  [Orchestration](orchestration.md), [Evaluator contract](evaluator-contract.md),
+  [Agent evaluators](agent-evaluators.md), and
+  [evaluation.json](evaluation-json.md) contracts for
+  [0204 - Transport-aware evaluator concurrency](../../changes/archive/0204-transport-aware-evaluator-concurrency.md).
+  Evaluators now declare structured dispatch capabilities and automatic and
+  maximum concurrency. The runner resolves the cap only after evaluator
+  selection, owns a completion-driven direct worker pool and the harness
+  outstanding-request window, serializes result acceptance before topping up,
+  records honest dispatch activity, and writes schema-version-9 artifacts with
+  immutable selected-evaluator and concurrency provenance.
+
 - **Revision**: Updated the [Evaluator contract](evaluator-contract.md),
   [Agent evaluators](agent-evaluators.md), and [Runner](runner.md) contracts for
   [0203 - Evaluator prompt cache efficiency](../../changes/archive/0203-evaluator-prompt-cache-efficiency.md).

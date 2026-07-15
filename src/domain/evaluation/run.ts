@@ -1,4 +1,6 @@
 import { findElement, parseAreaReference, projectModel, type QualityModel } from "../model/model.ts"
+import type { EvaluatorCapabilities, EvaluatorKind } from "../evaluator/types.ts"
+import type { ConcurrencyResolution } from "./concurrency.ts"
 import type { StoredPayload } from "./protocol.ts"
 
 export const EvaluationSchemaVersion = 3
@@ -46,7 +48,7 @@ export interface HarnessRequestReceipt extends JsonObject {
   readonly attempt: number
 }
 
-interface HarnessRunOptions {
+interface EvaluationRunOptions {
   readonly identity: { readonly evaluationId: string; readonly createdAt: string }
   readonly model: string
   readonly scope: {
@@ -55,8 +57,12 @@ interface HarnessRunOptions {
   }
   readonly number: number
   readonly label: string
-  readonly capabilities: unknown
-  readonly concurrency: number
+  readonly evaluator: {
+    readonly name: string
+    readonly kind: EvaluatorKind
+    readonly capabilities: EvaluatorCapabilities
+  }
+  readonly concurrency: ConcurrencyResolution
   readonly areaSources: Readonly<
     Record<string, { readonly selector: string; readonly kind: string }>
   >
@@ -65,22 +71,22 @@ interface HarnessRunOptions {
   readonly payloads: ReadonlyArray<StoredPayload>
 }
 
-export const harnessRunArtifact = (options: HarnessRunOptions) => ({
-  schemaVersion: 8,
+export const evaluationRunArtifact = (options: EvaluationRunOptions) => ({
+  schemaVersion: 9,
   kind: "EvaluationRun",
   manifest: {
     ...options.identity,
     model: options.model,
     ...options.scope,
     run: { number: options.number, label: options.label },
-    evaluator: "harness",
-    evaluatorKind: "harness",
-    evaluatorCapabilities: options.capabilities,
-    concurrency: options.concurrency,
+    evaluator: options.evaluator.name,
+    evaluatorKind: options.evaluator.kind,
+    evaluatorCapabilities: options.evaluator.capabilities,
+    concurrency: options.concurrency.resolved,
     areaSources: options.areaSources,
   },
   state: {
-    status: "awaiting_evaluator",
+    status: options.concurrency.mode === "delegated" ? "awaiting_evaluator" : "running",
     workUnits: options.workUnits,
     startedAt: options.identity.createdAt,
     updatedAt: options.identity.createdAt,
@@ -90,45 +96,59 @@ export const harnessRunArtifact = (options: HarnessRunOptions) => ({
   results: { payloads: options.payloads },
 })
 
-export const harnessRunEvents = (
+export const evaluationRunEvents = (
   timestamp: string,
   evaluationId: string,
-  capabilities: unknown,
-  outstanding: number,
+  evaluator: EvaluationRunOptions["evaluator"],
+  concurrency: ConcurrencyResolution,
+  pending: number,
 ): string =>
   [
     {
       timestamp,
       event: "run_created",
       evaluationId,
-      evaluator: "harness",
-      evaluatorKind: "harness",
-      capabilities,
+      evaluator: evaluator.name,
+      evaluatorKind: evaluator.kind,
+      capabilities: evaluator.capabilities,
+      dispatchMode: concurrency.mode,
+      concurrencyResolution: {
+        source: concurrency.source,
+        requested: concurrency.requested,
+        automatic: concurrency.automatic,
+        ...(concurrency.maximum === undefined ? {} : { maximum: concurrency.maximum }),
+        resolved: concurrency.resolved,
+        clamped: concurrency.clamped,
+      },
     },
     {
       timestamp,
       event: "run_status",
-      status: "awaiting_evaluator",
-      outstanding,
+      status: concurrency.mode === "delegated" ? "awaiting_evaluator" : "running",
+      ...(concurrency.mode === "delegated" ? { outstanding: pending } : { pending }),
+      ...(concurrency.mode === "delegated" ? { peakOutstanding: pending } : {}),
     },
   ]
     .map((entry) => JSON.stringify(entry))
     .join("\n") + "\n"
 
-export const harnessRunReceipt = (options: {
+export const evaluationRunReceipt = (options: {
   readonly path: string
+  readonly evaluator: string
+  readonly evaluatorKind: EvaluatorKind
   readonly concurrency: number
   readonly total: number
   readonly evaluatorUnits: number
   readonly completed: number
   readonly sources: ReadonlyArray<JsonObject>
   readonly requests: ReadonlyArray<HarnessRequestReceipt>
+  readonly dispatchMode: "direct" | "delegated" | "sequential"
 }) => ({
   schemaVersion: 3,
   path: options.path,
-  status: "awaiting_evaluator",
-  evaluator: "harness",
-  evaluatorKind: "harness",
+  status: options.dispatchMode === "delegated" ? "awaiting_evaluator" : "running",
+  evaluator: options.evaluator,
+  evaluatorKind: options.evaluatorKind,
   concurrency: options.concurrency,
   workUnits: {
     total: options.total,

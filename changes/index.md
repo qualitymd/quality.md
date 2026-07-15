@@ -43,10 +43,7 @@ edit.
 
 # Open change cases
 
-- [0204 — Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md) -
-  resolve and enforce evaluator concurrency from transport capabilities while
-  keeping CLI scheduling authoritative and agent/subagent judgment bounded
-  (`In-Progress`).
+No open change cases.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

@@ -8,7 +8,7 @@ timestamp: 2026-07-15T00:00:00Z
 
 # Transport-aware evaluator concurrency — design
 
-Design behind the
+Archived design behind the
 [Transport-aware evaluator concurrency](../0204-transport-aware-evaluator-concurrency.md)
 Change Case and its [functional spec](spec.md).
 

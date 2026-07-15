@@ -2,6 +2,13 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0204 - Transport-aware
+  evaluator concurrency. Harness evaluation now delegates one bounded request
+  per worker, keeps the full outstanding set and artifact lifecycle in the
+  runner-owning parent, prohibits recursive delegation and worker-side quality
+  control, and reports outstanding limits without claiming active execution.
+
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.32.2`
   for the compatible CLI patch release while retaining
   `qualitymd >=0.32.0 <0.33.0` compatibility.

@@ -51,6 +51,12 @@ describe("evaluator selection", () => {
     )
     expect(selected.kind).toBe("claude")
     expect(selected.name).toBe("team-agent")
+    expect(selected.capabilities.dispatch).toEqual({
+      concurrentCalls: false,
+      delegatedRequests: false,
+      automaticConcurrency: 1,
+      maxConcurrency: 1,
+    })
   })
 
   it("rejects direct API profile kinds", () => {
@@ -65,8 +71,12 @@ describe("evaluator selection", () => {
 
   it("reports the default Claude adapter's sequential, no-subagent execution boundary", () => {
     const selected = selectEvaluator("claude", workspace(), discovery(["claude"], false))
-    expect(selected.capabilities.concurrent).toBe(false)
-    expect(selected.capabilities.subagents).toBe(false)
+    expect(selected.capabilities.dispatch).toEqual({
+      concurrentCalls: false,
+      delegatedRequests: false,
+      automaticConcurrency: 1,
+      maxConcurrency: 1,
+    })
     expect(selected.capabilities.executableOverride).toBe(true)
     expect(selected.capabilities.workspaceInspection).toBe(true)
     expect(selected.capabilities.instructionIsolation).toBe(true)

@@ -41,10 +41,17 @@ run artifacts, or become a second workflow engine.
 
 Every evaluator **MUST** declare structured output, workspace inspection,
 instruction isolation, mediated verification, network policy, tool use,
-concurrent calls, nested subagents, fresh-session isolation, cancellation,
-usage reporting, turn limits, token or cost limits, context-window visibility,
-compaction control, sandbox control, and executable override. Unsupported
-controls **MUST** be represented as unsupported rather than silently ignored.
+dispatch capability, fresh-session isolation, cancellation, usage reporting,
+turn limits, token or cost limits, context-window visibility, compaction
+control, sandbox control, and executable override. Unsupported controls **MUST**
+be represented as unsupported rather than silently ignored.
+
+The dispatch capability **MUST** contain `concurrentCalls`,
+`delegatedRequests`, positive `automaticConcurrency`, and optional positive
+`maxConcurrency`. Automatic concurrency **MUST NOT** exceed the maximum. When
+both dispatch booleans are false, automatic and maximum concurrency **MUST**
+both be `1`. Direct calls describe simultaneous adapter invocations; delegated
+requests describe an external harness servicing several checkpointed requests.
 
 Requirement inspection requires structured output, workspace inspection,
 instruction isolation, a fresh session, cancellation, read-only workspace
@@ -110,6 +117,19 @@ The runnable evaluator kinds are:
 `auto` is selection syntax, not an evaluator kind. Direct `openai` and
 `anthropic` API evaluators and inactive `shell` and `manual` names do not exist.
 
+Built-in dispatch capabilities **MUST** be:
+
+| Evaluator | Concurrent calls | Delegated requests | Automatic | Maximum |
+| --------- | ---------------- | ------------------ | --------: | ------: |
+| `harness` | no               | yes                |         4 |       — |
+| `codex`   | yes              | no                 |         4 |       — |
+| `claude`  | no               | no                 |         1 |       1 |
+
+Configured profiles inherit the dispatch capability of their `kind`; model and
+command overrides **MUST NOT** alter capacity. Codex nested agents remain
+disabled: its concurrency is several independent SDK calls, not recursive
+delegation.
+
 SDK-backed evaluators **MUST** be invoked non-interactively, constrain output by
 JSON Schema when supported, use a fresh non-persisted session, propagate
 cancellation, and keep the provider-managed executable inside the adapter
@@ -140,6 +160,11 @@ The first accepted result **MUST** bind the run to the supplied harness runtime
 identity. Later submissions **MUST** match it. Each result **MUST** correlate to
 one persisted pending request and input hash. The runner retains all validation,
 retry, persistence, and scheduling authority across checkpoints.
+
+The invoking harness **MAY** judge a request itself or give one self-contained
+request to one native worker. That worker **MUST NOT** select sibling work,
+receive the whole ready frontier, write run artifacts, run an independent
+quality-control workflow, or delegate recursively.
 
 ## Prompt shaping and context
 
@@ -186,7 +211,8 @@ evaluators:
 ```
 
 `auto`, `harness`, `codex`, and `claude` **MUST NOT** be shadowed by profile
-names. Profiles **MUST NOT** carry `apiKeyEnv`, `baseUrl`, or direct API kinds.
+names. Profiles **MUST NOT** carry concurrency, dispatch, `apiKeyEnv`,
+`baseUrl`, or direct API kinds.
 
 ## Runner authority and cancellation
 
@@ -195,6 +221,12 @@ schema validation, evidence sealing, and persistence. Evaluator adapters
 **MUST** propagate cancellation to SDK streams and child runtimes and close
 scoped resources. Late output from a cancelled, completed, or superseded call
 **MUST NOT** be accepted.
+
+Before issuing any request, the runner **MUST** validate the selected
+evaluator's dispatch declaration, resolve the cap, and persist immutable
+evaluator identity, kind, capabilities, and concurrency. A worker receives one
+dependency-ready request and returns one result or classified failure; it never
+owns graph or artifact state.
 
 ## Safety, environment, and observability
 

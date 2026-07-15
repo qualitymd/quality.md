@@ -5,7 +5,6 @@ import * as Layer from "effect/Layer"
 export interface HostRuntimeService {
   readonly cwd: string
   readonly environment: Readonly<Record<string, string | undefined>>
-  readonly hardwareConcurrency: number
   readonly currentTimeMillis: Effect.Effect<number>
   readonly randomBytes: (length: number) => Effect.Effect<Uint8Array>
   readonly readStdin: Effect.Effect<string>
@@ -20,7 +19,6 @@ export class HostRuntime extends Context.Service<HostRuntime, HostRuntimeService
 export const HostRuntimeLive = Layer.succeed(HostRuntime, {
   cwd: process.cwd(),
   environment: process.env,
-  hardwareConcurrency: navigator.hardwareConcurrency,
   currentTimeMillis: Effect.sync(() => Date.now()),
   randomBytes: (length) => Effect.sync(() => crypto.getRandomValues(new Uint8Array(length))),
   readStdin: Effect.promise(() => Bun.stdin.text()),

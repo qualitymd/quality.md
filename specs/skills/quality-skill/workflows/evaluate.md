@@ -128,6 +128,12 @@ with newly-ready requests. In unattended automation the loop **MUST NOT**
 add interactive gates: the run advances, returns a report, or stops with the
 runner's classified remedy.
 
+A delegated worker **MUST** receive exactly one self-contained request. It
+**MUST NOT** receive the whole outstanding set, `evaluation.json`, artifact
+write authority, an alternate QC task, or recursive delegation authority.
+Progress **MUST** describe up to `N` outstanding requests or the cap; it **MUST
+NOT** claim `N` active workers unless those workers were actually dispatched.
+
 While the runner executes and after it returns, `evaluate` **MUST NOT**
 independently collect evidence, run a parallel QC loop, second-guess the
 runner's authoritative result, judge anything beyond a checkpoint's supplied

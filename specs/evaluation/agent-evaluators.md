@@ -22,6 +22,12 @@ described in BCP 14 when, and only when, they appear in all capitals.
 local runtime. `harness` transports the same bounded requests to the invoking
 coding-agent harness. There are no direct model-API evaluators.
 
+Codex declares concurrent direct calls with automatic cap `4` while nested
+agents remain disabled in every fresh session. Claude declares sequential
+direct service with automatic and maximum cap `1`. Harness declares delegated
+requests with automatic cap `4`, not simultaneous in-process calls. Configured
+profiles inherit their kind's declaration.
+
 A provider-managed child executable is inside the evaluator boundary. It
 **MUST NOT** schedule evaluation work, persist run state, assemble reports, or
 become a project-owned sidecar protocol.
@@ -123,6 +129,13 @@ acceptance, and deterministic persistence. Agent adapters **MUST** propagate
 cancellation to SDK streams and provider child runtimes and close scoped
 resources. Late output after cancellation or request supersession **MUST NOT**
 be accepted.
+
+The runner may keep several independent Codex sessions active, but each adapter
+worker receives exactly one ready request and returns exactly one result or
+failure. It **MUST NOT** schedule siblings, invoke nested agents, mutate run
+state, or retain a provider conversation for another work unit. Completion
+order is transport activity only; accepted payloads remain projected in graph
+order.
 
 Turn, token, and cost limits are enforced only when the capability declaration
 says the selected adapter supports them. Advisory or unavailable provider usage

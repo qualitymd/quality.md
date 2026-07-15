@@ -4,6 +4,13 @@ export type EvaluatorKind = "harness" | "codex" | "claude"
 
 export type SourceKind = "path" | "glob" | "prose"
 
+export interface EvaluatorDispatchCapability {
+  readonly concurrentCalls: boolean
+  readonly delegatedRequests: boolean
+  readonly automaticConcurrency: number
+  readonly maxConcurrency?: number
+}
+
 export interface EvaluatorCapabilities {
   readonly structuredOutput: boolean
   readonly workspaceInspection: boolean
@@ -11,8 +18,7 @@ export interface EvaluatorCapabilities {
   readonly verification: boolean
   readonly networkAccess: "disabled"
   readonly tools: boolean
-  readonly concurrent: boolean
-  readonly subagents: boolean
+  readonly dispatch: EvaluatorDispatchCapability
   readonly freshContext: boolean
   readonly cancellation: boolean
   readonly usage: boolean

@@ -5,6 +5,28 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation concurrency now comes from the selected evaluator transport rather
+  than host CPU count: harness and Codex default to four, while Claude remains
+  sequential. Workspace `evaluation.concurrency` stays the only configuration
+  override and is clamped by any evaluator maximum; no CLI flag is added.
+- Direct evaluator runs now create their immutable manifest with the selected
+  evaluator before issuing work and use a completion-driven bounded pool. Each
+  accepted result is persisted before its slot is refilled, so fast calls no
+  longer wait behind the slowest sibling and accepted work survives
+  interruption. Harness runs retain their bounded rolling request window.
+- `evaluation.json` advances to schema version 9 with structured dispatch
+  capabilities and concurrency provenance. In-flight version-8 runs must be
+  started again; completed historical artifacts remain historical records.
+
+### /quality skill
+
+- Harness evaluation may assign one self-contained outstanding request to each
+  native worker while the parent keeps graph, artifact, quality-control, and
+  retry authority. Progress distinguishes the runner's outstanding cap from
+  requests actually dispatched.
+
 ## v0.32.2 - 2026-07-15
 
 ### Internal

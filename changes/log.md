@@ -2,14 +2,31 @@
 
 ## 2026-07-15
 
+- **Done**: Completed and archived
+  [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md).
+  All R1-R8 requirements passed the review ledger: transport capability and
+  resolution matrices, selected-first initialization, bounded completion-driven
+  dispatch, deterministic ordering, harness partial submission, per-result
+  durability, isolated retry, cancellation and resume, honest progress,
+  schema-version refusal, and the complete repository gate.
+
+- **In-Review**: Implemented
+  [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md).
+  Added structured dispatch capabilities, selected-evaluator-first schema-9 run
+  creation, transport-derived cap resolution, completion-driven direct worker
+  scheduling, serialized per-result persistence, resumable cancellation, honest
+  harness delegation guidance, durable-spec and skill rollups, and an R1-R8
+  review ledger. The complete repository gate passes with 19 test files and 80
+  tests.
+
 - **In-Progress**: Advanced
-  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md)
   from `Design` after confirming the selected-evaluator-first preparation and
   completion-driven coordinator design against the current runner. Runtime,
   durable-spec, skill, and test implementation is underway.
 
 - **Design**: Advanced
-  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md)
   from `Draft` to `Design` after R1–R8 passed individual requirement-quality
   and set-level review. Added the design doc: explicit direct/delegated dispatch
   capabilities, transport defaults, selected-evaluator-first run preparation,
@@ -19,7 +36,7 @@
   spec changed in this phase.
 
 - **Draft**: Opened
-  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md)
   with a functional spec for runner scheduling authority, honest transport
   capabilities, transport-derived automatic caps, selected-evaluator-first run
   creation, completion-driven direct dispatch, bounded harness delegation,
