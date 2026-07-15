@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluation runner
 description: CLI-owned deterministic evaluation engine, concurrency, run-local logging, and failure taxonomy.
 tags: [evaluation, runner, orchestration]
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Evaluation runner
@@ -255,12 +255,15 @@ The runner **MUST** write evaluator-call metadata to a run-local structured log
 at `logs/evaluator-calls.jsonl`. Call metadata **SHOULD** include evaluator
 kind, model when known, work-unit kind, attempt number, duration, input hash,
 output hash, resolved concurrency, context/cache metadata when available,
-declared capabilities, and usage when available. When the evaluator reports cached input tokens, the
-runner **MUST** include the cached-input-token count in the call's usage
-metadata.
+declared capabilities, and usage when available. When the evaluator reports
+cache-read or cache-creation input tokens, the runner **MUST** preserve each
+count separately in the call's usage metadata, including a reported zero. An
+unreported count **MUST** remain absent. Cache usage **MUST NOT** enter
+`evaluation.json`.
 
 > Rationale: the call log is where per-call usage lives; the cached-vs-fresh
-> input split is what makes the prompt-caching saving measurable. — 0193
+> input split is what makes the prompt-caching saving measurable. Cache creation
+> distinguishes a newly written prefix from an unavailable metric. — 0193, 0203
 
 Run-local logs **MUST NOT** record raw prompts, workspace file bodies, raw model
 responses, API keys, auth tokens, or environment variable values by default.

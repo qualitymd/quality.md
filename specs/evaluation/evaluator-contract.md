@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluator contract
 description: Capability, inspection request, result, harness, and agent-runtime profile contract for evaluation evaluators.
 tags: [evaluation, evaluator, agents]
-timestamp: 2026-07-14T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Evaluator contract
@@ -88,7 +88,9 @@ Every evaluator kind **MUST** return the same schema-valid envelope for the same
 work-unit kind. It carries the payload, evaluator kind, model when known,
 non-sensitive context metadata when available, optional usage, or a classified
 failure. Usage **MUST** distinguish unavailable values from zero; cached input
-tokens **MUST** remain distinct when the provider reports them.
+tokens read and cache-creation input tokens **MUST** remain separate when the
+provider reports them. An adapter **MUST NOT** invent a zero for a value the
+provider did not report.
 
 The runner **MUST** independently validate every payload. A requirement result
 is accepted only after its evidence proposal is sealed under the
@@ -141,14 +143,25 @@ retry, persistence, and scheduling authority across checkpoints.
 
 ## Prompt shaping and context
 
-The runner **SHOULD** order stable instructions, schema, model vocabulary,
-rating scale, and area frame before the requirement-specific delta so providers
-can cache a stable prefix. Cache availability and provider-retained context
-**MUST NOT** affect correctness or resume.
+An SDK adapter **MUST** render the project-owned prompt as an explicit
+deterministic cacheable prefix followed by a stable boundary and a work-unit
+suffix. The prefix **MUST** order evaluator policy, work-unit kind and
+instructions, applicable QUALITY.md body guidance, shared accepted context,
+and inspection availability and policy before the suffix's work-unit identity,
+subject, and per-work-unit context. Structured prompt blocks **MUST** use
+canonical recursively key-sorted JSON so object insertion order cannot change
+otherwise equivalent bytes.
+
+Provider-owned system instructions, tools, and structured-output schema may
+precede that prompt under the SDK's supported caching behavior. Cache
+availability, cache hits, and provider-retained context **MUST NOT** affect
+correctness, result acceptance, or resume.
 
 Each requirement **MUST** start a new session and **MUST NOT** receive a sibling
 transcript, earlier inspection transcript, or shared provider conversation.
-Provider session IDs may be logged as diagnostics but are never resume state.
+An adapter **MUST NOT** resume or fork a prior evaluator session to optimize
+tokens. Provider session IDs may be logged as diagnostics but are never resume
+state.
 
 ## Configuration
 

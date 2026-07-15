@@ -7,6 +7,7 @@ import { renderEvaluationPrompt } from "../domain/evaluator/context.ts"
 import {
   EvaluatorFailure,
   type EvaluationResponse,
+  type EvaluationUsage,
   type EvaluatorCapabilities,
 } from "../domain/evaluator/types.ts"
 import type { EvaluatorService } from "../services/evaluator.ts"
@@ -16,6 +17,44 @@ const failure = (cause: unknown, category: EvaluatorFailure["category"] = "inter
     category,
     detail: cause instanceof Error ? cause.message : String(cause),
   })
+
+export const claudeSystemPrompt = {
+  type: "preset",
+  preset: "claude_code",
+  excludeDynamicSections: true,
+} as const
+
+export const codexEvaluationUsage = (usage: {
+  readonly input_tokens?: number
+  readonly output_tokens?: number
+  readonly cached_input_tokens?: number
+}): EvaluationUsage => ({
+  ...(usage.input_tokens === undefined ? {} : { inputTokens: usage.input_tokens }),
+  ...(usage.output_tokens === undefined ? {} : { outputTokens: usage.output_tokens }),
+  ...(usage.cached_input_tokens === undefined
+    ? {}
+    : { cachedInputTokens: usage.cached_input_tokens }),
+})
+
+export const claudeEvaluationUsage = (
+  usage: {
+    readonly input_tokens?: number
+    readonly output_tokens?: number
+    readonly cache_read_input_tokens?: number
+    readonly cache_creation_input_tokens?: number
+  },
+  costUsd?: number,
+): EvaluationUsage => ({
+  ...(usage.input_tokens === undefined ? {} : { inputTokens: usage.input_tokens }),
+  ...(usage.output_tokens === undefined ? {} : { outputTokens: usage.output_tokens }),
+  ...(usage.cache_read_input_tokens === undefined
+    ? {}
+    : { cachedInputTokens: usage.cache_read_input_tokens }),
+  ...(usage.cache_creation_input_tokens === undefined
+    ? {}
+    : { cacheWriteInputTokens: usage.cache_creation_input_tokens }),
+  ...(costUsd === undefined ? {} : { costUsd }),
+})
 
 export const strictProviderSchema = (value: unknown): unknown => {
   if (Array.isArray(value)) return value.map(strictProviderSchema)
@@ -177,11 +216,7 @@ export const codexEvaluator = (
           ...(result.usage === null
             ? {}
             : {
-                usage: {
-                  inputTokens: result.usage.input_tokens,
-                  outputTokens: result.usage.output_tokens,
-                  cachedInputTokens: result.usage.cached_input_tokens,
-                },
+                usage: codexEvaluationUsage(result.usage),
               }),
         } satisfies EvaluationResponse
       }),
@@ -253,6 +288,7 @@ export const claudeEvaluator = (
                   permissionMode: "dontAsk",
                   settingSources: [],
                   persistSession: false,
+                  systemPrompt: claudeSystemPrompt,
                   env: childEnvironment("claude"),
                   stderr: (data) => {
                     stderr = (stderr + data).slice(-2048)
@@ -293,11 +329,7 @@ export const claudeEvaluator = (
           evaluatorKind: "claude",
           ...(options.model === undefined ? {} : { model: options.model }),
           contextMeta: { sessionId: result.session_id },
-          usage: {
-            inputTokens: result.usage.input_tokens,
-            outputTokens: result.usage.output_tokens,
-            costUsd: result.total_cost_usd,
-          },
+          usage: claudeEvaluationUsage(result.usage, result.total_cost_usd),
         } satisfies EvaluationResponse
       }),
     ).pipe(

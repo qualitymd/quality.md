@@ -5,6 +5,15 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Internal
+
+- Evaluator prompts now place canonical shared policy, task, model, and
+  inspection context before each work-unit delta so provider prompt caching can
+  reuse the longest safe prefix across independent sessions. Claude uses its
+  supported cache-stable system-prompt preset, and run-local evaluator-call
+  logs preserve separately reported cache-read and cache-creation input tokens.
+  Evaluator sessions remain fresh and are never resumed or forked for reuse.
+
 ## v0.32.1 - 2026-07-14
 
 ### CLI

@@ -2,15 +2,30 @@
 
 ## 2026-07-15
 
+- **Done**: Completed and archived
+  [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md).
+  All R1–R6 requirements passed the review ledger: exact prompt-part tests,
+  provider usage and call-log coverage, the full local gate, unchanged fresh
+  sessions, and two repeated scoped Claude runs with cache-read evidence.
+
+- **In-Review**: Implemented
+  [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md).
+  Added explicit canonical shared prompt prefixes, work-unit suffixes, Claude's
+  supported cache-stable system preset, separate cache-read/cache-creation
+  usage mapping, run-log coverage, durable evaluation contracts, and a review
+  ledger. The full gate and two identical scoped Claude runs pass; the repeated
+  synthesis calls reported 31,019 cache-read tokens after zero on the first
+  run, without session resume or fork context.
+
 - **In-Progress**: Advanced
-  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md)
   from `Design` to `In-Progress` after settling prompt-part boundaries,
   canonical rendering, usage mapping, Claude system-prefix shaping, isolation,
   and verification. Implementation may now update the affected runtime, tests,
   durable evaluation specs, and release notes.
 
 - **Design**: Advanced
-  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md)
   from `Draft` to `Design` after R1–R6 passed individual requirement-quality
   and set-level review. Added the design doc: explicit prompt parts with a stable
   boundary, canonical JSON blocks, pure provider usage mapping, Claude's preset
@@ -18,7 +33,7 @@
   live evidence. No production code changed in this phase.
 
 - **Draft**: Opened
-  [0203 - Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md)
+  [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md)
   with a functional spec for layered deterministic prompt prefixes, canonical
   structured blocks, separate cache-read/cache-write telemetry, Claude's
   cache-stable preset system prefix, fresh-session independence, and bounded

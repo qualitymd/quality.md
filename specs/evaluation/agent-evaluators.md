@@ -3,7 +3,7 @@ type: Functional Specification
 title: Agent evaluators
 description: Requirement-specific workspace inspection, neutral sessions, evidence proposals, and coding-agent SDK policy.
 tags: [evaluation, evaluator, agents, evidence]
-timestamp: 2026-07-14T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Agent evaluators
@@ -46,9 +46,11 @@ exploration transcript. It **MUST** record unavailable or inconclusive checks as
 unknowns, evaluation limits, partial or blocked status, or a non-rating instead
 of guessing.
 
-Sessions **MUST NOT** receive sibling transcripts or share a provider
-conversation. Provider caching may reuse stable prompt prefixes, but correctness
-and resume **MUST NOT** depend on it.
+Sessions **MUST NOT** receive sibling transcripts, resume an earlier session,
+fork a seeded transcript, or share a provider conversation. Provider caching
+may reuse deterministic prompt prefixes, but cached tokens still occupy the
+session's logical context window. Correctness and resume **MUST NOT** depend on
+cache state.
 
 ## Neutral instruction boundary
 
@@ -91,11 +93,15 @@ The Claude adapter **MUST** use a neutral temporary working directory, add the
 modeled workspace as an explicit directory, set no project or user setting
 sources, disable session persistence, allow only read/glob/search tools for
 inspection, disallow write/edit/shell/agent tools, constrain structured output,
-and propagate cancellation.
+and propagate cancellation. It **MUST** use the SDK's `claude_code` preset with
+dynamic system sections excluded from the provider's globally cacheable system
+prefix and re-injected through the SDK-supported user-message path.
 
 Readiness **MUST** verify the required capability set before work starts.
 Provider session identifiers and usage may be logged as non-sensitive
-diagnostics, but are not run state.
+diagnostics, but are not run state. Usage **MUST** preserve separately reported
+input, output, cache-read input, cache-creation input, and cost values without
+turning absent values into zero.
 
 ## Evidence proposals
 

@@ -2,16 +2,16 @@
 type: Change Case
 title: Evaluator prompt cache efficiency
 description: Make fresh evaluator sessions share deterministic cacheable prompt prefixes and report provider cache usage without coupling judgment contexts.
-status: In-Progress
+status: Done
 tags: [evaluation, evaluator, prompt-caching, tokens, codex, claude]
 timestamp: 2026-07-15T00:00:00Z
 ---
 
 # Evaluator prompt cache efficiency
 
-Status note: **In-Progress**; R1–R6 passed individual and set-level review, the
-technical design is settled, and implementation may now update the affected
-runtime, test, durable-spec, and release-note surfaces.
+Status note: case is **Done**. Implementation, focused and full gates, two
+complete repeated Claude runs, requirement review, and the durable-spec rollup
+passed; acceptance evidence is recorded in the child review ledger.
 
 ## Motivation
 
@@ -75,8 +75,8 @@ Derived from searches for prompt rendering, usage fields, evaluator-call
 logging, fresh-session rules, provider SDK options, and release/version surfaces.
 
 - **Change record:** this parent, `spec.md`, `design.md`, and `review.md` under
-  `changes/0203-evaluator-prompt-cache-efficiency/`; changes bundle indexes and
-  log; archived together when done.
+  `changes/archive/0203-evaluator-prompt-cache-efficiency/`; changes bundle
+  indexes and log; archived together with this parent.
 - **Durable specs:** `specs/evaluation/evaluator-contract.md` strengthens prompt
   prefix ordering and cache-usage preservation;
   `specs/evaluation/agent-evaluators.md` records provider cache shaping without
@@ -113,4 +113,6 @@ logging, fresh-session rules, provider SDK options, and release/version surfaces
 - [Design doc](0203-evaluator-prompt-cache-efficiency/design.md) — explicit
   prompt parts, canonical blocks, provider usage adapters, and cache-stable
   Claude configuration.
-- Review ledger — added during implementation and completed before archival.
+- [Review ledger](0203-evaluator-prompt-cache-efficiency/review.md) — requirement
+  status, repeated live cache evidence, isolation checks, durable-spec rollup,
+  and local gates.

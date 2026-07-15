@@ -832,3 +832,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   brings runtime collection derivation into style-guide conformance, decomposes
   harness execution into pure domain functions and named Effect operations, and
   unifies run-folder recognition under one durable rule (`Done`).
+- [0203 — Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md) -
+  makes fresh evaluator sessions share canonical cacheable prompt prefixes,
+  preserves provider cache reads and creation separately, and verifies reuse
+  through repeated Claude runs without resume or fork context (`Done`).

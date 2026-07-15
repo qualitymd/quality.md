@@ -1,5 +1,16 @@
 # Evaluation v2 update log
 
+## 2026-07-15
+
+- **Revision**: Updated the [Evaluator contract](evaluator-contract.md),
+  [Agent evaluators](agent-evaluators.md), and [Runner](runner.md) contracts for
+  [0203 - Evaluator prompt cache efficiency](../../changes/archive/0203-evaluator-prompt-cache-efficiency.md).
+  Project-owned evaluator prompts now expose a deterministic canonical shared
+  prefix before the work-unit delta, Claude uses its supported cache-stable
+  preset system prompt, provider cache reads and writes remain distinct in the
+  run-local call log, and every judgment still uses an independent fresh
+  session rather than resume or fork context.
+
 ## 2026-07-14
 
 - **Revision**: Updated the evaluation, runner, protocol, orchestration,

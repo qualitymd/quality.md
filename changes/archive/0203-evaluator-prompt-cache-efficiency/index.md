@@ -10,3 +10,5 @@ Change Case.
   verification requirements.
 - [Design doc](design.md) - explicit prompt parts, canonical blocks, provider
   usage adapters, and cache-stable Claude configuration.
+- [Review ledger](review.md) - requirement status, live Claude cache evidence,
+  isolation checks, durable-spec rollup, and local gates.

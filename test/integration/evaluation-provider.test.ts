@@ -184,7 +184,12 @@ factors:
             evaluatorKind: "claude",
             model: "mock-model",
             payload: payloadFor(request),
-            usage: { inputTokens: 10, outputTokens: 5 },
+            usage: {
+              inputTokens: 10,
+              outputTokens: 5,
+              cachedInputTokens: 4,
+              cacheWriteInputTokens: 3,
+            },
           }),
       }
       const result = yield* executeProviderRun(
@@ -235,6 +240,23 @@ factors:
         yield* Effect.promise(() => readFile(join(runPath, "logs", "events.jsonl"), "utf8")),
         /"status":"completed"/,
       )
+      const calls = (yield* Effect.promise(() =>
+        readFile(join(runPath, "logs", "evaluator-calls.jsonl"), "utf8"),
+      ))
+        .trim()
+        .split("\n")
+        .map((line) => JSON.parse(line) as { usage?: Record<string, number> })
+      assert.ok(calls.length > 0)
+      for (const call of calls)
+        assert.deepStrictEqual(call.usage, {
+          inputTokens: 10,
+          outputTokens: 5,
+          cachedInputTokens: 4,
+          cacheWriteInputTokens: 3,
+        })
+      const persistedArtifact = JSON.stringify(artifact)
+      assert.notMatch(persistedArtifact, /cachedInputTokens/)
+      assert.notMatch(persistedArtifact, /cacheWriteInputTokens/)
     }),
   )
 

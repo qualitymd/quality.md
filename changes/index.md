@@ -43,9 +43,7 @@ edit.
 
 # Open change cases
 
-- [0203 — Evaluator prompt cache efficiency](0203-evaluator-prompt-cache-efficiency.md) -
-  make fresh evaluator sessions share deterministic cacheable prefixes and
-  preserve provider cache usage (`In-Progress`).
+None.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
