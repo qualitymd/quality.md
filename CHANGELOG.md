@@ -5,6 +5,12 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Packaging
+
+- The Windows `install.cmd` shim prefers PowerShell 7 when available, avoiding
+  legacy module-discovery failures inherited from a PowerShell 7 parent while
+  retaining Windows PowerShell as its fallback.
+
 ## v0.31.0 - 2026-07-14
 
 ### Specification
