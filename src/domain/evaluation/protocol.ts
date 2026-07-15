@@ -1,7 +1,5 @@
 import evaluationSchema from "../../assets/evaluation-data.schema.json"
-import { hashJson } from "../json.ts"
 import type { SourceKind } from "../evaluator/types.ts"
-import type { QualityModel } from "../model/model.ts"
 import type { WorkUnit } from "./graph.ts"
 import type { EvaluationPlan, PlannedFactor } from "./plan.ts"
 
@@ -15,16 +13,20 @@ export interface StoredPayload {
 export interface ProtocolRequest {
   readonly workUnitId: string
   readonly kind: string
-  readonly subject: string
+  readonly subject?: string
   readonly instructions: string
-  readonly sharedContext: JsonObject | null
-  readonly context: JsonObject | null
-  readonly bodyGuidance: string
-  readonly inspection: JsonObject | null
+  readonly sharedContext?: JsonObject
+  readonly context?: JsonObject
+  readonly bodyGuidance?: string
+  readonly inspection?: JsonObject
   readonly expectedSchema: JsonObject
   readonly expectedSchemaText: string
   readonly inputHash: string
   readonly correlationId: string
+}
+
+export interface ProtocolRequestDraft extends Omit<ProtocolRequest, "inputHash"> {
+  readonly hashInput: JsonObject
 }
 
 const schema = evaluationSchema as {
@@ -217,7 +219,132 @@ const instructions = {
     "- findingCoverage must contain exactly one entry per finding in the findings context: copy findingRef verbatim, set disposition to addressed_by_recommendation (with recommendationRefs listing covering recommendation ids) or not_advice_driving (with a short rationale).",
 } as const
 
-export const buildProtocolRequest = async (options: {
+interface ProtocolParts {
+  readonly instructions: string
+  readonly sharedContext?: JsonObject
+  readonly context?: JsonObject
+  readonly bodyGuidance?: string
+  readonly inspection?: JsonObject
+}
+
+const protocolParts = (options: {
+  readonly unit: WorkUnit
+  readonly plan: EvaluationPlan
+  readonly payloads: ReadonlyArray<StoredPayload>
+  readonly areaSources: Readonly<
+    Record<string, { readonly selector: string; readonly kind: SourceKind }>
+  >
+  readonly bodyGuidance: string
+}): ProtocolParts => {
+  const { unit, plan, payloads, areaSources, bodyGuidance } = options
+  if (unit.kind === "assessRateRequirement") {
+    const requirement = plan.requirements.find((entry) => entry.ref === unit.subject)!
+    const source = areaSources[requirement.areaId]!
+    return {
+      instructions: instructions.assessRateRequirement,
+      sharedContext: {
+        areaEvaluationFrame: payloadFor(payloads, `frameAreaEvaluation:${requirement.areaId}`)!,
+      },
+      context: {
+        requirement: {
+          assessment: requirement.value.assessment,
+          description: requirement.value.description ?? "",
+          requirementId: requirement.ref,
+          title: requirement.value.title,
+        },
+        requirementEvaluationFrame: payloadFor(
+          payloads,
+          `frameRequirementEvaluation:${requirement.ref}`,
+        )!,
+      },
+      ...(bodyGuidance === "" ? {} : { bodyGuidance }),
+      inspection: {
+        workspaceRoot: ".",
+        source,
+        policy: {
+          workspace: "read-only",
+          network: "disabled",
+          approvals: "never",
+          verification: "unavailable",
+          repositoryInstructions: "untrusted-data",
+        },
+      },
+    }
+  }
+  if (unit.kind === "analyzeFactor") {
+    const factor = plan.factors.find((entry) => entry.ref === unit.subject)!
+    return {
+      instructions: instructions.analyzeFactor,
+      context: {
+        factorAnalysisFrame: payloadFor(payloads, `frameFactorAnalysis:${factor.ref}`)!,
+        directRequirementRatings: Object.fromEntries(
+          factorRequirements(factor, plan).map((ref) => [
+            ref,
+            requirementPayload(payloads, ref, "RequirementRatingResult"),
+          ]),
+        ),
+        childFactorAnalyses: Object.fromEntries(
+          factorChildren(factor, plan).map((ref) => [
+            ref,
+            payloadFor(payloads, `analyzeFactor:${ref}`),
+          ]),
+        ),
+      },
+    }
+  }
+  if (unit.kind === "analyzeArea") {
+    const area = plan.areas.find((entry) => entry.ref === unit.subject)!
+    return {
+      instructions: instructions.analyzeArea,
+      context: {
+        areaAnalysisFrame: payloadFor(payloads, `frameAreaAnalysis:${area.ref}`)!,
+        factorAnalyses: Object.fromEntries(
+          area.rootFactorIds.map((ref) => [ref, payloadFor(payloads, `analyzeFactor:${ref}`)]),
+        ),
+        childAreaAnalyses: Object.fromEntries(
+          area.childAreaIds.map((ref) => [ref, payloadFor(payloads, `analyzeArea:${ref}`)]),
+        ),
+        localRequirementRatings: Object.fromEntries(
+          area.localRequirementIds.map((ref) => [
+            ref,
+            requirementPayload(payloads, ref, "RequirementRatingResult"),
+          ]),
+        ),
+      },
+    }
+  }
+  if (unit.kind === "rankFindings") {
+    return {
+      instructions: instructions.rankFindings,
+      context: { findings: findingIndex(plan, payloads) },
+    }
+  }
+  if (unit.kind === "recommend") {
+    return {
+      instructions: instructions.recommend,
+      context: {
+        areaAnalyses: Object.fromEntries(
+          plan.areas.map((area) => [area.ref, payloadFor(payloads, `analyzeArea:${area.ref}`)]),
+        ),
+        findingRanking: payloadFor(payloads, "rankFindings"),
+        findings: findingIndex(plan, payloads),
+      },
+    }
+  }
+  if (unit.kind === "rankRecommendations") {
+    return {
+      instructions: instructions.rankRecommendations,
+      context: {
+        recommendations: payloadsFor(payloads, "recommend"),
+        findings: findingIndex(plan, payloads),
+        findingRanking: payloadFor(payloads, "rankFindings"),
+      },
+    }
+  }
+  throw new Error(`no protocol request for ${unit.id}`)
+}
+
+export const buildProtocolRequest = (options: {
   readonly unit: WorkUnit
   readonly plan: EvaluationPlan
   readonly payloads: ReadonlyArray<StoredPayload>
@@ -226,232 +353,64 @@ export const buildProtocolRequest = async (options: {
   >
   readonly bodyGuidance: string
   readonly evaluationId: string
-}): Promise<ProtocolRequest> => {
-  const { unit, plan, payloads, areaSources, bodyGuidance, evaluationId } = options
+}): ProtocolRequestDraft => {
+  const { unit, evaluationId } = options
+  const parts = protocolParts(options)
   const expectedSchema = expectedSchemaFor(unit)
   const expectedSchemaText =
     JSON.stringify(expectedSchema, null, 2) +
     (unit.kind === "assessRateRequirement" || unit.kind === "recommend" ? "" : "\n")
-  let requestInstructions = ""
-  let sharedContext: JsonObject | null = null
-  let context: JsonObject | null = null
-  let inspection: JsonObject | null = null
-
-  if (unit.kind === "assessRateRequirement") {
-    requestInstructions = instructions.assessRateRequirement
-    const requirement = plan.requirements.find((entry) => entry.ref === unit.subject)!
-    const source = areaSources[requirement.areaId]!
-    sharedContext = {
-      areaEvaluationFrame: payloadFor(payloads, `frameAreaEvaluation:${requirement.areaId}`)!,
-    }
-    context = {
-      requirement: {
-        assessment: requirement.value.assessment,
-        description: requirement.value.description ?? "",
-        requirementId: requirement.ref,
-        title: requirement.value.title,
-      },
-      requirementEvaluationFrame: payloadFor(
-        payloads,
-        `frameRequirementEvaluation:${requirement.ref}`,
-      )!,
-    }
-    inspection = {
-      workspaceRoot: ".",
-      source,
-      policy: {
-        workspace: "read-only",
-        network: "disabled",
-        approvals: "never",
-        verification: "unavailable",
-        repositoryInstructions: "untrusted-data",
-      },
-    }
-  } else if (unit.kind === "analyzeFactor") {
-    requestInstructions = instructions.analyzeFactor
-    const factor = plan.factors.find((entry) => entry.ref === unit.subject)!
-    context = {
-      factorAnalysisFrame: payloadFor(payloads, `frameFactorAnalysis:${factor.ref}`)!,
-      directRequirementRatings: Object.fromEntries(
-        factorRequirements(factor, plan).map((ref) => [
-          ref,
-          requirementPayload(payloads, ref, "RequirementRatingResult"),
-        ]),
-      ),
-      childFactorAnalyses: Object.fromEntries(
-        factorChildren(factor, plan).map((ref) => [
-          ref,
-          payloadFor(payloads, `analyzeFactor:${ref}`),
-        ]),
-      ),
-    }
-  } else if (unit.kind === "analyzeArea") {
-    requestInstructions = instructions.analyzeArea
-    const area = plan.areas.find((entry) => entry.ref === unit.subject)!
-    context = {
-      areaAnalysisFrame: payloadFor(payloads, `frameAreaAnalysis:${area.ref}`)!,
-      factorAnalyses: Object.fromEntries(
-        area.rootFactorIds.map((ref) => [ref, payloadFor(payloads, `analyzeFactor:${ref}`)]),
-      ),
-      childAreaAnalyses: Object.fromEntries(
-        area.childAreaIds.map((ref) => [ref, payloadFor(payloads, `analyzeArea:${ref}`)]),
-      ),
-      localRequirementRatings: Object.fromEntries(
-        area.localRequirementIds.map((ref) => [
-          ref,
-          requirementPayload(payloads, ref, "RequirementRatingResult"),
-        ]),
-      ),
-    }
-  } else if (unit.kind === "rankFindings") {
-    requestInstructions = instructions.rankFindings
-    context = { findings: findingIndex(plan, payloads) }
-  } else if (unit.kind === "recommend") {
-    requestInstructions = instructions.recommend
-    context = {
-      areaAnalyses: Object.fromEntries(
-        plan.areas.map((area) => [area.ref, payloadFor(payloads, `analyzeArea:${area.ref}`)]),
-      ),
-      findingRanking: payloadFor(payloads, "rankFindings"),
-      findings: findingIndex(plan, payloads),
-    }
-  } else if (unit.kind === "rankRecommendations") {
-    requestInstructions = instructions.rankRecommendations
-    context = {
-      recommendations: payloadsFor(payloads, "recommend"),
-      findings: findingIndex(plan, payloads),
-      findingRanking: payloadFor(payloads, "rankFindings"),
-    }
-  }
-  const inputHash = await hashJson({
-    instructions: requestInstructions,
-    sharedContext,
-    context,
+  const hashInput = {
+    instructions: parts.instructions,
+    sharedContext: parts.sharedContext ?? null,
+    context: parts.context ?? null,
     schema: expectedSchemaText,
-    bodyGuidance: unit.kind === "assessRateRequirement" ? bodyGuidance : "",
-    inspection,
-  })
+    bodyGuidance: parts.bodyGuidance ?? "",
+    inspection: parts.inspection ?? null,
+  }
   return {
     workUnitId: unit.id,
     kind: unit.kind,
-    subject: unit.subject,
-    instructions: requestInstructions,
-    sharedContext,
-    context,
-    bodyGuidance: unit.kind === "assessRateRequirement" ? bodyGuidance : "",
-    inspection,
+    ...(unit.subject === "" ? {} : { subject: unit.subject }),
+    ...parts,
     expectedSchema,
     expectedSchemaText,
-    inputHash,
     correlationId: `${evaluationId}#${unit.id}`,
+    hashInput,
   }
 }
 
-const ratingIds = (model: QualityModel) => model.ratingScale.map((level) => `rating:${level.level}`)
-
-export const deterministicPayload = (
-  unit: WorkUnit,
-  model: QualityModel,
-  plan: EvaluationPlan,
-  modelPath: string,
-): JsonObject => {
-  if (unit.kind === "frameEvaluation") {
-    return {
-      derivedContext: {
-        evaluationPolicies: ["source-as-data", "secret-redaction"],
-        rigor: "standard",
-      },
-      inputs: { ratingLevelIds: ratingIds(model) },
-      kind: "EvaluationFrame",
-      schemaVersion: 3,
-      subject: { modelLocator: modelPath },
-    }
-  }
-  if (unit.kind === "frameAreaEvaluation") {
-    const area = plan.areas.find((entry) => entry.ref === unit.subject)!
-    return {
-      inputs: {
-        childAreaIds: area.childAreaIds,
-        localRequirementIds: area.localRequirementIds,
-        rootFactorIds: area.rootFactorIds,
-        ...(area.source === "" ? {} : { sourceRefs: [area.source] }),
-      },
-      kind: "AreaEvaluationFrame",
-      schemaVersion: 3,
-      subject: { areaId: area.ref },
-    }
-  }
-  if (unit.kind === "frameRequirementEvaluation") {
-    const requirement = plan.requirements.find((entry) => entry.ref === unit.subject)!
-    const criteria = model.ratingScale.flatMap((level) => {
-      const criterion = requirement.value.ratings?.[level.level] ?? level.criterion
-      if (criterion === "") return []
-      return [
-        {
-          criterion,
-          ratingLevelId: `rating:${level.level}`,
-          source:
-            requirement.value.ratings?.[level.level] === undefined
-              ? "model_default"
-              : "requirement_override",
-        },
-      ]
-    })
-    return {
-      ...(criteria.length === 0 ? {} : { derivedContext: { appliedRatingCriteria: criteria } }),
-      inputs: {
-        ratingLevelIds: ratingIds(model),
-        ...(requirement.value.assessment === ""
-          ? {}
-          : { requirementAssessmentBasis: requirement.value.assessment }),
-      },
-      kind: "RequirementEvaluationFrame",
-      schemaVersion: 3,
-      subject: {
-        ...(requirement.factorIds.length === 0 ? {} : { factorIds: requirement.factorIds }),
-        requirementId: requirement.ref,
-      },
-    }
-  }
-  if (unit.kind === "frameFactorAnalysis") {
-    const factor = plan.factors.find((entry) => entry.ref === unit.subject)!
-    return {
-      derivedContext: {
-        emptySignalPolicy: "ignore_empty",
-        synthesisGuidanceRef: "protocol:factor-synthesis-default-v0",
-      },
-      inputs: {
-        childFactorAnalysisRefs: factorChildren(factor, plan).map((ref) =>
-          routineRef("FactorAnalysisResult", { factorId: ref }, "localAndDescendantAnalysis"),
-        ),
-        directRequirementRatingRefs: factorRequirements(factor, plan).map((ref) =>
-          routineRef("RequirementRatingResult", { requirementId: ref }),
-        ),
-      },
-      kind: "FactorAnalysisFrame",
-      schemaVersion: 3,
-      subject: { areaId: factor.areaId, factorId: factor.ref },
-    }
-  }
-  if (unit.kind === "frameAreaAnalysis") {
-    const area = plan.areas.find((entry) => entry.ref === unit.subject)!
-    return {
-      derivedContext: {
-        emptySignalPolicy: "ignore_empty",
-        synthesisGuidanceRef: "protocol:area-synthesis-default-v0",
-      },
-      inputs: {
-        childAreaAnalysisRefs: area.childAreaIds.map((ref) =>
-          routineRef("AreaAnalysisResult", { areaId: ref }, "localAndDescendantAnalysis"),
-        ),
-        factorAnalysisRefs: area.rootFactorIds.map((ref) =>
-          routineRef("FactorAnalysisResult", { factorId: ref }, "localAndDescendantAnalysis"),
-        ),
-      },
-      kind: "AreaAnalysisFrame",
-      schemaVersion: 3,
-      subject: { areaId: area.ref },
-    }
-  }
-  throw new Error(`no deterministic payload for ${unit.id}`)
+export const completeProtocolRequest = (
+  draft: ProtocolRequestDraft,
+  inputHash: string,
+): ProtocolRequest => {
+  const { hashInput: _, ...request } = draft
+  return { ...request, inputHash }
 }
+
+export const protocolRequestReceipt = (
+  protocol: ProtocolRequest,
+  pending: {
+    readonly requestId: string
+    readonly workUnitId: string
+    readonly inputHash: string
+    readonly correlationId: string
+    readonly attempt: number
+  },
+  lastFailure?: { readonly category: string; readonly detail?: string },
+) => ({
+  requestId: pending.requestId,
+  workUnitId: protocol.workUnitId,
+  kind: protocol.kind,
+  ...(protocol.subject === undefined ? {} : { subject: protocol.subject }),
+  attempt: pending.attempt,
+  instructions: protocol.instructions,
+  ...(protocol.sharedContext === undefined ? {} : { sharedContext: protocol.sharedContext }),
+  ...(protocol.context === undefined ? {} : { context: protocol.context }),
+  ...(protocol.bodyGuidance === undefined ? {} : { bodyGuidance: protocol.bodyGuidance }),
+  ...(protocol.inspection === undefined ? {} : { inspection: protocol.inspection }),
+  expectedSchema: protocol.expectedSchema,
+  inputHash: protocol.inputHash,
+  correlationId: protocol.correlationId,
+  ...(lastFailure === undefined ? {} : { lastFailure }),
+})

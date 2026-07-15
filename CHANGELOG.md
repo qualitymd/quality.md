@@ -5,6 +5,21 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation history and next-run numbering now share one recognition rule:
+  current `evaluation.json` metadata takes precedence over the historical data
+  manifest and folder prefix, unreadable or invalid metadata falls through, and
+  manifest-less run folders whose slug contains `quality` are no longer
+  silently excluded.
+
+### Internal
+
+- Evaluation execution now derives frames, work scheduling, protocol requests,
+  artifacts, and summaries through pure domain functions and Effect-native
+  ordered traversal. Source collections across the runtime are expression-built
+  and exported collection types are readonly.
+
 ## v0.32.0 - 2026-07-14
 
 ### Specification

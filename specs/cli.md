@@ -260,6 +260,17 @@ update-available notice on stderr only, per
 fetch for update discovery or include update notices in stdout or
 machine-readable output.
 
+**Evaluation run recognition.** Commands that enumerate an evaluation directory
+**MUST** recognize and number each child directory using one precedence rule:
+a positive integer `manifest.run.number` from a readable `evaluation.json`, then
+a positive integer `run.number` from a readable
+`data/evaluation-manifest.json`, then the positive `NNNN` prefix of a directory
+named `NNNN-<slug>-eval`. A missing, unreadable, malformed, non-integer, or
+non-positive value falls through to the next source. A child that satisfies none
+of these sources is not an evaluation run. Non-directory entries are never
+runs, and recognition **MUST NOT** exclude a directory based on words in its
+slug.
+
 ## To be specified
 
 - The shared invocation form and the file / stdin argument convention.

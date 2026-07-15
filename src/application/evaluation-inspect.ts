@@ -8,6 +8,7 @@ import { jsonDocument } from "../domain/json.ts"
 import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
+import { evaluationRunDirectories } from "./evaluation-runs.ts"
 
 export interface RunFlags {
   readonly run?: string
@@ -47,44 +48,6 @@ interface ArtifactDocument {
 const usage = (detail: string) =>
   commandResult("", { stderr: `qualitymd: ${detail}\n`, exitCode: ExitCode.usage })
 
-const runDirectories = (absolute: string, relative: string) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    if (!(yield* fs.exists(absolute))) return []
-    const runs: Array<{
-      readonly number: number
-      readonly name: string
-      readonly absolute: string
-      readonly display: string
-    }> = []
-    for (const name of yield* fs.readDirectory(absolute)) {
-      const run = paths.join(absolute, name)
-      if ((yield* fs.stat(run)).type !== "Directory") continue
-      const artifactPath = paths.join(run, "evaluation.json")
-      if (yield* fs.exists(artifactPath)) {
-        try {
-          const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as ArtifactDocument
-          runs.push({
-            number: artifact.manifest.run.number,
-            name,
-            absolute: run,
-            display: `${relative}/${name}`,
-          })
-        } catch {
-          const number = Number(name.slice(0, 4))
-          if (Number.isFinite(number))
-            runs.push({ number, name, absolute: run, display: `${relative}/${name}` })
-        }
-        continue
-      }
-      const match = /^(\d{4})-([a-z0-9-]+)-eval$/.exec(name)
-      if (match === null || match[2]!.split("-").includes("quality")) continue
-      runs.push({ number: Number(match[1]), name, absolute: run, display: `${relative}/${name}` })
-    }
-    return runs.sort((a, b) => a.number - b.number || a.name.localeCompare(b.name))
-  })
-
 export const resolveRun = (flags: RunFlags) =>
   Effect.gen(function* () {
     const paths = yield* Path.Path
@@ -114,7 +77,10 @@ export const resolveRun = (flags: RunFlags) =>
       ...(flags.model === "" ? {} : { model: flags.model }),
       ...(flags.evaluationDir === "" ? {} : { evaluationDir: flags.evaluationDir }),
     })
-    const runs = yield* runDirectories(workspace.evaluations.abs, workspace.evaluations.rel)
+    const runs = yield* evaluationRunDirectories(
+      workspace.evaluations.abs,
+      workspace.evaluations.rel,
+    )
     const latest = runs.at(-1)
     if (latest === undefined) return { error: "no evaluation runs found" } as const
     return {
@@ -285,35 +251,41 @@ export const evaluationListCommand = (input: {
       ...(input.model === "" ? {} : { model: input.model }),
       ...(input.evaluationDir === "" ? {} : { evaluationDir: input.evaluationDir }),
     })
-    const directories = yield* runDirectories(workspace.evaluations.abs, workspace.evaluations.rel)
-    const runs = []
-    for (const directory of directories) {
-      const inspected = yield* inspect({
+    const directories = yield* evaluationRunDirectories(
+      workspace.evaluations.abs,
+      workspace.evaluations.rel,
+    )
+    const inspectedRuns = yield* Effect.forEach(directories, (directory) =>
+      inspect({
         absolute: directory.absolute,
         display: directory.display,
         model: input.model,
-      })
-      if (inspected.manifest === undefined) continue
+      }).pipe(Effect.map((inspected) => ({ directory, inspected }))),
+    )
+    const runs = inspectedRuns.flatMap(({ directory, inspected }) => {
+      if (inspected.manifest === undefined) return []
       const status = inspected.status
       if ((input.state === "reportable" || input.state === "complete") && !status.reportable)
-        continue
-      if (input.state === "incomplete" && status.reportable) continue
+        return []
+      if (input.state === "incomplete" && status.reportable) return []
       if (
         input.state === "awaiting" &&
         (!("lifecycle" in status) || status.lifecycle !== "awaiting_evaluator")
       )
-        continue
-      runs.push({
-        path: directory.display,
-        rootArea: inspected.model.title || "",
-        requestedScope: inspected.manifest.requestedScope,
-        plannedScope: inspected.manifest.plannedScope,
-        dataArtifacts: status.data.artifacts,
-        reportable: status.reportable,
-        ...("lifecycle" in status ? { lifecycle: status.lifecycle } : {}),
-        gaps: status.gaps.length,
-      })
-    }
+        return []
+      return [
+        {
+          path: directory.display,
+          rootArea: inspected.model.title || "",
+          requestedScope: inspected.manifest.requestedScope,
+          plannedScope: inspected.manifest.plannedScope,
+          dataArtifacts: status.data.artifacts,
+          reportable: status.reportable,
+          ...("lifecycle" in status ? { lifecycle: status.lifecycle } : {}),
+          gaps: status.gaps.length,
+        },
+      ]
+    })
     const value = { schemaVersion: 3, runs }
     if (input.json) return commandResult(jsonDocument(value))
     return commandResult(

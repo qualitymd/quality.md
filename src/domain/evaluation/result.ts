@@ -86,29 +86,37 @@ export const normalizeEvaluatorResult = (
         "recommend result must carry a non-empty recommendations array",
       )
     }
-    const used = new Set<string>()
-    const recommendations = payload.recommendations.map((value, index) => {
-      const recommendation = normalizeKind(
-        object(value, `recommendations[${index}] must be an object`),
-        "RecommendationResult",
-        "",
-        "",
-      )
-      let id = typeof recommendation.id === "string" ? recommendation.id : ""
-      if (!/^qrec_[a-z0-9]+$/.test(id)) {
-        do id = `qrec_${recommendationToken(index)}`
-        while (used.has(id))
-        recommendation.id = id
-      }
-      if (used.has(id)) {
-        throw new ResultValidationError(
-          "invalid_evaluator_output",
-          `recommendations[${index}] duplicates id ${id}`,
+    const recommendationState = payload.recommendations.reduce<{
+      readonly used: ReadonlyArray<string>
+      readonly recommendations: ReadonlyArray<JsonObject>
+    }>(
+      (state, value, index) => {
+        const recommendation = normalizeKind(
+          object(value, `recommendations[${index}] must be an object`),
+          "RecommendationResult",
+          "",
+          "",
         )
-      }
-      used.add(id)
-      return recommendation
-    })
+        let id = typeof recommendation.id === "string" ? recommendation.id : ""
+        if (!/^qrec_[a-z0-9]+$/.test(id)) {
+          do id = `qrec_${recommendationToken(index)}`
+          while (state.used.includes(id))
+          recommendation.id = id
+        }
+        if (state.used.includes(id)) {
+          throw new ResultValidationError(
+            "invalid_evaluator_output",
+            `recommendations[${index}] duplicates id ${id}`,
+          )
+        }
+        return {
+          used: [...state.used, id],
+          recommendations: [...state.recommendations, recommendation],
+        }
+      },
+      { used: [], recommendations: [] },
+    )
+    const recommendations = recommendationState.recommendations
     validate(unit, { recommendations })
     return recommendations.map((recommendation) => ({ workUnit: unit.id, payload: recommendation }))
   }

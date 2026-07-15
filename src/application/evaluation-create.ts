@@ -16,6 +16,7 @@ import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
+import { nextEvaluationRunNumber } from "./evaluation-runs.ts"
 
 export interface EvaluationCreateInput {
   readonly modelArgument?: string
@@ -28,35 +29,6 @@ export interface EvaluationCreateInput {
 
 const usage = (detail: string) =>
   commandResult("", { stderr: `qualitymd: ${detail}\n`, exitCode: ExitCode.usage })
-
-const nextNumber = (directory: string) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    if (!(yield* fs.exists(directory))) return 1
-    let maximum = 0
-    for (const name of yield* fs.readDirectory(directory)) {
-      const run = paths.join(directory, name)
-      if ((yield* fs.stat(run)).type !== "Directory") continue
-      let number = /^(\d{4})-[a-z0-9-]+-eval$/.exec(name)?.[1]
-      for (const manifestPath of ["data/evaluation-manifest.json", "evaluation.json"]) {
-        const file = paths.join(run, manifestPath)
-        if (!(yield* fs.exists(file))) continue
-        try {
-          const parsed = JSON.parse(yield* fs.readFileString(file)) as {
-            readonly run?: { readonly number?: number }
-            readonly manifest?: { readonly run?: { readonly number?: number } }
-          }
-          number = String(parsed.run?.number ?? parsed.manifest?.run?.number ?? number)
-        } catch {
-          // A malformed run still contributes its parseable directory number.
-        }
-        break
-      }
-      maximum = Math.max(maximum, Number(number ?? 0))
-    }
-    return maximum + 1
-  })
 
 export const evaluationCreateCommand = (
   input: EvaluationCreateInput,
@@ -90,7 +62,7 @@ export const evaluationCreateCommand = (
       return usage(cause instanceof Error ? cause.message : String(cause))
     }
     yield* fs.makeDirectory(workspace.evaluations.abs, { recursive: true, mode: 0o755 })
-    const number = yield* nextNumber(workspace.evaluations.abs)
+    const number = yield* nextEvaluationRunNumber(workspace.evaluations.abs)
     const label = `${String(number).padStart(4, "0")}-${scopeSlug(scope.plannedScope)}-eval`
     const runAbs = paths.join(workspace.evaluations.abs, label)
     const runRel = `${workspace.evaluations.rel}/${label}`

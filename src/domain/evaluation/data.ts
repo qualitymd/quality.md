@@ -103,15 +103,15 @@ const validatePayloadSemantics = (kind: DataKind, payload: Record<string, unknow
         throw new Error(
           `RequirementAssessmentResult.findings[${index}].severity is forbidden when type is ${type}`,
         )
-      const seen = new Set<string>()
       if (Array.isArray(finding.candidateActions)) {
-        for (const [actionIndex, item] of finding.candidateActions.entries()) {
-          const id = String((item as Record<string, unknown>).id ?? "")
-          if (seen.has(id))
+        const actionIds = finding.candidateActions.map((item) =>
+          String((item as Record<string, unknown>).id ?? ""),
+        )
+        for (const [actionIndex, id] of actionIds.entries()) {
+          if (actionIds.indexOf(id) !== actionIndex)
             throw new Error(
               `RequirementAssessmentResult.findings[${index}].candidateActions[${actionIndex}].id ${JSON.stringify(id)} is duplicated within RequirementAssessmentResult.findings[${index}].candidateActions`,
             )
-          seen.add(id)
         }
       }
     }
@@ -133,8 +133,10 @@ const validatePayloadSemantics = (kind: DataKind, payload: Record<string, unknow
 }
 
 const validateModelReferences = (payload: Record<string, unknown>, model: QualityModel) => {
-  const references = new Set(flattenModel(projectModel(model)).map((element) => element.id))
-  for (const level of model.ratingScale) references.add(`rating:${level.level}`)
+  const references = new Set([
+    ...flattenModel(projectModel(model)).map((element) => element.id),
+    ...model.ratingScale.map((level) => `rating:${level.level}`),
+  ])
   const visit = (value: unknown, key = "") => {
     if (typeof value === "string") {
       if (

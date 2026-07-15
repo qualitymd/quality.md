@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Derive-values conformance refactor — functional spec
-description: Requirements for a behavior-preserving refactor to derived-value style, domain decomposition of evaluation-execute, and one spec-backed run-folder enumeration.
+description: Requirements for a behavior-preserving refactor to derived-value and explicit Effect-composition style, domain decomposition of evaluation-execute, and one spec-backed run-folder enumeration.
 tags: [refactor, effect, typescript, evaluation, cli]
 timestamp: 2026-07-14T00:00:00Z
 ---
@@ -12,10 +12,10 @@ Companion to the
 [Derive-values conformance refactor](../0202-derive-values-refactor.md) Change
 Case. This spec defines what the refactor must preserve and what source state
 it must reach; the [design doc](design.md) owns the module map and idioms. The
-normative style rule itself lives in
-[Write Effect TypeScript](../../docs/guides/effect-typescript-style.md)
-("Derive values; do not accumulate them") — this spec binds the codebase to it
-but does not restate it.
+normative style rules themselves live in
+[Write Effect TypeScript](../../../docs/guides/effect-typescript-style.md)
+("Compose Effect workflows explicitly" and "Derive values; do not accumulate
+them") — this spec binds the changed code to them but does not restate them.
 
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
 described in BCP 14 when, and only when, they appear in all capitals.
@@ -30,6 +30,14 @@ one of them applying an undocumented slug exclusion the others skip. Deriving
 values as expressions makes each collection's inputs visible at its
 declaration, moves pure logic into unit-testable domain functions, and leaves
 exactly one implementation for behavior that must agree across commands.
+
+The initial design proposed hiding `Promise.all` inside one `Effect.promise`
+for hashing. Review against current Effect and alchemy-effect practice showed
+that this would optimize the number of boundary calls by giving up Effect's
+structured failure, interruption, and result-order semantics. The same review
+favored named `Effect.fn` operations over reusable functions that only return
+`Effect.gen`. This spec therefore treats Effect-workflow conformance as part of
+the refactor, bounded to operations the case introduces or materially reshapes.
 
 Because this is a refactor, its verification anchor is preservation: public
 behavior stays byte-identical, so the existing contract-test suite — not new
@@ -59,7 +67,7 @@ public behavior may be deleted or loosened.
 
 > Durable spec: none.
 
-### R2 — Derivation conformance
+### R2 — Derivation and Effect-workflow conformance
 
 Modules under `src/` MUST conform to the style guide's "Derive values; do not
 accumulate them" section: collections are built as expressions, no mutable
@@ -77,6 +85,19 @@ Exported types with collection-valued fields MUST declare them `ReadonlyArray`
 or `readonly` unless an external SDK contract requires a mutable shape.
 
 > Durable spec: none.
+
+Every reusable Effect-returning operation introduced or materially reshaped by
+this case MUST conform to the guide's "Compose Effect workflows explicitly"
+rules. Effectful batch work MUST remain in Effect's structured traversal APIs;
+raw Promise composition MUST NOT orchestrate workflow work.
+
+> Rationale: the case should not remove temporal collection mutation while
+> introducing opaque Promise orchestration or anonymous Effect workflows in its
+> place. The bounded wording avoids turning this refactor into an unrelated
+> full-codebase Effect rewrite. — 0202
+>
+> Durable spec: none — the normative rules live in the guide, which already
+> carries them.
 
 ### R3 — Evaluation-execute decomposition
 
@@ -104,6 +125,17 @@ assembly needs no conditional-spread stripping.
 
 > Durable spec: none — the emitted request JSON is unchanged (R1); only the
 > internal representation of absence changes.
+
+Payload hashes MUST be derived with an Effect-native traversal whose result
+order follows its input order. Request hashes MUST use the same named Effect
+adapter inside the parent workflow. Raw Promise composition MUST NOT
+orchestrate either form of hashing.
+
+> Rationale: ordered structured traversal keeps hashing in the same failure and
+> interruption model as the workflow that consumes it; a nested `Promise.all`
+> would not. — 0202
+>
+> Durable spec: none.
 
 ### R4 — Ready-unit selection in the graph domain
 
@@ -135,12 +167,15 @@ folder-name and manifest-number classification living in `src/domain/`.
 ### R6 — Decided recognition and numbering rule
 
 When enumerating an evaluation directory, run recognition and numbering MUST
-follow one rule: a folder's run number is `run.number` from a readable
-`evaluation.json`, else the manifest run number from a readable
-`data/evaluation-manifest.json`, else the `NNNN` prefix of a folder named
-`NNNN-<slug>-eval`, else the folder is not a run. No slug-content exclusion
-applies; the undocumented exclusion of slugs containing `quality` MUST be
-removed.
+follow one rule for each child directory: its run number is a positive integer
+`manifest.run.number` from a readable `evaluation.json`; otherwise it is a
+positive integer `run.number` from a readable
+`data/evaluation-manifest.json`; otherwise it is the positive `NNNN` prefix of
+a directory named `NNNN-<slug>-eval`; otherwise the directory is not a run.
+An absent or invalid number is treated like an unreadable manifest and falls
+through to the next source. Non-directory entries are not runs. No slug-content
+exclusion applies; the undocumented exclusion of slugs containing `quality`
+MUST be removed.
 
 > Rationale: the exclusion arrived wholesale in the runtime port with no
 > recorded reason and no spec backing, and it makes numbering depend on the
@@ -154,17 +189,21 @@ removed.
 ## Requirement-set review
 
 R1 fixes the verification anchor: the suite proves preservation, so the sweep
-(R2) and the structural moves (R3–R5) can be reviewed as pure refactors. R6 is
-the single deliberate behavior decision, carved out of R1 explicitly and given
-a durable spec home so the unified implementation (R5) has one contract to
-satisfy. Together they achieve the motivation — a codebase that conforms to
-the guide rule, a legible flagship workflow, and enumeration that cannot
-silently disagree across commands — without granting the case any other
+(R2) and the structural moves (R3–R5) can be reviewed as pure refactors. R2 is
+deliberately asymmetric: derived-value conformance covers all of `src/`, while
+the newer Effect-workflow rules cover only operations introduced or materially
+reshaped here. R6 is the single deliberate behavior decision, carved out of R1
+explicitly and given a durable spec home so the unified implementation (R5) has
+one contract to satisfy. Together they achieve the motivation — a codebase that
+conforms to the guide rule, a legible flagship workflow, and enumeration that
+cannot silently disagree across commands — without granting the case any other
 behavior change. Each requirement is verifiable: R1 via the existing contract
 suite and artifact byte comparison, R2 via source inspection over the
-sweep-derived file list, R3–R5 via source inspection plus new domain unit
-tests, and R6 via an enumeration unit test covering manifest, fallback, and
-formerly excluded folder names.
+sweep-derived file list and touched Effect operations, R3–R5 via source
+inspection plus new domain unit tests, and R6 via an enumeration unit test
+covering both manifest shapes, missing/invalid/unreadable manifests,
+directory-name fallback, non-directory entries, formerly excluded folder
+names, and precedence.
 
 ## Durable spec changes
 

@@ -39,6 +39,27 @@ Use namespace imports for Effect modules, for example `import * as Effect from
 "effect/Effect"`. Keep exported types explicit. Preserve exact dependency pins
 while Effect v4 and its CLI/testing packages are pre-stable.
 
+## Compose Effect workflows explicitly
+
+Use `Effect.gen` for one-off, linear workflow composition. Define reusable
+Effect-returning operations with a named `Effect.fn("qualitymd.<operation>")`
+instead of a function whose only body returns `Effect.gen`; the stable name
+makes traces and failures useful. Keep deterministic transformations outside
+the generator as ordinary functions.
+
+Use `return yield*` for terminal effects such as `Effect.fail` and
+`Effect.interrupt`, so control flow is explicit to both readers and TypeScript.
+Do not put `try`/`catch` around `yield*`: Effect failures are values in the
+typed error channel, not JavaScript exceptions. Handle them with
+`Effect.catchTag`, `Effect.catchTags`, `Effect.result`, or another typed Effect
+operator. Isolate a synchronous throwing API in `Effect.try` and a rejecting
+Promise API in `Effect.tryPromise`, translating its cause at the owning
+boundary. Use `Effect.promise` only when rejection is impossible by contract.
+
+Do not use `async`/`await`, a raw Promise chain, or `Promise.all` to compose an
+Effect workflow. Adapt the smallest foreign Promise boundary, then resume
+composition in Effect.
+
 ## Derive values; do not accumulate them
 
 Build collections as expressions: `map`, `filter`, `flatMap`,
@@ -51,6 +72,13 @@ records `readonly` so accidental mutation fails to compile. Prefer named
 intermediates over long point-free chains when a chain stops reading as a
 sentence.
 
+For effectful batches, use `Effect.forEach` or `Effect.all` and state the
+intended concurrency when it is not sequential. These operators preserve
+structured interruption, failure, and result ordering; `Promise.all` does not.
+Use `Effect.repeat` or `Effect.retry` with a bounded `Schedule` for polling and
+retries instead of a mutable deadline loop. Keep ordering and concurrency
+decisions visible where the batch or schedule is declared.
+
 ## Model runtime capabilities as services
 
 Define the smallest repository-owned capability that makes a workflow
@@ -58,6 +86,12 @@ deterministic. Provide live Bun/SDK behavior at `src/main.ts` or through an
 adapter; provide a small test Layer in service tests. Prefer Effect's standard
 filesystem, path, clock, random, and scope facilities before inventing another
 abstraction.
+
+Define repository services with `Context.Service` class syntax and `readonly`
+members. Construct them with `Layer.succeed`, `Layer.effect`, or `Layer.scoped`
+according to whether setup is pure, effectful, or resource-scoped. Resolve a
+service at the narrowest lifetime that owns its use; do not acquire a disposable
+resource in a longer-lived Layer and close over it from shorter-lived work.
 
 Expected operational failures belong in the typed error channel. A `throw`
 inside `Effect.gen` is a defect, not an expected failure; use `Effect.fail`,
@@ -85,6 +119,8 @@ tests that return an Effect; return the Effect instead of calling
 `Effect.runPromise`. Supply deterministic Layers for host behavior. Put real
 filesystem, subprocess, compiled-executable, provider-runtime, and
 cross-boundary checks under `test/integration/` or the owning hosted workflow.
+Use `TestClock` or an injected clock service for time-dependent Effect tests;
+do not make them wait on wall-clock polling.
 
 Choose the lowest useful test boundary. Protect public command grammar,
 stdout/stderr, exit categories, JSON, and generated files with executable

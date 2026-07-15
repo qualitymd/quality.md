@@ -176,20 +176,16 @@ const evaluatedBySource = (
 }
 
 const evidenceReferences = (assessment: unknown) => {
-  const refs: Array<string> = []
-  const visit = (value: unknown) => {
+  const visit = (value: unknown): ReadonlyArray<string> => {
     if (Array.isArray(value)) {
-      for (const entry of value) visit(entry)
-      return
+      return value.flatMap(visit)
     }
-    if (value === null || typeof value !== "object") return
-    for (const [key, entry] of Object.entries(value as JsonObject)) {
-      if (key === "sourceRef" && typeof entry === "string") refs.push(entry)
-      else visit(entry)
-    }
+    if (value === null || typeof value !== "object") return []
+    return Object.entries(value as JsonObject).flatMap(([key, entry]) =>
+      key === "sourceRef" && typeof entry === "string" ? [entry] : visit(entry),
+    )
   }
-  visit(assessment)
-  return refs
+  return visit(assessment)
 }
 
 export const sealEvidenceManifest = (options: {
@@ -214,74 +210,83 @@ export const sealEvidenceManifest = (options: {
       throw new EvidenceValidationError("evidence.observations must be an array")
     if (!Array.isArray(proposal.limits))
       throw new EvidenceValidationError("evidence.limits must be an array")
+    const proposedObservations = proposal.observations
     const limits = proposal.limits.map((value, index) => {
       if (typeof value !== "string" || value.trim() === "")
         throw new EvidenceValidationError(`evidence.limits[${index}] must be a non-empty string`)
       return value.trim()
     })
     const workspaceReal = yield* fs.realPath(options.workspaceRoot)
-    const seen = new Set<string>()
-    const observations: Array<JsonObject> = []
-    for (const [index, raw] of proposal.observations.entries()) {
-      const detail = `evidence.observations[${index}]`
-      const observation = object(raw, `${detail} must be an object`)
-      exactKeys(observation, ["id", "kind", "role", "path", "locator"], detail)
-      if (typeof observation.id !== "string" || !/^ev-[a-z0-9][a-z0-9-]*$/.test(observation.id))
-        throw new EvidenceValidationError(`${detail}.id must match ^ev-[a-z0-9][a-z0-9-]*$`)
-      if (seen.has(observation.id))
-        throw new EvidenceValidationError(
-          `${detail}.id duplicates ${JSON.stringify(observation.id)}`,
+    const observations = yield* Effect.forEach(proposedObservations, (raw, index) =>
+      Effect.gen(function* () {
+        const detail = `evidence.observations[${index}]`
+        const observation = object(raw, `${detail} must be an object`)
+        exactKeys(observation, ["id", "kind", "role", "path", "locator"], detail)
+        if (typeof observation.id !== "string" || !/^ev-[a-z0-9][a-z0-9-]*$/.test(observation.id))
+          throw new EvidenceValidationError(`${detail}.id must match ^ev-[a-z0-9][a-z0-9-]*$`)
+        const duplicate = proposedObservations
+          .slice(0, index)
+          .some(
+            (candidate) =>
+              candidate !== null &&
+              typeof candidate === "object" &&
+              (candidate as JsonObject).id === observation.id,
+          )
+        if (duplicate)
+          throw new EvidenceValidationError(
+            `${detail}.id duplicates ${JSON.stringify(observation.id)}`,
+          )
+        if (observation.kind !== "file")
+          throw new EvidenceValidationError(`${detail}.kind must be file`)
+        if (observation.role !== "evaluated" && observation.role !== "supporting")
+          throw new EvidenceValidationError(`${detail}.role must be evaluated or supporting`)
+        const path = normalizedPath(paths, observation.path, `${detail}.path`)
+        const absolute = paths.resolve(options.workspaceRoot, path)
+        if (!(yield* fs.exists(absolute)))
+          throw new EvidenceValidationError(`${detail}.path ${JSON.stringify(path)} does not exist`)
+        const real = yield* fs.realPath(absolute)
+        const relativeReal = paths.relative(workspaceReal, real)
+        if (relativeReal === ".." || relativeReal.startsWith(`..${paths.sep}`))
+          throw new EvidenceValidationError(
+            `${detail}.path ${JSON.stringify(path)} escapes the workspace`,
+          )
+        if ((yield* fs.stat(real)).type !== "File")
+          throw new EvidenceValidationError(
+            `${detail}.path ${JSON.stringify(path)} must name a regular file`,
+          )
+        const bytes = yield* fs.readFile(real)
+        let content: string
+        try {
+          content = new TextDecoder("utf-8", { fatal: true }).decode(bytes)
+        } catch {
+          throw new EvidenceValidationError(
+            `${detail}.path ${JSON.stringify(path)} must be UTF-8 text`,
+          )
+        }
+        if (
+          observation.role === "evaluated" &&
+          !evaluatedBySource(paths, options.workspaceRoot, options.source, path)
         )
-      seen.add(observation.id)
-      if (observation.kind !== "file")
-        throw new EvidenceValidationError(`${detail}.kind must be file`)
-      if (observation.role !== "evaluated" && observation.role !== "supporting")
-        throw new EvidenceValidationError(`${detail}.role must be evaluated or supporting`)
-      const path = normalizedPath(paths, observation.path, `${detail}.path`)
-      const absolute = paths.resolve(options.workspaceRoot, path)
-      if (!(yield* fs.exists(absolute)))
-        throw new EvidenceValidationError(`${detail}.path ${JSON.stringify(path)} does not exist`)
-      const real = yield* fs.realPath(absolute)
-      const relativeReal = paths.relative(workspaceReal, real)
-      if (relativeReal === ".." || relativeReal.startsWith(`..${paths.sep}`))
-        throw new EvidenceValidationError(
-          `${detail}.path ${JSON.stringify(path)} escapes the workspace`,
-        )
-      if ((yield* fs.stat(real)).type !== "File")
-        throw new EvidenceValidationError(
-          `${detail}.path ${JSON.stringify(path)} must name a regular file`,
-        )
-      const bytes = yield* fs.readFile(real)
-      let content: string
-      try {
-        content = new TextDecoder("utf-8", { fatal: true }).decode(bytes)
-      } catch {
-        throw new EvidenceValidationError(
-          `${detail}.path ${JSON.stringify(path)} must be UTF-8 text`,
-        )
-      }
-      if (
-        observation.role === "evaluated" &&
-        !evaluatedBySource(paths, options.workspaceRoot, options.source, path)
-      )
-        throw new EvidenceValidationError(
-          `${detail}.path ${JSON.stringify(path)} is outside the evaluated source selector; classify it as supporting or correct the path`,
-        )
-      const locator = normalizeLocator(observation.locator, content, `${detail}.locator`)
-      observations.push({
-        id: observation.id,
-        kind: "file",
-        role: observation.role,
-        path,
-        ...(locator === undefined ? {} : { locator }),
-        sha256: yield* Effect.promise(() => sha256(bytes)),
-        bytes: bytes.length,
-        capturedAt: options.capturedAt,
-      })
-    }
+          throw new EvidenceValidationError(
+            `${detail}.path ${JSON.stringify(path)} is outside the evaluated source selector; classify it as supporting or correct the path`,
+          )
+        const locator = normalizeLocator(observation.locator, content, `${detail}.locator`)
+        return {
+          id: observation.id,
+          kind: "file",
+          role: observation.role,
+          path,
+          ...(locator === undefined ? {} : { locator }),
+          sha256: yield* Effect.promise(() => sha256(bytes)),
+          bytes: bytes.length,
+          capturedAt: options.capturedAt,
+        }
+      }),
+    )
+    const proposedIds = observations.map((observation) => String(observation.id))
     for (const ref of evidenceReferences(options.assessment)) {
       const match = /^evidence\[([^\]]+)\]$/.exec(ref)
-      if (match === null || !seen.has(match[1]!))
+      if (match === null || !proposedIds.includes(match[1]!))
         throw new EvidenceValidationError(
           `assessment evidence sourceRef ${JSON.stringify(ref)} does not name an accepted evidence observation`,
         )

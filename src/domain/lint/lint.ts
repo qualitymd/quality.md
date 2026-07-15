@@ -71,6 +71,11 @@ interface RepairOperation {
   readonly apply: () => boolean
 }
 
+interface Diagnostic {
+  readonly finding: Finding
+  readonly repair?: RepairOperation
+}
+
 interface SchemaContext {
   readonly areaName?: string
   readonly factorName?: string
@@ -141,21 +146,22 @@ const nextActions = (path: string, errors: number, fixable: number) => {
 }
 
 class RunState {
-  private readonly findings: Array<Finding> = []
-  private readonly repairs: Array<RepairOperation> = []
-  private readonly levels = new Set<string>()
+  private levels: ReadonlySet<string> = new Set()
   private root!: AreaRef
 
-  constructor(private readonly document: QualityDocument) {}
+  constructor(
+    private readonly document: QualityDocument,
+    private readonly emit: (diagnostic: Diagnostic) => void,
+  ) {}
 
-  run(): LintRun {
+  run(): void {
     if (!isMapNode(this.document.frontmatter)) {
       this.add(
         RuleId.invalidFrontmatter,
         "The frontmatter is not a model mapping; a QUALITY.md frontmatter block must be a map of model properties.",
         this.location(this.document.frontmatter, [], "frontmatter"),
       )
-      return this.finish()
+      return
     }
     this.root = {
       name: "root",
@@ -172,60 +178,21 @@ class RunState {
     this.checkAreas(this.root)
     this.checkFactors(this.root)
     this.checkRequirements(this.root)
-    return this.finish()
-  }
-
-  private finish(): LintRun {
-    this.findings.sort(compareFindings)
-    this.repairs.sort((left, right) =>
-      compareLocations(left.record.location, right.record.location),
-    )
-    const result = this.result([])
-    return {
-      result,
-      applyRepairs: () => {
-        const records: Array<RepairRecord> = []
-        for (const repair of this.repairs) {
-          if (repair.apply()) records.push(repair.record)
-        }
-        return records
-      },
-    }
-  }
-
-  result(repairs: ReadonlyArray<RepairRecord>): LintResult {
-    let errors = 0
-    let warnings = 0
-    let info = 0
-    let fixable = 0
-    for (const finding of this.findings) {
-      if (finding.severity === "error") errors += 1
-      else if (finding.severity === "warning") warnings += 1
-      else info += 1
-      if (finding.fixable) fixable += 1
-    }
-    return {
-      schemaVersion: 1,
-      path: this.document.path,
-      valid: errors === 0,
-      summary: { errors, warnings, info, fixable, fixed: repairs.length },
-      findings: this.findings,
-      repairs,
-      nextActions: nextActions(this.document.path, errors, fixable),
-    }
   }
 
   private add(ruleId: RuleId, message: string, location: Location, repair?: RepairOperation) {
     const rule = RulesById.get(ruleId)
     if (rule === undefined) throw new Error(`unknown lint rule: ${ruleId}`)
-    this.findings.push({
-      ruleId,
-      severity: rule.severity,
-      message,
-      location,
-      fixable: rule.fixable,
+    this.emit({
+      finding: {
+        ruleId,
+        severity: rule.severity,
+        message,
+        location,
+        fixable: rule.fixable,
+      },
+      ...(repair === undefined ? {} : { repair }),
     })
-    if (repair !== undefined) this.repairs.push(repair)
   }
 
   private invalid(
@@ -487,7 +454,23 @@ class RunState {
         this.location(pair?.key as ParsedNode, [property.ratingScale], property.ratingScale),
       )
     }
-    const seen = new Map<string, Location>()
+    const levelEntries = scale.items.flatMap((level, index) => {
+      if (!isMapNode(level)) return []
+      const pair = mapEntry(level, property.level)
+      if (pair === undefined || !isScalarNode(pair.value) || isEmptyNode(pair.value)) return []
+      return [
+        {
+          index,
+          name: nodeValue(pair.value),
+          location: this.location(
+            pair.value,
+            [property.ratingScale, index, property.level],
+            `ratingScale[${index}].level`,
+          ),
+        },
+      ]
+    })
+    this.levels = new Set(levelEntries.map((entry) => entry.name))
     scale.items.forEach((level, index) => {
       const modelPath = [property.ratingScale, index]
       if (!isMapNode(level)) {
@@ -499,7 +482,14 @@ class RunState {
         )
         return
       }
-      this.checkRatingLevel(level, modelPath, index, seen)
+      const entry = levelEntries.find((candidate) => candidate.index === index)
+      const prior =
+        entry === undefined
+          ? undefined
+          : levelEntries.find(
+              (candidate) => candidate.index < index && candidate.name === entry.name,
+            )?.location
+      this.checkRatingLevel(level, modelPath, index, prior)
     })
   }
 
@@ -507,7 +497,7 @@ class RunState {
     level: YamlMap,
     modelPath: ReadonlyArray<PathSegment>,
     index: number,
-    seen: Map<string, Location>,
+    prior: Location | undefined,
   ) {
     this.checkSchemaProperties(RatingLevel, level, modelPath, {})
     const levelPair = mapEntry(level, property.level)
@@ -529,14 +519,10 @@ class RunState {
           location,
         )
       }
-      const prior = seen.get(name)
       if (prior !== undefined) {
         const message = `The rating level \`${name}\` is duplicated; each \`level\` name must be unique within \`ratingScale\`.`
         this.add(RuleId.duplicateLevel, message, location)
         this.add(RuleId.duplicateLevel, message, prior)
-      } else {
-        seen.set(name, location)
-        this.levels.add(name)
       }
     }
     const criterion = mapEntry(level, property.criterion)?.value
@@ -582,8 +568,7 @@ class RunState {
   ): Array<AreaRef> {
     const areas = mapEntry(owner, property.areas)?.value
     if (!isMapNode(areas)) return []
-    const output: Array<AreaRef> = []
-    for (const pair of mapEntries(areas)) {
+    return mapEntries(areas).flatMap((pair): ReadonlyArray<AreaRef> => {
       const name = nodeValue(pair.key)
       const modelPath = appendPath(base, property.areas, name)
       if (!isScalarNode(pair.key) || !ModelNamePattern.test(name)) {
@@ -607,7 +592,7 @@ class RunState {
           pathLabel(modelPath),
           `The area \`${name}\` has the wrong YAML shape; each area must be a map.`,
         )
-        continue
+        return []
       }
       const area: AreaRef = {
         name,
@@ -622,9 +607,8 @@ class RunState {
       area.factors = this.walkFactors(area, undefined, area.node, modelPath)
       area.requirements = this.walkRequirements(area, undefined, area.node, modelPath)
       area.areas = this.walkAreas(area, area.node, modelPath)
-      output.push(area)
-    }
-    return output
+      return [area]
+    })
   }
 
   private walkFactors(
@@ -635,8 +619,7 @@ class RunState {
   ): Array<FactorRef> {
     const factors = mapEntry(owner, property.factors)?.value
     if (!isMapNode(factors)) return []
-    const output: Array<FactorRef> = []
-    for (const pair of mapEntries(factors)) {
+    return mapEntries(factors).flatMap((pair): ReadonlyArray<FactorRef> => {
       const name = nodeValue(pair.key)
       const modelPath = appendPath(base, property.factors, name)
       if (!isScalarNode(pair.key) || !ModelNamePattern.test(name)) {
@@ -653,7 +636,7 @@ class RunState {
           pathLabel(modelPath),
           `The factor \`${name}\` has the wrong YAML shape; each factor must be a map.`,
         )
-        continue
+        return []
       }
       const factor: FactorRef = {
         name,
@@ -667,9 +650,8 @@ class RunState {
       this.checkFactorShape(factor)
       factor.factors = this.walkFactors(area, factor, factor.node, modelPath)
       factor.requirements = this.walkRequirements(area, factor, factor.node, modelPath)
-      output.push(factor)
-    }
-    return output
+      return [factor]
+    })
   }
 
   private walkRequirements(
@@ -680,8 +662,7 @@ class RunState {
   ): Array<RequirementRef> {
     const requirements = mapEntry(owner, property.requirements)?.value
     if (!isMapNode(requirements)) return []
-    const output: Array<RequirementRef> = []
-    for (const pair of mapEntries(requirements)) {
+    return mapEntries(requirements).flatMap((pair): ReadonlyArray<RequirementRef> => {
       const name = nodeValue(pair.key)
       const modelPath = appendPath(base, property.requirements, name)
       if (!isScalarNode(pair.key) || !ModelNamePattern.test(name)) {
@@ -698,7 +679,7 @@ class RunState {
           pathLabel(modelPath),
           `The requirement \`${name}\` has the wrong YAML shape; each requirement must be a map.`,
         )
-        continue
+        return []
       }
       const requirement: RequirementRef = {
         name,
@@ -708,9 +689,8 @@ class RunState {
         ...(factor === undefined ? {} : { factor }),
       }
       this.checkRequirementShape(requirement)
-      output.push(requirement)
-    }
-    return output
+      return [requirement]
+    })
   }
 
   private checkRequiredTitle(
@@ -810,16 +790,15 @@ class RunState {
   }
 
   private checkFactors(area: AreaRef) {
-    const byName = new Map<string, Array<FactorRef>>()
-    const collect = (factors: ReadonlyArray<FactorRef>) => {
-      for (const factor of factors) {
-        const entries = byName.get(factor.name) ?? []
-        entries.push(factor)
-        byName.set(factor.name, entries)
-        collect(factor.factors)
-      }
-    }
-    collect(area.factors)
+    const collect = (factors: ReadonlyArray<FactorRef>): ReadonlyArray<FactorRef> =>
+      factors.flatMap((factor) => [factor, ...collect(factor.factors)])
+    const allFactors = collect(area.factors)
+    const byName = new Map(
+      [...new Set(allFactors.map((factor) => factor.name))].map((name) => [
+        name,
+        allFactors.filter((factor) => factor.name === name),
+      ]),
+    )
     for (const [name, factors] of byName) {
       if (factors.length < 2) continue
       for (const factor of factors) {
@@ -851,12 +830,17 @@ class RunState {
   }
 
   private checkRequirements(area: AreaRef) {
-    const seen = new Map<string, Location>()
-    for (const requirement of localRequirements(area)) {
+    const requirements = localRequirements(area)
+    for (const [index, requirement] of requirements.entries()) {
       const location = this.locationForMissing(requirement.path, pathLabel(requirement.path))
-      const prior = seen.get(requirement.name)
-      if (prior === undefined) seen.set(requirement.name, location)
-      else {
+      const priorRequirement = requirements
+        .slice(0, index)
+        .find((candidate) => candidate.name === requirement.name)
+      if (priorRequirement !== undefined) {
+        const prior = this.locationForMissing(
+          priorRequirement.path,
+          pathLabel(priorRequirement.path),
+        )
         const message = `The requirement \`${requirement.name}\` is duplicated; requirement names must be unique within their declaring area.`
         this.add(RuleId.duplicateRequirement, message, location)
         this.add(RuleId.duplicateRequirement, message, prior)
@@ -978,7 +962,48 @@ const localRequirements = (area: AreaRef): Array<RequirementRef> => {
   return [...area.requirements, ...area.factors.flatMap(factorRequirements)]
 }
 
-export const lintDocument = (document: QualityDocument): LintRun => new RunState(document).run()
+const collectValues = <A>(visit: (emit: (value: A) => void) => void): ReadonlyArray<A> => {
+  const values: Array<A> = []
+  visit((value) => values.push(value))
+  return values
+}
+
+const lintResult = (
+  document: QualityDocument,
+  findings: ReadonlyArray<Finding>,
+  repairs: ReadonlyArray<RepairRecord>,
+): LintResult => {
+  const summary = findings.reduce(
+    (counts, finding) => ({
+      errors: counts.errors + (finding.severity === "error" ? 1 : 0),
+      warnings: counts.warnings + (finding.severity === "warning" ? 1 : 0),
+      info: counts.info + (finding.severity === "info" ? 1 : 0),
+      fixable: counts.fixable + (finding.fixable ? 1 : 0),
+    }),
+    { errors: 0, warnings: 0, info: 0, fixable: 0 },
+  )
+  return {
+    schemaVersion: 1,
+    path: document.path,
+    valid: summary.errors === 0,
+    summary: { ...summary, fixed: repairs.length },
+    findings,
+    repairs,
+    nextActions: nextActions(document.path, summary.errors, summary.fixable),
+  }
+}
+
+export const lintDocument = (document: QualityDocument): LintRun => {
+  const diagnostics = collectValues<Diagnostic>((emit) => new RunState(document, emit).run())
+  const findings = diagnostics.map((diagnostic) => diagnostic.finding).sort(compareFindings)
+  const repairs = diagnostics
+    .flatMap((diagnostic) => (diagnostic.repair === undefined ? [] : [diagnostic.repair]))
+    .sort((left, right) => compareLocations(left.record.location, right.record.location))
+  return {
+    result: lintResult(document, findings, []),
+    applyRepairs: () => repairs.flatMap((repair) => (repair.apply() ? [repair.record] : [])),
+  }
+}
 
 export const invalidDocumentResult = (path: string): LintResult => ({
   schemaVersion: 1,

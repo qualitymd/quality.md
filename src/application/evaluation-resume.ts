@@ -5,16 +5,17 @@ import * as Result from "effect/Result"
 
 import { FileSystemFailure } from "../domain/errors.ts"
 import { commandResult, ExitCode, type CommandResult } from "../domain/command-result.ts"
+import { deterministicPayload } from "../domain/evaluation/frames.ts"
 import { buildGraph, type WorkUnit } from "../domain/evaluation/graph.ts"
 import { planEvaluation } from "../domain/evaluation/plan.ts"
 import {
   buildProtocolRequest,
-  deterministicPayload,
-  type ProtocolRequest,
+  completeProtocolRequest,
+  protocolRequestReceipt,
   type StoredPayload,
 } from "../domain/evaluation/protocol.ts"
 import { normalizeEvaluatorResult, ResultValidationError } from "../domain/evaluation/result.ts"
-import { hashJson, jsonDocument } from "../domain/json.ts"
+import { jsonDocument } from "../domain/json.ts"
 import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import {
@@ -24,6 +25,7 @@ import {
   type SealedEvidenceManifest,
 } from "../services/source.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
+import { hashJsonEffect, requestId } from "./evaluation-hash.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
 import { buildReportsAtRun } from "./evaluation-report.ts"
 
@@ -140,41 +142,6 @@ const readEnvelopes = (path: string) =>
     })
   })
 
-const requestReceipt = (
-  protocol: ProtocolRequest,
-  pending: PendingCall,
-  lastFailure?: { readonly category: string; readonly detail?: string },
-) => ({
-  requestId: pending.requestId,
-  workUnitId: protocol.workUnitId,
-  kind: protocol.kind,
-  ...(protocol.subject === "" ? {} : { subject: protocol.subject }),
-  attempt: pending.attempt,
-  instructions: protocol.instructions,
-  ...(protocol.sharedContext === null || Object.keys(protocol.sharedContext).length === 0
-    ? {}
-    : { sharedContext: protocol.sharedContext }),
-  ...(protocol.context === null || Object.keys(protocol.context).length === 0
-    ? {}
-    : { context: protocol.context }),
-  ...(protocol.bodyGuidance === "" ? {} : { bodyGuidance: protocol.bodyGuidance }),
-  ...(protocol.inspection === null ? {} : { inspection: protocol.inspection }),
-  expectedSchema: protocol.expectedSchema,
-  inputHash: protocol.inputHash,
-  correlationId: protocol.correlationId,
-  ...(lastFailure === undefined ? {} : { lastFailure }),
-})
-
-const randomRequestId = (
-  evaluationId: string,
-  workUnit: string,
-  inputHash: string,
-  attempt: number,
-) =>
-  hashJson({ evaluationId, workUnit, inputHash, attempt }).then(
-    (hash) => `req_${hash.slice(0, 16)}`,
-  )
-
 const mergePayloads = (
   artifact: Artifact,
   graph: ReadonlyArray<WorkUnit>,
@@ -235,15 +202,17 @@ export const resumeHarnessRun = (
       )
     const snapshotPath = paths.join(runAbs, "model-snapshot.md")
     const snapshot = yield* fs.readFileString(snapshotPath)
-    const bodyStart = snapshot.indexOf("\n---", 4)
-    const bodyGuidance = bodyStart < 0 ? "" : snapshot.slice(bodyStart + 4).trim()
-    const model = decodeModel(parseQualityDocument(snapshotPath, snapshot))
+    const document = parseQualityDocument(snapshotPath, snapshot)
+    const bodyGuidance = document.body.trim()
+    const model = decodeModel(document)
     const plan = planEvaluation(model, artifact.manifest.plannedScope)
     const graph = buildGraph(plan)
     const now = new Date(yield* runtime.currentTimeMillis).toISOString().replace(/\.\d{3}Z$/, "Z")
     const initialStatus = artifact.state.status
-    const events: Array<JsonObject> = []
-    const retryFailures = new Map<string, { readonly category: string; readonly detail?: string }>()
+    let events: ReadonlyArray<JsonObject> = []
+    let retryFailures: Readonly<
+      Record<string, { readonly category: string; readonly detail?: string }>
+    > = {}
     if (input.evaluatorResult !== "") {
       const envelopes = yield* readEnvelopes(input.evaluatorResult).pipe(
         Effect.mapError((cause) => new FileSystemFailure({ detail: cause.message })),
@@ -270,16 +239,15 @@ export const resumeHarnessRun = (
           return failureResult(
             `the pending work request ${pending.requestId} targets unknown work unit ${pending.workUnitId}; start a new run`,
           )
-        const protocol = yield* Effect.promise(() =>
-          buildProtocolRequest({
-            unit,
-            plan,
-            payloads: artifact.results.payloads,
-            areaSources: artifact.manifest.areaSources,
-            bodyGuidance,
-            evaluationId: artifact.manifest.evaluationId,
-          }),
-        )
+        const draft = buildProtocolRequest({
+          unit,
+          plan,
+          payloads: artifact.results.payloads,
+          areaSources: artifact.manifest.areaSources,
+          bodyGuidance,
+          evaluationId: artifact.manifest.evaluationId,
+        })
+        const protocol = completeProtocolRequest(draft, yield* hashJsonEffect(draft.hashInput))
         if (protocol.inputHash !== pending.inputHash)
           return failureResult(
             `the model or request context for ${unit.id} changed after the work request was emitted; a result must not be attached to a different request — start a new run`,
@@ -372,30 +340,37 @@ export const resumeHarnessRun = (
             ...(sealedEvidence === undefined ? {} : { evidenceHash: sealedEvidence.manifestHash }),
           })
           delete state.failure
-          events.push({
-            timestamp: now,
-            event: "work_unit_completed",
-            workUnit: unit.id,
-            attempt: state.attempts,
-          })
+          events = [
+            ...events,
+            {
+              timestamp: now,
+              event: "work_unit_completed",
+              workUnit: unit.id,
+              attempt: state.attempts,
+            },
+          ]
         } else if (retryable.has(category) && state.attempts < 3) {
           pending.attempt = state.attempts + 1
-          pending.requestId = yield* Effect.promise(() =>
-            randomRequestId(
-              artifact.manifest.evaluationId,
-              unit.id,
-              pending.inputHash,
-              pending.attempt,
-            ),
+          pending.requestId = yield* requestId(
+            artifact.manifest.evaluationId,
+            unit.id,
+            pending.inputHash,
+            pending.attempt,
           )
-          retryFailures.set(pending.requestId, { category, ...(detail === "" ? {} : { detail }) })
-          events.push({
-            timestamp: now,
-            event: "work_unit_retry",
-            workUnit: unit.id,
-            attempt: state.attempts,
-            failure: { category, ...(detail === "" ? {} : { detail }) },
-          })
+          retryFailures = {
+            ...retryFailures,
+            [pending.requestId]: { category, ...(detail === "" ? {} : { detail }) },
+          }
+          events = [
+            ...events,
+            {
+              timestamp: now,
+              event: "work_unit_retry",
+              workUnit: unit.id,
+              attempt: state.attempts,
+              failure: { category, ...(detail === "" ? {} : { detail }) },
+            },
+          ]
         } else {
           artifact.state.pendingEvaluatorCalls = (
             artifact.state.pendingEvaluatorCalls ?? []
@@ -405,13 +380,16 @@ export const resumeHarnessRun = (
           artifact.state.status = "failed"
           artifact.state.failure = state.failure
           artifact.state.completedAt = now
-          events.push({
-            timestamp: now,
-            event: "work_unit_failed",
-            workUnit: unit.id,
-            attempt: state.attempts,
-            failure: state.failure,
-          })
+          events = [
+            ...events,
+            {
+              timestamp: now,
+              event: "work_unit_failed",
+              workUnit: unit.id,
+              attempt: state.attempts,
+              failure: state.failure,
+            },
+          ]
         }
       }
       if (remaining.length > 0)
@@ -419,7 +397,7 @@ export const resumeHarnessRun = (
           `the submitted result ${remaining[0]!.requestId} does not correlate with an outstanding work request; resume without --evaluator-result to recover the outstanding requests`,
         )
     }
-    const requests: Array<JsonObject> = []
+    let requests: ReadonlyArray<JsonObject> = []
     if (artifact.state.status !== "failed") {
       for (const unit of graph) {
         const state = artifact.state.workUnits[unit.id]
@@ -438,30 +416,32 @@ export const resumeHarnessRun = (
               status: "completed",
               completedAt: now,
             }
-            events.push({ timestamp: now, event: "work_unit_completed", workUnit: unit.id })
+            events = [
+              ...events,
+              { timestamp: now, event: "work_unit_completed", workUnit: unit.id },
+            ]
             continue
           }
           const payload = deterministicPayload(unit, model, plan, artifact.manifest.model)
-          const inputHash = yield* Effect.promise(() => hashJson(payload))
+          const inputHash = yield* hashJsonEffect(payload)
           mergePayloads(artifact, graph, unit.id, [{ workUnit: unit.id, payload }])
           artifact.state.workUnits[unit.id] = {
             status: "completed",
             inputHash,
             completedAt: now,
           }
-          events.push({ timestamp: now, event: "work_unit_completed", workUnit: unit.id })
+          events = [...events, { timestamp: now, event: "work_unit_completed", workUnit: unit.id }]
           continue
         }
-        const protocol = yield* Effect.promise(() =>
-          buildProtocolRequest({
-            unit,
-            plan,
-            payloads: artifact.results.payloads,
-            areaSources: artifact.manifest.areaSources,
-            bodyGuidance,
-            evaluationId: artifact.manifest.evaluationId,
-          }),
-        )
+        const draft = buildProtocolRequest({
+          unit,
+          plan,
+          payloads: artifact.results.payloads,
+          areaSources: artifact.manifest.areaSources,
+          bodyGuidance,
+          evaluationId: artifact.manifest.evaluationId,
+        })
+        const protocol = completeProtocolRequest(draft, yield* hashJsonEffect(draft.hashInput))
         let pending = (artifact.state.pendingEvaluatorCalls ?? []).find(
           (call) => call.workUnitId === unit.id,
         )
@@ -470,22 +450,31 @@ export const resumeHarnessRun = (
             continue
           const attempt = (state?.attempts ?? 0) + 1
           pending = {
-            requestId: yield* Effect.promise(() =>
-              randomRequestId(artifact.manifest.evaluationId, unit.id, protocol.inputHash, attempt),
+            requestId: yield* requestId(
+              artifact.manifest.evaluationId,
+              unit.id,
+              protocol.inputHash,
+              attempt,
             ),
             workUnitId: unit.id,
             inputHash: protocol.inputHash,
             correlationId: protocol.correlationId,
             attempt,
           }
-          ;(artifact.state.pendingEvaluatorCalls ??= []).push(pending)
+          artifact.state.pendingEvaluatorCalls = [
+            ...(artifact.state.pendingEvaluatorCalls ?? []),
+            pending,
+          ]
           artifact.state.workUnits[unit.id] ??= { status: "pending" }
         } else if (pending.inputHash !== protocol.inputHash) {
           return failureResult(
             `the model or request context for ${unit.id} changed after the work request was emitted; a result must not be attached to a different request — start a new run`,
           )
         }
-        requests.push(requestReceipt(protocol, pending, retryFailures.get(pending.requestId)))
+        requests = [
+          ...requests,
+          protocolRequestReceipt(protocol, pending, retryFailures[pending.requestId]),
+        ]
       }
     }
     const pending = artifact.state.pendingEvaluatorCalls ?? []
@@ -498,12 +487,15 @@ export const resumeHarnessRun = (
     }
     artifact.state.updatedAt = now
     if (artifact.state.status !== initialStatus) {
-      events.push({
-        timestamp: now,
-        event: "run_status",
-        status: artifact.state.status,
-        ...(artifact.state.failure === undefined ? {} : { failure: artifact.state.failure }),
-      })
+      events = [
+        ...events,
+        {
+          timestamp: now,
+          event: "run_status",
+          status: artifact.state.status,
+          ...(artifact.state.failure === undefined ? {} : { failure: artifact.state.failure }),
+        },
+      ]
     }
     if (pending.length === 0) delete artifact.state.pendingEvaluatorCalls
     const temp = yield* fs.makeTempFile({ directory: runAbs, prefix: ".evaluation." })

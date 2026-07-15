@@ -24,6 +24,7 @@ import { detectSourceKind, validateSourceSelector } from "../services/source.ts"
 import { executeHarnessRun } from "./evaluation-execute.ts"
 import { executeProviderRun, resumeProviderRun } from "./evaluation-provider.ts"
 import { resumeHarnessRun } from "./evaluation-resume.ts"
+import { nextEvaluationRunNumber } from "./evaluation-runs.ts"
 
 export interface EvaluationRunInput {
   readonly model: string
@@ -145,17 +146,9 @@ export const selectEvaluator = (
     return { ...evaluator, reason: "configured evaluator profile" }
   }
   if (name === "auto") {
-    const candidates: Array<{
-      readonly name: string
-      readonly executable: boolean
-      readonly structuredOutput: boolean
-      readonly authenticated: boolean
-      readonly usable: boolean
-      readonly evidence: ReadonlyArray<string>
-    }> = []
     const codexExecutable = discovery.which("codex") !== null
     const codexAuthenticated = codexExecutable && discovery.codexAuthenticated()
-    candidates.push({
+    const codexCandidate = {
       name: "codex",
       executable: codexExecutable,
       structuredOutput: true,
@@ -166,18 +159,18 @@ export const selectEvaluator = (
         "non-interactive structured output available through the Codex SDK",
         codexAuthenticated ? "authenticated (codex login status)" : "not authenticated",
       ],
-    })
+    }
     if (codexExecutable && codexAuthenticated) {
       const evaluator = codexEvaluator()
       return {
         ...evaluator,
         reason:
           "auto: codex agent runtime is installed, authenticated, and supports non-interactive structured output",
-        candidates,
+        candidates: [codexCandidate],
       }
     }
     const claudeExecutable = discovery.which("claude") !== null
-    candidates.push({
+    const claudeCandidate = {
       name: "claude",
       executable: claudeExecutable,
       structuredOutput: true,
@@ -190,7 +183,8 @@ export const selectEvaluator = (
           ? "authentication assumed because the runtime exposes no non-interactive status probe"
           : "authentication not checked without an executable",
       ],
-    })
+    }
+    const candidates = [codexCandidate, claudeCandidate]
     if (claudeExecutable) {
       const evaluator = claudeEvaluator()
       return {
@@ -243,39 +237,6 @@ const scopedElements = (
   )
 }
 
-const nextRunNumber = (directory: string) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    if (!(yield* fs.exists(directory))) return 1
-    let maximum = 0
-    for (const name of yield* fs.readDirectory(directory)) {
-      let number: number | undefined
-      for (const manifestPath of ["evaluation.json", "data/evaluation-manifest.json"]) {
-        const file = paths.join(directory, name, manifestPath)
-        if (!(yield* fs.exists(file))) continue
-        try {
-          const parsed = JSON.parse(yield* fs.readFileString(file)) as {
-            readonly manifest?: { readonly run?: { readonly number?: number } }
-            readonly run?: { readonly number?: number }
-          }
-          number = parsed.manifest?.run?.number ?? parsed.run?.number
-        } catch {
-          // Fall back to a current-format folder name.
-        }
-        break
-      }
-      if (number === undefined) {
-        const match = /^(\d{4})-([a-z0-9-]+)-eval$/.exec(name)
-        if (match !== null && !match[2]!.split("-").includes("quality")) {
-          number = Number(match[1])
-        }
-      }
-      maximum = Math.max(maximum, number ?? 0)
-    }
-    return maximum + 1
-  })
-
 const dryRun = (input: EvaluationRunInput) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem
@@ -296,17 +257,18 @@ const dryRun = (input: EvaluationRunInput) =>
     const areas = elements.filter((entry) => entry.kind === "area")
     const factors = elements.filter((entry) => entry.kind === "factor")
     const requirements = elements.filter((entry) => entry.kind === "requirement")
-    const sources = []
-    for (const area of areas) {
-      const selector = effectiveSource(model, areaPath(area.id)).selector
-      const kind = yield* detectSourceKind(workspace.workspaceRoot.abs, selector)
-      yield* validateSourceSelector(workspace.workspaceRoot.abs, { selector, kind })
-      sources.push({
-        area: area.id,
-        selector,
-        kind,
-      })
-    }
+    const sources = yield* Effect.forEach(areas, (area) =>
+      Effect.gen(function* () {
+        const selector = effectiveSource(model, areaPath(area.id)).selector
+        const kind = yield* detectSourceKind(workspace.workspaceRoot.abs, selector)
+        yield* validateSourceSelector(workspace.workspaceRoot.abs, { selector, kind })
+        return {
+          area: area.id,
+          selector,
+          kind,
+        }
+      }),
+    )
     const total = 1 + areas.length * 3 + factors.length * 2 + requirements.length * 2 + 4
     const evaluatorUnits = areas.length + factors.length + requirements.length + 3
     const configured = workspace.evaluation.concurrency
@@ -316,13 +278,15 @@ const dryRun = (input: EvaluationRunInput) =>
       concurrency > 1 && !selected.capabilities.concurrent && !selected.capabilities.subagents
         ? 1
         : concurrency
-    const number = yield* nextRunNumber(workspace.evaluations.abs)
+    const number = yield* nextEvaluationRunNumber(workspace.evaluations.abs)
     const label = `${String(number).padStart(4, "0")}-${scopeSlug(scope.plannedScope)}-eval`
-    let command = "qualitymd evaluation run"
-    if (input.model !== "") command += ` --model ${input.model}`
-    if (input.area !== "") command += ` --area ${input.area}`
-    for (const factor of input.factors) command += ` --factor ${factor}`
-    if (input.evaluator !== "") command += ` --evaluator ${input.evaluator}`
+    const command = [
+      "qualitymd evaluation run",
+      ...(input.model === "" ? [] : [`--model ${input.model}`]),
+      ...(input.area === "" ? [] : [`--area ${input.area}`]),
+      ...input.factors.map((factor) => `--factor ${factor}`),
+      ...(input.evaluator === "" ? [] : [`--evaluator ${input.evaluator}`]),
+    ].join(" ")
     return {
       schemaVersion: 3,
       model: workspace.model.rel,

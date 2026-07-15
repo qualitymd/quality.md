@@ -40,13 +40,10 @@ const field = (source: unknown, key: string) => string(value(source, key))
 const scoped = (source: unknown, key: string) => object(value(source, key))
 
 const payloadIndex = (payloads: ReadonlyArray<Json>) => {
-  const byKind = new Map<string, Array<Json>>()
-  for (const payload of payloads) {
-    const kind = field(payload, "kind")
-    const items = byKind.get(kind) ?? []
-    items.push(payload)
-    byKind.set(kind, items)
-  }
+  const kinds = [...new Set(payloads.map((payload) => field(payload, "kind")))]
+  const byKind = new Map(
+    kinds.map((kind) => [kind, payloads.filter((payload) => field(payload, "kind") === kind)]),
+  )
   return {
     all: payloads,
     kind: (kind: string) => byKind.get(kind) ?? [],
@@ -86,13 +83,15 @@ export const requirementReportPath = (requirementId: string) => {
 
 const dirname = (path: string) => (path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : ".")
 const normalizeParts = (parts: ReadonlyArray<string>) => {
-  const result: Array<string> = []
-  for (const part of parts) {
-    if (part === "" || part === ".") continue
-    if (part === "..") result.pop()
-    else result.push(part)
-  }
-  return result
+  return parts.reduce<ReadonlyArray<string>>(
+    (result, part) =>
+      part === "" || part === "."
+        ? result
+        : part === ".."
+          ? result.slice(0, -1)
+          : [...result, part],
+    [],
+  )
 }
 const relative = (fromFile: string, to: string) => {
   const from = normalizeParts(dirname(fromFile).split("/"))
@@ -272,14 +271,15 @@ interface RankedFinding {
   readonly requirement?: PlannedRequirement
 }
 const rankedFindings = (plan: EvaluationPlan, index: ReturnType<typeof payloadIndex>) => {
-  const found = new Map<string, { finding: Json; requirement: PlannedRequirement }>()
-  for (const requirement of plan.requirements) {
-    const assessment = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
-    for (const finding of objects(assessment?.findings)) {
-      const id = field(finding, "id")
-      if (id !== "") found.set(`${requirement.ref}#${id}`, { finding, requirement })
-    }
-  }
+  const found = new Map(
+    plan.requirements.flatMap((requirement) => {
+      const assessment = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
+      return objects(assessment?.findings).flatMap((finding) => {
+        const id = field(finding, "id")
+        return id === "" ? [] : [[`${requirement.ref}#${id}`, { finding, requirement }] as const]
+      })
+    }),
+  )
   const ranking = index.one("FindingRankingResult")
   return objects(ranking?.orderedFindings).flatMap((item, position): Array<RankedFinding> => {
     const findingRef = object(item.findingRef)
@@ -381,12 +381,20 @@ const recommendationAreaFactorLinks = (
   recommendation: Json,
   reportPath: string,
 ) => {
-  const groups = new Map<string, Array<string>>()
-  for (const context of traceContexts(plan, recommendation)) {
-    const items = groups.get(context.areaId) ?? []
-    for (const factorId of context.factorIds) if (!items.includes(factorId)) items.push(factorId)
-    groups.set(context.areaId, items)
-  }
+  const contexts = traceContexts(plan, recommendation)
+  const areaIds = [...new Set(contexts.map((context) => context.areaId))]
+  const groups = new Map(
+    areaIds.map((areaId) => [
+      areaId,
+      [
+        ...new Set(
+          contexts
+            .filter((context) => context.areaId === areaId)
+            .flatMap((context) => context.factorIds),
+        ),
+      ],
+    ]),
+  )
   if (groups.size === 0) return "—"
   return [...groups]
     .map(([areaId, factorIds]) => {
@@ -623,32 +631,35 @@ const markedCount = (marker: string, count: number, label: string, plural = fals
   `${marker} ${count} ${label}${plural && count !== 1 ? "s" : ""}`
 
 const findingCountSummary = (findings: ReadonlyArray<RankedFinding>) => {
-  const parts: Array<string> = []
-  for (const [type, marker, label] of [
-    ["gap", "🚩", "Gap"],
-    ["risk", "⚠️", "Risk"],
-    ["strength", "💪", "Strength"],
-    ["note", "ℹ️", "Note"],
-  ] as const) {
+  const parts = (
+    [
+      ["gap", "🚩", "Gap"],
+      ["risk", "⚠️", "Risk"],
+      ["strength", "💪", "Strength"],
+      ["note", "ℹ️", "Note"],
+    ] as const
+  ).flatMap(([type, marker, label]) => {
     const matching = findings.filter((item) => field(item.finding, "type") === type)
-    if (matching.length === 0) continue
-    let part = markedCount(marker, matching.length, label, true)
-    if (type === "gap" || type === "risk") {
-      const severities = (
-        [
-          ["critical", "🔴", "Critical"],
-          ["high", "🔴", "High"],
-          ["medium", "🟡", "Medium"],
-          ["low", "🔵", "Low"],
-        ] as const
-      ).flatMap(([severity, severityMarker, severityLabel]) => {
-        const count = matching.filter((item) => field(item.finding, "severity") === severity).length
-        return count === 0 ? [] : [markedCount(severityMarker, count, severityLabel)]
-      })
-      if (severities.length > 0) part += `: ${severities.join(", ")}`
-    }
-    parts.push(part)
-  }
+    if (matching.length === 0) return []
+    const severities =
+      type === "gap" || type === "risk"
+        ? (
+            [
+              ["critical", "🔴", "Critical"],
+              ["high", "🔴", "High"],
+              ["medium", "🟡", "Medium"],
+              ["low", "🔵", "Low"],
+            ] as const
+          ).flatMap(([severity, severityMarker, severityLabel]) => {
+            const count = matching.filter(
+              (item) => field(item.finding, "severity") === severity,
+            ).length
+            return count === 0 ? [] : [markedCount(severityMarker, count, severityLabel)]
+          })
+        : []
+    const base = markedCount(marker, matching.length, label, true)
+    return [severities.length === 0 ? base : `${base}: ${severities.join(", ")}`]
+  })
   return parts.join("; ")
 }
 
@@ -667,10 +678,10 @@ const recommendationsTable = (
     "Reason",
     ...(includeRationale ? ["Ranking rationale"] : []),
   ]
-  let output = row(...headers) + row(...headers.map(() => "---"))
+  const heading = row(...headers) + row(...headers.map(() => "---"))
   if (items.length === 0)
-    return output + row("(no ranked recommendations)", ...headers.slice(1).map(() => "—")) + "\n"
-  for (const item of items) {
+    return heading + row("(no ranked recommendations)", ...headers.slice(1).map(() => "—")) + "\n"
+  const rows = items.map((item) => {
     const cells = [
       String(item.rank),
       link(reportPath, recommendationPath(item), field(item.recommendation, "title")),
@@ -680,11 +691,11 @@ const recommendationsTable = (
         field(includeRationale ? item.recommendation : item.ranking, "confidence"),
       ) || "—",
       field(item.recommendation, "expectedValue") || "—",
+      ...(includeRationale ? [field(item.ranking, "rationale") || "—"] : []),
     ]
-    if (includeRationale) cells.push(field(item.ranking, "rationale") || "—")
-    output += row(...cells)
-  }
-  return output + "\n"
+    return row(...cells)
+  })
+  return heading + rows.join("") + "\n"
 }
 
 const renderRun = (
@@ -814,13 +825,15 @@ const renderArea = (
     dataPathForPayload("AreaAnalysisResult", analysis),
     "data/advice/finding-ranking-result.json",
     "data/advice/recommendation-ranking-result.json",
+    ...requirements.flatMap((requirement) => {
+      const ratingResult = index.one("RequirementRatingResult", "requirementId", requirement.ref)
+      const assessment = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
+      return [
+        ...(ratingResult ? [dataPathForPayload("RequirementRatingResult", ratingResult)] : []),
+        ...(assessment ? [dataPathForPayload("RequirementAssessmentResult", assessment)] : []),
+      ]
+    }),
   ]
-  for (const requirement of requirements) {
-    const ratingResult = index.one("RequirementRatingResult", "requirementId", requirement.ref)
-    const assessment = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
-    if (ratingResult) sources.push(dataPathForPayload("RequirementRatingResult", ratingResult))
-    if (assessment) sources.push(dataPathForPayload("RequirementAssessmentResult", assessment))
-  }
   return output + sourceData(reportPath, sources)
 }
 
@@ -915,13 +928,15 @@ const renderFactor = (
   const sources = [
     "data/evaluation-manifest.json",
     dataPathForPayload("FactorAnalysisResult", analysis),
+    ...requirements.flatMap((requirement) => {
+      const ratingResult = index.one("RequirementRatingResult", "requirementId", requirement.ref)
+      const assessment = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
+      return [
+        ...(ratingResult ? [dataPathForPayload("RequirementRatingResult", ratingResult)] : []),
+        ...(assessment ? [dataPathForPayload("RequirementAssessmentResult", assessment)] : []),
+      ]
+    }),
   ]
-  for (const requirement of requirements) {
-    const rr = index.one("RequirementRatingResult", "requirementId", requirement.ref)
-    const ra = index.one("RequirementAssessmentResult", "requirementId", requirement.ref)
-    if (rr) sources.push(dataPathForPayload("RequirementRatingResult", rr))
-    if (ra) sources.push(dataPathForPayload("RequirementAssessmentResult", ra))
-  }
   return output + sourceData(reportPath, sources)
 }
 
@@ -1239,7 +1254,7 @@ export const buildReportTree = (input: {
       )
   const findings = rankedFindings(reportPlan, index)
   const recommendations = rankedRecommendations(index)
-  const reports: Array<RenderedReport> = [
+  const reports: ReadonlyArray<RenderedReport> = [
     {
       kind: "run",
       path: "report.md",
@@ -1253,75 +1268,96 @@ export const buildReportTree = (input: {
         recommendations,
       ),
     },
-  ]
-  for (const area of reportPlan.areas)
-    if (index.one("AreaAnalysisResult", "areaId", area.ref))
-      reports.push({
-        kind: "area",
-        path: areaReportPath(area.ref),
-        areaId: area.ref,
-        content: renderArea(
-          input.model,
-          input.manifest,
-          reportPlan,
-          area,
-          index,
-          input.runRel,
-          recommendations,
-        ),
-      })
-  for (const factor of reportPlan.factors)
-    if (index.one("FactorAnalysisResult", "factorId", factor.ref))
-      reports.push({
-        kind: "factor",
-        path: factorReportPath(factor.ref),
-        areaId: factor.areaId,
-        factorId: factor.ref,
-        content: renderFactor(input.model, input.manifest, reportPlan, factor, index, input.runRel),
-      })
-  for (const requirement of reportPlan.requirements)
-    if (
-      index.one("RequirementAssessmentResult", "requirementId", requirement.ref) ||
-      index.one("RequirementRatingResult", "requirementId", requirement.ref)
-    )
-      reports.push({
-        kind: "requirement",
-        path: requirementReportPath(requirement.ref),
-        areaId: requirement.areaId,
-        requirementId: requirement.ref,
-        content: renderRequirement(
-          input.model,
-          input.manifest,
-          reportPlan,
-          requirement,
-          index,
-          input.runRel,
-        ),
-      })
-  reports.push({
-    kind: "findings",
-    path: "findings.md",
-    content: renderFindings(input.manifest, reportPlan, input.runRel, findings),
-  })
-  reports.push({
-    kind: "recommendations",
-    path: "recommendations.md",
-    content: renderRecommendationIndex(
-      input.manifest,
-      reportPlan,
-      index,
-      input.runRel,
-      recommendations,
+    ...reportPlan.areas.flatMap(
+      (area): ReadonlyArray<RenderedReport> =>
+        index.one("AreaAnalysisResult", "areaId", area.ref)
+          ? [
+              {
+                kind: "area",
+                path: areaReportPath(area.ref),
+                areaId: area.ref,
+                content: renderArea(
+                  input.model,
+                  input.manifest,
+                  reportPlan,
+                  area,
+                  index,
+                  input.runRel,
+                  recommendations,
+                ),
+              },
+            ]
+          : [],
     ),
-  })
-  for (const item of recommendations)
-    reports.push({
-      kind: "recommendation",
-      path: recommendationPath(item),
-      recommendationId: field(item.recommendation, "id"),
-      content: renderRecommendation(input.manifest, item, input.runRel),
-    })
-  const reportRefs: Array<Json> = reports.map((report) =>
+    ...reportPlan.factors.flatMap(
+      (factor): ReadonlyArray<RenderedReport> =>
+        index.one("FactorAnalysisResult", "factorId", factor.ref)
+          ? [
+              {
+                kind: "factor",
+                path: factorReportPath(factor.ref),
+                areaId: factor.areaId,
+                factorId: factor.ref,
+                content: renderFactor(
+                  input.model,
+                  input.manifest,
+                  reportPlan,
+                  factor,
+                  index,
+                  input.runRel,
+                ),
+              },
+            ]
+          : [],
+    ),
+    ...reportPlan.requirements.flatMap(
+      (requirement): ReadonlyArray<RenderedReport> =>
+        index.one("RequirementAssessmentResult", "requirementId", requirement.ref) ||
+        index.one("RequirementRatingResult", "requirementId", requirement.ref)
+          ? [
+              {
+                kind: "requirement",
+                path: requirementReportPath(requirement.ref),
+                areaId: requirement.areaId,
+                requirementId: requirement.ref,
+                content: renderRequirement(
+                  input.model,
+                  input.manifest,
+                  reportPlan,
+                  requirement,
+                  index,
+                  input.runRel,
+                ),
+              },
+            ]
+          : [],
+    ),
+    {
+      kind: "findings",
+      path: "findings.md",
+      content: renderFindings(input.manifest, reportPlan, input.runRel, findings),
+    },
+    {
+      kind: "recommendations",
+      path: "recommendations.md",
+      content: renderRecommendationIndex(
+        input.manifest,
+        reportPlan,
+        index,
+        input.runRel,
+        recommendations,
+      ),
+    },
+    ...recommendations.map(
+      (item): RenderedReport => ({
+        kind: "recommendation",
+        path: recommendationPath(item),
+        recommendationId: field(item.recommendation, "id"),
+        content: renderRecommendation(input.manifest, item, input.runRel),
+      }),
+    ),
+  ]
+  const reportRefs: ReadonlyArray<Json> = reports.map((report) =>
     ref(report.kind, report.path, {
       ...(report.areaId ? { areaId: report.areaId } : {}),
       ...(report.factorId ? { factorId: report.factorId } : {}),

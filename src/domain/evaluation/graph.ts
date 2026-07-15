@@ -40,25 +40,20 @@ const requirementsOf = (factor: PlannedFactor, plan: EvaluationPlan) =>
     .filter((requirement) => requirement.factorIds.includes(factor.ref))
     .map((requirement) => requirement.ref)
 
-const add = (
-  units: Array<WorkUnit>,
+const makeUnit = (
   kind: WorkKind,
   subject: string,
   dependsOn: ReadonlyArray<string>,
   evaluatorBacked: boolean,
   dataKind?: string,
-) => {
-  const unit: WorkUnit = {
-    id: unitId(kind, subject),
-    kind,
-    subject,
-    dependsOn: [...new Set(dependsOn)],
-    evaluatorBacked,
-    ...(dataKind === undefined ? {} : { dataKind }),
-  }
-  units.push(unit)
-  return unit.id
-}
+): WorkUnit => ({
+  id: unitId(kind, subject),
+  kind,
+  subject,
+  dependsOn: [...new Set(dependsOn)],
+  evaluatorBacked,
+  ...(dataKind === undefined ? {} : { dataKind }),
+})
 
 const bottomUp = <A extends { readonly path: ReadonlyArray<string> }>(items: ReadonlyArray<A>) =>
   items
@@ -69,110 +64,118 @@ const bottomUp = <A extends { readonly path: ReadonlyArray<string> }>(items: Rea
     .map(({ item }) => item)
 
 export const buildGraph = (plan: EvaluationPlan): ReadonlyArray<WorkUnit> => {
-  const units: Array<WorkUnit> = []
-  add(units, "frameEvaluation", "", [], false, "EvaluationFrame")
-  for (const area of plan.areas) {
+  const evaluationFrame = makeUnit("frameEvaluation", "", [], false, "EvaluationFrame")
+  const areaEvaluationFrames = plan.areas.map((area) => {
     const parent =
       area.path.length === 0 ? "" : `area:${area.path.slice(0, -1).join("/") || "root"}`
-    add(
-      units,
+    return makeUnit(
       "frameAreaEvaluation",
       area.ref,
       ["frameEvaluation", ...(parent === "" ? [] : [unitId("frameAreaEvaluation", parent)])],
       false,
       "AreaEvaluationFrame",
     )
-  }
-  for (const requirement of plan.requirements) {
-    const frame = add(
-      units,
+  })
+  const requirementUnits = plan.requirements.flatMap((requirement) => {
+    const frame = makeUnit(
       "frameRequirementEvaluation",
       requirement.ref,
       [unitId("frameAreaEvaluation", requirement.areaId)],
       false,
       "RequirementEvaluationFrame",
     )
-    add(units, "assessRateRequirement", requirement.ref, [frame], true)
-  }
-  const analyzedFactors = new Map<string, string>()
-  for (const factor of bottomUp(plan.factors)) {
+    return [frame, makeUnit("assessRateRequirement", requirement.ref, [frame.id], true)]
+  })
+  const factorUnits = bottomUp(plan.factors).flatMap((factor) => {
     const dependencies = [
       ...requirementsOf(factor, plan).map((ref) => unitId("assessRateRequirement", ref)),
       ...childrenOf(factor, plan.factors).map((ref) => unitId("analyzeFactor", ref)),
     ]
-    const frame = add(
-      units,
+    const frame = makeUnit(
       "frameFactorAnalysis",
       factor.ref,
       dependencies,
       false,
       "FactorAnalysisFrame",
     )
-    analyzedFactors.set(
-      factor.ref,
-      add(
-        units,
+    return [
+      frame,
+      makeUnit(
         "analyzeFactor",
         factor.ref,
-        [frame, ...dependencies],
+        [frame.id, ...dependencies],
         true,
         "FactorAnalysisResult",
       ),
-    )
-  }
-  const analyzedAreas = new Map<string, string>()
-  for (const area of bottomUp(plan.areas)) {
+    ]
+  })
+  const areaAnalysisUnits = bottomUp(plan.areas).flatMap((area) => {
     const dependencies = [
-      ...area.rootFactorIds.map((ref) => analyzedFactors.get(ref)!),
+      ...area.rootFactorIds.map((ref) => unitId("analyzeFactor", ref)),
       ...area.childAreaIds.map((ref) => unitId("analyzeArea", ref)),
       ...area.localRequirementIds.map((ref) => unitId("assessRateRequirement", ref)),
     ]
-    const frame = add(
-      units,
-      "frameAreaAnalysis",
-      area.ref,
-      dependencies,
-      false,
-      "AreaAnalysisFrame",
-    )
-    analyzedAreas.set(
-      area.ref,
-      add(units, "analyzeArea", area.ref, [frame, ...dependencies], true, "AreaAnalysisResult"),
-    )
-  }
-  const rankFindings = add(
-    units,
+    const frame = makeUnit("frameAreaAnalysis", area.ref, dependencies, false, "AreaAnalysisFrame")
+    return [
+      frame,
+      makeUnit("analyzeArea", area.ref, [frame.id, ...dependencies], true, "AreaAnalysisResult"),
+    ]
+  })
+  const rankFindings = makeUnit(
     "rankFindings",
     "",
     plan.requirements.map((requirement) => unitId("assessRateRequirement", requirement.ref)),
     true,
     "FindingRankingResult",
   )
-  const recommend = add(
-    units,
+  const recommend = makeUnit(
     "recommend",
     "",
-    [rankFindings, ...analyzedFactors.values(), ...analyzedAreas.values()],
+    [
+      rankFindings.id,
+      ...bottomUp(plan.factors).map((factor) => unitId("analyzeFactor", factor.ref)),
+      ...bottomUp(plan.areas).map((area) => unitId("analyzeArea", area.ref)),
+    ],
     true,
     "RecommendationResult",
   )
-  add(
-    units,
+  const rankRecommendations = makeUnit(
     "rankRecommendations",
     "",
-    [recommend, rankFindings],
+    [recommend.id, rankFindings.id],
     true,
     "RecommendationRankingResult",
   )
-  add(
-    units,
+  const beforeReports = [
+    evaluationFrame,
+    ...areaEvaluationFrames,
+    ...requirementUnits,
+    ...factorUnits,
+    ...areaAnalysisUnits,
+    rankFindings,
+    recommend,
+    rankRecommendations,
+  ]
+  const buildReports = makeUnit(
     "buildReports",
     "",
-    units.map((unit) => unit.id),
+    beforeReports.map((unit) => unit.id),
     false,
   )
-  return units
+  return [...beforeReports, buildReports]
 }
+
+export const readyUnits = (
+  graph: ReadonlyArray<WorkUnit>,
+  completed: ReadonlySet<string>,
+  limit: number,
+): ReadonlyArray<WorkUnit> =>
+  graph
+    .filter(
+      (unit) =>
+        unit.evaluatorBacked && unit.dependsOn.every((dependency) => completed.has(dependency)),
+    )
+    .slice(0, limit)
 
 export const areaForUnit = (unit: WorkUnit, plan: EvaluationPlan): PlannedArea | undefined => {
   if (unit.subject.startsWith("area:")) return plan.areas.find((area) => area.ref === unit.subject)

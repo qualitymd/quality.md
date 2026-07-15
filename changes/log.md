@@ -2,6 +2,38 @@
 
 ## 2026-07-14
 
+- **Done**: Completed and archived
+  [0202 - Derive-values conformance refactor](archive/0202-derive-values-refactor.md).
+  All R1–R6 requirements passed the review ledger: the full local gate is green,
+  deterministic pre/post checkpoint artifacts are byte-identical, pure domain
+  functions have focused coverage, and all run-history consumers share the
+  durable recognition rule.
+
+- **In-Review**: Implemented
+  [0202 - Derive-values conformance refactor](archive/0202-derive-values-refactor.md).
+  Replaced shared collection accumulators across `src/`, decomposed harness
+  execution into pure frame/protocol/artifact/scheduling functions, kept hashing
+  in ordered Effect traversal, unified run enumeration, updated durable CLI
+  specs and release notes, and added preservation and enumeration regression
+  tests. `mise run check` passes.
+
+- **In-Progress**: Advanced
+  [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md)
+  from `Design` to `In-Progress` after settling the derivation, Effect
+  composition, domain-decomposition, structured-hashing, shared-enumeration,
+  and behavior-preservation design. Implementation may now update runtime code,
+  tests, durable CLI specs, and release notes.
+
+- **Design refinement**: Compared the Effect TypeScript guide and
+  [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md)
+  with current Effect (`8ce4795c`) and alchemy-effect (`573bb646`) practice.
+  Added project rules for named `Effect.fn` operations, explicit terminal and
+  typed-error handling, structured batch/repetition, service lifetimes, and
+  deterministic-time tests. Revised 0202 so changed Effect operations conform,
+  hashing uses ordered `Effect.forEach` instead of a nested `Promise.all`, and
+  the module map assigns requests and run artifacts to their existing domain
+  owners. No production code changed.
+
 - **Design**: Advanced
   [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md)
   from `Draft` to `Design` after reviewing R1–R6 individually and as a set.

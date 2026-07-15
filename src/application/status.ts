@@ -17,6 +17,7 @@ import {
   type QualityModel,
 } from "../domain/model/model.ts"
 import { resolveWorkspace, type Workspace } from "../services/workspace.ts"
+import { evaluationRunDirectories } from "./evaluation-runs.ts"
 
 type Readiness =
   | "missing-model"
@@ -90,26 +91,28 @@ const parseLint = (
 }
 
 const sourceCoverage = (model: QualityModel) => {
-  const rows: Array<Record<string, unknown>> = []
-  const visit = (area: Area, path: ReadonlyArray<string>, fallback: string) => {
+  const visit = (
+    area: Area,
+    path: ReadonlyArray<string>,
+    fallback: string,
+  ): ReadonlyArray<Record<string, unknown>> => {
     const resolved = effectiveSource(model, path)
-    rows.push({
-      areaPath: path,
-      label: area.title || fallback,
-      sourceState: resolved.state,
-      ...(resolved.state === "default" ? {} : { source: resolved.selector }),
-      factors: Object.keys(area.factors ?? {}).length,
-      requirements: Object.keys(area.requirements ?? {}).length,
-      childAreas: Object.keys(area.areas ?? {}).length,
-    })
-    for (const [name, child] of Object.entries(area.areas ?? {}).sort(([a], [b]) =>
-      a.localeCompare(b),
-    )) {
-      visit(child, [...path, name], name)
-    }
+    return [
+      {
+        areaPath: path,
+        label: area.title || fallback,
+        sourceState: resolved.state,
+        ...(resolved.state === "default" ? {} : { source: resolved.selector }),
+        factors: Object.keys(area.factors ?? {}).length,
+        requirements: Object.keys(area.requirements ?? {}).length,
+        childAreas: Object.keys(area.areas ?? {}).length,
+      },
+      ...Object.entries(area.areas ?? {})
+        .sort(([a], [b]) => a.localeCompare(b))
+        .flatMap(([name, child]) => visit(child, [...path, name], name)),
+    ]
   }
-  visit(model, [], "Model")
-  return rows
+  return visit(model, [], "Model")
 }
 
 const modelShape = (model: QualityModel) => {
@@ -165,64 +168,47 @@ const evaluationHistory = (workspace: Workspace, currentModel: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem
     const paths = yield* Path.Path
-    if (!(yield* fs.exists(workspace.evaluations.abs)))
-      return emptyHistory(workspace.evaluations.rel)
-    const runs: Array<{ readonly number: number; readonly name: string }> = []
-    for (const name of yield* fs.readDirectory(workspace.evaluations.abs)) {
-      const runAbs = paths.join(workspace.evaluations.abs, name)
-      if ((yield* fs.stat(runAbs)).type !== "Directory") continue
-      const artifactPath = paths.join(runAbs, "evaluation.json")
-      if (yield* fs.exists(artifactPath)) {
-        try {
-          const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as {
-            readonly manifest?: { readonly run?: { readonly number?: number } }
-          }
-          runs.push({ number: artifact.manifest?.run?.number ?? Number(name.slice(0, 4)), name })
-        } catch {
-          runs.push({ number: Number(name.slice(0, 4)), name })
-        }
-        continue
-      }
-      const match = /^(\d{4})-([a-z0-9-]+)-eval$/.exec(name)
-      if (match === null || match[2]!.split("-").includes("quality")) continue
-      runs.push({ number: Number(match[1]), name })
-    }
-    runs.sort((a, b) => a.number - b.number || a.name.localeCompare(b.name))
-    const items: Array<EvaluationRunSummary> = []
-    for (const run of runs) {
-      const runAbs = paths.join(workspace.evaluations.abs, run.name)
-      const path = `${workspace.evaluations.rel}/${run.name}`
-      try {
-        const snapshot = yield* fs.readFileString(paths.join(runAbs, "model-snapshot.md"))
-        const artifactPath = paths.join(runAbs, "evaluation.json")
+    const runs = yield* evaluationRunDirectories(
+      workspace.evaluations.abs,
+      workspace.evaluations.rel,
+    )
+    if (runs.length === 0) return emptyHistory(workspace.evaluations.rel)
+    const items: ReadonlyArray<EvaluationRunSummary> = yield* Effect.forEach(runs, (run) =>
+      Effect.gen(function* () {
+        const snapshot = yield* fs.readFileString(paths.join(run.absolute, "model-snapshot.md"))
+        const artifactPath = paths.join(run.absolute, "evaluation.json")
         if (yield* fs.exists(artifactPath)) {
-          items.push(
-            inspectArtifact(path, currentModel, snapshot, yield* fs.readFileString(artifactPath)),
+          return inspectArtifact(
+            run.display,
+            currentModel,
+            snapshot,
+            yield* fs.readFileString(artifactPath),
           )
-        } else {
-          const data = paths.join(runAbs, "data")
-          const artifacts = (yield* fs.exists(data))
-            ? (yield* fs.readDirectory(data)).filter((name) => name.endsWith(".json")).length
-            : 0
-          items.push({
-            path,
-            reportable: false,
-            stale: snapshot !== currentModel,
-            dataArtifacts: artifacts,
-            gaps: 1,
-          })
         }
-      } catch (cause) {
-        items.push({
-          path,
+        const data = paths.join(run.absolute, "data")
+        const artifacts = (yield* fs.exists(data))
+          ? (yield* fs.readDirectory(data)).filter((name) => name.endsWith(".json")).length
+          : 0
+        return {
+          path: run.display,
           reportable: false,
-          stale: false,
-          dataArtifacts: 0,
-          gaps: 0,
-          problem: cause instanceof Error ? cause.message : String(cause),
-        })
-      }
-    }
+          stale: snapshot !== currentModel,
+          dataArtifacts: artifacts,
+          gaps: 1,
+        } satisfies EvaluationRunSummary
+      }).pipe(
+        Effect.catch((cause) =>
+          Effect.succeed({
+            path: run.display,
+            reportable: false,
+            stale: false,
+            dataArtifacts: 0,
+            gaps: 0,
+            problem: cause instanceof Error ? cause.message : String(cause),
+          } satisfies EvaluationRunSummary),
+        ),
+      ),
+    )
     const summary = {
       reportable: items.filter((item) => item.reportable).length,
       incomplete: items.filter((item) => !item.reportable).length,

@@ -40,36 +40,45 @@ const updateAgentInstructions = (modelPath: string) =>
       { path: "CLAUDE.md", create: false },
       { path: "GEMINI.md", create: false },
     ]
-    const seen = new Set<string>()
-    const results: Array<AgentInstructionFile> = []
-    for (const candidate of candidates) {
-      const target = paths.join(cwd, candidate.path)
-      const exists = yield* fs.exists(target)
-      if (!exists && !candidate.create) continue
-      const key = exists ? yield* fs.realPath(target) : target
-      if (seen.has(key)) continue
-      seen.add(key)
-      const existing = exists ? yield* fs.readFileString(target) : ""
-      if (
-        existing.includes(marker) ||
-        (existing.includes("See [QUALITY.md](") && existing.includes(pointerTrail))
-      ) {
-        continue
-      }
-      const relative = paths.relative(paths.dirname(target), absoluteModel).replaceAll("\\", "/")
-      const block = `${marker}\nSee [QUALITY.md](${relative})${pointerTrail}`
-      const content =
-        existing === ""
-          ? `${block}\n`
-          : existing.endsWith("\n\n")
-            ? `${existing}${block}\n`
-            : existing.endsWith("\n")
-              ? `${existing}\n${block}\n`
-              : `${existing}\n\n${block}\n`
-      yield* fs.writeFileString(target, content, { mode: 0o644 })
-      results.push({ path: candidate.path, created: !exists, updated: exists })
-    }
-    return results
+    const inspected = yield* Effect.forEach(candidates, (candidate) =>
+      Effect.gen(function* () {
+        const target = paths.join(cwd, candidate.path)
+        const exists = yield* fs.exists(target)
+        if (!exists && !candidate.create) return undefined
+        const key = exists ? yield* fs.realPath(target) : target
+        const existing = exists ? yield* fs.readFileString(target) : ""
+        return { candidate, target, exists, key, existing }
+      }),
+    )
+    const distinct = inspected.filter(
+      (entry, index): entry is NonNullable<typeof entry> =>
+        entry !== undefined &&
+        inspected.findIndex((candidate) => candidate?.key === entry.key) === index,
+    )
+    const results = yield* Effect.forEach(distinct, (entry) =>
+      Effect.gen(function* () {
+        const { candidate, target, exists, existing } = entry
+        if (
+          existing.includes(marker) ||
+          (existing.includes("See [QUALITY.md](") && existing.includes(pointerTrail))
+        ) {
+          return undefined
+        }
+        const relative = paths.relative(paths.dirname(target), absoluteModel).replaceAll("\\", "/")
+        const block = `${marker}\nSee [QUALITY.md](${relative})${pointerTrail}`
+        const content =
+          existing === ""
+            ? `${block}\n`
+            : existing.endsWith("\n\n")
+              ? `${existing}${block}\n`
+              : existing.endsWith("\n")
+                ? `${existing}\n${block}\n`
+                : `${existing}\n\n${block}\n`
+        yield* fs.writeFileString(target, content, { mode: 0o644 })
+        return { path: candidate.path, created: !exists, updated: exists }
+      }),
+    )
+    return results.filter((result): result is AgentInstructionFile => result !== undefined)
   }).pipe(Effect.mapError((cause) => new FileSystemFailure({ detail: errorDetail(cause) })))
 
 const actions = (path: string) => [

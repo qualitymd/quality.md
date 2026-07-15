@@ -43,10 +43,7 @@ edit.
 
 # Open change cases
 
-- [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md) -
-  **Design** - bring `src/` into conformance with the derive-values style rule
-  and decompose `evaluation-execute` into pure domain functions, preserving
-  public CLI behavior.
+No open change cases.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

@@ -55,9 +55,10 @@ directory or run folder. The model path **MUST** resolve to a file, not a
 directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
-The command **MUST** compute the next run number as one past the highest
-`EvaluationManifest.run.number` in the evaluation directory, create the run
-directory, create `data/`, snapshot `model-snapshot.md`, and write
+The command **MUST** compute the next run number as one past the highest run
+number recognized by the shared
+[evaluation run recognition](../cli.md#evaluation-run-recognition) rule, create
+the run directory, create `data/`, snapshot `model-snapshot.md`, and write
 `data/evaluation-manifest.json`.
 
 `data/evaluation-manifest.json` **MUST** be a CLI-owned `EvaluationManifest`

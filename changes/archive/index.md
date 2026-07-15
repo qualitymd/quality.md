@@ -828,3 +828,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   moves requirement-specific context discovery into fresh coding-agent
   sessions, seals per-requirement evidence in the runner, and narrows evaluator
   methods to harness, Codex, and Claude (`Done`).
+- [0202 — Derive-values conformance refactor](0202-derive-values-refactor.md) -
+  brings runtime collection derivation into style-guide conformance, decomposes
+  harness execution into pure domain functions and named Effect operations, and
+  unifies run-folder recognition under one durable rule (`Done`).

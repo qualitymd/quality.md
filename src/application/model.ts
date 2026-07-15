@@ -62,12 +62,11 @@ const rootAt = (model: ReturnType<typeof decodeModel>, area: string) => {
 }
 
 const renderTree = (root: ModelElement): string => {
-  const lines: Array<string> = []
-  const walk = (element: ModelElement, depth: number) => {
-    lines.push(`${"  ".repeat(depth)}${element.id}  ${element.label}`)
-    for (const child of element.children ?? []) walk(child, depth + 1)
-  }
-  walk(root, 0)
+  const walk = (element: ModelElement, depth: number): ReadonlyArray<string> => [
+    `${"  ".repeat(depth)}${element.id}  ${element.label}`,
+    ...(element.children ?? []).flatMap((child) => walk(child, depth + 1)),
+  ]
+  const lines = walk(root, 0)
   return `${lines.join("\n")}\n`
 }
 
@@ -89,14 +88,13 @@ export const modelTreeCommand = (input: ModelTreeInput) => {
 }
 
 const parseKinds = (types: ReadonlyArray<string>): Set<ElementKind> | string => {
-  const kinds = new Set<ElementKind>()
-  for (const raw of types.flatMap((entry) => entry.split(","))) {
-    if (raw !== "area" && raw !== "factor" && raw !== "requirement") {
-      return `--type ${JSON.stringify(raw)} is not one of: area, factor, requirement`
-    }
-    kinds.add(raw)
-  }
-  return kinds
+  const rawKinds = types.flatMap((entry) => entry.split(","))
+  const invalid = rawKinds.find(
+    (raw) => raw !== "area" && raw !== "factor" && raw !== "requirement",
+  )
+  return invalid === undefined
+    ? new Set(rawKinds as ReadonlyArray<ElementKind>)
+    : `--type ${JSON.stringify(invalid)} is not one of: area, factor, requirement`
 }
 
 export const modelListCommand = (input: ModelListInput) => {
@@ -128,8 +126,17 @@ export const modelListCommand = (input: ModelListInput) => {
 }
 
 const detail = (element: ModelElement) => {
-  const grouped: Record<ElementKind, Array<string>> = { area: [], factor: [], requirement: [] }
-  for (const child of element.children ?? []) grouped[child.kind].push(child.id)
+  const grouped: Readonly<Record<ElementKind, ReadonlyArray<string>>> = {
+    area: (element.children ?? [])
+      .filter((child) => child.kind === "area")
+      .map((child) => child.id),
+    factor: (element.children ?? [])
+      .filter((child) => child.kind === "factor")
+      .map((child) => child.id),
+    requirement: (element.children ?? [])
+      .filter((child) => child.kind === "requirement")
+      .map((child) => child.id),
+  }
   return {
     id: element.id,
     kind: element.kind,
@@ -142,17 +149,22 @@ const detail = (element: ModelElement) => {
 }
 
 const renderDetail = (value: ReturnType<typeof detail>) => {
-  let output = `${value.id}\n  kind:   ${value.kind}\n  label:  ${value.label}\n`
-  if (value.parentId !== undefined) output += `  parent: ${value.parentId}\n`
-  for (const [label, ids] of [
+  const groups = [
     ["factors", value.factors],
     ["requirements", value.requirements],
     ["areas", value.areas],
-  ] as const) {
-    if (ids === undefined) continue
-    output += `  ${label}:\n${ids.map((id) => `    ${id}`).join("\n")}\n`
-  }
-  return output
+  ] as const
+  return (
+    `${value.id}\n  kind:   ${value.kind}\n  label:  ${value.label}\n` +
+    (value.parentId === undefined ? "" : `  parent: ${value.parentId}\n`) +
+    groups
+      .filter(
+        (entry): entry is readonly [(typeof entry)[0], ReadonlyArray<string>] =>
+          entry[1] !== undefined,
+      )
+      .map(([label, ids]) => `  ${label}:\n${ids.map((id) => `    ${id}`).join("\n")}\n`)
+      .join("")
+  )
 }
 
 export const modelGetCommand = (input: ModelGetInput) => {

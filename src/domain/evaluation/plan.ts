@@ -53,9 +53,6 @@ const areaAt = (model: QualityModel, path: ReadonlyArray<string>): Area => {
 
 export const planEvaluation = (model: QualityModel, scope: PlannedScope): EvaluationPlan => {
   const scopedPath = scope.areaId === "area:root" ? [] : scope.areaId.slice(5).split("/")
-  const areas: Array<PlannedArea> = []
-  const factors: Array<PlannedFactor> = []
-  const requirements: Array<PlannedRequirement> = []
   const filters = scope.factorFilter
 
   const factorSelected = (reference: string) =>
@@ -66,62 +63,69 @@ export const planEvaluation = (model: QualityModel, scope: PlannedScope): Evalua
     areaPath: ReadonlyArray<string>,
     path: ReadonlyArray<string>,
     value: Factor,
-  ) => {
+  ): Pick<EvaluationPlan, "factors" | "requirements"> => {
     const reference = factorReference(areaPath, path)
-    if (!factorSelected(reference)) return
-    factors.push({ ref: reference, areaId: areaRef(areaPath), path, value })
-    for (const [name, child] of sorted(value.factors)) walkFactor(areaPath, [...path, name], child)
-    for (const [name, requirement] of sorted(value.requirements)) {
-      const ref = requirementReference(areaPath, name)
+    if (!factorSelected(reference)) return { factors: [], requirements: [] }
+    const children = sorted(value.factors).map(([name, child]) =>
+      walkFactor(areaPath, [...path, name], child),
+    )
+    const directRequirements = sorted(value.requirements).map(([name, requirement]) => {
       const linked = (requirement.factors ?? []).map((factor) =>
         factor.startsWith("factor:") ? factor : factorReference(areaPath, factor.split("/")),
       )
-      requirements.push({
-        ref,
+      return {
+        ref: requirementReference(areaPath, name),
         areaId: areaRef(areaPath),
         factorIds: [...new Set([reference, ...linked.filter(factorSelected)])],
         value: requirement,
-      })
+      }
+    })
+    return {
+      factors: [
+        { ref: reference, areaId: areaRef(areaPath), path, value },
+        ...children.flatMap((child) => child.factors),
+      ],
+      requirements: [...children.flatMap((child) => child.requirements), ...directRequirements],
     }
   }
 
-  const walkArea = (path: ReadonlyArray<string>, value: Area) => {
-    const requirementStart = requirements.length
-    for (const [name, factor] of sorted(value.factors)) walkFactor(path, [name], factor)
-    if (filters.length === 0) {
-      for (const [name, requirement] of sorted(value.requirements)) {
-        requirements.push({
-          ref: requirementReference(path, name),
-          areaId: areaRef(path),
-          factorIds: (requirement.factors ?? []).map((factor) =>
-            factor.startsWith("factor:") ? factor : factorReference(path, factor.split("/")),
-          ),
-          value: requirement,
-        })
-      }
-    }
-    const factorStart = factors.findIndex((factor) => factor.areaId === areaRef(path))
+  const walkArea = (path: ReadonlyArray<string>, value: Area): EvaluationPlan => {
+    const factorPlans = sorted(value.factors).map(([name, factor]) =>
+      walkFactor(path, [name], factor),
+    )
+    const factors = factorPlans.flatMap((plan) => plan.factors)
+    const factorRequirements = factorPlans.flatMap((plan) => plan.requirements)
+    const areaRequirements =
+      filters.length === 0
+        ? sorted(value.requirements).map(([name, requirement]) => ({
+            ref: requirementReference(path, name),
+            areaId: areaRef(path),
+            factorIds: (requirement.factors ?? []).map((factor) =>
+              factor.startsWith("factor:") ? factor : factorReference(path, factor.split("/")),
+            ),
+            value: requirement,
+          }))
+        : []
+    const requirements = [...factorRequirements, ...areaRequirements]
     const childAreaIds = sorted(value.areas).map(([name]) => areaRef([...path, name]))
-    areas.push({
+    const area: PlannedArea = {
       ref: areaRef(path),
       path,
       value,
       source: effectiveSource(model, path).selector,
       childAreaIds,
-      rootFactorIds:
-        factorStart < 0
-          ? []
-          : factors
-              .slice(factorStart)
-              .filter((factor) => factor.areaId === areaRef(path) && factor.path.length === 1)
-              .map((factor) => factor.ref),
-      localRequirementIds: requirements
-        .slice(requirementStart)
-        .map((requirement) => requirement.ref),
-    })
-    for (const [name, child] of sorted(value.areas)) walkArea([...path, name], child)
+      rootFactorIds: factors
+        .filter((factor) => factor.areaId === areaRef(path) && factor.path.length === 1)
+        .map((factor) => factor.ref),
+      localRequirementIds: requirements.map((requirement) => requirement.ref),
+    }
+    const children = sorted(value.areas).map(([name, child]) => walkArea([...path, name], child))
+    return {
+      areas: [area, ...children.flatMap((child) => child.areas)],
+      factors: [...factors, ...children.flatMap((child) => child.factors)],
+      requirements: [...requirements, ...children.flatMap((child) => child.requirements)],
+    }
   }
 
-  walkArea(scopedPath, areaAt(model, scopedPath))
-  return { areas, factors, requirements }
+  return walkArea(scopedPath, areaAt(model, scopedPath))
 }

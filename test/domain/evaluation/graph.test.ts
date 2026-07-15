@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { buildGraph } from "../../../src/domain/evaluation/graph.ts"
+import { buildGraph, readyUnits } from "../../../src/domain/evaluation/graph.ts"
 import type { EvaluationPlan } from "../../../src/domain/evaluation/plan.ts"
 
 const plan: EvaluationPlan = {
@@ -44,5 +44,23 @@ describe("evaluation graph", () => {
     expect(report.kind).toBe("buildReports")
     expect(report.dependsOn).toEqual(graph.slice(0, -1).map((unit) => unit.id))
     expect(new Set(graph.map((unit) => unit.id)).size).toBe(graph.length)
+  })
+
+  it("selects evaluator work whose dependencies are complete without mutating the graph", () => {
+    const graph = buildGraph(plan)
+    const before = structuredClone(graph)
+
+    expect(
+      readyUnits(
+        graph,
+        new Set([
+          "frameEvaluation",
+          "frameAreaEvaluation:area:root",
+          "frameRequirementEvaluation:requirement:root::recovers",
+        ]),
+        1,
+      ).map((unit) => unit.id),
+    ).toEqual(["assessRateRequirement:requirement:root::recovers"])
+    expect(graph).toEqual(before)
   })
 })
