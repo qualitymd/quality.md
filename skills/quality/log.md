@@ -1,5 +1,11 @@
 # /quality runtime skill update log
 
+## 2026-07-15
+
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.32.2`
+  for the compatible CLI patch release while retaining
+  `qualitymd >=0.32.0 <0.33.0` compatibility.
+
 ## 2026-07-14
 
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.32.1`

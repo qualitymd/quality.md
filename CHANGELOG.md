@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.32.2 - 2026-07-15
+
 ### Internal
 
 - Evaluator prompts now place canonical shared policy, task, model, and
@@ -13,6 +15,18 @@ QUALITY.md specification.
   supported cache-stable system-prompt preset, and run-local evaluator-call
   logs preserve separately reported cache-read and cache-creation input tokens.
   Evaluator sessions remain fresh and are never resumed or forked for reuse.
+
+### /quality skill
+
+- Skill metadata advances to `0.32.2`; its compatible CLI line remains
+  `qualitymd >=0.32.0 <0.33.0` because this patch preserves the skill-facing
+  command and evaluation artifact contract.
+
+Compatibility:
+
+- CLI: `v0.32.2`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.32.2`, requires `qualitymd >=0.32.0 <0.33.0`
 
 ## v0.32.1 - 2026-07-14
 
