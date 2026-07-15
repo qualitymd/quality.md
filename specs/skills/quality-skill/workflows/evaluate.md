@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality evaluate
 description: Behavioral component spec for running evaluation through the /quality skill as a wrapper around the deterministic evaluation runner.
 tags: [skill, quality, evaluate, evaluation, workflow]
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # /quality evaluate
@@ -96,9 +96,15 @@ an explicit user request, then a non-`auto` configured
 service harness checkpoints, then CLI `auto` discovery. It **MAY** preview the
 resolved model, scope, evaluator, and work-unit counts with
 `qualitymd evaluation run --dry-run --json`, and **MAY** ask the user to choose
-an evaluator when the CLI reports a missing or ambiguous evaluator, presenting
-the CLI's remedies as the options. It **MUST NOT** silently cross to a
-different provider after harness selection or failure.
+an evaluator when the CLI reports a missing evaluator, presenting the CLI's
+remedies as the options. When a provider-named request is ambiguous between the
+same-provider current harness and SDK evaluator, it **MUST** ask a single-select
+closed choice before selection, explain in-session versus fresh independent
+execution, and name the explicit-request and `evaluation.evaluator` paths for
+both choices. When default precedence selects `harness`, the explanation
+**MUST** name the independent SDK alternative and both paths for choosing it.
+It **MUST NOT** silently cross to a different provider after harness selection
+or failure.
 
 When selection fails because an agent runtime or requested capability is
 missing, `evaluate` **MUST** surface the runner's concrete installation,

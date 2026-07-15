@@ -2,6 +2,12 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [Agent evaluators](agent-evaluators.md) for
+  [0206 - Intent-faithful evaluator selection](../../changes/0206-intent-faithful-evaluator-selection.md).
+  Readiness now uses documented non-interactive authentication probes, marks an
+  unavailable probe as assumed rather than verified, rejects verified logged-out
+  runtimes, and never reports credential values.
+
 - **Revision**: Updated the shared evaluation, protocol, orchestration, routine,
   artifact, payload, data-layout, and report contracts for
   [0205 - Evaluation executive summary](../../changes/archive/0205-evaluation-executive-summary.md).

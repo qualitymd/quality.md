@@ -3,6 +3,70 @@
 ## 2026-07-15
 
 - **Done**: Completed and archived
+  [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md).
+  All R1–R7 requirements passed the review ledger: probe-all discovery,
+  ordering-decided reasons, structured authentication basis, verified Claude
+  authentication, provider-named transport disambiguation, default-harness
+  explanation, deterministic receipt coverage, and the complete repository
+  gate.
+
+- **In-Review**: Completed implementation for
+  [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md).
+  Automatic discovery now probes and reports both built-in runtimes, carries a
+  structured authentication basis, verifies Claude authentication, explains
+  ordering-decided selection, and adds candidate evidence to dry-run and run
+  receipts. The skill disambiguates same-provider harness-versus-SDK intent and
+  names the independent alternative for default harness selection. Durable
+  specs, runtime guidance, release notes, and the R1–R7
+  [review ledger](archive/0206-intent-faithful-evaluator-selection/review.md) are in
+  sync. The full `mise run check` gate passes 19 test files and 86 tests.
+
+- **In-Progress**: Advanced
+  [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md)
+  from `Design` after verifying that `claude auth status --json` recognizes
+  both login-backed and API-key-only authentication without exposing credential
+  values. The R1-R7 functional spec and build-then-select design are settled;
+  implementation may now update code, tests, durable specs, and runtime skill
+  guidance.
+
+- **Design**: Advanced
+  [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0206-intent-faithful-evaluator-selection/design.md). Discovery
+  becomes build-then-select: both built-in candidates are probed
+  unconditionally, the first usable wins in fixed order, and every `auto`
+  result carries the full candidates array plus a reason naming any
+  usable-but-unselected runtime. Candidate records gain an
+  `authenticationBasis` field (`verified`/`assumed`/`unchecked`);
+  `HostRuntimeService` gains a three-valued `claudeAuthenticated` probe backed
+  by the documented `claude auth status --json` command (confirmed against the
+  local runtime, resolving the spec's open question), with parse failure
+  degrading to the assumed basis rather than unusability. Candidates are also
+  emitted on the run-creation receipt; `evaluation.json` is unchanged. The
+  skill gains a vendor-collision disambiguation question and a default-harness
+  explanation that names the SDK alternative. One open question remains for
+  implementation: how the probe reports API-key-only authentication. Updated
+  the case parent, its child [index](archive/0206-intent-faithful-evaluator-selection/index.md),
+  and the bundle [index](index.md).
+
+- **Creation**: Added change
+  [0206 - Intent-faithful evaluator selection](archive/0206-intent-faithful-evaluator-selection.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0206-intent-faithful-evaluator-selection/spec.md) (R1-R7).
+  Motivated by an operator's evaluate feedback log: `auto` discovery
+  short-circuits on the first usable runtime and omits unprobed candidates from
+  `evaluatorCandidates`, claude authentication is assumed rather than probed,
+  and the skill's default `harness` precedence silently resolves provider-named
+  intent to in-session judgment. The case requires probe-all candidate
+  reporting, an ordering-decided selection reason, a structured authentication
+  basis, a documented claude auth probe where available, and skill-side
+  transport disambiguation — without changing discovery ordering or precedence.
+  Records `specs/cli/evaluation-run.md`, `specs/evaluation/agent-evaluators.md`,
+  and the skill selection/workflow specs as affected. Also removed a stray empty
+  `changes/0204-*` folder left behind by archiving. Updated the bundle
+  [index](index.md).
+
+- **Done**: Completed and archived
   [0205 - Evaluation executive summary](archive/0205-evaluation-executive-summary.md).
   All R1-R8 requirements passed the review ledger: advice ordering and context,
   payload shape and persistence, stakeholder-facing register, deterministic run

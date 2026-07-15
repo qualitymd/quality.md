@@ -3,6 +3,14 @@
 ## 2026-07-15
 
 - **Revision**: Implemented the durable contract changes for
+  [0206 - Intent-faithful evaluator selection](../changes/0206-intent-faithful-evaluator-selection.md).
+  Automatic discovery now probes and reports every built-in candidate with a
+  structured authentication basis, explains ordering-decided selection, and
+  verifies documented runtime authentication probes. The `/quality` evaluation
+  contract now disambiguates same-provider harness versus SDK intent and names
+  the independent alternative when default precedence selects `harness`.
+
+- **Revision**: Implemented the durable contract changes for
   [0205 - Evaluation executive summary](../changes/archive/0205-evaluation-executive-summary.md).
   Evaluation advice gains the `summarizeEvaluation` move and
   `EvaluationSummaryResult` payload; run reports render its headline, narrative,

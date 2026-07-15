@@ -5,6 +5,26 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Automatic evaluator discovery now probes and reports both Codex and Claude
+  candidates even when the first is ready. Dry-run and run receipts carry each
+  candidate's structured `verified`, `assumed`, or `unchecked` authentication
+  basis; when multiple runtimes are usable, the selection reason names the
+  deterministic ordering decision and every usable runtime not selected.
+- Claude readiness now uses the documented non-interactive authentication
+  status probe. A verified logged-out runtime is skipped, while an unavailable
+  probe remains an explicit authentication assumption; credential values are
+  never reported.
+
+### /quality skill
+
+- Provider-named evaluator requests that could mean either the current harness
+  or a same-provider SDK subprocess now prompt for that transport choice. When
+  default precedence selects in-session `harness` judgment, the explanation
+  names the fresh independent SDK alternative and its one-run and durable
+  configuration paths.
+
 ## v0.34.0 - 2026-07-15
 
 ### CLI

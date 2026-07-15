@@ -432,8 +432,23 @@ Evaluator selection order: an explicit user request, then a non-`auto` config
 harness checkpoints (the normal agent case — the run uses your session's own
 judgment and authentication, no nested agent or API key), then CLI `auto`
 discovery (a ready Codex agent runtime, then a ready Claude agent runtime).
-Explain the selected transport before
-the first mutation and never silently switch providers afterward. The names
+Before applying that precedence, disambiguate a provider-named request that
+could mean either the same-provider current harness or its SDK evaluator. For
+example, in a Claude harness, "have Claude evaluate this" requires a
+single-select closed choice between `harness` (the current session's judgment
+and authentication) and `claude` (a fresh, independent SDK subprocess). Put the
+independent SDK choice first when the request frames that provider as the
+evaluator. Name the explicit evaluator request as the shortest path for this
+run and `evaluation.evaluator: harness|claude|codex` as the durable-default
+path; use the numbered text fallback with `1` as the shortest answer when no
+fit-for-purpose native affordance exists. Explicit `harness`, `claude`, and
+`codex` requests are not ambiguous.
+
+Explain the selected transport before the first mutation and never silently
+switch providers afterward. When default precedence selects `harness`, state
+that judgment runs in the current session with its context and authentication,
+then name the fresh independent SDK alternative and how to request it now or
+set it through `evaluation.evaluator`. The names
 `auto`, `harness`, `codex`, and `claude` cannot be shadowed by configured
 profiles. When selection fails,
 the CLI reports a typed `missing_evaluator` failure with remedies; present

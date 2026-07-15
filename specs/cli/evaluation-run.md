@@ -3,7 +3,7 @@ type: Functional Specification
 title: qualitymd evaluation run
 description: Execute a complete evaluation run with the deterministic runner.
 tags: [cli, command, evaluation, runner]
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # qualitymd evaluation run
@@ -30,7 +30,10 @@ whether it is run through Codex, Claude, or an invoking agent harness.
 `evaluation run` gives the workflow one deterministic owner while the selected
 coding-agent evaluator discovers requirement-specific context and provides
 bounded judgment. Identical evidence or ratings across runtimes are not
-promised. — 0192, 0201
+promised. Because evaluator identity is part of the evidence basis an operator
+uses to interpret a rating, automatic selection also has to expose which
+runtimes were ready and why one won; otherwise a deterministic choice can still
+leave the operator reasoning from a false evaluator premise. — 0192, 0201, 0206
 
 ## Scope
 
@@ -90,17 +93,36 @@ omitted `--evaluator` **MUST** behave exactly as `--evaluator auto`.
 agent runtime, then a ready `claude` agent runtime. It **MUST NOT** select a
 configured profile implicitly or discover `harness`.
 
+`auto` **MUST** probe every built-in SDK-backed candidate, even after finding a
+usable candidate. Dry-run and run JSON receipts **MUST** report every candidate
+in `evaluatorCandidates` with its readiness evidence. Each candidate **MUST**
+carry a structured `authenticationBasis` value of `verified`, `assumed`, or
+`unchecked`, distinct from free-form evidence, and candidate data **MUST NOT**
+contain credential values.
+
+> Rationale: stopping after the first usable runtime hid viable alternatives
+> and made deterministic ordering look like exclusive availability. Structured
+> authentication basis lets the skill explain unequal readiness evidence
+> without parsing prose. — 0206
+
 `auto` **MUST** consider an SDK-backed candidate usable only after verifying
 that its executable, authentication state, structured output, fresh context,
 instruction isolation, read-only workspace inspection, disabled network,
-non-interactive policy, and cancellation capabilities are available; where a CLI documents no
-non-interactive authentication probe, readiness assumes authentication and the
-evidence says so. An unusable candidate **MUST** be skipped, and dry-run JSON
-**MUST** report each considered candidate's readiness evidence and the final
-selection reason, never credential values.
+non-interactive policy, and cancellation capabilities are available. Where a
+runtime documents a non-interactive authentication probe, readiness **MUST** use
+it; where it documents no such probe or the probe is unavailable, readiness
+assumes authentication and reports the assumption. An unusable candidate
+**MUST** be skipped.
 
 > Rationale: command presence alone let a dry run describe an unauthenticated
 > or incompatible evaluator as ready. — 0194
+
+When more than one candidate is usable, the final selection reason **MUST** name
+the selected runtime, state that deterministic discovery order decided the
+selection, and name every usable candidate not selected.
+
+> Rationale: naming only the winner suggests the other runtime was unavailable;
+> the ordering decision is material selection evidence. — 0206
 
 `auto` **MUST NOT** infer a parent agent harness from undocumented environment
 variables; a harness-backed run is selected explicitly by the skill or caller

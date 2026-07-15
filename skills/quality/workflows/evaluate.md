@@ -75,8 +75,29 @@ Hard boundaries:
       agent runtime) only when no
       harness transport is available.
 
+   Before applying the precedence, treat a provider-named request as ambiguous
+   when it could mean either the same-provider current harness or its SDK
+   evaluator. For example, "have Claude evaluate this" in a Claude harness
+   requires a single-select closed choice between:
+
+   1. the fresh independent `claude` SDK subprocess — recommended when the
+      request frames Claude as the evaluator; request `claude` now or set
+      `evaluation.evaluator: claude` as the durable default; and
+   2. the current in-session `harness` judgment and authentication — request
+      `harness` now or set `evaluation.evaluator: harness` as the durable
+      default.
+
+   Render the choice through a fit-for-purpose native single-select affordance
+   when present; otherwise use the numbered fallback with `1` as the shortest
+   response. An explicit `harness`, `claude`, or `codex` request needs no
+   clarification.
+
    Explain the selected transport before the first mutation, and never
-   silently switch providers after harness selection or failure. Optionally
+   silently switch providers after harness selection or failure. When default
+   precedence selects `harness`, say that judgment runs in the current session
+   with its context and authentication; name the fresh independent SDK
+   alternative and how to request it now or set it through
+   `evaluation.evaluator`. Optionally
    preview with
    `qualitymd evaluation run --dry-run --json [--model ...] [--area ...] [--factor ...]`,
    which reports the resolved model, scope, evaluator (with readiness evidence

@@ -43,12 +43,26 @@ export interface EvaluationRunInput {
 export interface EvaluatorDiscovery {
   readonly which: (command: string) => string | null
   readonly codexAuthenticated: () => boolean
+  readonly claudeAuthenticated: () => boolean | null
 }
 
 const evaluatorDiscovery = (runtime: HostRuntimeService): EvaluatorDiscovery => ({
   which: runtime.which,
   codexAuthenticated: runtime.codexAuthenticated,
+  claudeAuthenticated: runtime.claudeAuthenticated,
 })
+
+export type EvaluatorAuthenticationBasis = "verified" | "assumed" | "unchecked"
+
+export interface EvaluatorCandidate {
+  readonly name: "codex" | "claude"
+  readonly executable: boolean
+  readonly structuredOutput: true
+  readonly authenticated: boolean
+  readonly authenticationBasis: EvaluatorAuthenticationBasis
+  readonly usable: boolean
+  readonly evidence: ReadonlyArray<string>
+}
 
 const usage = (detail: string) =>
   commandResult("", { stderr: `qualitymd: ${detail}\n`, exitCode: ExitCode.usage })
@@ -154,56 +168,81 @@ export const selectEvaluator = (
       executable: codexExecutable,
       structuredOutput: true,
       authenticated: codexAuthenticated,
+      authenticationBasis: codexExecutable ? "verified" : "unchecked",
       usable: codexExecutable && codexAuthenticated,
       evidence: [
         codexExecutable ? "agent runtime executable found" : "agent runtime executable not found",
         "non-interactive structured output available through the Codex SDK",
-        codexAuthenticated ? "authenticated (codex login status)" : "not authenticated",
+        !codexExecutable
+          ? "authentication not checked without an executable"
+          : codexAuthenticated
+            ? "authenticated (codex login status)"
+            : "not authenticated (codex login status)",
       ],
-    }
-    if (codexExecutable && codexAuthenticated) {
-      const evaluator = codexEvaluator()
-      return {
-        ...evaluator,
-        reason:
-          "auto: codex agent runtime is installed, authenticated, and supports non-interactive structured output",
-        candidates: [codexCandidate],
-      }
-    }
+    } satisfies EvaluatorCandidate
     const claudeExecutable = discovery.which("claude") !== null
+    const claudeAuthentication = claudeExecutable ? discovery.claudeAuthenticated() : null
+    const claudeAuthenticationBasis = claudeExecutable
+      ? claudeAuthentication === null
+        ? "assumed"
+        : "verified"
+      : "unchecked"
+    const claudeAuthenticated = claudeExecutable && claudeAuthentication !== false
     const claudeCandidate = {
       name: "claude",
       executable: claudeExecutable,
       structuredOutput: true,
-      authenticated: claudeExecutable,
-      usable: claudeExecutable,
+      authenticated: claudeAuthenticated,
+      authenticationBasis: claudeAuthenticationBasis,
+      usable: claudeAuthenticated,
       evidence: [
         claudeExecutable ? "agent runtime executable found" : "agent runtime executable not found",
         "non-interactive structured output available through the Claude Agent SDK",
-        claudeExecutable
-          ? "authentication assumed because the runtime exposes no non-interactive status probe"
-          : "authentication not checked without an executable",
+        !claudeExecutable
+          ? "authentication not checked without an executable"
+          : claudeAuthentication === null
+            ? "authentication assumed because the documented status probe was unavailable"
+            : claudeAuthentication
+              ? "authenticated (claude auth status --json)"
+              : "not authenticated (claude auth status --json)",
       ],
-    }
+    } satisfies EvaluatorCandidate
     const candidates = [codexCandidate, claudeCandidate]
-    if (claudeExecutable) {
-      const evaluator = claudeEvaluator()
-      return {
-        ...evaluator,
-        reason:
-          "auto: claude agent runtime is installed and supports non-interactive structured output; authentication is assumed",
-        candidates,
-      }
-    }
-    throw new Error(
-      "no evaluator is available; install and authenticate codex or claude, select a configured codex/claude profile, or pass --evaluator harness from a capable invoking agent",
-    )
+    const usable = candidates.filter((candidate) => candidate.usable)
+    const selectedCandidate = usable[0]
+    if (selectedCandidate === undefined)
+      throw new Error(
+        "no evaluator is available; install and authenticate codex or claude, select a configured codex/claude profile, or pass --evaluator harness from a capable invoking agent",
+      )
+    const unselected = usable.slice(1).map((candidate) => candidate.name)
+    const reason =
+      unselected.length === 0
+        ? `auto: selected ${selectedCandidate.name} as the only usable candidate in deterministic discovery order`
+        : `auto: selected ${selectedCandidate.name}; deterministic discovery order decided among usable candidates; usable but not selected: ${unselected.join(", ")}`
+    const evaluator = selectedCandidate.name === "codex" ? codexEvaluator() : claudeEvaluator()
+    return { ...evaluator, reason, candidates }
   }
   if (name === "codex")
     return { ...codexEvaluator(), reason: "requested built-in SDK agent evaluator" }
   if (name === "claude")
     return { ...claudeEvaluator(), reason: "requested built-in SDK agent evaluator" }
   return configuredEvaluator(name)
+}
+
+export const reportEvaluatorSelection = (
+  result: CommandResult,
+  selected: ReturnType<typeof selectEvaluator>,
+): CommandResult => {
+  if (!("candidates" in selected) || result.stdout === "") return result
+  const receipt = JSON.parse(result.stdout) as Record<string, unknown>
+  return commandResult(
+    jsonDocument({
+      ...receipt,
+      evaluatorReason: selected.reason,
+      evaluatorCandidates: selected.candidates,
+    }),
+    { stderr: result.stderr, exitCode: result.exitCode },
+  )
 }
 
 const areaPath = (id: string) => (id === "area:root" ? [] : id.slice(5).split("/"))
@@ -337,9 +376,10 @@ export const evaluationRunCommand = (
                   workspace,
                   evaluatorDiscovery(runtime),
                 )
-                return yield* selected.kind === "harness"
+                const result = yield* selected.kind === "harness"
                   ? executeHarnessRun(input)
                   : executeProviderRun(input, selected)
+                return reportEvaluatorSelection(result, selected)
               })
             }),
           )

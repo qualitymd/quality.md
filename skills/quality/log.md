@@ -2,6 +2,13 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0206 - Intent-faithful
+  evaluator selection. Provider-named requests now disambiguate current-session
+  harness judgment from fresh SDK evaluation, and default-harness explanations
+  name the independent alternative and its one-run and durable configuration
+  paths.
+
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.34.0`
   and its compatible CLI line to `qualitymd >=0.34.0 <0.35.0` for the schema-10
   executive-summary release.

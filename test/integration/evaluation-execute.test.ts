@@ -66,6 +66,7 @@ Body guidance.
           readStdin: Effect.succeed(""),
           which: () => null,
           codexAuthenticated: () => false,
+          claudeAuthenticated: () => null,
         } satisfies HostRuntimeService),
       )
       const result = yield* executeHarnessRun({

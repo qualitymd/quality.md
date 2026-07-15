@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import { selectEvaluator, type EvaluatorDiscovery } from "../../src/application/evaluation-run.ts"
+import {
+  reportEvaluatorSelection,
+  selectEvaluator,
+  type EvaluatorDiscovery,
+} from "../../src/application/evaluation-run.ts"
+import { commandResult } from "../../src/domain/command-result.ts"
 import type { Workspace } from "../../src/services/workspace.ts"
 
 const workspace = (evaluators: Workspace["evaluators"] = {}, selected?: string): Workspace =>
@@ -11,26 +16,76 @@ const workspace = (evaluators: Workspace["evaluators"] = {}, selected?: string):
 
 const discovery = (
   commands: ReadonlyArray<string>,
-  authenticated: boolean,
+  codexAuthenticated: boolean,
+  claudeAuthenticated: boolean | null = null,
 ): EvaluatorDiscovery => ({
   which: (command) => (commands.includes(command) ? `/bin/${command}` : null),
-  codexAuthenticated: () => authenticated,
+  codexAuthenticated: () => codexAuthenticated,
+  claudeAuthenticated: () => claudeAuthenticated,
 })
 
 describe("evaluator selection", () => {
   it("prefers an authenticated Codex agent runtime", () => {
     const selected = selectEvaluator("auto", workspace(), discovery(["codex", "claude"], true))
     expect(selected.name).toBe("codex")
-    expect("candidates" in selected && selected.candidates).toHaveLength(1)
+    expect("candidates" in selected && selected.candidates).toHaveLength(2)
+    expect("candidates" in selected && selected.candidates.map(({ name }) => name)).toEqual([
+      "codex",
+      "claude",
+    ])
   })
 
-  it("skips an unauthenticated Codex runtime and records Claude's auth assumption", () => {
+  it("names deterministic ordering and each usable candidate not selected", () => {
+    const selected = selectEvaluator(
+      "auto",
+      workspace(),
+      discovery(["codex", "claude"], true, true),
+    )
+    expect(selected.name).toBe("codex")
+    expect(selected.reason).toContain("deterministic discovery order decided")
+    expect(selected.reason).toContain("usable but not selected: claude")
+  })
+
+  it("reports verified and assumed authentication bases as structured data", () => {
     const selected = selectEvaluator("auto", workspace(), discovery(["codex", "claude"], false))
     expect(selected.name).toBe("claude")
-    expect("candidates" in selected && selected.candidates[0]?.usable).toBe(false)
-    expect("candidates" in selected && selected.candidates[1]?.evidence.join(" ")).toContain(
-      "assumed",
+    expect("candidates" in selected && selected.candidates).toMatchObject([
+      { name: "codex", authenticated: false, authenticationBasis: "verified", usable: false },
+      { name: "claude", authenticated: true, authenticationBasis: "assumed", usable: true },
+    ])
+  })
+
+  it("gates Claude usability on its verified authentication probe", () => {
+    expect(() => selectEvaluator("auto", workspace(), discovery(["claude"], false, false))).toThrow(
+      "no evaluator is available",
     )
+    const selected = selectEvaluator("auto", workspace(), discovery(["claude"], false, true))
+    expect(selected.name).toBe("claude")
+    expect("candidates" in selected && selected.candidates[1]).toMatchObject({
+      authenticated: true,
+      authenticationBasis: "verified",
+      usable: true,
+    })
+  })
+
+  it("adds auto candidates and the selection reason to run receipts", () => {
+    const selected = selectEvaluator(
+      "auto",
+      workspace(),
+      discovery(["codex", "claude"], true, true),
+    )
+    const result = reportEvaluatorSelection(
+      commandResult(`${JSON.stringify({ schemaVersion: 3, status: "completed" })}\n`),
+      selected,
+    )
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      status: "completed",
+      evaluatorReason: expect.stringContaining("usable but not selected: claude"),
+      evaluatorCandidates: [
+        { name: "codex", authenticationBasis: "verified", usable: true },
+        { name: "claude", authenticationBasis: "verified", usable: true },
+      ],
+    })
   })
 
   it("does not turn configured agent profiles into an implicit auto fallback", () => {

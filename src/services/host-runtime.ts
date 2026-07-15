@@ -10,6 +10,7 @@ export interface HostRuntimeService {
   readonly readStdin: Effect.Effect<string>
   readonly which: (command: string) => string | null
   readonly codexAuthenticated: () => boolean
+  readonly claudeAuthenticated: () => boolean | null
 }
 
 export class HostRuntime extends Context.Service<HostRuntime, HostRuntimeService>()(
@@ -31,5 +32,21 @@ export const HostRuntimeLive = Layer.succeed(HostRuntime, {
       env: process.env,
     })
     return result.exitCode === 0
+  },
+  claudeAuthenticated: () => {
+    try {
+      const result = Bun.spawnSync(["claude", "auth", "status", "--json"], {
+        stdin: "ignore",
+        stdout: "pipe",
+        stderr: "ignore",
+        env: process.env,
+      })
+      const status = JSON.parse(new TextDecoder().decode(result.stdout)) as {
+        readonly loggedIn?: unknown
+      }
+      return typeof status.loggedIn === "boolean" ? status.loggedIn : null
+    } catch {
+      return null
+    }
   },
 } satisfies HostRuntimeService)

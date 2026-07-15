@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality evaluation workflow
 description: Behavioral component spec for how the /quality skill wraps the CLI-owned deterministic evaluation runner.
 tags: [skill, quality, evaluation, workflow]
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 ---
 
 # /quality evaluation workflow
@@ -31,6 +31,10 @@ deterministic work graph and invokes coding-agent evaluators for
 requirement-specific inspection and bounded judgment. The skill keeps the
 agent-mediated user interface around that engine; common mechanics and artifact
 integrity are deterministic, not the evidence or ratings an agent selects.
+That interface must keep evaluator transport visible: a provider name can mean
+the current in-session harness or a fresh SDK subprocess, and silently choosing
+between them changes the independence premise under which the user reads the
+result. — 0206
 
 ## Operating model
 
@@ -190,10 +194,32 @@ this precedence:
 > Rationale: the skill knows the active harness; the standalone CLI has no
 > portable, documented way to infer it. — 0194
 
+When an explicit request names a provider but does not distinguish transport,
+and that provider matches both the current harness vendor and a built-in SDK
+evaluator, the workflow **MUST** resolve the ambiguity before selection through
+a single-select closed choice. It **MUST** explain that `harness` reuses the
+current session's judgment and authentication while the provider's SDK
+evaluator starts a fresh independent subprocess, and **MUST** name both the
+explicit evaluator request for this run and `evaluation.evaluator` configuration
+for a durable default.
+
+> Rationale: provider identity alone does not say whether the user wants session
+> continuity or an independent evaluator; only the user can settle that
+> evidence-basis choice. — 0206
+
 The workflow **MUST** explain the selected transport before the first
 evaluation mutation and **MUST NOT** silently cross to a different provider
 after harness selection or a harness failure; switching evaluators is an
 explicit user decision and a new run.
+
+When the workflow selects `harness` by default precedence rather than an
+explicit request or configuration, its pre-mutation explanation **MUST** state
+that judgment runs in the current session and **MUST** name the independent SDK
+evaluator alternative, including how to request it for the current run and set
+it as the durable `evaluation.evaluator` default.
+
+> Rationale: a default is correctable only when the user can see both the
+> transport received and the independent alternative. — 0206
 
 For `codex` and `claude`, the workflow **MUST** treat the provider agent runtime
 as a runner-owned evaluator implementation detail. Authentication belongs to

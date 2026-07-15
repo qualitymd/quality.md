@@ -28,6 +28,17 @@ direct service with automatic and maximum cap `1`. Harness declares delegated
 requests with automatic cap `4`, not simultaneous in-process calls. Configured
 profiles inherit their kind's declaration.
 
+Evaluator readiness discovery **MUST** verify authentication with a runtime's
+documented non-interactive status probe when one exists. If the runtime
+documents no probe, or an installed version cannot service it, discovery
+**MUST** identify authentication as assumed rather than verified. Discovery
+**MUST NOT** expose credential values. A verified unauthenticated runtime is
+not ready.
+
+> Rationale: executable presence is not authentication evidence. Keeping the
+> verified-versus-assumed distinction explicit prevents one runtime's weaker
+> probe basis from being presented as equivalent readiness. — 0206
+
 A provider-managed child executable is inside the evaluator boundary. It
 **MUST NOT** schedule evaluation work, persist run state, assemble reports, or
 become a project-owned sidecar protocol.

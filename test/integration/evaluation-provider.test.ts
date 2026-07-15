@@ -28,6 +28,7 @@ const services = Layer.mergeAll(
     readStdin: Effect.succeed(""),
     which: () => null,
     codexAuthenticated: () => false,
+    claudeAuthenticated: () => null,
   } satisfies HostRuntimeService),
 )
 

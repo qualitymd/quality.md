@@ -844,3 +844,8 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   adds a stakeholder-facing advice summary after ranked findings and
   recommendations, renders it deterministically into the run report, and
   advances runner artifacts to schema version 10 (`Done`).
+- [0206 — Intent-faithful evaluator selection](0206-intent-faithful-evaluator-selection.md) -
+  probes and reports every automatic evaluator candidate with structured
+  authentication evidence, explains ordering-decided selection, and
+  disambiguates in-session harness judgment from independent SDK evaluation
+  (`Done`).

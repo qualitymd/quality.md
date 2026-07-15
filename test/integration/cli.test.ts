@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process"
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
-import { join } from "node:path"
+import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { delimiter, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 
@@ -8,11 +8,21 @@ import evaluationExamples from "../../src/assets/evaluation-examples.json"
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url))
 
-const runFrom = (cwd: string, arguments_: ReadonlyArray<string>, input?: string) =>
+const runFrom = (
+  cwd: string,
+  arguments_: ReadonlyArray<string>,
+  input?: string,
+  environment: Readonly<Record<string, string>> = {},
+) =>
   spawnSync("bun", ["src/main.ts", ...arguments_], {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, QUALITYMD_NO_UPDATE_CHECK: "1", NO_COLOR: "1" },
+    env: {
+      ...process.env,
+      ...environment,
+      QUALITYMD_NO_UPDATE_CHECK: "1",
+      NO_COLOR: "1",
+    },
     ...(input === undefined ? {} : { input }),
   })
 
@@ -334,6 +344,36 @@ factors:
       )
       expect(incompatible.status).not.toBe(0)
       expect(incompatible.stderr).toContain("schema 9 is incompatible with schema 10")
+    } finally {
+      await rm(directory, { recursive: true })
+    }
+  })
+
+  it("reports every auto evaluator candidate with structured authentication evidence", async () => {
+    await mkdir(join(repositoryRoot, "tmp"), { recursive: true })
+    const directory = await mkdtemp(join(repositoryRoot, "tmp", "qualitymd-auto-discovery-"))
+    const codex = join(directory, "codex")
+    const claude = join(directory, "claude")
+    try {
+      await writeFile(codex, "#!/bin/sh\nexit 0\n")
+      await writeFile(claude, "#!/bin/sh\nprintf '%s\\n' '{\"loggedIn\":true}'\n")
+      await chmod(codex, 0o755)
+      await chmod(claude, 0o755)
+      const result = runFrom(
+        repositoryRoot,
+        ["evaluation", "run", "--model", "QUALITY.md", "--dry-run", "--json"],
+        undefined,
+        { PATH: `${directory}${delimiter}${process.env.PATH ?? ""}` },
+      )
+      expect(result.status).toBe(0)
+      expect(JSON.parse(result.stdout)).toMatchObject({
+        evaluator: "codex",
+        evaluatorReason: expect.stringContaining("usable but not selected: claude"),
+        evaluatorCandidates: [
+          { name: "codex", authenticationBasis: "verified", usable: true },
+          { name: "claude", authenticationBasis: "verified", usable: true },
+        ],
+      })
     } finally {
       await rm(directory, { recursive: true })
     }

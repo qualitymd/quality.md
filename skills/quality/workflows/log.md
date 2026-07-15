@@ -1,5 +1,12 @@
 # /quality runtime workflows update log
 
+## 2026-07-15
+
+- **Revision**: Updated [evaluate](evaluate.md) for 0206 - Intent-faithful
+  evaluator selection. Same-provider harness-versus-SDK requests now use a
+  single-select transport choice, and default in-session harness selection
+  names the fresh SDK alternative and its explicit and configured paths.
+
 ## 2026-07-14
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0201 -

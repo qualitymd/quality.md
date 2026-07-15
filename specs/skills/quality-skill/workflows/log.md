@@ -3,6 +3,12 @@
 ## 2026-07-15
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0206 - Intent-faithful evaluator selection](../../../../changes/0206-intent-faithful-evaluator-selection.md).
+  Provider-named requests now disambiguate same-provider in-session harness
+  judgment from a fresh SDK subprocess, and default-harness explanations name
+  the independent alternative plus its explicit and durable selection paths.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0204 - Transport-aware evaluator concurrency](../../../../changes/archive/0204-transport-aware-evaluator-concurrency.md).
   Each delegated worker now receives exactly one self-contained evaluator
   request and cannot receive the full outstanding set, mutate run artifacts,
