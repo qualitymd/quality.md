@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.32.1 - 2026-07-14
+
 ### CLI
 
 - Evaluation history and next-run numbering now share one recognition rule:
@@ -19,6 +21,18 @@ QUALITY.md specification.
   artifacts, and summaries through pure domain functions and Effect-native
   ordered traversal. Source collections across the runtime are expression-built
   and exported collection types are readonly.
+
+### /quality skill
+
+- Skill metadata advances to `0.32.1`; its compatible CLI line remains
+  `qualitymd >=0.32.0 <0.33.0` because this patch preserves the skill-facing
+  command and artifact contract.
+
+Compatibility:
+
+- CLI: `v0.32.1`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.32.1`, requires `qualitymd >=0.32.0 <0.33.0`
 
 ## v0.32.0 - 2026-07-14
 

@@ -2,6 +2,10 @@
 
 ## 2026-07-14
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.32.1`
+  for the compatible CLI patch release while retaining
+  `qualitymd >=0.32.0 <0.33.0` compatibility.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0201 - Agent-native
   evidence discovery. Harness checkpoints now inspect requirement-specific
