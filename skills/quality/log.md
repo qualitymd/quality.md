@@ -2,6 +2,14 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0208 - Provider-affine
+  SDK evaluator selection. The runtime now discovers SDK readiness before
+  harness fallback, prefers a usable evaluator matching the invoking Codex or
+  Claude agent, maps provider-named requests directly to their SDK, pins the
+  concrete selection, and reports the method and reason without asking the user
+  to choose.
+
 - **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.35.1`
   while retaining `qualitymd >=0.35.0 <0.36.0` compatibility for the
   user-facing evaluation-progress patch release.

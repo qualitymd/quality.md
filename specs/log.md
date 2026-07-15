@@ -3,6 +3,14 @@
 ## 2026-07-15
 
 - **Revision**: Implemented the durable contract changes for
+  [0208 - Provider-affine SDK evaluator selection](../changes/archive/0208-provider-affine-sdk-selection.md).
+  `/quality evaluate` now inspects CLI automatic discovery before harness
+  fallback, prefers a usable SDK evaluator matching the invoking Codex or
+  Claude agent, maps provider-named requests directly to that SDK, pins the
+  concrete evaluator on the real run, and explains the determined transport
+  without asking the user to choose.
+
+- **Revision**: Implemented the durable contract changes for
   [0207 - User-facing evaluation progress](../changes/archive/0207-user-facing-evaluation-progress.md).
   The `/quality` interaction contract now keeps protocol, payload, worker,
   concurrency, and resume-loop mechanics behind the agent interface. Evaluate

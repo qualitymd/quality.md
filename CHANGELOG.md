@@ -5,6 +5,25 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality skill
+
+- Automatic evaluation selection now discovers ready SDK evaluators before
+  considering current-session harness judgment. A usable SDK matching the
+  invoking Codex or Claude agent is preferred; when no provider match is usable,
+  the CLI's deterministic automatic winner is used, and harness judgment is the
+  no-SDK fallback.
+- Provider-named requests now map directly to that provider's independent SDK
+  evaluator without a harness-versus-SDK question. Before writing evaluation
+  artifacts, the workflow reports the selected method and whether explicit
+  intent, configuration, provider affinity, CLI discovery, or harness fallback
+  determined it.
+
+### Compatibility / migration
+
+- No CLI command, automatic-discovery ordering, JSON receipt, persisted
+  evaluation artifact, or QUALITY.md format behavior changes. Existing
+  `0.35.x` CLI installations remain compatible with the updated skill.
+
 ## v0.35.1 - 2026-07-15
 
 ### /quality skill

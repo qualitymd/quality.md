@@ -672,10 +672,12 @@ summaries, and next-workflow routing — while the runner creates the evaluation
 artifacts. The workflow writes only its evaluate feedback log directly, and
 does not apply recommendations or edit evaluated source.
 
-The runtime behind `qualitymd` is not part of the user workflow. The skill
-selects the active harness when appropriate, services bounded checkpoints,
-explains evaluator capability or installation failures with concrete remedies,
-and never silently switches evaluators after accepted results.
+The runtime behind `qualitymd` is not part of the user workflow. The skill uses
+CLI automatic discovery before considering harness judgment, prefers a ready
+SDK evaluator matching the invoking Codex or Claude agent, explains the
+determined transport and capability or installation failures with concrete
+remedies, services bounded checkpoints only for a harness-backed run, and never
+silently switches evaluators after run creation.
 
 ### Review
 

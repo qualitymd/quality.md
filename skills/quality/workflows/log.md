@@ -2,6 +2,12 @@
 
 ## 2026-07-15
 
+- **Revision**: Updated [evaluate](evaluate.md) for 0208 - Provider-affine SDK
+  evaluator selection. The workflow consumes CLI automatic candidate readiness
+  before harness fallback, prefers the ready SDK matching the invoking agent,
+  uses the CLI winner when no match is usable, pins the concrete evaluator, and
+  explains the result without a transport choice.
+
 - **Revision**: Updated [evaluate](evaluate.md) for 0207 - User-facing
   evaluation progress. Preflight, evidence review, report generation, and
   completion are now the user-facing progress phases; model areas or

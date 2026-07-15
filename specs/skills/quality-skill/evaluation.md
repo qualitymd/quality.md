@@ -193,42 +193,58 @@ this precedence:
 
 1. an explicit user evaluator request;
 2. a non-`auto` workspace `evaluation.evaluator` configuration;
-3. `--evaluator harness`, when the current agent harness can service harness
-   checkpoints; and
-4. CLI `auto` discovery, only when no harness transport is available.
+3. the usable built-in SDK evaluator matching the known invoking Codex or Claude
+   harness;
+4. the usable evaluator selected by CLI `auto` discovery when no matching
+   provider candidate is usable; and
+5. `--evaluator harness`, only when automatic discovery reports no usable SDK
+   evaluator and the current agent can service harness checkpoints.
 
-> Rationale: the skill knows the active harness; the standalone CLI has no
-> portable, documented way to infer it. — 0194
+> Rationale: fresh SDK sessions provide an independent evidence basis when a
+> compatible runtime is ready. The skill knows the active harness and can apply
+> provider affinity; the standalone CLI has no portable, documented way to
+> infer its parent. — 0194, 0208
 
-When an explicit request names a provider but does not distinguish transport,
-and that provider matches both the current harness vendor and a built-in SDK
-evaluator, the workflow **MUST** resolve the ambiguity before selection through
-a single-select closed choice. It **MUST** explain that `harness` reuses the
-current session's judgment and authentication while the provider's SDK
-evaluator starts a fresh independent subprocess, and **MUST** name both the
-explicit evaluator request for this run and `evaluation.evaluator` configuration
-for a durable default.
+When an explicit evaluator request names Codex or Claude without distinguishing
+transport, the workflow **MUST** select that provider's built-in SDK evaluator
+without asking a harness-versus-SDK question. The workflow **MUST** select the
+current session only for an explicit `harness` request or through the automatic
+no-SDK fallback.
 
-> Rationale: provider identity alone does not say whether the user wants session
-> continuity or an independent evaluator; only the user can settle that
-> evidence-basis choice. — 0206
+> Rationale: in an evaluation request, a provider named as evaluator means the
+> independent SDK evaluator. Deterministic mapping removes a recurring choice
+> and keeps `harness` explicit or fallback-only. — 0208
+
+For automatic selection, the workflow **MUST** inspect a read-only
+`qualitymd evaluation run --dry-run --evaluator auto --json` receipt carrying
+the resolved model and scope. If the candidate matching the known invoking
+Codex or Claude harness is usable, the workflow **MUST** select that built-in
+evaluator explicitly. Otherwise it **MUST** use the receipt's selected usable
+evaluator. Only a `missing_evaluator` result permits the capable-harness
+fallback; other preview failures remain stop conditions.
+
+> Rationale: the CLI owns executable and authentication discovery and already
+> reports both candidates. Applying affinity over that receipt avoids duplicating
+> readiness logic or teaching the CLI to infer its caller. — 0208
 
 The workflow **MUST** explain the selected transport before the first
-evaluation mutation and **MUST NOT** silently cross to a different provider
-after harness selection or a harness failure; switching evaluators is an
-explicit user decision and a new run.
+evaluation mutation. It **MUST** name whether explicit intent, configuration,
+provider affinity, CLI automatic discovery, or the no-SDK harness fallback
+determined the evaluator, distinguish fresh independent SDK sessions from
+current-session harness judgment, and avoid inviting a transport choice for the
+current run. The actual runner invocation **MUST** pass the determined evaluator
+explicitly.
 
-When the workflow selects `harness` by default precedence rather than an
-explicit request or configuration, its pre-mutation explanation **MUST** state
-that judgment runs in the current session. It **MAY** name the explicit-request
-and durable `evaluation.evaluator` paths for an independent evaluator on a
-future invocation, but **MUST NOT** invite a current-run change and continue
-without waiting. If it offers changing the evaluator for the current run, it
-**MUST** render a real closed choice and wait for the answer before mutation.
+> Rationale: evaluator identity remains visible as part of the evidence basis,
+> while deterministic selection avoids both a false choice and a recurring real
+> choice. Explicit pinning prevents readiness from being re-resolved differently
+> between preview and run creation. — 0206, 0207, 0208
 
-> Rationale: the transport stays observable without turning “unless you prefer
-> otherwise” into a false choice. A current-run alternative is a gate; a settled
-> default is information. — 0206, 0207
+Automatic fallback **MUST** finish before run creation. An unavailable explicit
+or non-`auto` configured evaluator **MUST** surface the runner's concrete remedy
+rather than enter the automatic chain. After run creation, the workflow
+**MUST NOT** silently cross providers or transports; switching evaluators
+requires a new run.
 
 For `codex` and `claude`, the workflow **MUST** treat the provider agent runtime
 as a runner-owned evaluator implementation detail. Authentication belongs to
@@ -247,7 +263,7 @@ flowchart TD
     Verify --> Resolve[Resolve model file and requested scope]
     Resolve --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
-    Lint -->|valid| Select[Resolve and explain evaluator selection<br/>optionally preview with --dry-run --json]
+    Lint -->|valid| Select[Discover SDK readiness and resolve<br/>provider-affine evaluator selection]
     Select --> Start[Announce the first mutation]
     Start --> Log[Open the evaluate feedback log]
     Log --> Run[Invoke qualitymd evaluation run<br/>with explicit flags]
@@ -266,10 +282,13 @@ flowchart TD
 4. **Validate** with `qualitymd lint`, stopping on errors (see
    [Driving the CLI](quality-skill.md#driving-the-cli)).
 5. **Resolve and explain evaluator selection** per the
-   [selection precedence](#evaluator-selection). It **MAY** preview the
-   resolved run with `qualitymd evaluation run --dry-run --json`, and **MAY**
-   ask the user to choose an evaluator when the CLI reports a missing or
-   ambiguous evaluator.
+   [selection precedence](#evaluator-selection). Without an explicit or
+   non-`auto` configured evaluator, inspect
+   `qualitymd evaluation run --dry-run --evaluator auto --json`, apply known
+   provider affinity over the candidate receipt, use the CLI winner when no
+   matching candidate is usable, and select a capable `harness` only for
+   `missing_evaluator`. Explain the result without asking for a transport
+   choice.
 6. **Announce the first mutation** in user-facing terms: preflight is complete,
    evaluation artifacts and the local feedback log are about to be written,
    and no user attention is needed unless a gate has already been presented.

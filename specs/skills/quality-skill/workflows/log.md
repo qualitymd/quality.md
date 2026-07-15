@@ -3,6 +3,13 @@
 ## 2026-07-15
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0208 - Provider-affine SDK evaluator selection](../../../../changes/archive/0208-provider-affine-sdk-selection.md).
+  Automatic discovery now precedes harness fallback, a usable SDK matching the
+  invoking Codex or Claude agent wins over the standalone CLI order,
+  provider-named requests map directly to their SDK, and the determined
+  evaluator is pinned and explained without a transport question.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0207 - User-facing evaluation progress](../../../../changes/archive/0207-user-facing-evaluation-progress.md).
   Healthy-run progress now reports preflight, evidence-review,
   report-generation, and closeout phases with meaningful model coverage instead

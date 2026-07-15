@@ -3,6 +3,50 @@
 ## 2026-07-15
 
 - **Done**: Completed and archived
+  [0208 - Provider-affine SDK evaluator selection](archive/0208-provider-affine-sdk-selection.md).
+  All R1-R5 requirements passed the review ledger: SDK discovery before
+  harness fallback, provider affinity, deterministic provider-name mapping,
+  visible pre-mutation selection, evaluator pinning, focused evaluator tests,
+  and the complete repository gate.
+
+- **In-Review**: Completed implementation for
+  [0208 - Provider-affine SDK evaluator selection](archive/0208-provider-affine-sdk-selection.md).
+  CLI automatic discovery now precedes harness fallback; a usable SDK matching
+  the invoking Codex or Claude agent wins; provider-named requests map directly
+  to that SDK; and the concrete evaluator is pinned and explained before
+  mutation. Durable specs, runtime guidance, logs, release notes, and the R1-R5
+  [review ledger](archive/0208-provider-affine-sdk-selection/review.md) are in sync. The
+  focused evaluator suite passes 10 tests, and `mise run check` passes 19 test
+  files and 86 tests.
+
+- **In-Progress**: Advanced
+  [0208 - Provider-affine SDK evaluator selection](archive/0208-provider-affine-sdk-selection.md)
+  from `Design` with the read-only discovery preview, provider-affinity table,
+  pre-run fallback boundary, and explicit evaluator pinning settled. Runtime
+  skill guidance, durable skill contracts, logs, and release surfaces may now
+  be updated.
+
+- **Design**: Advanced
+  [0208 - Provider-affine SDK evaluator selection](archive/0208-provider-affine-sdk-selection.md)
+  from `Draft` after R1-R5 passed the per-requirement quality bar and the
+  consistent, complete, and validatable set check. Added the
+  [design doc](archive/0208-provider-affine-sdk-selection/design.md): use the existing
+  read-only automatic preview as the SDK-readiness oracle, apply harness-known
+  provider affinity over its candidate receipt, preserve the CLI winner when
+  no usable match exists, select harness only for `missing_evaluator`, and pin
+  the concrete evaluator on the real run.
+
+- **Creation**: Added change
+  [0208 - Provider-affine SDK evaluator selection](archive/0208-provider-affine-sdk-selection.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0208-provider-affine-sdk-selection/spec.md) (R1-R5).
+  The case moves CLI automatic SDK discovery ahead of harness fallback,
+  prefers the usable SDK matching the invoking Codex or Claude agent, maps
+  provider-named requests directly to that SDK, and requires a visible
+  pre-mutation selection reason without a user choice. Standalone CLI discovery
+  and evaluation artifacts remain unchanged.
+
+- **Done**: Completed and archived
   [0207 - User-facing evaluation progress](archive/0207-user-facing-evaluation-progress.md).
   All R1-R5 requirements passed the review ledger: shared implementation
   boundary, quality-task progress phases, meaningful model coverage,

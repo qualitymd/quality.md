@@ -64,53 +64,47 @@ Hard boundaries:
 
    1. an explicit user evaluator request;
    2. a non-`auto` `evaluation.evaluator` in `.quality/config.yaml`;
-   3. `--evaluator harness` — the default when you (the invoking agent) can
-      run successive CLI commands and answer JSON work requests, which is the
-      normal case: the run then uses your session's own judgment and
-      authentication, with no nested agent process or provider API key; and
-   4. CLI `auto` discovery (a ready Codex agent runtime, then a ready Claude
-      agent runtime) only when no
-      harness transport is available.
+   3. the usable built-in SDK evaluator matching your known Codex or Claude
+      harness;
+   4. the usable evaluator selected by CLI `auto` discovery when no matching
+      provider candidate is usable; and
+   5. `--evaluator harness` only when discovery reports no usable SDK evaluator
+      and you can run successive CLI commands and answer JSON work requests.
 
-   Before applying the precedence, treat a provider-named request as ambiguous
-   when it could mean either the same-provider current harness or its SDK
-   evaluator. For example, "have Claude evaluate this" in a Claude harness
-   requires a single-select closed choice between:
+   A provider-named request maps directly to that provider's SDK evaluator:
+   "have Claude evaluate this" selects `claude`, and "have Codex evaluate this"
+   selects `codex`. Do not ask a same-provider harness-versus-SDK question.
+   Only an explicit `harness` request selects the current session ahead of
+   automatic discovery.
 
-   1. the fresh independent `claude` SDK subprocess — recommended when the
-      request frames Claude as the evaluator; request `claude` now or set
-      `evaluation.evaluator: claude` as the durable default; and
-   2. the current in-session `harness` judgment and authentication — request
-      `harness` now or set `evaluation.evaluator: harness` as the durable
-      default.
+   With no explicit or non-`auto` configured evaluator, run the read-only
+   discovery preview:
 
-   Render the choice through a fit-for-purpose native single-select affordance
-   when present; otherwise use the numbered fallback with `1` as the shortest
-   response. An explicit `harness`, `claude`, or `codex` request needs no
-   clarification.
+   ```sh
+   qualitymd evaluation run --dry-run --evaluator auto --json \
+     [--model <model>] [--area <area-ref>] [--factor <factor-ref>...]
+   ```
 
-   Explain the selected transport before the first mutation, and never
-   silently switch providers after harness selection or failure. When default
-   precedence selects `harness`, say that judgment runs in the current session
-   with its context and authentication. You may name the explicit-request and
-   `evaluation.evaluator` paths for a fresh independent SDK evaluator on a
-   future invocation, but do not invite a current-run change and continue
-   without waiting. If you offer changing the evaluator for the current run,
-   render a real closed choice and wait for the answer before mutation.
-   Optionally
-   preview with
-   `qualitymd evaluation run --dry-run --json [--model ...] [--area ...] [--factor ...]`,
-   which reports the resolved model, scope, evaluator (with readiness evidence
-   for `auto` candidates), concurrency, work-unit counts, and the per-area
-   effective source selectors and inspection policy
-   without invoking an evaluator. When presenting preview information to the
-   user, translate coverage into model areas or requirements; do not expose
-   work-unit, request-window, or concurrency counts as ordinary progress. Ask
-   the user to choose only when selection fails or is ambiguous — for example a
-   `missing_evaluator` failure — presenting the CLI's remedies as the options.
+   Inspect its structured candidate list. If the usable candidate matching your
+   known Codex or Claude harness is present, select it explicitly. Otherwise use
+   the receipt's selected usable evaluator. Only a `missing_evaluator` failure
+   permits the capable-harness fallback; any other preview failure remains a
+   stop. Pass the concrete determined evaluator to the real run rather than
+   `auto`.
+
+   Explain the selected transport before the first mutation: state whether
+   explicit intent, configuration, provider affinity, CLI automatic discovery,
+   or the no-SDK harness fallback determined it. Say that `codex` or `claude`
+   starts fresh independent SDK sessions; say that `harness` uses the current
+   session's judgment and authentication. Do not invite a transport choice for
+   the current run. Automatic fallback ends before run creation, and you must
+   never silently switch providers or transports afterward. An unavailable
+   explicit or non-`auto` configured evaluator stops with its concrete remedy.
    Explain capability, authentication, executable, sandbox, turn-limit, or
    cost-limit failures concretely; never claim an unsupported control is
-   enforced.
+   enforced. When presenting preview information, translate coverage into model
+   areas or requirements; do not expose work-unit, request-window, or
+   concurrency counts as ordinary progress.
 
 6. Emit a short pre-mutation progress beat: preflight is complete, name the
    selected evaluator concisely, say that evaluation artifacts and the local
@@ -126,8 +120,9 @@ Hard boundaries:
    **Ready to evaluate**
 
    Preflight is complete and all in-scope sources resolve.
-   Evaluator: this session (default). It uses the context and authentication
-   already available here; no separate evaluator process will start.
+   Evaluator: independent Codex SDK (provider-affine default). CLI discovery
+   confirmed that the Codex runtime is ready, and this evaluation was invoked
+   through Codex. Fresh isolated sessions will perform the judgment.
 
    The evaluation report and local feedback log are being created now.
    Nothing needs your attention; I’ll return with the result or a recovery step.

@@ -853,3 +853,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   keeps evaluator protocol and worker orchestration behind the agent interface
   while presenting evaluation choices, phases, coverage, and recovery in
   user-facing language (`Done`).
+- [0208 — Provider-affine SDK evaluator selection](0208-provider-affine-sdk-selection.md) -
+  prefers a ready SDK evaluator matching the invoking Codex or Claude agent,
+  falls back through CLI automatic discovery before harness judgment, and
+  reports the selected transport without asking the user to choose (`Done`).
