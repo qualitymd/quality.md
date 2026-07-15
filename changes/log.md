@@ -2,6 +2,30 @@
 
 ## 2026-07-15
 
+- **In-Progress**: Advanced
+  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  from `Design` after confirming the selected-evaluator-first preparation and
+  completion-driven coordinator design against the current runner. Runtime,
+  durable-spec, skill, and test implementation is underway.
+
+- **Design**: Advanced
+  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  from `Draft` to `Design` after R1–R8 passed individual requirement-quality
+  and set-level review. Added the design doc: explicit direct/delegated dispatch
+  capabilities, transport defaults, selected-evaluator-first run preparation,
+  a coordinator-owned completion-driven provider pool, bounded harness
+  delegation, per-result persistence, schema version 9, and deterministic
+  concurrency verification. No production code or durable current-behavior
+  spec changed in this phase.
+
+- **Draft**: Opened
+  [0204 - Transport-aware evaluator concurrency](0204-transport-aware-evaluator-concurrency.md)
+  with a functional spec for runner scheduling authority, honest transport
+  capabilities, transport-derived automatic caps, selected-evaluator-first run
+  creation, completion-driven direct dispatch, bounded harness delegation,
+  per-result durability, observability, and verification. No production code
+  or durable current-behavior spec changed.
+
 - **Done**: Completed and archived
   [0203 - Evaluator prompt cache efficiency](archive/0203-evaluator-prompt-cache-efficiency.md).
   All R1–R6 requirements passed the review ledger: exact prompt-part tests,
