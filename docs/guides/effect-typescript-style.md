@@ -39,6 +39,18 @@ Use namespace imports for Effect modules, for example `import * as Effect from
 "effect/Effect"`. Keep exported types explicit. Preserve exact dependency pins
 while Effect v4 and its CLI/testing packages are pre-stable.
 
+## Derive values; do not accumulate them
+
+Build collections as expressions: `map`, `filter`, `flatMap`,
+`Object.fromEntries`, and `Effect.forEach` for effectful iteration. Name each
+intermediate as a `const` whose inputs are visible at its declaration. Do not
+thread a shared mutable accumulator across statements or loops; a mutable
+local is acceptable only when confined to a few lines inside one small
+function and never escaping it. Type collection fields `ReadonlyArray` and
+records `readonly` so accidental mutation fails to compile. Prefer named
+intermediates over long point-free chains when a chain stops reading as a
+sentence.
+
 ## Model runtime capabilities as services
 
 Define the smallest repository-owned capability that makes a workflow

@@ -2,6 +2,26 @@
 
 ## 2026-07-14
 
+- **Design**: Advanced
+  [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md)
+  from `Draft` to `Design` after reviewing R1–R6 individually and as a set.
+  Added the design doc: a domain module map for the `evaluation-execute`
+  decomposition, derivation idioms for the sweep, a single batched hashing
+  boundary, one run-folder enumeration classifier shared by five commands, and
+  the decision to drop the unspec'd `quality`-slug exclusion. No production
+  code changed in this phase.
+
+- **Draft**: Opened
+  [0202 - Derive-values conformance refactor](0202-derive-values-refactor.md)
+  with a functional spec: byte-identical public behavior (R1), `src/`
+  conformance with the guide's new "Derive values; do not accumulate them"
+  section (R2), pure-domain decomposition of `evaluation-execute` (R3),
+  ready-unit selection in the graph domain (R4), one shared run-folder
+  enumeration
+  (R5), and a spec-backed recognition/numbering rule replacing five diverging
+  copies (R6). The style-guide section itself landed independently ahead of
+  this case. Also removed a leftover empty `0201-*` folder from `changes/`.
+
 - **Done**: Completed and archived
   [0201 - Agent-native evidence discovery](archive/0201-agent-native-evidence-discovery.md).
   All R1–R10 requirements passed the review ledger: the full local gate is
