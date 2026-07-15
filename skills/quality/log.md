@@ -2,6 +2,10 @@
 
 ## 2026-07-15
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.33.0`
+  and its compatible CLI line to `qualitymd >=0.33.0 <0.34.0` for the schema-9
+  transport-concurrency release.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0204 - Transport-aware
   evaluator concurrency. Harness evaluation now delegates one bounded request

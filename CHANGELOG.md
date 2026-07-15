@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.33.0 - 2026-07-15
+
 ### CLI
 
 - Evaluation concurrency now comes from the selected evaluator transport rather
@@ -26,6 +28,22 @@ QUALITY.md specification.
   native worker while the parent keeps graph, artifact, quality-control, and
   retry authority. Progress distinguishes the runner's outstanding cap from
   requests actually dispatched.
+
+### Compatibility / migration
+
+- In-flight schema-version-8 evaluation runs cannot resume under v0.33.0 and
+  must be started again. Completed version-8 artifacts remain historical data;
+  there is no migration or dual reader.
+- Automatic evaluation concurrency no longer follows host CPU count. Harness
+  and Codex default to four; Claude is sequential even when a higher workspace
+  cap is configured. Set positive `evaluation.concurrency` in workspace
+  configuration when a lower explicit cap is required.
+
+Compatibility:
+
+- CLI: `v0.33.0`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.33.0`, requires `qualitymd >=0.33.0 <0.34.0`
 
 ## v0.32.2 - 2026-07-15
 
