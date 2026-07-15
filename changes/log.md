@@ -2,6 +2,17 @@
 
 ## 2026-07-15
 
+- **Design**: Opened
+  [0205 - Evaluation executive summary](0205-evaluation-executive-summary.md) with
+  a functional spec (R1–R8) and design doc, and set `status: Design`. Adds an
+  advice-phase `summarizeEvaluation` unit and `EvaluationSummaryResult` payload
+  that synthesize a stakeholder-facing executive summary from the ranked findings,
+  ranked recommendations, and root roll-up, rendered deterministically into the
+  run report `## Summary` in place of the roll-up rationale. Records the
+  orchestration, protocol, payload-kinds, data-layout, report-tree, and
+  evaluation.json durable-spec impact. No production code or durable spec changed
+  in this phase. Updated the bundle [index](index.md).
+
 - **Done**: Completed and archived
   [0204 - Transport-aware evaluator concurrency](archive/0204-transport-aware-evaluator-concurrency.md).
   All R1-R8 requirements passed the review ledger: transport capability and
