@@ -102,7 +102,7 @@ different provider after harness selection or failure.
 
 When selection fails because an agent runtime or requested capability is
 missing, `evaluate` **MUST** surface the runner's concrete installation,
-authentication, configuration, or selector remedy. It **MUST NOT** silently
+authentication, or configuration remedy. It **MUST NOT** silently
 fall back after a run has accepted results.
 
 `evaluate` **MUST** then invoke the runner with explicit flags:
@@ -113,8 +113,12 @@ qualitymd evaluation run [--model <model>] [--area <area-ref>]
 ```
 
 While the receipt status is `awaiting_evaluator`, `evaluate` **MUST** service
-each of the receipt's outstanding requests only from that request's
-runner-supplied immutable area context — it **MAY** use the harness's ordinary
+each outstanding requirement request by searching and reading within its
+authorized workspace, treating its source as the judged subject and separately
+classifying supporting context. It **MUST** return the assessment, rating, and
+evidence proposal together and honor the request's write, network, approval,
+verification, and untrusted-instruction policy. For synthesis requests it
+**MUST** use supplied structured data only. It **MAY** use the harness's ordinary
 reasoning or delegate independent requests to native subagents, and **MAY**
 submit results as they become ready rather than waiting for the whole set —
 submit one typed result envelope per request (one or several per call) with
@@ -131,11 +135,9 @@ request, or write structured evaluation data. The evaluation protocol —
 coverage, verification, roll-up, advice, and report generation — is
 runner-owned.
 
-A `resolveSource` checkpoint is the exception to judgment's no-exploration
-rule: it may use bounded read-only workspace tools to identify the selector's
-files, then returns only the finite workspace-relative file set. Requirement
-judgment never receives that exploration transcript and never reads outside the
-captured area context.
+Requirement inspection returns only structured judgment and proposed evidence
+locators, never file bodies, hashes, or an exploration transcript. The runner
+validates and seals those locators before accepting the result.
 
 ## Failure and resume
 
@@ -165,7 +167,7 @@ and user-facing, not a transcript of internal reasoning.
 
 `evaluate` **MUST** stop before invoking the runner when:
 
-- the in-scope area source cannot be resolved;
+- the model or authorized workspace boundary cannot be resolved safely;
 - the in-scope model has no requirements;
 - required CLI support is missing or stale; or
 - lint reports structural errors.

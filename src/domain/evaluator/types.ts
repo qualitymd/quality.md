@@ -1,10 +1,15 @@
 import * as Schema from "effect/Schema"
 
-export type EvaluatorKind = "harness" | "codex" | "claude" | "openai" | "anthropic"
+export type EvaluatorKind = "harness" | "codex" | "claude"
+
+export type SourceKind = "path" | "glob" | "prose"
 
 export interface EvaluatorCapabilities {
   readonly structuredOutput: boolean
-  readonly sourceResolution: boolean
+  readonly workspaceInspection: boolean
+  readonly instructionIsolation: boolean
+  readonly verification: boolean
+  readonly networkAccess: "disabled"
   readonly tools: boolean
   readonly concurrent: boolean
   readonly subagents: boolean
@@ -20,27 +25,19 @@ export interface EvaluatorCapabilities {
   readonly executableOverride: boolean
 }
 
-export interface SourceFile {
-  readonly path: string
-  readonly content: string
-  readonly sha256: string
-  readonly truncated?: boolean
-}
-
-export interface SourceBundle {
-  readonly files: ReadonlyArray<SourceFile>
-  readonly hash: string
-  readonly truncated: boolean
-}
-
-export interface AreaContext {
-  readonly areaId: string
-  readonly sourceBundleHash: string
-  readonly frame: Readonly<Record<string, unknown>>
-  readonly ratingCriteria: Readonly<Record<string, string>>
-  readonly bodyGuidance: string
-  readonly files: ReadonlyArray<SourceFile>
-  readonly hash: string
+export interface InspectionContext {
+  readonly workspaceRoot: string
+  readonly source: {
+    readonly selector: string
+    readonly kind: SourceKind
+  }
+  readonly policy: {
+    readonly workspace: "read-only"
+    readonly network: "disabled"
+    readonly approvals: "never"
+    readonly verification: "unavailable" | "sandboxed"
+    readonly repositoryInstructions: "untrusted-data"
+  }
 }
 
 export interface EvaluationRequest {
@@ -49,10 +46,11 @@ export interface EvaluationRequest {
   readonly kind: string
   readonly subject: string
   readonly instructions: string
-  readonly areaContext: AreaContext
+  readonly sharedContext: Readonly<Record<string, unknown>>
   readonly context: Readonly<Record<string, unknown>>
+  readonly bodyGuidance: string
+  readonly inspection?: InspectionContext
   readonly expectedSchema: Readonly<Record<string, unknown>>
-  readonly workspaceRoot: string
   readonly timeoutMs: number
 }
 
@@ -81,15 +79,13 @@ export class EvaluatorFailure extends Schema.TaggedErrorClass<EvaluatorFailure>(
       "missing_evaluator",
       "evaluator_unauthenticated",
       "evaluator_incompatible",
-      "missing_api_key",
       "rate_limited",
       "timeout",
       "invalid_evaluator_output",
       "schema_invalid_output",
+      "evidence_invalid",
       "unsafe_source_content",
-      "insufficient_evidence",
-      "source_unavailable",
-      "selector_unsupported",
+      "workspace_access_denied",
       "run_state_invalid",
       "cancelled",
       "report_build_failed",

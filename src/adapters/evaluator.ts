@@ -6,7 +6,6 @@ import * as FileSystem from "effect/FileSystem"
 import { renderEvaluationPrompt } from "../domain/evaluator/context.ts"
 import {
   EvaluatorFailure,
-  type EvaluationRequest,
   type EvaluationResponse,
   type EvaluatorCapabilities,
 } from "../domain/evaluator/types.ts"
@@ -60,9 +59,8 @@ export const stripNullProperties = (value: unknown): unknown => {
   )
 }
 
-const freshDirectory = (request: EvaluationRequest) =>
+const freshDirectory = () =>
   Effect.gen(function* () {
-    if (request.kind === "resolveSource") return request.workspaceRoot
     const fs = yield* FileSystem.FileSystem
     return yield* fs.makeTempDirectoryScoped({ prefix: "qualitymd-evaluator-" })
   })
@@ -95,7 +93,10 @@ const childEnvironment = (provider: "codex" | "claude") => {
 
 const codexCapabilities: EvaluatorCapabilities = {
   structuredOutput: true,
-  sourceResolution: true,
+  workspaceInspection: true,
+  instructionIsolation: true,
+  verification: false,
+  networkAccess: "disabled",
   tools: true,
   concurrent: true,
   subagents: true,
@@ -124,11 +125,17 @@ export const codexEvaluator = (
   evaluate: (request) =>
     Effect.scoped(
       Effect.gen(function* () {
-        const workingDirectory = yield* freshDirectory(request)
+        const workingDirectory = yield* freshDirectory()
         const prompt = renderEvaluationPrompt(request)
         const codex = new Codex({
           ...(options.command === undefined ? {} : { codexPathOverride: options.command }),
-          config: { features: { multi_agent: false } },
+          config: {
+            features: { multi_agent: false },
+            shell_environment_policy: {
+              inherit: "none",
+              include_only: ["HOME", "PATH", "TMPDIR", "TEMP", "TMP", "LANG", "LC_ALL"],
+            },
+          },
           env: childEnvironment("codex"),
         })
         const result = yield* Effect.tryPromise({
@@ -142,6 +149,9 @@ export const codexEvaluator = (
                 approvalPolicy: "never",
                 networkAccessEnabled: false,
                 webSearchMode: "disabled",
+                ...(request.inspection === undefined
+                  ? {}
+                  : { additionalDirectories: [request.inspection.workspaceRoot] }),
               })
               .run(prompt, { outputSchema: strictProviderSchema(request.expectedSchema), signal }),
           catch: (cause) => failure(cause),
@@ -182,7 +192,10 @@ export const codexEvaluator = (
 
 const claudeCapabilities: EvaluatorCapabilities = {
   structuredOutput: true,
-  sourceResolution: true,
+  workspaceInspection: true,
+  instructionIsolation: true,
+  verification: false,
+  networkAccess: "disabled",
   tools: true,
   concurrent: false,
   subagents: false,
@@ -211,7 +224,7 @@ export const claudeEvaluator = (
   evaluate: (request) =>
     Effect.scoped(
       Effect.gen(function* () {
-        const cwd = yield* freshDirectory(request)
+        const cwd = yield* freshDirectory()
         const prompt = renderEvaluationPrompt(request)
         const result = yield* Effect.tryPromise({
           try: async (signal) => {
@@ -225,6 +238,9 @@ export const claudeEvaluator = (
                 options: {
                   abortController,
                   cwd,
+                  ...(request.inspection === undefined
+                    ? {}
+                    : { additionalDirectories: [request.inspection.workspaceRoot] }),
                   ...(options.model === undefined ? {} : { model: options.model }),
                   ...(options.command === undefined
                     ? {}
@@ -241,7 +257,7 @@ export const claudeEvaluator = (
                   stderr: (data) => {
                     stderr = (stderr + data).slice(-2048)
                   },
-                  tools: request.kind === "resolveSource" ? ["Read", "Glob", "Grep"] : [],
+                  tools: request.inspection === undefined ? [] : ["Read", "Glob", "Grep"],
                   disallowedTools: ["Write", "Edit", "Bash", "Agent", "Task"],
                 },
               })
@@ -291,7 +307,10 @@ export const claudeEvaluator = (
 
 export const harnessCapabilities: EvaluatorCapabilities = {
   structuredOutput: true,
-  sourceResolution: true,
+  workspaceInspection: true,
+  instructionIsolation: true,
+  verification: false,
+  networkAccess: "disabled",
   tools: true,
   concurrent: false,
   subagents: true,
@@ -306,211 +325,3 @@ export const harnessCapabilities: EvaluatorCapabilities = {
   sandbox: "host",
   executableOverride: false,
 }
-
-const apiCapabilities: EvaluatorCapabilities = {
-  structuredOutput: true,
-  sourceResolution: false,
-  tools: false,
-  concurrent: true,
-  subagents: false,
-  freshContext: true,
-  cancellation: true,
-  usage: true,
-  maxTurns: "unsupported",
-  tokenBudget: "supported",
-  costBudget: "advisory",
-  contextWindow: "reported",
-  compaction: "opaque",
-  sandbox: "unsupported",
-  executableOverride: false,
-}
-
-const responseFailure = (status: number, body: string) => {
-  const category =
-    status === 401 || status === 403
-      ? "evaluator_unauthenticated"
-      : status === 429
-        ? "rate_limited"
-        : "internal_error"
-  return failure(`provider request failed (${status}): ${body.slice(0, 500)}`, category)
-}
-
-export const openAiEvaluator = (
-  options: {
-    readonly name?: string
-    readonly model?: string
-    readonly apiKeyEnv?: string
-    readonly baseUrl?: string
-  } = {},
-): EvaluatorService => ({
-  name: options.name ?? "openai",
-  kind: "openai",
-  capabilities: apiCapabilities,
-  evaluate: (request) => {
-    const keyName = options.apiKeyEnv ?? "OPENAI_API_KEY"
-    const apiKey = process.env[keyName]
-    if (apiKey === undefined || apiKey === "") {
-      return Effect.fail(
-        failure(`the openai evaluator needs an API key in $${keyName}`, "missing_api_key"),
-      )
-    }
-    return Effect.tryPromise({
-      try: async (signal) => {
-        const response = await fetch(
-          `${options.baseUrl ?? "https://api.openai.com/v1"}/responses`,
-          {
-            method: "POST",
-            headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
-            signal,
-            body: JSON.stringify({
-              model: options.model ?? "gpt-5.1",
-              input: renderEvaluationPrompt(request),
-              text: {
-                format: {
-                  type: "json_schema",
-                  name: "qualitymd_evaluation_result",
-                  strict: true,
-                  schema: strictProviderSchema(request.expectedSchema),
-                },
-              },
-            }),
-          },
-        )
-        const body = await response.text()
-        if (!response.ok) throw responseFailure(response.status, body)
-        const parsed = JSON.parse(body) as {
-          readonly output_text?: string
-          readonly output?: ReadonlyArray<{
-            readonly content?: ReadonlyArray<{ readonly type?: string; readonly text?: string }>
-          }>
-          readonly usage?: {
-            readonly input_tokens?: number
-            readonly output_tokens?: number
-            readonly input_tokens_details?: { readonly cached_tokens?: number }
-          }
-        }
-        const text =
-          parsed.output_text ??
-          parsed.output
-            ?.flatMap((entry) => entry.content ?? [])
-            .find((entry) => entry.type === "output_text")?.text
-        if (text === undefined)
-          throw failure("OpenAI returned no structured output", "invalid_evaluator_output")
-        return {
-          workUnitId: request.workUnitId,
-          payload: stripNullProperties(JSON.parse(text)) as Readonly<Record<string, unknown>>,
-          evaluatorKind: "openai",
-          model: options.model ?? "gpt-5.1",
-          ...(parsed.usage === undefined
-            ? {}
-            : {
-                usage: {
-                  ...(parsed.usage.input_tokens === undefined
-                    ? {}
-                    : { inputTokens: parsed.usage.input_tokens }),
-                  ...(parsed.usage.output_tokens === undefined
-                    ? {}
-                    : { outputTokens: parsed.usage.output_tokens }),
-                  ...(parsed.usage.input_tokens_details?.cached_tokens === undefined
-                    ? {}
-                    : { cachedInputTokens: parsed.usage.input_tokens_details.cached_tokens }),
-                },
-              }),
-        } satisfies EvaluationResponse
-      },
-      catch: (cause) => (cause instanceof EvaluatorFailure ? cause : failure(cause)),
-    }).pipe(
-      Effect.timeoutOrElse({
-        duration: request.timeoutMs,
-        orElse: () => Effect.fail(failure("OpenAI evaluation timed out", "timeout")),
-      }),
-    )
-  },
-})
-
-export const anthropicEvaluator = (
-  options: {
-    readonly name?: string
-    readonly model?: string
-    readonly apiKeyEnv?: string
-    readonly baseUrl?: string
-  } = {},
-): EvaluatorService => ({
-  name: options.name ?? "anthropic",
-  kind: "anthropic",
-  capabilities: apiCapabilities,
-  evaluate: (request) => {
-    const keyName = options.apiKeyEnv ?? "ANTHROPIC_API_KEY"
-    const apiKey = process.env[keyName]
-    if (apiKey === undefined || apiKey === "") {
-      return Effect.fail(
-        failure(`the anthropic evaluator needs an API key in $${keyName}`, "missing_api_key"),
-      )
-    }
-    return Effect.tryPromise({
-      try: async (signal) => {
-        const response = await fetch(
-          `${options.baseUrl ?? "https://api.anthropic.com"}/v1/messages`,
-          {
-            method: "POST",
-            headers: {
-              "x-api-key": apiKey,
-              "anthropic-version": "2023-06-01",
-              "content-type": "application/json",
-            },
-            signal,
-            body: JSON.stringify({
-              model: options.model ?? "claude-sonnet-5",
-              max_tokens: 8192,
-              messages: [{ role: "user", content: renderEvaluationPrompt(request) }],
-              output_config: { format: { type: "json_schema", schema: request.expectedSchema } },
-            }),
-          },
-        )
-        const body = await response.text()
-        if (!response.ok) throw responseFailure(response.status, body)
-        const parsed = JSON.parse(body) as {
-          readonly content?: ReadonlyArray<{ readonly type?: string; readonly text?: string }>
-          readonly usage?: {
-            readonly input_tokens?: number
-            readonly output_tokens?: number
-            readonly cache_read_input_tokens?: number
-            readonly cache_creation_input_tokens?: number
-          }
-        }
-        const text = parsed.content?.find((entry) => entry.type === "text")?.text
-        if (text === undefined)
-          throw failure("Anthropic returned no structured output", "invalid_evaluator_output")
-        const inputTokens =
-          (parsed.usage?.input_tokens ?? 0) +
-          (parsed.usage?.cache_read_input_tokens ?? 0) +
-          (parsed.usage?.cache_creation_input_tokens ?? 0)
-        return {
-          workUnitId: request.workUnitId,
-          payload: JSON.parse(text) as Readonly<Record<string, unknown>>,
-          evaluatorKind: "anthropic",
-          model: options.model ?? "claude-sonnet-5",
-          ...(parsed.usage === undefined
-            ? {}
-            : {
-                usage: {
-                  inputTokens,
-                  ...(parsed.usage.output_tokens === undefined
-                    ? {}
-                    : { outputTokens: parsed.usage.output_tokens }),
-                  ...(parsed.usage.cache_read_input_tokens === undefined
-                    ? {}
-                    : { cachedInputTokens: parsed.usage.cache_read_input_tokens }),
-                },
-              }),
-        } satisfies EvaluationResponse
-      },
-      catch: (cause) => (cause instanceof EvaluatorFailure ? cause : failure(cause)),
-    }).pipe(
-      Effect.timeoutOrElse({
-        duration: request.timeoutMs,
-        orElse: () => Effect.fail(failure("Anthropic evaluation timed out", "timeout")),
-      }),
-    )
-  },
-})

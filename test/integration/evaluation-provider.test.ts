@@ -43,20 +43,41 @@ const replaceReference = (value: unknown, from: string, to: string): unknown => 
   return value
 }
 
+const replaceEvidenceRefs = (value: unknown): unknown => {
+  if (Array.isArray(value)) return value.map(replaceEvidenceRefs)
+  if (value !== null && typeof value === "object")
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [
+        key,
+        key === "sourceRef" ? "evidence[ev-001]" : replaceEvidenceRefs(child),
+      ]),
+    )
+  return value
+}
+
 const payloadFor = (request: EvaluationRequest): Record<string, unknown> => {
   const requirement = "requirement:root::has-tests"
   if (request.kind === "assessRateRequirement") {
-    const assessment = replaceReference(
-      clone(evaluationExamples.RequirementAssessmentResult),
-      requirement,
-      request.subject,
+    const assessment = replaceEvidenceRefs(
+      replaceReference(
+        clone(evaluationExamples.RequirementAssessmentResult),
+        requirement,
+        request.subject,
+      ),
     ) as Record<string, unknown>
     const rating = replaceReference(
       clone(evaluationExamples.RequirementRatingResult),
       requirement,
       request.subject,
     ) as Record<string, unknown>
-    return { assessment, rating }
+    return {
+      assessment,
+      rating,
+      evidence: {
+        observations: [{ id: "ev-001", kind: "file", role: "evaluated", path: "evidence.txt" }],
+        limits: [],
+      },
+    }
   }
   if (request.kind === "analyzeFactor") {
     const result = clone(evaluationExamples.FactorAnalysisResult) as Record<string, unknown>
@@ -98,8 +119,11 @@ const payloadFor = (request: EvaluationRequest): Record<string, unknown> => {
 
 const capabilities = {
   structuredOutput: true,
-  sourceResolution: false,
-  tools: false,
+  workspaceInspection: true,
+  instructionIsolation: true,
+  verification: false,
+  networkAccess: "disabled",
+  tools: true,
   concurrent: true,
   subagents: false,
   freshContext: true,
@@ -110,7 +134,7 @@ const capabilities = {
   costBudget: "advisory",
   contextWindow: "reported",
   compaction: "opaque",
-  sandbox: "unsupported",
+  sandbox: "provider",
   executableOverride: false,
 } as const
 
@@ -152,12 +176,12 @@ factors:
       )
       const evaluator: EvaluatorService = {
         name: "mock-provider",
-        kind: "openai",
+        kind: "claude",
         capabilities: { ...capabilities, concurrent: false },
         evaluate: (request) =>
           Effect.succeed({
             workUnitId: request.workUnitId,
-            evaluatorKind: "openai",
+            evaluatorKind: "claude",
             model: "mock-model",
             payload: payloadFor(request),
             usage: { inputTokens: 10, outputTokens: 5 },
@@ -192,11 +216,21 @@ factors:
       const artifact = JSON.parse(
         yield* Effect.promise(() => readFile(join(runPath, "evaluation.json"), "utf8")),
       ) as {
+        schemaVersion: number
         manifest: { concurrency: number }
         state: { status: string }
+        evidence: Record<
+          string,
+          { observations: ReadonlyArray<{ path: string; sha256: string }>; manifestHash: string }
+        >
       }
+      assert.strictEqual(artifact.schemaVersion, 8)
       assert.strictEqual(artifact.manifest.concurrency, 1)
       assert.strictEqual(artifact.state.status, "completed")
+      const evidence = Object.values(artifact.evidence)[0]!
+      assert.strictEqual(evidence.observations[0]?.path, "evidence.txt")
+      assert.match(evidence.observations[0]?.sha256 ?? "", /^[a-f0-9]{64}$/)
+      assert.match(evidence.manifestHash, /^[a-f0-9]{64}$/)
       assert.match(
         yield* Effect.promise(() => readFile(join(runPath, "logs", "events.jsonl"), "utf8")),
         /"status":"completed"/,
@@ -243,8 +277,8 @@ factors:
       let finalized = false
       const evaluator: EvaluatorService = {
         name: "interruptible-provider",
-        kind: "openai",
-        capabilities,
+        kind: "claude",
+        capabilities: { ...capabilities, concurrent: false },
         evaluate: () =>
           Deferred.succeed(started, undefined).pipe(
             Effect.andThen(Effect.never),

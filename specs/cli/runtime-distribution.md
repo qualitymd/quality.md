@@ -107,9 +107,9 @@ Release candidates **MUST** pass:
   families;
 - npm, managed-installer, Homebrew, and direct-archive smokes;
 - CLI compatibility fixtures, including stdout/stderr and exit categories;
-- filesystem containment and edge-case source packaging;
-- evaluator discovery and executable override;
-- structured result streaming, cancellation, and resume; and
+- workspace containment, neutral instruction isolation, and evidence sealing;
+- agent-runtime discovery and executable override;
+- structured result streaming, inspection, cancellation, and resume; and
 - release-repair verification from a partially published state.
 
 ## Telemetry and privacy

@@ -2,6 +2,13 @@
 
 ## 2026-07-14
 
+- **Revision**: Updated the README and Codex/Claude automation guides for
+  [0201 - Agent-native evidence discovery](../changes/0201-agent-native-evidence-discovery.md).
+  User guidance now distinguishes deterministic runner mechanics from agentic
+  evidence judgment, teaches harness requirement inspection, and treats login,
+  subscription, or API-key authentication as an agent-runtime concern rather
+  than an evaluator method.
+
 - **Creation**: Added [Write Effect TypeScript](guides/effect-typescript-style.md)
   for [0200 - Effect runtime acceptance](../changes/0200-effect-runtime-acceptance.md),
   documenting source layers, Effect service and error conventions, scoped

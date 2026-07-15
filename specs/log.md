@@ -3,6 +3,15 @@
 ## 2026-07-14
 
 - **Revision**: Implemented the durable contract changes for
+  [0201 - Agent-native evidence discovery](../changes/0201-agent-native-evidence-discovery.md).
+  Requirement evaluators now discover and inspect their own context inside a
+  neutral read-only workspace session; the runner validates and seals
+  per-requirement evidence manifests, removes `resolveSource` and area bundles,
+  and persists schema-version-8 artifacts. The evaluator surface is now
+  `harness`, `codex`, and `claude`; direct API evaluators and API-profile
+  configuration are removed.
+
+- **Revision**: Implemented the durable contract changes for
   [0199 - Effect TypeScript CLI runtime](../changes/0199-effect-typescript-cli-runtime.md).
   Added the CLI [runtime and distribution](cli/runtime-distribution.md) contract
   for the standalone Effect/TypeScript executable, eight-target Darwin/Linux

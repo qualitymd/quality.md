@@ -2,6 +2,50 @@
 
 ## 2026-07-14
 
+- **Done**: Completed and archived
+  [0201 - Agent-native evidence discovery](archive/0201-agent-native-evidence-discovery.md).
+  All R1–R10 requirements passed the review ledger: the full local gate is
+  green, harness checkpoint and evidence-retry tests pass, and live Codex and
+  Claude evaluations discovered requirement-specific evaluated/supporting
+  evidence without obeying a hostile repository instruction. The clean
+  schema-version-8 and SDK-only evaluator contract is ready for release.
+
+- **In-Review**: Implemented
+  [0201 - Agent-native evidence discovery](0201-agent-native-evidence-discovery.md)
+  and set it `In-Review`. The graph now opens fresh requirement inspection
+  sessions instead of source-resolution units; the runner seals atomic
+  per-requirement evidence manifests in schema-version-8 artifacts; only
+  harness, Codex, and Claude evaluators remain. Durable specs, the runtime
+  skill, generated docs, and tests are synchronized. The review ledger records
+  51 green tests plus successful live Codex and Claude runs over supporting
+  evidence and a hostile repository-instruction fixture.
+
+- **In-Progress**: Advanced
+  [0201 - Agent-native evidence discovery](0201-agent-native-evidence-discovery.md)
+  from `Design` to `In-Progress` after settling the requirement-inspection,
+  evidence-sealing, SDK-isolation, evaluator-selection, artifact, resume, and
+  clean-cutover design. Implementation may now update runtime code, tests,
+  durable specs, the bundled skill, generated artifacts, and user guidance.
+
+- **Design**: Advanced
+  [0201 - Agent-native evidence discovery](0201-agent-native-evidence-discovery.md)
+  from `Draft` to `Design` after reviewing R1–R10 individually and as a set.
+  Added the design doc: a graph without `resolveSource`; fresh requirement
+  inspection sessions; neutral, read-only Codex and Claude SDK policies;
+  runner-sealed per-requirement evidence manifests; tools-off downstream
+  synthesis; schema-version-8 persistence; and a clean removal of direct API
+  evaluators and API-specific configuration. No production code changed in this
+  phase.
+
+- **Draft**: Opened
+  [0201 - Agent-native evidence discovery](0201-agent-native-evidence-discovery.md)
+  to move requirement-specific context discovery from deterministic area source
+  packages into coding-agent evaluators while retaining runner-owned safety,
+  validation, persistence, resume, and reporting. The functional spec defines
+  `source` as the evaluated subject, separates authentication from evaluator
+  method, keeps `harness`, `codex`, and `claude`, and removes raw OpenAI and
+  Anthropic API evaluators. No production code changed in this phase.
+
 - **Done**: Published v0.31.0 and archived
   [0199 - Effect TypeScript CLI runtime](archive/0199-effect-typescript-cli-runtime.md)
   and [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md).

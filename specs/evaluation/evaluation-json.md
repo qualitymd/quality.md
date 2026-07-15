@@ -29,22 +29,22 @@ The document envelope is:
 
 ```json
 {
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "kind": "EvaluationRun",
   "manifest": {},
   "state": {},
-  "sources": {},
+  "evidence": {},
   "results": {},
   "outputs": {}
 }
 ```
 
-`schemaVersion` **MUST** be `7` and is a payload-shape marker only; versions
+`schemaVersion` **MUST** be `8` and is a payload-shape marker only; versions
 1–3 belong to the historical multi-file data tree, version 4 belongs to the
 strategy-named runner artifact, version 5 predates the per-area `sources`
 record, and version 6 predates the multi-outstanding harness checkpoint
-window (its singular pending call is not read back — an awaiting version-6
-run is re-run, not migrated). `kind` **MUST** be `EvaluationRun`.
+window. Version 7 contains runner-resolved per-area source bundles; it is not
+read back or migrated. `kind` **MUST** be `EvaluationRun`.
 
 ## Manifest
 
@@ -52,7 +52,8 @@ run is re-run, not migrated). `kind` **MUST** be `EvaluationRun`.
 `evaluationId`, `createdAt`, `model`, `requestedScope`, `plannedScope`, `run`
 (the local run `number` and folder `label`), `evaluator` (the selected
 evaluator or profile name), `evaluatorKind` (the selected evaluator's runtime
-kind), and `concurrency` (the resolved concurrency cap).
+kind), `concurrency` (the resolved concurrency cap), and `areaSources` (each
+planned area's effective selector and detected path, glob, or prose form).
 
 ## State
 
@@ -61,8 +62,8 @@ kind), and `concurrency` (the resolved concurrency cap).
 - the run `status`, one of `running`, `awaiting_evaluator`, `completed`,
   `failed`, or `cancelled`;
 - the classified `failure` when the run failed;
-- per-work-unit entries carrying status, attempts, input hash, failure, and
-  timestamps;
+- per-work-unit entries carrying status, attempts, input hash, failure,
+  timestamps, and the accepted evidence manifest hash for requirement units;
 - a `cancelled` marker when a user interruption was observed mid-run;
 - `pendingEvaluatorCalls` — the awaiting harness checkpoint's correlation
   metadata (request identity, work-unit identity, input hash, correlation ID,
@@ -75,8 +76,8 @@ kind), and `concurrency` (the resolved concurrency cap).
 `awaiting_evaluator` marks a resumable, incomplete checkpoint — never a
 failure. `pendingEvaluatorCalls` is the single source of truth for what is
 awaiting and **MUST NOT** carry raw prompt, source, or result bodies: each
-pending request is rebuilt from the model snapshot, work-graph state, and
-current source package per the
+pending request is rebuilt from the model snapshot, work-graph state, effective
+source selector, and inspection policy per the
 [runner harness contract](runner.md#harness-checkpoints).
 
 `state` **MUST NOT** carry provider context identifiers or prompt-cache
@@ -86,49 +87,58 @@ status; those live only in run-local logs.
 > Keeping them out of the authoritative artifact keeps resume honest about what
 > is reconstructible. — 0192
 
-## Sources
+## Evidence
 
-`sources` is the per-area source provenance of record, keyed by area
-reference. Each record **MUST** carry the area's effective `selector`, its
-detected `kind` (`path`, `glob`, or `prose`), and the `resolver` that serves
-it (`walk` for the deterministic filesystem walk, `harness` for
-checkpoint-dispatched resolution), written at run creation per the
-[runner detection contract](runner.md#selector-kind-detection). As each
-area's bundle materializes, the record **MUST** be completed with the
-`bundleHash`, `capturedAt`, a bundle `truncated` mark when a cap applied, and
-per-file entries carrying `path`, `sha256`, and a `truncated` mark; a
-harness-resolved record additionally carries the `harnessRuntime` that served
-resolution.
+`evidence` is the accepted per-requirement evidence provenance, keyed by the
+`assessRateRequirement` work-unit ID. Each record **MUST** carry the requirement
+ID, effective source selector and form, ordered observations, evaluation limits,
+capture time, and canonical manifest hash.
 
 ```json
-"sources": {
-  "area:api": {
-    "selector": "open tickets in the support queue",
-    "kind": "prose",
-    "resolver": "harness",
-    "harnessRuntime": "claude-code",
-    "bundleHash": "…",
-    "capturedAt": "2026-07-11T00:00:00Z",
-    "files": [{ "path": "…", "sha256": "…", "content": "…" }]
+"evidence": {
+  "assessRateRequirement:requirement:api::authentication": {
+    "requirementId": "requirement:api::authentication",
+    "source": { "selector": "src/api", "kind": "path" },
+    "observations": [
+      {
+        "id": "ev-001",
+        "kind": "file",
+        "role": "evaluated",
+        "path": "src/api/auth.ts",
+        "locator": { "startLine": 18, "endLine": 61 },
+        "sha256": "…",
+        "bytes": 2048,
+        "capturedAt": "2026-07-14T00:00:00Z"
+      },
+      {
+        "id": "ev-002",
+        "kind": "file",
+        "role": "supporting",
+        "path": "docs/authentication.md",
+        "locator": { "heading": "API authentication" },
+        "sha256": "…",
+        "bytes": 1024,
+        "capturedAt": "2026-07-14T00:00:00Z"
+      }
+    ],
+    "limits": [],
+    "capturedAt": "2026-07-14T00:00:00Z",
+    "manifestHash": "…"
   }
 }
 ```
 
-Walked (path/glob) records **MUST NOT** carry file `content` — their material
-is re-readable from the workspace, and resume re-packages it. Harness-resolved
-records **MUST** carry file `content`: the captured bundle is the evidence of
-record, and resume **MUST** rebuild dependent requests from it rather than
-re-gather. Captured prose file paths are unique workspace-relative paths for
-the gathered files, recorded and hashed verbatim. Absolute paths, URLs,
-external identifiers, and paths that escape the workspace are invalid.
+File paths **MUST** be workspace-relative regular UTF-8 files and contained
+after real-path resolution. `evaluated` path and glob observations **MUST**
+belong to the selected subject; `supporting` observations may be elsewhere in
+the authorized workspace. Locators use a valid line range or Markdown heading.
+Each file carries runner-computed bytes and SHA-256. The artifact **MUST NOT**
+carry file bodies or tool transcripts.
 
-> Rationale: one record serves kind pinning, resume for harness-resolved
-> areas, and audit provenance — a reviewer reads the same shape for walked and
-> agent-gathered evidence and can tell which is which. Keeping captured
-> content in the one authoritative artifact preserves the store's atomic
-> write; the 512 KB bundle cap bounds the growth. Gathered material lands in
-> the artifact verbatim — the same class of exposure as quoted evidence in
-> reports. — 0197
+The runner **MUST** seal and persist a requirement manifest atomically with its
+assessment and rating. Every assessment evidence `sourceRef` **MUST** name an
+observation in that manifest. Accepted manifests are immutable resume inputs;
+the runner does not regather them.
 
 ## Results
 

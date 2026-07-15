@@ -60,10 +60,6 @@ export const normalizeEvaluatorResult = (
   recommendationToken: (index: number) => string,
 ): ReadonlyArray<StoredPayload> => {
   const payload = object(value, "evaluator returned no payload")
-  if (unit.kind === "resolveSource") {
-    validate(unit, payload)
-    return []
-  }
   if (unit.kind === "assessRateRequirement") {
     const assessment = normalizeKind(
       object(payload.assessment, "combined requirement judgment must carry an assessment object"),
@@ -77,7 +73,7 @@ export const normalizeEvaluatorResult = (
       "requirementId",
       unit.subject,
     )
-    validate(unit, { assessment, rating })
+    validate(unit, { assessment, rating, evidence: payload.evidence })
     return [
       { workUnit: unit.id, payload: assessment },
       { workUnit: unit.id, payload: rating },

@@ -5,7 +5,7 @@ description: The QUALITY.md format specification — document structure, model v
 
 {/* Generated from SPECIFICATION.md by scripts/sync-spec-docs.mjs. Do not edit directly. */}
 
-**Specification version:** 0.11 (Draft)
+**Specification version:** 0.12 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -299,11 +299,11 @@ that area.
 When present, `source` is a single string selecting the material evaluated by
 the area. A selector is not limited to filesystem material: relative paths
 and globs resolve relative to the containing QUALITY.md file, and any other
-selector describes the evaluated material in prose — a saved query, a live
-system, a body of records ("open tickets in the support queue") — resolved by
-the evaluating tool's own means. The selector's kind is detected from the
-string, never declared; see
-[Source resolution](#source-resolution). Source inheritance and the scope of
+selector describes the evaluated subject in prose — a saved query, a live
+system, a body of records ("open tickets in the support queue") — interpreted
+by the evaluating method. The selector identifies what is judged; it does not
+precompute all context an evaluator may need. See
+[Source semantics](#source-semantics). Source inheritance and the scope of
 an area's requirements are defined in [Model semantics](#model-semantics).
 
 ### Factor
@@ -399,27 +399,28 @@ The rules in this section define what a conforming model means. They bind every
 interpretation of the document, by humans or tools, but they do not prescribe
 any evaluation method, aggregation approach, or report format.
 
-### Source resolution
+### Source semantics
 
 An area that declares `source` selects its own evaluated material. An area that
 omits `source` inherits the source of the nearest ancestor area that declares
 one; if no ancestor declares one, it inherits the document's default source
 defined in [Document structure](#document-structure).
 
-An effective source selector is interpreted by kind, detected from the bare
-selector string in this order: a selector containing supported glob
-metacharacters (`*`, `?`, `[`) is a glob only when it parses under the supported
-glob grammar; otherwise a selector that names an existing filesystem entry
-relative to the containing QUALITY.md file is a path; otherwise the selector is
-prose — a description of the evaluated material that filesystem resolution
-cannot serve. Malformed glob syntax does not make a glob. An absolute selector
-or one that lexically escapes the workspace remains filesystem intent and fails
-containment rather than falling back to prose. An empty glob result, unreadable
-existing path, or deterministic collection failure remains a filesystem-source
-failure. Tools resolve path and glob selectors deterministically and MAY resolve
-prose selectors through their own gathering means; a tool that cannot resolve a
-selector's kind MUST report that inability distinctly, rather than treating the
-named material as missing or evaluating the area against no material.
+An effective source selector identifies the subject or starting boundary an
+evaluation judges. It does not define an exhaustive prompt payload, evidence
+bundle, or permission boundary for supporting context. An evaluation method MAY
+inspect other authorized context when a requirement needs interpretation,
+comparison, or verification, but it MUST distinguish that supporting context
+from evidence about the selected subject and MUST NOT silently widen the area or
+requirement being judged.
+
+Tools MAY detect a selector as a path, glob, or prose description for validation,
+display, and workspace-safety policy. Paths and globs resolve relative to the
+containing QUALITY.md file. Prose selectors are interpreted by the evaluation
+method. An absolute filesystem selector or one that escapes the authorized
+workspace MUST fail containment rather than becoming prose. A tool that cannot
+inspect the selected subject or required supporting context MUST report that
+limit instead of evaluating against invented or silently substituted material.
 
 ### Requirement scope
 
@@ -627,7 +628,7 @@ The skill evaluates a model in phases:
 1. **Scope.** The evaluation covers the whole model by default, or is narrowed
    by area or factor. A narrowed evaluation is recorded and reported as scoped,
    never presented as a whole-model verdict. Each in-scope area's source is
-   resolved per [Source resolution](#source-resolution).
+   interpreted per [Source semantics](#source-semantics).
 2. **Assess.** Each in-scope requirement is assessed once, against the source
    of its declaring area, by applying its `assessment`. This produces
    evidence-backed findings — gaps, risks, strengths, and notes — along with

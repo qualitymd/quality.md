@@ -14,8 +14,9 @@ setup in Claude Code. For the model behind the cadence, see
 When Claude Code runs `/quality evaluate`, the skill selects the built-in
 `harness` evaluator by default (unless you or the workspace config choose
 another evaluator). The deterministic `qualitymd` runner owns the work graph
-and every artifact; the Claude Code session itself supplies the bounded
-judgment answers through checkpoints. That means:
+and every artifact; the Claude Code session itself inspects
+requirement-specific workspace context and supplies judgment plus evidence
+locators through checkpoints. That means:
 
 - **No provider API key is needed.** Evaluation judgment uses the same
   authenticated agent that is already running the skill.
@@ -60,9 +61,8 @@ judgment answers through checkpoints. That means:
 4. **Grant the permissions evaluation needs.** The run writes only under the
    resolved evaluation directory (default `.quality/evaluations/`) and the
    workflow feedback log under `.quality/logs/`. Network access is not
-   required for harness-backed judgment; it is required only if the
-   environment installs `qualitymd` at setup time or a fallback evaluator
-   calls a provider API.
+   required for harness-backed judgment; it may be needed while the environment
+   installs `qualitymd` or authenticates an explicitly selected agent runtime.
 
 ## Unattended behavior
 
@@ -74,19 +74,13 @@ and recovers the same pending work request. `qualitymd status --json` and
 `qualitymd evaluation list --json` identify awaiting runs and their
 continuation command.
 
-## Fallback credentials (only for non-harness evaluators)
+## Agent-runtime authentication
 
 Harness-backed evaluation needs no credential beyond the routine's own agent.
-Reserve these for an explicitly selected fallback evaluator, and note that
-they are not interchangeable:
+If you explicitly select the `claude` or `codex` evaluator, authentication
+belongs to that coding-agent runtime and may use its documented login,
+subscription, or headless credential mechanism. `qualitymd` does not define
+API-key evaluator methods or store provider tokens in `.quality/config.yaml`.
 
-- `ANTHROPIC_API_KEY` — the direct Anthropic API evaluator
-  (`--evaluator anthropic` or an `anthropic`-kind profile).
-- `OPENAI_API_KEY` — the direct OpenAI API evaluator.
-- Codex or Claude CLI subscription/access-token auth — the non-interactive
-  CLI evaluators, per each CLI's own headless documentation.
-
-Supply secrets through the environment's secret facility as environment
-variables. Never commit values to `.quality/config.yaml` — evaluator profiles
-reference secrets by environment-variable name only — and avoid exposing
-job-wide credentials to steps that execute repository-controlled code.
+Supply any runtime credential through the environment's secret facility and
+avoid exposing job-wide credentials to repository-controlled code.

@@ -42,8 +42,9 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 
 1. **Evaluate** with `/quality evaluate` to
    create a quality evaluation report. Under the hood the skill drives
-   `qualitymd evaluation run`, the CLI's deterministic evaluation runner, so
-   evaluations behave the same across agents and harnesses.
+   `qualitymd evaluation run`, the CLI's deterministic evaluation runner. The
+   runner standardizes orchestration, validation, and artifacts while the
+   selected coding agent discovers requirement-specific evidence and judgment.
 2. **Review** evaluation report quality ratings, assessment
    findings, and improvement recommendations by project area or quality factor.
 

@@ -1,17 +1,27 @@
 import * as Effect from "effect/Effect"
 import * as FileSystem from "effect/FileSystem"
-import * as Option from "effect/Option"
 import * as Path from "effect/Path"
 
-import { FileSystemFailure } from "../domain/errors.ts"
-import type { SourceBundle, SourceFile } from "../domain/evaluator/types.ts"
-export type { SourceBundle } from "../domain/evaluator/types.ts"
+import { hashJson, sha256 } from "../domain/json.ts"
+import type { SourceKind } from "../domain/evaluator/types.ts"
 
-export class SourceCaptureError extends Error {}
+type JsonObject = Record<string, unknown>
 
-const skipped = new Set([".git", ".quality", "node_modules", "vendor", "dist"])
-const maxFileBytes = 64 * 1024
-const maxBundleBytes = 512 * 1024
+export interface AreaSource {
+  readonly selector: string
+  readonly kind: SourceKind
+}
+
+export interface SealedEvidenceManifest extends JsonObject {
+  readonly requirementId: string
+  readonly source: AreaSource
+  readonly observations: ReadonlyArray<JsonObject>
+  readonly limits: ReadonlyArray<string>
+  readonly capturedAt: string
+  readonly manifestHash: string
+}
+
+export class EvidenceValidationError extends Error {}
 
 const validGlob = (value: string) => {
   for (let index = 0; index < value.length; index += 1) {
@@ -58,268 +68,246 @@ export const detectSourceKind = (workspaceRoot: string, selector: string) =>
     return "prose" as const
   })
 
-const digest = (bytes: Uint8Array) =>
-  Effect.tryPromise(async () => {
-    const result = await crypto.subtle.digest("SHA-256", Uint8Array.from(bytes))
-    return [...new Uint8Array(result)].map((byte) => byte.toString(16).padStart(2, "0")).join("")
-  })
-
-const walk = (root: string) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    const output: Array<string> = []
-    const visit = (directory: string, selectedRoot: string): Effect.Effect<void, unknown> =>
-      Effect.gen(function* () {
-        for (const name of (yield* fs.readDirectory(directory)).sort()) {
-          const absolute = paths.join(directory, name)
-          if (Option.isSome(yield* fs.readLink(absolute).pipe(Effect.option))) continue
-          const info = yield* fs.stat(absolute)
-          if (info.type === "Directory") {
-            if (absolute !== selectedRoot && skipped.has(name)) continue
-            yield* visit(absolute, selectedRoot)
-          } else if (info.type === "File") {
-            output.push(absolute)
-          }
-        }
-      })
-    yield* visit(root, root)
-    return output
-  })
-
-const resolveFiles = (workspaceRoot: string, selector: string, kind: "path" | "glob") =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    if (kind === "glob") {
-      const segments = selector.replaceAll("\\", "/").split("/")
-      const firstMeta = segments.findIndex((part) => /[*?[]/.test(part))
-      const literalParts = firstMeta < 0 ? segments : segments.slice(0, firstMeta)
-      const found = yield* Effect.tryPromise(async () => {
-        const matches: Array<string> = []
-        for await (const relative of new Bun.Glob(selector).scan({
-          cwd: workspaceRoot,
-          absolute: false,
-          dot: true,
-          followSymlinks: false,
-          onlyFiles: true,
-        })) {
-          if (
-            relative
-              .split("/")
-              .some((part, index) => skipped.has(part) && literalParts[index] !== part)
-          )
-            continue
-          matches.push(paths.join(workspaceRoot, relative))
-        }
-        return matches
-      })
-      return found.sort()
-    }
-    const absolute = paths.resolve(workspaceRoot, selector)
-    const relative = paths.relative(workspaceRoot, absolute)
-    if (relative === ".." || relative.startsWith(`..${paths.sep}`)) return []
-    if (!(yield* fs.exists(absolute))) return []
-    if (Option.isSome(yield* fs.readLink(absolute).pipe(Effect.option))) return []
-    const info = yield* fs.stat(absolute)
-    if (info.type === "Directory") return yield* walk(absolute)
-    return info.type === "File" ? [absolute] : []
-  })
-
-export const packageSource = (
+export const validateSourceSelector = (
   workspaceRoot: string,
-  selector: string,
-  kind: "path" | "glob",
-): Effect.Effect<SourceBundle, FileSystemFailure, FileSystem.FileSystem | Path.Path> =>
+  source: AreaSource,
+): Effect.Effect<void, EvidenceValidationError, Path.Path> =>
   Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
+    if (source.kind === "prose") return
     const paths = yield* Path.Path
-    const files: Array<SourceFile> = []
-    let total = 0
-    let bundleTruncated = false
-    const normalized = selector.replaceAll("\\", "/")
+    const selector = source.selector.trim().replaceAll("\\", "/")
     if (
-      kind === "path" &&
-      (paths.isAbsolute(selector) || normalized === ".." || normalized.startsWith("../"))
-    )
-      yield* Effect.fail(
-        new Error(`source selector ${JSON.stringify(selector)} escapes the workspace`),
-      )
-    const selected = yield* resolveFiles(workspaceRoot, selector, kind)
-    if (selected.length === 0)
-      yield* Effect.fail(
-        new Error(
-          kind === "glob"
-            ? `source glob ${JSON.stringify(selector)} matched no readable files`
-            : `source path ${JSON.stringify(selector)} contains no readable files`,
-        ),
-      )
-    for (const absolute of selected) {
-      if (total >= maxBundleBytes) {
-        bundleTruncated = true
-        break
-      }
-      const raw = yield* fs.readFile(absolute)
-      if (raw.slice(0, 8 * 1024).includes(0)) continue
-      const sha256 = yield* digest(raw)
-      let included = raw
-      let truncated = false
-      if (included.length > maxFileBytes) {
-        included = included.slice(0, maxFileBytes)
-        truncated = true
-      }
-      if (total + included.length > maxBundleBytes) {
-        included = included.slice(0, maxBundleBytes - total)
-        truncated = true
-        bundleTruncated = true
-      }
-      total += included.length
-      files.push({
-        path: paths.relative(workspaceRoot, absolute).replaceAll("\\", "/"),
-        content: new TextDecoder().decode(included),
-        sha256,
-        ...(truncated ? { truncated: true } : {}),
-      })
-    }
-    if (files.length === 0)
-      yield* Effect.fail(
-        new Error(`source selector ${JSON.stringify(selector)} contains no readable text files`),
-      )
-    const hashInput = files.map((file) => `${file.path}\0${file.sha256}\0`).join("")
-    return {
-      files,
-      hash: yield* digest(new TextEncoder().encode(hashInput)),
-      truncated: bundleTruncated,
-    }
-  }).pipe(
-    Effect.mapError((cause) => {
-      const detail = cause instanceof Error ? cause.message : String(cause)
-      return new FileSystemFailure({
-        detail: detail.startsWith("source ")
-          ? detail
-          : `source ${kind} ${JSON.stringify(selector)} could not be packaged: ${detail}`,
-      })
-    }),
-  )
-
-export const captureSource = (
-  workspaceRoot: string,
-  value: unknown,
-): Effect.Effect<SourceBundle, SourceCaptureError, FileSystem.FileSystem | Path.Path> =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
-    if (
-      value === null ||
-      typeof value !== "object" ||
-      !Array.isArray((value as { files?: unknown }).files)
+      selector === "" ||
+      paths.isAbsolute(selector) ||
+      selector === ".." ||
+      selector.startsWith("../") ||
+      selector.split("/").includes("..")
     ) {
       yield* Effect.fail(
-        new SourceCaptureError("source resolution result must carry a non-empty files array"),
+        new EvidenceValidationError(
+          `source selector ${JSON.stringify(source.selector)} must be workspace-relative and contained`,
+        ),
       )
     }
-    const result = value as { readonly files: ReadonlyArray<unknown> }
-    if (Object.keys(result).some((key) => key !== "files"))
-      yield* Effect.fail(new SourceCaptureError("source resolution result must carry only files"))
-    const items = result.files
-    if (items.length === 0)
+    const resolved = paths.resolve(workspaceRoot, selector)
+    const relative = paths.relative(workspaceRoot, resolved)
+    if (relative === ".." || relative.startsWith(`..${paths.sep}`)) {
       yield* Effect.fail(
-        new SourceCaptureError("source resolution result must carry a non-empty files array"),
+        new EvidenceValidationError(
+          `source selector ${JSON.stringify(source.selector)} escapes the workspace`,
+        ),
       )
-    const files: Array<SourceFile> = []
+    }
+  })
+
+const object = (value: unknown, detail: string): JsonObject => {
+  if (value === null || Array.isArray(value) || typeof value !== "object") {
+    throw new EvidenceValidationError(detail)
+  }
+  return value as JsonObject
+}
+
+const exactKeys = (value: JsonObject, allowed: ReadonlyArray<string>, detail: string) => {
+  const extra = Object.keys(value).filter((key) => !allowed.includes(key))
+  if (extra.length > 0)
+    throw new EvidenceValidationError(`${detail} carries unknown field ${JSON.stringify(extra[0])}`)
+}
+
+const normalizedPath = (paths: Path.Path, value: unknown, detail: string) => {
+  if (typeof value !== "string" || value.trim() === "")
+    throw new EvidenceValidationError(`${detail} must be a non-empty workspace-relative path`)
+  const normalized = value.trim().replaceAll("\\", "/")
+  if (
+    paths.isAbsolute(normalized) ||
+    normalized === ".." ||
+    normalized.startsWith("../") ||
+    normalized.split("/").includes("..")
+  )
+    throw new EvidenceValidationError(`${detail} must be workspace-relative and contained`)
+  return normalized.replace(/^\.\//, "")
+}
+
+const normalizeLocator = (value: unknown, content: string, detail: string) => {
+  if (value === undefined) return undefined
+  const locator = object(value, `${detail} must be an object`)
+  exactKeys(locator, ["startLine", "endLine", "heading"], detail)
+  const heading = locator.heading
+  const hasHeading = typeof heading === "string" && heading.trim() !== ""
+  const hasLines = locator.startLine !== undefined || locator.endLine !== undefined
+  if (hasHeading && hasLines)
+    throw new EvidenceValidationError(`${detail} must use a heading or line range, not both`)
+  if (hasHeading) {
+    const wanted = heading.trim()
+    const found = content
+      .split(/\r?\n/)
+      .some((line) => /^#{1,6}\s+/.test(line) && line.replace(/^#{1,6}\s+/, "").trim() === wanted)
+    if (!found)
+      throw new EvidenceValidationError(`${detail}.heading ${JSON.stringify(wanted)} was not found`)
+    return { heading: wanted }
+  }
+  if (!hasLines) throw new EvidenceValidationError(`${detail} must carry a heading or line range`)
+  const start = locator.startLine
+  const end = locator.endLine ?? start
+  if (!Number.isInteger(start) || (start as number) < 1)
+    throw new EvidenceValidationError(`${detail}.startLine must be a positive integer`)
+  if (!Number.isInteger(end) || (end as number) < (start as number))
+    throw new EvidenceValidationError(`${detail}.endLine must be at least startLine`)
+  const lineCount = content.split(/\r?\n/).length
+  if ((end as number) > lineCount)
+    throw new EvidenceValidationError(`${detail}.endLine exceeds the file's ${lineCount} lines`)
+  return { startLine: start as number, endLine: end as number }
+}
+
+const evaluatedBySource = (
+  paths: Path.Path,
+  workspaceRoot: string,
+  source: AreaSource,
+  evidencePath: string,
+) => {
+  if (source.kind === "prose") return true
+  if (source.kind === "glob") {
+    const selector = source.selector.replaceAll("\\", "/").replace(/^\.\//, "")
+    return new Bun.Glob(selector).match(evidencePath)
+  }
+  const selected = paths.resolve(workspaceRoot, source.selector)
+  const evidence = paths.resolve(workspaceRoot, evidencePath)
+  const relative = paths.relative(selected, evidence)
+  return relative === "" || (relative !== ".." && !relative.startsWith(`..${paths.sep}`))
+}
+
+const evidenceReferences = (assessment: unknown) => {
+  const refs: Array<string> = []
+  const visit = (value: unknown) => {
+    if (Array.isArray(value)) {
+      for (const entry of value) visit(entry)
+      return
+    }
+    if (value === null || typeof value !== "object") return
+    for (const [key, entry] of Object.entries(value as JsonObject)) {
+      if (key === "sourceRef" && typeof entry === "string") refs.push(entry)
+      else visit(entry)
+    }
+  }
+  visit(assessment)
+  return refs
+}
+
+export const sealEvidenceManifest = (options: {
+  readonly workspaceRoot: string
+  readonly requirementId: string
+  readonly source: AreaSource
+  readonly proposal: unknown
+  readonly assessment: unknown
+  readonly capturedAt: string
+}): Effect.Effect<
+  SealedEvidenceManifest,
+  EvidenceValidationError,
+  FileSystem.FileSystem | Path.Path
+> =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem
+    const paths = yield* Path.Path
+    yield* validateSourceSelector(options.workspaceRoot, options.source)
+    const proposal = object(options.proposal, "evidence must be an object")
+    exactKeys(proposal, ["observations", "limits"], "evidence")
+    if (!Array.isArray(proposal.observations))
+      throw new EvidenceValidationError("evidence.observations must be an array")
+    if (!Array.isArray(proposal.limits))
+      throw new EvidenceValidationError("evidence.limits must be an array")
+    const limits = proposal.limits.map((value, index) => {
+      if (typeof value !== "string" || value.trim() === "")
+        throw new EvidenceValidationError(`evidence.limits[${index}] must be a non-empty string`)
+      return value.trim()
+    })
+    const workspaceReal = yield* fs.realPath(options.workspaceRoot)
     const seen = new Set<string>()
-    const decoder = new TextDecoder()
-    let total = 0
-    let bundleTruncated = false
-    for (const [index, value] of items.entries()) {
-      if (value === null || Array.isArray(value) || typeof value !== "object")
-        yield* Effect.fail(new SourceCaptureError(`files[${index}] must be an object`))
-      const item = value as { readonly path?: unknown }
-      if (Object.keys(item).some((key) => key !== "path"))
-        yield* Effect.fail(new SourceCaptureError(`files[${index}] must carry only path`))
-      if (typeof item.path !== "string" || item.path.trim() === "")
-        yield* Effect.fail(new SourceCaptureError(`files[${index}] must carry a non-empty path`))
-      const normalized = (item.path as string).trim().replaceAll("\\", "/")
-      if (
-        paths.isAbsolute(normalized) ||
-        normalized === ".." ||
-        normalized.startsWith("../") ||
-        normalized.split("/").includes("..")
-      )
-        yield* Effect.fail(
-          new SourceCaptureError(`files[${index}].path must be workspace-relative and contained`),
+    const observations: Array<JsonObject> = []
+    for (const [index, raw] of proposal.observations.entries()) {
+      const detail = `evidence.observations[${index}]`
+      const observation = object(raw, `${detail} must be an object`)
+      exactKeys(observation, ["id", "kind", "role", "path", "locator"], detail)
+      if (typeof observation.id !== "string" || !/^ev-[a-z0-9][a-z0-9-]*$/.test(observation.id))
+        throw new EvidenceValidationError(`${detail}.id must match ^ev-[a-z0-9][a-z0-9-]*$`)
+      if (seen.has(observation.id))
+        throw new EvidenceValidationError(
+          `${detail}.id duplicates ${JSON.stringify(observation.id)}`,
         )
-      if (seen.has(normalized))
-        yield* Effect.fail(
-          new SourceCaptureError(`files[${index}] duplicates path ${JSON.stringify(normalized)}`),
-        )
-      seen.add(normalized)
-      const absolute = paths.resolve(workspaceRoot, normalized)
-      const relative = paths.relative(workspaceRoot, absolute)
-      if (relative === ".." || relative.startsWith(`..${paths.sep}`))
-        yield* Effect.fail(
-          new SourceCaptureError(`files[${index}].path must be workspace-relative and contained`),
-        )
+      seen.add(observation.id)
+      if (observation.kind !== "file")
+        throw new EvidenceValidationError(`${detail}.kind must be file`)
+      if (observation.role !== "evaluated" && observation.role !== "supporting")
+        throw new EvidenceValidationError(`${detail}.role must be evaluated or supporting`)
+      const path = normalizedPath(paths, observation.path, `${detail}.path`)
+      const absolute = paths.resolve(options.workspaceRoot, path)
       if (!(yield* fs.exists(absolute)))
-        yield* Effect.fail(
-          new SourceCaptureError(
-            `files[${index}].path ${JSON.stringify(normalized)} does not exist`,
-          ),
+        throw new EvidenceValidationError(`${detail}.path ${JSON.stringify(path)} does not exist`)
+      const real = yield* fs.realPath(absolute)
+      const relativeReal = paths.relative(workspaceReal, real)
+      if (relativeReal === ".." || relativeReal.startsWith(`..${paths.sep}`))
+        throw new EvidenceValidationError(
+          `${detail}.path ${JSON.stringify(path)} escapes the workspace`,
         )
-      if (Option.isSome(yield* fs.readLink(absolute).pipe(Effect.option)))
-        yield* Effect.fail(
-          new SourceCaptureError(
-            `files[${index}].path ${JSON.stringify(normalized)} must not be a symlink`,
-          ),
+      if ((yield* fs.stat(real)).type !== "File")
+        throw new EvidenceValidationError(
+          `${detail}.path ${JSON.stringify(path)} must name a regular file`,
         )
-      if ((yield* fs.stat(absolute)).type !== "File")
-        yield* Effect.fail(
-          new SourceCaptureError(
-            `files[${index}].path ${JSON.stringify(normalized)} must name a regular file`,
-          ),
+      const bytes = yield* fs.readFile(real)
+      let content: string
+      try {
+        content = new TextDecoder("utf-8", { fatal: true }).decode(bytes)
+      } catch {
+        throw new EvidenceValidationError(
+          `${detail}.path ${JSON.stringify(path)} must be UTF-8 text`,
         )
-      const raw = yield* fs.readFile(absolute)
-      if (raw.slice(0, 8 * 1024).includes(0))
-        yield* Effect.fail(
-          new SourceCaptureError(
-            `files[${index}].path ${JSON.stringify(normalized)} must name a readable text file`,
-          ),
-        )
-      const sha256 = yield* digest(raw)
-      let included = raw
-      let truncated = false
-      if (included.length > maxFileBytes) {
-        included = included.slice(0, maxFileBytes)
-        truncated = true
       }
-      if (total >= maxBundleBytes) {
-        bundleTruncated = true
-        break
-      }
-      if (total + included.length > maxBundleBytes) {
-        included = included.slice(0, maxBundleBytes - total)
-        truncated = true
-        bundleTruncated = true
-      }
-      total += included.length
-      files.push({
-        path: normalized,
-        content: decoder.decode(included),
-        sha256,
-        ...(truncated ? { truncated: true } : {}),
+      if (
+        observation.role === "evaluated" &&
+        !evaluatedBySource(paths, options.workspaceRoot, options.source, path)
+      )
+        throw new EvidenceValidationError(
+          `${detail}.path ${JSON.stringify(path)} is outside the evaluated source selector; classify it as supporting or correct the path`,
+        )
+      const locator = normalizeLocator(observation.locator, content, `${detail}.locator`)
+      observations.push({
+        id: observation.id,
+        kind: "file",
+        role: observation.role,
+        path,
+        ...(locator === undefined ? {} : { locator }),
+        sha256: yield* Effect.promise(() => sha256(bytes)),
+        bytes: bytes.length,
+        capturedAt: options.capturedAt,
       })
     }
-    return {
-      files,
-      hash: yield* digest(
-        new TextEncoder().encode(files.map((file) => `${file.path}\0${file.sha256}\0`).join("")),
-      ),
-      truncated: bundleTruncated,
+    for (const ref of evidenceReferences(options.assessment)) {
+      const match = /^evidence\[([^\]]+)\]$/.exec(ref)
+      if (match === null || !seen.has(match[1]!))
+        throw new EvidenceValidationError(
+          `assessment evidence sourceRef ${JSON.stringify(ref)} does not name an accepted evidence observation`,
+        )
     }
+    const manifest = {
+      requirementId: options.requirementId,
+      source: options.source,
+      observations,
+      limits,
+      capturedAt: options.capturedAt,
+    }
+    return {
+      ...manifest,
+      manifestHash: yield* Effect.promise(() => hashJson(manifest)),
+    } satisfies SealedEvidenceManifest
   }).pipe(
+    Effect.catchDefect((defect) =>
+      Effect.fail(
+        defect instanceof EvidenceValidationError
+          ? defect
+          : new EvidenceValidationError(defect instanceof Error ? defect.message : String(defect)),
+      ),
+    ),
     Effect.mapError((cause) =>
-      cause instanceof SourceCaptureError
+      cause instanceof EvidenceValidationError
         ? cause
-        : new SourceCaptureError(cause instanceof Error ? cause.message : String(cause)),
+        : new EvidenceValidationError(cause instanceof Error ? cause.message : String(cause)),
     ),
   )

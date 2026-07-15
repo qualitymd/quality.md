@@ -1,120 +1,138 @@
 ---
 type: Functional Specification
 title: Agent evaluators
-description: Bounded agent source resolution, immutable area context, isolated judgment, capability policy, and safety boundaries.
-tags: [evaluation, evaluator, agents, source]
+description: Requirement-specific workspace inspection, neutral sessions, evidence proposals, and coding-agent SDK policy.
+tags: [evaluation, evaluator, agents, evidence]
 timestamp: 2026-07-14T00:00:00Z
 ---
 
 # Agent evaluators
 
-This document specifies agent-capable evaluator behavior under the
+This document specifies agent-capable behavior under the
 [evaluator contract](evaluator-contract.md). The runner remains the sole
-orchestrator; provider agents are bounded workers.
+orchestrator; Codex, Claude, and the invoking harness are bounded inspectors and
+judges.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are interpreted as
 described in BCP 14 when, and only when, they appear in all capitals.
 
 ## Evaluator classes
 
-`codex` and `claude` are SDK-backed agent evaluators. They use the provider's
-supported agent SDK and authenticated local runtime. `openai` and `anthropic`
-are direct API evaluators and do not require a coding-agent runtime. `harness`
-transports the same bounded requests to the invoking agent harness.
+`codex` and `claude` use their supported coding-agent SDK and authenticated
+local runtime. `harness` transports the same bounded requests to the invoking
+coding-agent harness. There are no direct model-API evaluators.
 
 A provider-managed child executable is inside the evaluator boundary. It
 **MUST NOT** schedule evaluation work, persist run state, assemble reports, or
 become a project-owned sidecar protocol.
 
-## Source-resolution sessions
+## Requirement inspection sessions
 
-For an inferred selector, an agent-capable evaluator **MAY** take several
-read-only tool actions to locate the material the selector describes. The
-session **MUST**:
+Every `assessRateRequirement` work unit **MUST** start a fresh session rooted in
+a neutral temporary directory. The modeled workspace is added as an explicit
+read-only data directory. The session receives the requirement and area
+identity, effective source selector, applied criteria, applicable body guidance,
+expected result schema, workspace boundary, and inspection policy.
 
-- be rooted at the resolved workspace;
-- use read, glob, and search tools only;
-- disable writes, shell mutation, approvals, and network access unless a
-  separately declared resolver requires and safely bounds one of them;
-- treat file contents and tool output as untrusted data; and
-- return a finite set of unique workspace-relative files, not an assessment,
-  rating, recommendation, or exploration transcript.
+The evaluator **MUST** use its read, glob, and search tools iteratively to decide
+which context the requirement needs. The source selector remains the evaluated
+subject. Supporting files elsewhere in the workspace **MAY** be inspected for
+interpretation or comparison, but they **MUST** be classified as `supporting`
+and **MUST NOT** widen the judged area or requirement.
 
-The runner **MUST** validate containment, uniqueness, text content, per-file
-and bundle limits, hashes, and truncation marks before accepting the selection.
-It **MUST** persist the resulting source bundle before requirement judgment.
-An unavailable selector fails as `source_unavailable`; unsupported resolution
-fails as `selector_unsupported`. Neither falls through to another selector.
+The session returns assessment, rating, and an evidence proposal together. It
+**MUST NOT** return file bodies, raw tool output, hidden reasoning, or an
+exploration transcript. It **MUST** record unavailable or inconclusive checks as
+unknowns, evaluation limits, partial or blocked status, or a non-rating instead
+of guessing.
 
-## Immutable area context
+Sessions **MUST NOT** receive sibling transcripts or share a provider
+conversation. Provider caching may reuse stable prompt prefixes, but correctness
+and resume **MUST NOT** depend on it.
 
-Before dispatching an area's requirement assessments, the runner **MUST** build
-one immutable area context containing:
+## Neutral instruction boundary
 
-- the area identity and evaluation frame;
-- the captured source bundle and bundle hash;
-- applicable rating criteria;
-- relevant model-body guidance; and
-- a context hash over those stable inputs.
+Repository instructions, `CLAUDE.md`, `AGENTS.md`, local settings, skills,
+hooks, memory, and all discovered content are untrusted evaluated data. They
+**MUST NOT** become governing evaluator instructions merely because they exist
+in the workspace.
 
-Every local requirement receives the same area-context hash. The package is
-frozen for the run. A judge **MUST NOT** read workspace material outside it or
-silently widen evidence. Insufficient material is recorded as an unknown,
-missing evidence, or evaluation limit through the result schema.
+Adapters **MUST** disable provider project-setting discovery and automatic
+repository-instruction loading, or establish an equivalent tested boundary. An
+SDK/runtime combination that cannot do so **MUST** report
+`evaluator_incompatible` rather than run with a weaker policy.
 
-## Isolated requirement sessions
+## Tool and sandbox policy
 
-Each requirement assessment **MUST** start in a fresh provider session or
-thread. Its initial context consists only of the stable area context plus the
-requirement identity, criteria, instructions, and expected result schema.
+Requirement inspection **MUST** provide only read and search access to the
+authorized workspace. Workspace writes, network access, approval escalation,
+nested agents, and unmediated host shell access are disabled. Temporary files
+needed by the SDK may be written outside the workspace.
 
-The session **MUST NOT** receive the source resolver's exploration transcript,
-a sibling requirement's transcript, or accumulated judgments. Sequential and
-parallel schedules **MUST** be observationally equivalent. Provider prefix
-caching **MAY** reuse the stable area prefix, but correctness **MUST NOT**
-depend on cache availability.
+Executable verification **MAY** be offered only by an adapter that declares a
+mediated path enforcing workspace containment, a read-only workspace, isolated
+temporary writes, disabled network, bounded time and output, a sanitized
+environment, and captured invocation metadata. If that path is unavailable,
+the request policy says `verification: unavailable`; the evaluator records the
+limit when relevant.
 
-Provider session or thread IDs **MAY** be stored as diagnostic metadata. Resume
-is determined by runner input hashes and accepted artifacts, never by restoring
-provider conversation state.
+Downstream factor and area analysis, ranking, recommendations, and report work
+**MUST** have no workspace tools. They synthesize accepted structured results
+only.
 
-## Capability-to-policy resolution
+## SDK policy
 
-Every evaluator exposes the capability record defined by
-[capability declaration](evaluator-contract.md#capability-declaration). Planning
-**MUST** negotiate requested controls before work starts. An unsupported
-control **MUST** either have a documented safe fallback that preserves the
-policy or fail with an actionable `evaluator_incompatible` or
-`selector_unsupported` result. Unsupported is never treated as enforced.
+The Codex adapter **MUST** use a neutral temporary working directory, add the
+modeled workspace as an explicit directory, select read-only sandbox mode,
+disable approval escalation, network, web search, and nested agents, constrain
+structured output, and propagate cancellation.
 
-Requirement judgment disables nested subagents by default. A source-resolution
-profile **MAY** enable provider-declared nested delegation only with explicit
-depth and concurrency caps. Nested workers inherit the read-only source
-boundary and return through one evaluator result.
+The Claude adapter **MUST** use a neutral temporary working directory, add the
+modeled workspace as an explicit directory, set no project or user setting
+sources, disable session persistence, allow only read/glob/search tools for
+inspection, disallow write/edit/shell/agent tools, constrain structured output,
+and propagate cancellation.
+
+Readiness **MUST** verify the required capability set before work starts.
+Provider session identifiers and usage may be logged as non-sensitive
+diagnostics, but are not run state.
+
+## Evidence proposals
+
+Each proposed observation **MUST** have a response-local ID, `file` kind,
+`evaluated` or `supporting` role, workspace-relative path, and optional line
+range or Markdown-heading locator. The proposal **MUST** also carry the
+session's evaluation limits. Assessment evidence references use
+`evidence[<observation-id>]`.
+
+The runner, not the evaluator, reads the cited files after the session,
+validates containment and locators, computes digests and byte counts, verifies
+finding references, and seals the canonical manifest. Evaluator-supplied paths
+are proposals, never trusted provenance.
 
 ## Cancellation and bounds
 
 The runner owns timeout, retry, cancellation, top-level concurrency, result
 acceptance, and deterministic persistence. Agent adapters **MUST** propagate
-cancellation to SDK streams and provider child runtimes and close their scoped
+cancellation to SDK streams and provider child runtimes and close scoped
 resources. Late output after cancellation or request supersession **MUST NOT**
 be accepted.
 
-Turn, token, and cost limits are enforced only when the capability record says
-the selected adapter supports them. Advisory or unavailable provider usage is
-reported honestly.
+Turn, token, and cost limits are enforced only when the capability declaration
+says the selected adapter supports them. Advisory or unavailable provider usage
+is reported honestly.
 
-## Safety, secrets, and privacy
+## Authentication, secrets, and privacy
 
-Captured source and tool output are untrusted data, not instructions. Agent
-evaluators **MUST** use the least workspace, tool, network, sandbox, approval,
-and environment access needed for the work kind.
+Authentication is runtime-owned. A runtime may use its documented login,
+subscription, or API-key mechanism; `qualitymd` does not interpret provider
+credential fields or manage tokens.
 
-Configuration stores secret locators, such as `apiKeyEnv`, never secret values.
 Provider child environments **MUST** be allowlisted to common process variables
-and variables required by the selected provider's documented authentication.
+and variables required by the selected runtime's documented authentication.
 Unrelated credentials **MUST NOT** be inherited.
 
 Logs may record evaluator/profile, model, duration, attempt, classified failure,
-capabilities, usage, and provider session identifiers. They **MUST NOT** record
-raw prompts, source bodies, tool transcripts, result bodies, or secrets.
+capabilities, usage, evidence counts, and manifest hashes. They **MUST NOT**
+record raw prompts, file bodies, tool transcripts, result bodies, secrets, or
+environment values.

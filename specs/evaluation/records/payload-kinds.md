@@ -41,7 +41,10 @@ contract's
 [`assessRateRequirement` unit](../orchestration.md#work-graph)) yields both the
 `RequirementAssessmentResult` and the `RequirementRatingResult` for its
 requirement. The kinds, their subject identities, and their schemas are
-unchanged: the call shape is not visible in persisted payloads.
+unchanged. The same call also returns an evidence proposal, which the runner
+validates and persists in the artifact's separate per-requirement
+[`evidence`](../evaluation-json.md#evidence) record. Manual payloads have no
+runner-sealed evidence manifest.
 
 The CLI **MUST** validate each accepted kind before writing it. Validation
 **MUST** be derived from one typed source of truth for the kind's structural
@@ -183,6 +186,23 @@ claim coverage by a recommendation ID that has no corresponding
 use `RecommendationResult.id`.
 
 ## Finding core
+
+In a runner-created run, every finding evidence `sourceRef` **MUST** use
+`evidence[<observation-id>]`, and the named observation **MUST** exist in the
+accepted evidence manifest for that finding's requirement. Observation IDs are
+manifest-local and match `^ev-[a-z0-9][a-z0-9-]*$`.
+
+Each manifest observation **MUST** use `kind: file`, role `evaluated` or
+`supporting`, and a workspace-relative path. It **MAY** carry either a 1-based
+line range or a Markdown-heading locator. The runner adds the byte count,
+SHA-256 digest, and capture time after containment and locator validation.
+`evaluated` evidence describes the source-selected subject; `supporting`
+evidence helps interpret or compare it without expanding the subject.
+
+An evaluator **MUST** record inaccessible, unavailable, unsafe, or inconclusive
+checks in the evidence manifest's `limits` and in the appropriate assessment or
+rating status fields. It **MUST NOT** invent an observation or cite a path that
+was not inspected.
 
 `RequirementAssessmentResult.findings[]` **MUST** use the finding core.
 

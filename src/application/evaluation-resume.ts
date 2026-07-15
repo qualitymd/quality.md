@@ -1,6 +1,7 @@
 import * as Effect from "effect/Effect"
 import * as FileSystem from "effect/FileSystem"
 import * as Path from "effect/Path"
+import * as Result from "effect/Result"
 
 import { FileSystemFailure } from "../domain/errors.ts"
 import { commandResult, ExitCode, type CommandResult } from "../domain/command-result.ts"
@@ -16,7 +17,12 @@ import { normalizeEvaluatorResult, ResultValidationError } from "../domain/evalu
 import { hashJson, jsonDocument } from "../domain/json.ts"
 import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
-import { captureSource, packageSource, type SourceBundle } from "../services/source.ts"
+import {
+  EvidenceValidationError,
+  sealEvidenceManifest,
+  type AreaSource,
+  type SealedEvidenceManifest,
+} from "../services/source.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
 import { buildReportsAtRun } from "./evaluation-report.ts"
@@ -53,6 +59,7 @@ interface Artifact {
     evaluatorKind: string
     evaluatorCapabilities: JsonObject
     concurrency: number
+    areaSources: Record<string, AreaSource>
   }
   state: {
     status: string
@@ -64,7 +71,7 @@ interface Artifact {
     harnessIdentity?: { runtime: string }
     failure?: { category: string; detail?: string }
   }
-  sources: Record<string, JsonObject>
+  evidence: Record<string, SealedEvidenceManifest>
   results: { payloads: Array<StoredPayload> }
   outputs?: JsonObject
 }
@@ -86,6 +93,7 @@ const retryable = new Set([
   "timeout",
   "invalid_evaluator_output",
   "schema_invalid_output",
+  "evidence_invalid",
 ])
 
 const failureResult = (detail: string, exitCode: ExitCode = ExitCode.internal) =>
@@ -132,33 +140,6 @@ const readEnvelopes = (path: string) =>
     })
   })
 
-const bundleFromRecord = (record: JsonObject): SourceBundle | undefined => {
-  if (record.kind !== "prose" || typeof record.bundleHash !== "string") return undefined
-  if (!Array.isArray(record.files)) return undefined
-  return {
-    hash: record.bundleHash,
-    truncated: record.truncated === true,
-    files: record.files.flatMap((value) => {
-      if (value === null || typeof value !== "object") return []
-      const file = value as JsonObject
-      if (
-        typeof file.path !== "string" ||
-        typeof file.sha256 !== "string" ||
-        typeof file.content !== "string"
-      )
-        return []
-      return [
-        {
-          path: file.path,
-          sha256: file.sha256,
-          content: file.content,
-          ...(file.truncated === true ? { truncated: true } : {}),
-        },
-      ]
-    }),
-  }
-}
-
 const requestReceipt = (
   protocol: ProtocolRequest,
   pending: PendingCall,
@@ -176,7 +157,8 @@ const requestReceipt = (
   ...(protocol.context === null || Object.keys(protocol.context).length === 0
     ? {}
     : { context: protocol.context }),
-  ...(protocol.source.length === 0 ? {} : { source: protocol.source }),
+  ...(protocol.bodyGuidance === "" ? {} : { bodyGuidance: protocol.bodyGuidance }),
+  ...(protocol.inspection === null ? {} : { inspection: protocol.inspection }),
   expectedSchema: protocol.expectedSchema,
   inputHash: protocol.inputHash,
   correlationId: protocol.correlationId,
@@ -226,9 +208,9 @@ export const resumeHarnessRun = (
     if (!(yield* fs.exists(artifactPath)))
       return failureResult(`${displayRun} is not a resumable evaluation run`, ExitCode.usage)
     const artifact = JSON.parse(yield* fs.readFileString(artifactPath)) as Artifact
-    if (artifact.schemaVersion !== 7 || artifact.kind !== "EvaluationRun")
+    if (artifact.schemaVersion !== 8 || artifact.kind !== "EvaluationRun")
       return failureResult(
-        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 7`,
+        `evaluation artifact schema ${artifact.schemaVersion} is incompatible with schema 8; start a new run`,
       )
     let workspaceRoot = ""
     if (paths.isAbsolute(artifact.manifest.model)) {
@@ -253,24 +235,11 @@ export const resumeHarnessRun = (
       )
     const snapshotPath = paths.join(runAbs, "model-snapshot.md")
     const snapshot = yield* fs.readFileString(snapshotPath)
+    const bodyStart = snapshot.indexOf("\n---", 4)
+    const bodyGuidance = bodyStart < 0 ? "" : snapshot.slice(bodyStart + 4).trim()
     const model = decodeModel(parseQualityDocument(snapshotPath, snapshot))
     const plan = planEvaluation(model, artifact.manifest.plannedScope)
-    const sourceKinds = Object.fromEntries(
-      Object.entries(artifact.sources).map(([area, record]) => [area, record.kind]),
-    ) as Record<string, "path" | "glob" | "prose">
-    const graph = buildGraph(plan, sourceKinds)
-    const bundles = new Map<string, SourceBundle>()
-    for (const area of plan.areas) {
-      const record = artifact.sources[area.ref]!
-      const captured = bundleFromRecord(record)
-      if (captured !== undefined) bundles.set(area.ref, captured)
-      else if (record.kind === "path" || record.kind === "glob") {
-        bundles.set(
-          area.ref,
-          yield* packageSource(workspaceRoot, String(record.selector), record.kind),
-        )
-      }
-    }
+    const graph = buildGraph(plan)
     const now = new Date(yield* runtime.currentTimeMillis).toISOString().replace(/\.\d{3}Z$/, "Z")
     const initialStatus = artifact.state.status
     const events: Array<JsonObject> = []
@@ -306,49 +275,63 @@ export const resumeHarnessRun = (
             unit,
             plan,
             payloads: artifact.results.payloads,
-            bundles,
-            sourceRecords: artifact.sources,
+            areaSources: artifact.manifest.areaSources,
+            bodyGuidance,
             evaluationId: artifact.manifest.evaluationId,
           }),
         )
         if (protocol.inputHash !== pending.inputHash)
           return failureResult(
-            `the model or source for ${unit.id} changed after the work request was emitted; a result must not be attached to different evidence — start a new run`,
+            `the model or request context for ${unit.id} changed after the work request was emitted; a result must not be attached to a different request — start a new run`,
           )
         const state = (artifact.state.workUnits[unit.id] ??= { status: "pending" })
         state.attempts = (state.attempts ?? 0) + 1
         let category = envelope.failure ?? ""
         let detail = envelope.detail ?? ""
         let accepted: ReadonlyArray<StoredPayload> = []
+        let sealedEvidence: SealedEvidenceManifest | undefined
         if (category === "") {
           try {
-            if (unit.kind === "resolveSource") {
-              const bundle = yield* captureSource(workspaceRoot, envelope.payload)
-              bundles.set(unit.subject, bundle)
-              const record = artifact.sources[unit.subject]!
-              record.bundleHash = bundle.hash
-              record.capturedAt = now
-              record.harnessRuntime = envelope.evaluator.runtime
-              if (bundle.truncated) record.truncated = true
-              record.files = bundle.files.map((file) => ({
-                path: file.path,
-                sha256: file.sha256,
-                content: file.content,
-                ...(file.truncated === true ? { truncated: true } : {}),
-              }))
-            } else {
-              const bytes = yield* runtime.randomBytes(100)
-              const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
-              accepted = normalizeEvaluatorResult(unit, envelope.payload, (index) =>
-                Array.from(
-                  bytes.slice(index * 10, index * 10 + 10),
-                  (byte) => alphabet[byte % alphabet.length],
-                ).join(""),
+            const bytes = yield* runtime.randomBytes(100)
+            const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
+            accepted = normalizeEvaluatorResult(unit, envelope.payload, (index) =>
+              Array.from(
+                bytes.slice(index * 10, index * 10 + 10),
+                (byte) => alphabet[byte % alphabet.length],
+              ).join(""),
+            )
+            if (unit.kind === "assessRateRequirement") {
+              if (
+                envelope.payload === null ||
+                Array.isArray(envelope.payload) ||
+                typeof envelope.payload !== "object"
               )
+                throw new EvidenceValidationError(
+                  "combined requirement judgment must carry an evidence manifest",
+                )
+              const proposed = envelope.payload as JsonObject
+              const assessment = accepted.find(
+                (entry) => entry.payload.kind === "RequirementAssessmentResult",
+              )?.payload
+              const requirement = plan.requirements.find((entry) => entry.ref === unit.subject)!
+              const evidenceResult = yield* sealEvidenceManifest({
+                workspaceRoot,
+                requirementId: unit.subject,
+                source: artifact.manifest.areaSources[requirement.areaId]!,
+                proposal: proposed.evidence,
+                assessment,
+                capturedAt: now,
+              }).pipe(Effect.result)
+              if (Result.isFailure(evidenceResult)) throw evidenceResult.failure
+              sealedEvidence = evidenceResult.success
             }
           } catch (cause) {
             category =
-              cause instanceof ResultValidationError ? cause.category : "invalid_evaluator_output"
+              cause instanceof ResultValidationError
+                ? cause.category
+                : cause instanceof EvidenceValidationError
+                  ? "evidence_invalid"
+                  : "invalid_evaluator_output"
             detail = cause instanceof Error ? cause.message : String(cause)
           }
         }
@@ -364,6 +347,14 @@ export const resumeHarnessRun = (
           durationMs: envelope.durationMs ?? 0,
           ...(envelope.contextMeta === undefined ? {} : { contextMeta: envelope.contextMeta }),
           ...(envelope.usage === undefined ? {} : { usage: envelope.usage }),
+          ...(sealedEvidence === undefined
+            ? {}
+            : {
+                evidence: {
+                  observations: sealedEvidence.observations.length,
+                  manifestHash: sealedEvidence.manifestHash,
+                },
+              }),
           ...(category === "" ? {} : { failure: { category, detail } }),
         })
         if (category === "") {
@@ -373,10 +364,12 @@ export const resumeHarnessRun = (
             artifact.state.pendingEvaluatorCalls ?? []
           ).filter((call) => call.requestId !== pending.requestId)
           mergePayloads(artifact, graph, unit.id, accepted)
+          if (sealedEvidence !== undefined) artifact.evidence[unit.id] = sealedEvidence
           Object.assign(state, {
             status: "completed",
             inputHash: protocol.inputHash,
             completedAt: now,
+            ...(sealedEvidence === undefined ? {} : { evidenceHash: sealedEvidence.manifestHash }),
           })
           delete state.failure
           events.push({
@@ -464,8 +457,8 @@ export const resumeHarnessRun = (
             unit,
             plan,
             payloads: artifact.results.payloads,
-            bundles,
-            sourceRecords: artifact.sources,
+            areaSources: artifact.manifest.areaSources,
+            bodyGuidance,
             evaluationId: artifact.manifest.evaluationId,
           }),
         )
@@ -489,7 +482,7 @@ export const resumeHarnessRun = (
           artifact.state.workUnits[unit.id] ??= { status: "pending" }
         } else if (pending.inputHash !== protocol.inputHash) {
           return failureResult(
-            `the model or source for ${unit.id} changed after the work request was emitted; a result must not be attached to different evidence — start a new run`,
+            `the model or request context for ${unit.id} changed after the work request was emitted; a result must not be attached to a different request — start a new run`,
           )
         }
         requests.push(requestReceipt(protocol, pending, retryFailures.get(pending.requestId)))
@@ -540,9 +533,8 @@ export const resumeHarnessRun = (
       },
       sources: plan.areas.map((area) => ({
         area: area.ref,
-        selector: artifact.sources[area.ref]!.selector,
-        kind: artifact.sources[area.ref]!.kind,
-        resolver: artifact.sources[area.ref]!.resolver,
+        selector: artifact.manifest.areaSources[area.ref]!.selector,
+        kind: artifact.manifest.areaSources[area.ref]!.kind,
       })),
       ...(requests.length === 0 ? {} : { evaluatorRequests: requests }),
       ...(artifact.state.status === "completed" && artifact.outputs !== undefined

@@ -623,6 +623,13 @@ Finding detail sections **MUST** render the finding core in this order:
 condition, criteria, basis, effect, and evidence. Requirement finding details
 **MUST NOT** render `candidateActions`.
 
+For runner-created runs, rendered evidence statements and `sourceRef` values
+come from accepted requirement results and resolve against the corresponding
+sealed evidence manifest in `evaluation.json`. Reports **MAY** render validated
+file locators, digests, roles, and recorded limits from that manifest, but they
+**MUST NOT** reread the workspace, regather evidence, or introduce a locator the
+runner did not accept.
+
 Area and factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
 limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`

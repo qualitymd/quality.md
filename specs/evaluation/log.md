@@ -1,5 +1,17 @@
 # Evaluation v2 update log
 
+## 2026-07-14
+
+- **Revision**: Updated the evaluation, runner, protocol, orchestration,
+  evaluator, agent evaluator, artifact, payload, and report contracts for
+  [0201 - Agent-native evidence discovery](../../changes/0201-agent-native-evidence-discovery.md).
+  Requirement judgment now owns iterative read-only workspace inspection and
+  evidence selection; the runner owns the neutral policy, evidence sealing,
+  atomic persistence, and tools-off downstream synthesis. `resolveSource`,
+  static area bundles, direct API evaluators, and API-specific failures are
+  removed. `evaluation.json` schema version 8 replaces per-area `sources` with
+  per-requirement `evidence` manifests.
+
 ## 2026-07-11
 
 - **Revision**: Updated the [Runner](runner.md),

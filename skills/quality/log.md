@@ -2,6 +2,15 @@
 
 ## 2026-07-14
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0201 - Agent-native
+  evidence discovery. Harness checkpoints now inspect requirement-specific
+  context directly under the runner's read-only policy and return a combined
+  judgment plus evidence proposal. Guidance removes resolution checkpoints,
+  area bundles, direct API evaluator methods, and CLI-managed credentials.
+  Bumped skill metadata to `0.32.0` with
+  `qualitymd >=0.32.0 <0.33.0` compatibility.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md),
   [`workflows/evaluate.md`](workflows/evaluate.md), and
   [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)

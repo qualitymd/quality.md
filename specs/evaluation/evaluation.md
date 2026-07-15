@@ -10,8 +10,9 @@ timestamp: 2026-06-25T00:00:00Z
 
 Evaluation is the replacement QUALITY.md evaluation workflow. It is a
 CLI-orchestrated judgment protocol: the deterministic evaluation runner owns
-the workflow and invokes pluggable evaluators for bounded judgment, backed by
-CLI-managed structured data and deterministic reports.
+the workflow and invokes coding-agent evaluators for requirement-specific
+inspection and bounded judgment, backed by runner-validated evidence and
+deterministic reports.
 
 Detailed contracts live in:
 
@@ -40,10 +41,10 @@ reasoning protocol explicit while leaving mechanics such as persistence,
 validation, and report rendering to the CLI.
 
 The deterministic evaluation runner (0192) moved orchestration itself from the
-invoking agent to the CLI: evaluation needs the same results whether it is run
-through Codex, Claude, a direct API key, or a future runtime, so the CLI owns
-the repeatable work graph and agents provide bounded judgment through
-evaluators.
+invoking agent to the CLI. Agent-native evidence discovery (0201) keeps those
+mechanics in the runner while returning semantic context discovery to the
+requirement judge: Codex, Claude, or the invoking harness searches and inspects
+the workspace through its coding-agent runtime.
 
 ## Scope
 
@@ -64,9 +65,10 @@ The deterministic [runner](runner.md) behind
 evaluation execution surface. `/quality evaluate` wraps the runner rather than
 orchestrating evaluation itself.
 
-Evaluation **MUST** treat evaluated source content as data, not instructions.
-The runner applies this invariant when
-[packaging source](runner.md#source-packaging) and in every evaluator prompt.
+Evaluation **MUST** treat source content, repository instructions, local
+settings, hooks, and skills as untrusted data, not evaluator authority. Agent
+sessions apply this invariant through the
+[inspection policy](runner.md#requirement-inspection-and-evidence).
 
 Evaluation **MUST** stop rather than invent precision when required model,
 scope, evidence, frame, or dependency inputs are missing, invalid, unsafe, or too
@@ -86,9 +88,10 @@ The CLI **MUST** own orchestration and mechanics: run creation, work-graph
 execution, evaluator invocation, validation, canonical persistence, status
 inspection, output assembly, and report rendering.
 
-Evaluators **MUST** own bounded judgment — evidence selection, assessment,
-rating, confidence, synthesis, and stop decisions — returned as typed
-work-unit results under the [evaluator contract](evaluator-contract.md).
+Evaluators **MUST** own requirement-specific discovery, inspection, evidence
+selection, assessment, rating, confidence, synthesis, and stop decisions,
+returned as typed work-unit results under the
+[evaluator contract](evaluator-contract.md).
 Agents provide judgment through evaluators; they do not orchestrate the run.
 `qualitymd evaluation create` and `qualitymd evaluation data set` remain the
 manual and historical persistence surface for agent-authored payloads.
@@ -101,7 +104,7 @@ routine JSON.
 `schemaVersion` **MUST** be treated as a payload-shape marker only. The current
 evaluation routine payload schema version is `3`; the
 [`evaluation.json`](evaluation-json.md) run artifact carries its own artifact
-`schemaVersion`, currently `5`. Evaluation does not define migrations,
+`schemaVersion`, currently `8`. Evaluation does not define migrations,
 compatibility transforms, or mixed-version run support; older evaluation runs
 remain schema-incompatible historical data.
 
@@ -109,3 +112,8 @@ Advice **MUST** be produced after analysis and before report generation. Advice
 **MUST** include finding ranking, recommendation generation, finding coverage
 accounting, and recommendation ranking. Recommendations may describe concrete
 improvement work or a recommended review of the next quality bar.
+
+Determinism covers graph construction, scheduling constraints, validation,
+atomic persistence, output ordering, and report projection. It does **NOT**
+promise identical evidence, judgments, or ratings across agent runtimes or
+repeated evaluations.

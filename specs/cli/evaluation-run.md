@@ -25,11 +25,12 @@ all capitals.
 
 ## Background / motivation
 
-Evaluation needs the same results whether it is run through Codex, Claude, a
-direct OpenAI or Anthropic API key, or a future runtime. `evaluation run` gives
-the workflow one deterministic owner: the CLI executes the work graph and the
-selected evaluator provides bounded judgment, so orchestration quality no
-longer depends on the invoking harness. — 0192
+Evaluation needs the same orchestration, validation, and artifact guarantees
+whether it is run through Codex, Claude, or an invoking agent harness.
+`evaluation run` gives the workflow one deterministic owner while the selected
+coding-agent evaluator discovers requirement-specific context and provides
+bounded judgment. Identical evidence or ratings across runtimes are not
+promised. — 0192, 0201
 
 ## Scope
 
@@ -38,12 +39,8 @@ resume, cancellation reporting, output, and exit behavior. The work graph,
 concurrency resolution, run-local logging, and failure taxonomy are the
 [evaluation runner](../evaluation/runner.md)'s contract.
 
-Deferred:
-
-- positional natural-language scope input, until the explicit flag surface
-  settles;
-- selecting the reserved `shell` and `manual` evaluator names, which have no
-  implementations yet.
+Deferred: positional natural-language scope input, until the explicit flag
+surface settles.
 
 ## Arguments and flags
 
@@ -87,12 +84,13 @@ omitted `--evaluator` **MUST** behave exactly as `--evaluator auto`.
 > Claude users without requiring a config file on first use. — 0192
 
 `auto` **MUST** use deterministic local discovery, in order: a ready `codex`
-agent runtime, then a ready `claude` agent runtime, then configured API profiles
-in alphabetical order whose API key environment variable is present.
+agent runtime, then a ready `claude` agent runtime. It **MUST NOT** select a
+configured profile implicitly or discover `harness`.
 
 `auto` **MUST** consider an SDK-backed candidate usable only after verifying
-that its executable, authentication state, and required non-interactive
-structured-output capabilities are available; where a CLI documents no
+that its executable, authentication state, structured output, fresh context,
+instruction isolation, read-only workspace inspection, disabled network,
+non-interactive policy, and cancellation capabilities are available; where a CLI documents no
 non-interactive authentication probe, readiness assumes authentication and the
 evidence says so. An unusable candidate **MUST** be skipped, and dry-run JSON
 **MUST** report each considered candidate's readiness evidence and the final
@@ -115,9 +113,9 @@ available remedies.
 Evaluator names, profiles, and the configuration surface are defined by the
 [evaluator contract](../evaluation/evaluator-contract.md).
 
-The built-in names remain `harness`, `codex`, `claude`, `openai`, and
-`anthropic`. `codex` and `claude` use their supported agent SDK and authenticated
-local runtime; `openai` and `anthropic` remain direct API evaluators.
+The built-in names are `harness`, `codex`, and `claude`. Configured profiles may
+use only `codex` or `claude`. Authentication belongs to the selected runtime;
+the command does not define API-key evaluator methods or manage credentials.
 
 ### Harness checkpoints
 
@@ -131,8 +129,8 @@ status `awaiting_evaluator` carrying the outstanding bounded work requests in
 emission order — up to the run's resolved concurrency, per the
 [runner harness contract](../evaluation/runner.md#harness-checkpoints). Each
 carried request is complete: run reference, request identity, work-unit
-identity and kind, subject, instructions, context, bounded source package,
-expected result schema, input hash, correlation ID, and — for a retrying
+identity and kind, subject, instructions, context, applicable body guidance,
+inspection policy, expected result schema, input hash, correlation ID, and — for a retrying
 request — the classified failure of the rejected attempt.
 
 > Rationale: awaiting harness judgment is expected progress, not a failure
@@ -163,11 +161,12 @@ validation, partial submission, retry, and identity binding are the
 machine-readable preview containing the resolved model, requested and planned
 scope, selected evaluator with its kind and selection reason, resolved
 concurrency (for a harness-backed run, the outstanding-window cap),
-work-unit counts, the per-area source dispatch plan (each
-in-scope area's effective selector, detected kind, and serving resolver, per
-the [runner detection contract](../evaluation/runner.md#selector-kind-detection)),
-`expectedRunPath`, and `nextActions`. Run receipts carry the same per-area
-source dispatch plan, pinned at run creation.
+work-unit counts, selected evaluator capabilities, the read-only/network/
+approval/verification/instruction inspection policy, each in-scope area's
+effective selector and detected path, glob, or prose form, `expectedRunPath`,
+and `nextActions`. It **MUST NOT** claim resolver selection, bundle size, file
+count, byte caps, or a static per-area evidence package. Run receipts carry the
+same effective source metadata pinned at creation.
 
 A dry run **MUST NOT** create the run folder and **MUST NOT** invoke an
 evaluator for judgment.

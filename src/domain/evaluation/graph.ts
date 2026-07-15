@@ -3,7 +3,6 @@ import type { EvaluationPlan, PlannedArea, PlannedFactor } from "./plan.ts"
 export type WorkKind =
   | "frameEvaluation"
   | "frameAreaEvaluation"
-  | "resolveSource"
   | "frameRequirementEvaluation"
   | "assessRateRequirement"
   | "frameFactorAnalysis"
@@ -69,10 +68,7 @@ const bottomUp = <A extends { readonly path: ReadonlyArray<string> }>(items: Rea
     )
     .map(({ item }) => item)
 
-export const buildGraph = (
-  plan: EvaluationPlan,
-  sourceKinds: Readonly<Record<string, "path" | "glob" | "prose">>,
-): ReadonlyArray<WorkUnit> => {
+export const buildGraph = (plan: EvaluationPlan): ReadonlyArray<WorkUnit> => {
   const units: Array<WorkUnit> = []
   add(units, "frameEvaluation", "", [], false, "EvaluationFrame")
   for (const area of plan.areas) {
@@ -87,11 +83,6 @@ export const buildGraph = (
       "AreaEvaluationFrame",
     )
   }
-  for (const area of plan.areas) {
-    if (sourceKinds[area.ref] === "prose") {
-      add(units, "resolveSource", area.ref, [unitId("frameAreaEvaluation", area.ref)], true)
-    }
-  }
   for (const requirement of plan.requirements) {
     const frame = add(
       units,
@@ -101,18 +92,7 @@ export const buildGraph = (
       false,
       "RequirementEvaluationFrame",
     )
-    add(
-      units,
-      "assessRateRequirement",
-      requirement.ref,
-      [
-        frame,
-        ...(sourceKinds[requirement.areaId] === "prose"
-          ? [unitId("resolveSource", requirement.areaId)]
-          : []),
-      ],
-      true,
-    )
+    add(units, "assessRateRequirement", requirement.ref, [frame], true)
   }
   const analyzedFactors = new Map<string, string>()
   for (const factor of bottomUp(plan.factors)) {

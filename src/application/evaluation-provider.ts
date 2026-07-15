@@ -5,8 +5,8 @@ import * as Path from "effect/Path"
 
 import { FileSystemFailure } from "../domain/errors.ts"
 import { type CommandResult, ExitCode } from "../domain/command-result.ts"
-import { hashJson, jsonDocument, sha256 } from "../domain/json.ts"
-import type { AreaContext, EvaluationRequest, SourceFile } from "../domain/evaluator/types.ts"
+import { jsonDocument } from "../domain/json.ts"
+import type { EvaluationRequest, InspectionContext } from "../domain/evaluator/types.ts"
 import type { EvaluatorService } from "../services/evaluator.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
 import { resolveWorkspace, type Workspace } from "../services/workspace.ts"
@@ -25,7 +25,8 @@ interface ReceiptRequest {
   readonly instructions: string
   readonly sharedContext?: JsonObject
   readonly context?: JsonObject
-  readonly source?: ReadonlyArray<SourceFile>
+  readonly bodyGuidance?: string
+  readonly inspection?: JsonObject
   readonly expectedSchema: JsonObject
 }
 
@@ -41,64 +42,11 @@ const parseReceipt = (result: CommandResult): Receipt => {
   return JSON.parse(result.stdout) as Receipt
 }
 
-const ratingCriteria = (context: JsonObject | undefined) => {
-  const frame = context?.requirementEvaluationFrame
-  if (frame === null || typeof frame !== "object") return {}
-  const derived = (frame as JsonObject).derivedContext
-  if (derived === null || typeof derived !== "object") return {}
-  const criteria = (derived as JsonObject).appliedRatingCriteria
-  if (!Array.isArray(criteria)) return {}
-  return Object.fromEntries(
-    criteria.flatMap((value) => {
-      if (value === null || typeof value !== "object") return []
-      const item = value as JsonObject
-      return typeof item.ratingLevelId === "string" && typeof item.criterion === "string"
-        ? [[item.ratingLevelId, item.criterion] as const]
-        : []
-    }),
-  )
-}
-
-const areaFrame = (request: ReceiptRequest) => {
-  const frame = request.sharedContext?.areaEvaluationFrame
-  return frame !== null && typeof frame === "object" ? (frame as JsonObject) : {}
-}
-
-const areaId = (request: ReceiptRequest, frame: JsonObject) => {
-  const subject = frame.subject
-  if (subject !== null && typeof subject === "object") {
-    const value = (subject as JsonObject).areaId
-    if (typeof value === "string") return value
-  }
-  return request.subject?.startsWith("area:") === true ? request.subject : "area:root"
-}
-
-const areaContextFor = async (
-  request: ReceiptRequest,
-  bodyGuidance: string,
-): Promise<AreaContext> => {
-  const files = request.source ?? []
-  const sourceBundleHash = await sha256(
-    files.map((file) => `${file.path}\0${file.sha256}\0`).join(""),
-  )
-  const frame = areaFrame(request)
-  const input = {
-    areaId: areaId(request, frame),
-    sourceBundleHash,
-    frame,
-    ratingCriteria: ratingCriteria(request.context),
-    bodyGuidance,
-    files,
-  }
-  return { ...input, hash: await hashJson(input) }
-}
-
 const serviceProviderCheckpoints = (
   input: EvaluationRunInput,
   evaluator: EvaluatorService,
   runPath: string,
   workspace: Workspace,
-  bodyGuidance: string,
 ): Effect.Effect<CommandResult, Error, FileSystem.FileSystem | Path.Path | HostRuntime> =>
   Effect.scoped(
     Effect.gen(function* () {
@@ -124,29 +72,29 @@ const serviceProviderCheckpoints = (
         const requests = receipt.evaluatorRequests ?? []
         if (requests.length === 0)
           throw new Error("evaluation checkpoint has no evaluator requests")
-        if (
-          requests.some((request) => request.kind === "resolveSource") &&
-          !evaluator.capabilities.sourceResolution
-        )
-          throw new Error(
-            `evaluator ${JSON.stringify(evaluator.name)} cannot resolve inferred source selectors; choose codex, claude, or harness, or replace the prose selector with a path or glob`,
-          )
         const envelopes = yield* Effect.forEach(
           requests,
           (request) =>
             Effect.gen(function* () {
               const started = yield* Clock.currentTimeMillis
-              const areaContext = yield* Effect.promise(() => areaContextFor(request, bodyGuidance))
+              const inspection =
+                request.inspection === undefined
+                  ? undefined
+                  : ({
+                      ...request.inspection,
+                      workspaceRoot: workspace.workspaceRoot.abs,
+                    } as unknown as InspectionContext)
               const evaluationRequest: EvaluationRequest = {
                 runId: String(artifact.manifest.evaluationId),
                 workUnitId: request.workUnitId,
                 kind: request.kind,
                 subject: request.subject ?? "",
                 instructions: request.instructions,
-                areaContext,
+                sharedContext: request.sharedContext ?? {},
                 context: request.context ?? {},
+                bodyGuidance: request.bodyGuidance ?? "",
+                ...(inspection === undefined ? {} : { inspection }),
                 expectedSchema: request.expectedSchema,
-                workspaceRoot: workspace.workspaceRoot.abs,
                 timeoutMs: 10 * 60 * 1000,
               }
               return yield* evaluator.evaluate(evaluationRequest).pipe(
@@ -225,9 +173,6 @@ export const executeProviderRun = (
       !evaluator.capabilities.subagents
         ? 1
         : configuredConcurrency
-    const document = yield* fs.readFileString(workspace.model.abs)
-    const bodyStart = document.indexOf("\n---", 4)
-    const bodyGuidance = bodyStart < 0 ? "" : document.slice(bodyStart + 4)
     const created = yield* executeHarnessRun({ ...input, evaluator: "harness", json: true })
     const initial = parseReceipt(created)
     const runAbs = paths.resolve(workspace.workspaceRoot.abs, initial.path)
@@ -243,13 +188,7 @@ export const executeProviderRun = (
     delete artifact.state.harnessIdentity
     yield* fs.writeFileString(artifactPath, jsonDocument(artifact), { mode: 0o644 })
 
-    return yield* serviceProviderCheckpoints(
-      input,
-      evaluator,
-      initial.path,
-      workspace,
-      bodyGuidance,
-    )
+    return yield* serviceProviderCheckpoints(input, evaluator, initial.path, workspace)
   }).pipe(
     Effect.mapError(
       (cause) =>
@@ -267,17 +206,7 @@ export const resumeProviderRun = (
   FileSystem.FileSystem | Path.Path | HostRuntime
 > =>
   Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem
-    const document = yield* fs.readFileString(workspace.model.abs)
-    const bodyStart = document.indexOf("\n---", 4)
-    const bodyGuidance = bodyStart < 0 ? "" : document.slice(bodyStart + 4)
-    return yield* serviceProviderCheckpoints(
-      input,
-      evaluator,
-      input.resume,
-      workspace,
-      bodyGuidance,
-    )
+    return yield* serviceProviderCheckpoints(input, evaluator, input.resume, workspace)
   }).pipe(
     Effect.mapError(
       (cause) =>

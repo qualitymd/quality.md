@@ -3,17 +3,21 @@ import * as BunFileSystem from "@effect/platform-bun/BunFileSystem"
 import * as BunPath from "@effect/platform-bun/BunPath"
 import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises"
-import { join } from "node:path"
-import { tmpdir } from "node:os"
 import { afterEach } from "vitest"
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
 
-import { captureSource, detectSourceKind, packageSource } from "../../src/services/source.ts"
+import {
+  detectSourceKind,
+  sealEvidenceManifest,
+  validateSourceSelector,
+} from "../../src/services/source.ts"
 
 const temporaryDirectories: string[] = []
 
 const temporaryDirectory = async () => {
-  const directory = await mkdtemp(join(tmpdir(), "qualitymd-source-test-"))
+  const directory = await mkdtemp(join(tmpdir(), "qualitymd-evidence-test-"))
   temporaryDirectories.push(directory)
   return directory
 }
@@ -27,7 +31,11 @@ afterEach(async () => {
   )
 })
 
-describe("source selection and capture", () => {
+const assessment = (sourceRef: string) => ({
+  findings: [{ evidence: [{ sourceRef, statement: "Observed evidence." }] }],
+})
+
+describe("source selection and evidence sealing", () => {
   it.effect("distinguishes paths, valid globs, malformed globs, and prose", () =>
     Effect.gen(function* () {
       const root = yield* promise(temporaryDirectory)
@@ -40,60 +48,117 @@ describe("source selection and capture", () => {
     }).pipe(Effect.provide(services)),
   )
 
-  it.effect("packages deterministic text files while skipping default vendor trees", () =>
+  it.effect("seals requirement-specific evaluated and supporting evidence", () =>
     Effect.gen(function* () {
       const root = yield* promise(temporaryDirectory)
       yield* promise(() => mkdir(join(root, "src")))
-      yield* promise(() => mkdir(join(root, "vendor")))
-      yield* promise(() => writeFile(join(root, "src", "a.txt"), "alpha"))
-      yield* promise(() => writeFile(join(root, "vendor", "b.txt"), "beta"))
+      yield* promise(() => mkdir(join(root, "docs")))
+      yield* promise(() =>
+        writeFile(join(root, "src", "target.ts"), "# Target\n\nexport const ready = true\n"),
+      )
+      yield* promise(() => writeFile(join(root, "docs", "design.md"), "# Design\n\nReady.\n"))
 
-      const rootBundle = yield* packageSource(root, ".", "path")
-      assert.deepStrictEqual(
-        rootBundle.files.map((file) => file.path),
-        ["src/a.txt"],
-      )
-      const vendorBundle = yield* packageSource(root, "vendor", "path")
-      assert.deepStrictEqual(
-        vendorBundle.files.map((file) => file.path),
-        ["vendor/b.txt"],
-      )
+      const manifest = yield* sealEvidenceManifest({
+        workspaceRoot: root,
+        requirementId: "requirement:root::ready",
+        source: { selector: "src", kind: "path" },
+        proposal: {
+          observations: [
+            {
+              id: "ev-001",
+              kind: "file",
+              role: "evaluated",
+              path: "src/target.ts",
+              locator: { startLine: 3, endLine: 3 },
+            },
+            {
+              id: "ev-002",
+              kind: "file",
+              role: "supporting",
+              path: "docs/design.md",
+              locator: { heading: "Design" },
+            },
+          ],
+          limits: [],
+        },
+        assessment: assessment("evidence[ev-001]"),
+        capturedAt: "2026-07-14T00:00:00Z",
+      })
+
+      assert.strictEqual(manifest.observations.length, 2)
+      assert.strictEqual(manifest.observations[0]?.path, "src/target.ts")
+      assert.match(String(manifest.observations[0]?.sha256), /^[a-f0-9]{64}$/)
+      assert.match(manifest.manifestHash, /^[a-f0-9]{64}$/)
+      assert.strictEqual("content" in (manifest.observations[0] ?? {}), false)
     }).pipe(Effect.provide(services)),
   )
 
-  it.effect("rejects escaping and empty selectors", () =>
+  it.effect("rejects escaping selectors and symlink escapes", () =>
     Effect.gen(function* () {
       const root = yield* promise(temporaryDirectory)
-      const escaping = yield* packageSource(root, "../outside", "path").pipe(Effect.result)
-      assert.strictEqual(escaping._tag, "Failure")
-      if (escaping._tag === "Failure")
-        assert.match(escaping.failure.detail, /escapes the workspace/)
-      const missing = yield* packageSource(root, "missing", "path").pipe(Effect.result)
-      assert.strictEqual(missing._tag, "Failure")
-      if (missing._tag === "Failure")
-        assert.match(missing.failure.detail, /contains no readable files/)
-    }).pipe(Effect.provide(services)),
-  )
+      const outside = yield* promise(temporaryDirectory)
+      yield* promise(() => writeFile(join(outside, "secret.txt"), "secret"))
+      yield* promise(() => symlink(join(outside, "secret.txt"), join(root, "secret-link")))
 
-  it.effect("validates resolved source containment and applies file bounds", () =>
-    Effect.gen(function* () {
-      const root = yield* promise(temporaryDirectory)
-      yield* promise(() => writeFile(join(root, "large.txt"), "x".repeat(70 * 1024)))
-      const escaping = yield* captureSource(root, { files: [{ path: "../secret" }] }).pipe(
-        Effect.result,
-      )
-      assert.strictEqual(escaping._tag, "Failure")
-      if (escaping._tag === "Failure")
-        assert.match(escaping.failure.message, /workspace-relative and contained/)
-      const injected = yield* captureSource(root, {
-        files: [{ path: "large.txt", content: "injected" }],
+      const selector = yield* validateSourceSelector(root, {
+        selector: "../outside",
+        kind: "path",
       }).pipe(Effect.result)
-      assert.strictEqual(injected._tag, "Failure")
-      if (injected._tag === "Failure")
-        assert.match(injected.failure.message, /must carry only path/)
-      const bundle = yield* captureSource(root, { files: [{ path: "large.txt" }] })
-      assert.strictEqual(bundle.files[0]?.truncated, true)
-      assert.strictEqual(new TextEncoder().encode(bundle.files[0]?.content).length, 64 * 1024)
+      assert.strictEqual(selector._tag, "Failure")
+
+      const sealed = yield* sealEvidenceManifest({
+        workspaceRoot: root,
+        requirementId: "requirement:root::safe",
+        source: { selector: "the selected subject", kind: "prose" },
+        proposal: {
+          observations: [{ id: "ev-001", kind: "file", role: "evaluated", path: "secret-link" }],
+          limits: [],
+        },
+        assessment: assessment("evidence[ev-001]"),
+        capturedAt: "2026-07-14T00:00:00Z",
+      }).pipe(Effect.result)
+      assert.strictEqual(sealed._tag, "Failure")
+      if (sealed._tag === "Failure") assert.match(sealed.failure.message, /escapes the workspace/)
+    }).pipe(Effect.provide(services)),
+  )
+
+  it.effect("rejects misclassified target evidence and unbound finding references", () =>
+    Effect.gen(function* () {
+      const root = yield* promise(temporaryDirectory)
+      yield* promise(() => mkdir(join(root, "src")))
+      yield* promise(() => mkdir(join(root, "docs")))
+      yield* promise(() => writeFile(join(root, "src", "target.ts"), "target"))
+      yield* promise(() => writeFile(join(root, "docs", "design.md"), "# Design\n"))
+
+      const outsideTarget = yield* sealEvidenceManifest({
+        workspaceRoot: root,
+        requirementId: "requirement:root::ready",
+        source: { selector: "src", kind: "path" },
+        proposal: {
+          observations: [{ id: "ev-001", kind: "file", role: "evaluated", path: "docs/design.md" }],
+          limits: [],
+        },
+        assessment: assessment("evidence[ev-001]"),
+        capturedAt: "2026-07-14T00:00:00Z",
+      }).pipe(Effect.result)
+      assert.strictEqual(outsideTarget._tag, "Failure")
+      if (outsideTarget._tag === "Failure")
+        assert.match(outsideTarget.failure.message, /outside the evaluated source selector/)
+
+      const unbound = yield* sealEvidenceManifest({
+        workspaceRoot: root,
+        requirementId: "requirement:root::ready",
+        source: { selector: "src", kind: "path" },
+        proposal: {
+          observations: [{ id: "ev-001", kind: "file", role: "evaluated", path: "src/target.ts" }],
+          limits: [],
+        },
+        assessment: assessment("evidence[ev-missing]"),
+        capturedAt: "2026-07-14T00:00:00Z",
+      }).pipe(Effect.result)
+      assert.strictEqual(unbound._tag, "Failure")
+      if (unbound._tag === "Failure")
+        assert.match(unbound.failure.message, /does not name an accepted evidence observation/)
     }).pipe(Effect.provide(services)),
   )
 })

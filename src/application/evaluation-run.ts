@@ -16,17 +16,11 @@ import {
   type QualityModel,
 } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
-import {
-  anthropicEvaluator,
-  claudeEvaluator,
-  codexEvaluator,
-  harnessCapabilities,
-  openAiEvaluator,
-} from "../adapters/evaluator.ts"
+import { claudeEvaluator, codexEvaluator, harnessCapabilities } from "../adapters/evaluator.ts"
 import type { EvaluatorService } from "../services/evaluator.ts"
 import { HostRuntime, type HostRuntimeService } from "../services/host-runtime.ts"
 import { resolveWorkspace, type Workspace } from "../services/workspace.ts"
-import { detectSourceKind } from "../services/source.ts"
+import { detectSourceKind, validateSourceSelector } from "../services/source.ts"
 import { executeHarnessRun } from "./evaluation-execute.ts"
 import { executeProviderRun, resumeProviderRun } from "./evaluation-provider.ts"
 import { resumeHarnessRun } from "./evaluation-resume.ts"
@@ -47,13 +41,11 @@ export interface EvaluationRunInput {
 export interface EvaluatorDiscovery {
   readonly which: (command: string) => string | null
   readonly codexAuthenticated: () => boolean
-  readonly environment: Readonly<Record<string, string | undefined>>
 }
 
 const evaluatorDiscovery = (runtime: HostRuntimeService): EvaluatorDiscovery => ({
   which: runtime.which,
   codexAuthenticated: runtime.codexAuthenticated,
-  environment: runtime.environment,
 })
 
 const usage = (detail: string) =>
@@ -142,17 +134,13 @@ export const selectEvaluator = (
       name: profileName,
       ...(profile.model === undefined ? {} : { model: profile.model }),
       ...(profile.command === undefined ? {} : { command: profile.command }),
-      ...(profile.apiKeyEnv === undefined ? {} : { apiKeyEnv: profile.apiKeyEnv }),
-      ...(profile.baseUrl === undefined ? {} : { baseUrl: profile.baseUrl }),
     }
     let evaluator: EvaluatorService
     if (profile.kind === "codex") evaluator = codexEvaluator(options)
     else if (profile.kind === "claude") evaluator = claudeEvaluator(options)
-    else if (profile.kind === "openai") evaluator = openAiEvaluator(options)
-    else if (profile.kind === "anthropic") evaluator = anthropicEvaluator(options)
     else
       throw new Error(
-        `evaluator profile ${JSON.stringify(name)} declares unsupported kind ${JSON.stringify(profile.kind)}`,
+        `evaluator profile ${JSON.stringify(name)} declares unsupported kind ${JSON.stringify(profile.kind)}; use codex or claude`,
       )
     return { ...evaluator, reason: "configured evaluator profile" }
   }
@@ -212,44 +200,14 @@ export const selectEvaluator = (
         candidates,
       }
     }
-    for (const profileName of Object.keys(workspace.evaluators).sort()) {
-      const profile = workspace.evaluators[profileName]!
-      if (profile.kind !== "openai" && profile.kind !== "anthropic") continue
-      const keyName =
-        profile.apiKeyEnv ?? (profile.kind === "openai" ? "OPENAI_API_KEY" : "ANTHROPIC_API_KEY")
-      const authenticated = (discovery.environment[keyName] ?? "") !== ""
-      candidates.push({
-        name: profileName,
-        executable: true,
-        structuredOutput: true,
-        authenticated,
-        usable: authenticated,
-        evidence: [
-          `configured ${profile.kind} API profile`,
-          authenticated
-            ? `API key environment variable $${keyName} is present`
-            : `API key environment variable $${keyName} is absent`,
-        ],
-      })
-      if (authenticated) {
-        return {
-          ...configuredEvaluator(profileName),
-          reason: `auto: configured API profile ${JSON.stringify(profileName)} is ready`,
-          candidates,
-        }
-      }
-    }
     throw new Error(
-      "no evaluator is available; install and authenticate codex or claude, configure an API profile with its key environment variable, or pass --evaluator harness",
+      "no evaluator is available; install and authenticate codex or claude, select a configured codex/claude profile, or pass --evaluator harness from a capable invoking agent",
     )
   }
   if (name === "codex")
     return { ...codexEvaluator(), reason: "requested built-in SDK agent evaluator" }
   if (name === "claude")
     return { ...claudeEvaluator(), reason: "requested built-in SDK agent evaluator" }
-  if (name === "openai") return { ...openAiEvaluator(), reason: "requested built-in API evaluator" }
-  if (name === "anthropic")
-    return { ...anthropicEvaluator(), reason: "requested built-in API evaluator" }
   return configuredEvaluator(name)
 }
 
@@ -339,25 +297,18 @@ const dryRun = (input: EvaluationRunInput) =>
     const factors = elements.filter((entry) => entry.kind === "factor")
     const requirements = elements.filter((entry) => entry.kind === "requirement")
     const sources = []
-    let prose = 0
     for (const area of areas) {
       const selector = effectiveSource(model, areaPath(area.id)).selector
       const kind = yield* detectSourceKind(workspace.workspaceRoot.abs, selector)
-      if (kind === "prose") prose += 1
+      yield* validateSourceSelector(workspace.workspaceRoot.abs, { selector, kind })
       sources.push({
         area: area.id,
         selector,
         kind,
-        resolver: kind === "prose" ? "harness" : "walk",
       })
     }
-    if (prose > 0 && !selected.capabilities.sourceResolution) {
-      throw new Error(
-        `evaluator ${JSON.stringify(selected.name)} cannot resolve inferred source selectors; choose codex, claude, or harness, or replace the prose selector with a path or glob`,
-      )
-    }
-    const total = 1 + areas.length * 3 + factors.length * 2 + requirements.length * 2 + 4 + prose
-    const evaluatorUnits = areas.length + factors.length + requirements.length + 3 + prose
+    const total = 1 + areas.length * 3 + factors.length * 2 + requirements.length * 2 + 4
+    const evaluatorUnits = areas.length + factors.length + requirements.length + 3
     const configured = workspace.evaluation.concurrency
     const concurrency = configured ?? runtime.hardwareConcurrency * 2
     if (concurrency < 1) throw new Error("evaluation.concurrency must be a positive integer")
@@ -382,6 +333,13 @@ const dryRun = (input: EvaluationRunInput) =>
       evaluatorReason: selected.reason,
       evaluatorCapabilities: selected.capabilities,
       ...("candidates" in selected ? { evaluatorCandidates: selected.candidates } : {}),
+      inspectionPolicy: {
+        workspace: "read-only",
+        network: "disabled",
+        approvals: "never",
+        verification: "unavailable",
+        repositoryInstructions: "untrusted-data",
+      },
       concurrency: resolvedConcurrency,
       workUnits: { total, evaluatorUnits, completed: 0 },
       sources,
@@ -451,13 +409,7 @@ export const evaluationRunCommand = (
       const detail = squashed instanceof Error ? squashed.message : String(squashed)
       const category = detail.includes("no evaluator is available")
         ? "missing_evaluator"
-        : detail.includes("cannot resolve inferred source selectors")
-          ? "selector_unsupported"
-          : /source (?:selector|glob|path).*?(?:escapes|matched no|contains no|unreadable|could not be packaged)/.test(
-                detail,
-              )
-            ? "source_unavailable"
-            : "internal_error"
+        : "internal_error"
       const failure = { category, detail }
       return Effect.succeed(
         input.json

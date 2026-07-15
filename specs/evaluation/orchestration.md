@@ -24,18 +24,15 @@ The runner **MUST** build a deterministic work graph in model order:
 
 1. `frameEvaluation`;
 2. `frameAreaEvaluation` for each planned area;
-3. `resolveSource` for each planned area whose pinned selector kind has no
-   deterministic resolver (see the
-   [runner's source packaging contract](runner.md#source-packaging));
-4. `frameRequirementEvaluation`, then `assessRateRequirement` for each planned
+3. `frameRequirementEvaluation`, then `assessRateRequirement` for each planned
    requirement;
-5. `frameFactorAnalysis` and `analyzeFactor` for each in-scope factor node,
+4. `frameFactorAnalysis` and `analyzeFactor` for each in-scope factor node,
    bottom-up;
-6. `frameAreaAnalysis` and `analyzeArea` for each in-scope area, bottom-up;
-7. `rankFindings`;
-8. `recommend`;
-9. `rankRecommendations`; and
-10. `buildReports`.
+5. `frameAreaAnalysis` and `analyzeArea` for each in-scope area, bottom-up;
+6. `rankFindings`;
+7. `recommend`;
+8. `rankRecommendations`; and
+9. `buildReports`.
 
 Work-unit IDs **MUST** be deterministic strings: `<kind>` for run-wide units
 and `<kind>:<canonical-ref>` for subject-scoped units, for example
@@ -43,10 +40,9 @@ and `<kind>:<canonical-ref>` for subject-scoped units, for example
 
 Frame units and `buildReports` **MUST** be deterministic runner work; the
 remaining units are evaluator-backed work dispatched under the
-[evaluator contract](evaluator-contract.md). `resolveSource` is
-evaluator-backed gathering, not judgment: its accepted effect is the captured
-source bundle persisted in the artifact's
-[`sources` record](evaluation-json.md#sources), never a result payload.
+[evaluator contract](evaluator-contract.md). Requirement units include their
+own inspection session and produce an evidence proposal that the runner seals
+with the paired results.
 
 `assessRateRequirement` **MUST** execute the protocol's `assessRequirement` and
 `rateRequirement` moves as one evaluator call and persist both the
@@ -75,14 +71,9 @@ subagents, workers, threads, processes, or another runtime-specific mechanism:
 An area's `frameAreaEvaluation` **MUST** complete before local requirement
 work, local factor work, or child area work for that area begins.
 
-An area's `resolveSource` unit, when present, **MUST** complete — its bundle
-captured and persisted — before any of the area's `assessRateRequirement`
-units are dispatched. Analysis and advice units consume prior results, not
-source, and take no dependency on it.
-
-After source resolution, the runner **MUST** freeze one immutable area-context
-package and hash. Every requirement in that area depends on that package and
-receives it unchanged.
+Each `assessRateRequirement` unit **MUST** depend on its requirement frame and
+area frame. It opens a fresh inspection session and **MUST NOT** depend on an
+area-wide evidence package or sibling requirement session.
 
 `RequirementRatingResult`s **MUST** exist before a factor node that depends on
 those direct requirements can be analyzed. The combined
@@ -125,7 +116,7 @@ Parallel execution **MUST** be observationally equivalent to deterministic
 sequential execution in model order.
 
 Each requirement judgment **MUST** use a fresh evaluator session. It **MUST
-NOT** receive a resolver transcript or sibling requirement transcript, so
+NOT** receive a prior inspection transcript or sibling requirement transcript, so
 session scheduling and completion order cannot affect judgment context.
 
 Parallel execution **MUST NOT** change ratings, report content, output
@@ -182,7 +173,9 @@ budget is exhausted — without altering other members' accepted results.
 
 The runner **MUST** merge each accepted work-unit result into
 `evaluation.json` and persist it before treating the work unit as complete for
-scheduling or resume. Write mechanics are the
+scheduling or resume. A requirement unit's assessment, rating, and sealed
+evidence manifest are one atomic acceptance unit; none may persist without the
+others. Write mechanics are the
 [`evaluation.json` contract](evaluation-json.md#persistence).
 
 > Rationale: an interrupted run must resume without repeating accepted
@@ -201,7 +194,9 @@ then rebuild the graph from the current model snapshot and compare it with
 saved state.
 
 A completed work unit **MUST** be reused when its recorded input hash matches
-the recomputed hash of its resolved inputs.
+the recomputed hash of its request inputs and its accepted evidence manifest is
+present and valid. Accepted evidence is immutable resume input; it is not
+regathered.
 
 A work unit **MUST** be rerun when its required output is missing, malformed,
 schema-incompatible, or dependency-stale (its input hash no longer matches).
@@ -209,8 +204,9 @@ schema-incompatible, or dependency-stale (its input hash no longer matches).
 ## Retry and failure
 
 The runner **MUST** retry a failed work unit only when its failure category is
-`rate_limited`, `timeout`, `invalid_evaluator_output`, or
-`schema_invalid_output`, up to three attempts total per work unit. Any other
+`rate_limited`, `timeout`, `invalid_evaluator_output`,
+`schema_invalid_output`, or `evidence_invalid`, up to three attempts total per
+work unit. Any other
 failure category **MUST** fail the run immediately.
 
 An `assessRateRequirement` result that carries an assessment but no valid

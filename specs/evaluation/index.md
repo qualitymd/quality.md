@@ -13,8 +13,8 @@ runner, structured data, orchestration model, and generated report tree.
   strategy, run-local logging, and failure taxonomy.
 - [Evaluator contract](evaluator-contract.md) - capability, envelope, and
   configuration contract for pluggable evaluators.
-- [Agent evaluators](agent-evaluators.md) - SDK-backed agent loops, immutable
-  area context, isolated requirement sessions, capability policy, and safety
+- [Agent evaluators](agent-evaluators.md) - SDK-backed requirement inspection,
+  neutral isolated sessions, evidence proposals, capability policy, and safety
   boundaries.
 - [evaluation.json](evaluation-json.md) - artifact contract for the
   authoritative runner run artifact.

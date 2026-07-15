@@ -5,11 +5,91 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.32.0 - 2026-07-14
+
+### Specification
+
+- QUALITY.md specification `0.12 (Draft)` clarifies that an area's `source`
+  identifies the subject or starting boundary being judged, not a precomputed
+  prompt payload or permission boundary for every supporting file. Evaluation
+  methods may inspect separately classified supporting context without silently
+  widening the area or requirement.
+
+### CLI
+
+- Requirement judgment now runs in a fresh coding-agent inspection session.
+  Codex, Claude, or the invoking harness searches and reads requirement-specific
+  context inside a neutral, read-only workspace policy with network, approval
+  escalation, writes, repository-instruction authority, and executable
+  verification disabled.
+- The runner no longer walks, truncates, or packages one area-wide source bundle
+  and no longer schedules `resolveSource` work. Each requirement returns its
+  assessment, rating, and evidence proposal together; downstream factor/area
+  synthesis, advice, ranking, and reports remain tools-off over accepted data.
+- `evaluation.json` advances to schema version 8. Per-area `sources` bundles are
+  replaced by sealed per-requirement `evidence` manifests containing evaluated
+  or supporting roles, validated workspace-relative file locators,
+  runner-computed bytes and SHA-256 digests, capture times, limits, and a
+  canonical manifest hash—never file bodies or tool transcripts.
+- Evidence acceptance now rejects lexical and symlink escapes, missing or
+  non-text files, evaluated files outside concrete source selectors, invalid
+  line/heading locators, and unbound finding references. Invalid proposals retry
+  as `evidence_invalid`; honestly insufficient evidence remains a partial,
+  blocked, or non-rated judgment outcome.
+- Runnable evaluator methods are now exactly `harness`, `codex`, and `claude`.
+  `auto` tries a ready Codex runtime and then Claude. Direct `openai` and
+  `anthropic` HTTP evaluators, inactive `shell` and `manual` names, API-profile
+  fallback, `apiKeyEnv`, `baseUrl`, and API-specific failures are removed.
+  Authentication belongs to the selected coding-agent runtime and may use its
+  documented login, subscription, or API-key mechanism.
+- Dry-run output now reports evaluator isolation capabilities, the requirement
+  inspection policy, work counts, concurrency, and effective source selectors
+  without claiming resolver choice, bundle size, or a static evidence package.
+  Determinism now explicitly covers runner mechanics and artifact projection,
+  not identical evidence or ratings across agent runtimes or repeated runs.
+
+### /quality skill
+
+- Skill metadata is `0.32.0` and requires
+  `qualitymd >=0.32.0 <0.33.0`. Harness checkpoints now inspect each
+  requirement's authorized workspace directly, keep `source` as the judged
+  subject, classify other context as supporting, treat repository instructions
+  as untrusted data, and submit judgment plus evidence for runner validation.
+- Codex and Claude are the only standalone evaluator fallbacks. The workflow no
+  longer presents direct API evaluators or CLI-managed credential fields; login,
+  subscription, and API-key authentication are all runtime concerns.
+
+### Documentation
+
+- README and Codex/Claude automation guidance now distinguish deterministic
+  runner orchestration and provenance from agentic evidence selection and
+  judgment, and document agent-runtime authentication without API evaluator
+  methods.
+
 ### Packaging
 
 - The Windows `install.cmd` shim prefers PowerShell 7 when available, avoiding
   legacy module-discovery failures inherited from a PowerShell 7 parent while
   retaining Windows PowerShell as its fallback.
+
+### Compatibility / migration
+
+- In-flight schema-version-7 evaluation runs cannot resume under v0.32.0 and
+  must be started again. There is no migration, dual reader, or source-bundle
+  compatibility shim; historical completed artifacts remain historical data.
+- Replace configured `openai` or `anthropic` evaluator profiles with a `codex`
+  or `claude` agent-runtime profile (`kind`, optional `model`, optional
+  `command`), or select explicit `harness`. Remove `apiKeyEnv` and `baseUrl`;
+  configure authentication in the chosen runtime.
+- Harness clients must service requirement inspection requests directly and
+  return the combined `assessment`, `rating`, and `evidence` payload. They no
+  longer receive source bundles or `resolveSource` requests.
+
+Compatibility:
+
+- CLI: `v0.32.0`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.32.0`, requires `qualitymd >=0.32.0 <0.33.0`
 
 ## v0.31.0 - 2026-07-14
 

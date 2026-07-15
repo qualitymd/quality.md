@@ -13,7 +13,7 @@ import { decodeModel, type QualityModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { harnessCapabilities } from "../adapters/evaluator.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
-import { detectSourceKind, packageSource, type SourceBundle } from "../services/source.ts"
+import { detectSourceKind, validateSourceSelector, type AreaSource } from "../services/source.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
 
@@ -107,6 +107,8 @@ export const executeHarnessRun = (
       ...(input.evaluationDir === "" ? {} : { evaluationDir: input.evaluationDir }),
     })
     const raw = yield* fs.readFileString(workspace.model.abs)
+    const bodyStart = raw.indexOf("\n---", 4)
+    const bodyGuidance = bodyStart < 0 ? "" : raw.slice(bodyStart + 4).trim()
     const document = parseQualityDocument(workspace.model.abs, raw)
     const model = decodeModel(document)
     const scope = resolveScope(model, input.area, input.factors)
@@ -163,34 +165,16 @@ export const executeHarnessRun = (
       requirementFrames.set(requirement.ref, frame)
       yield* Effect.promise(() => complete(`frameRequirementEvaluation:${requirement.ref}`, frame))
     }
-    const sourceRecords: Record<string, Record<string, unknown>> = {}
-    const bundles = new Map<string, SourceBundle>()
+    const areaSources: Record<string, AreaSource> = {}
     const sourcePlans = []
     for (const area of plan.areas) {
       const kind = yield* detectSourceKind(workspace.workspaceRoot.abs, area.source)
-      const resolver = kind === "prose" ? "harness" : "walk"
-      sourceRecords[area.ref] = { selector: area.source, kind, resolver }
-      sourcePlans.push({ area: area.ref, selector: area.source, kind, resolver })
-      if (area.localRequirementIds.length === 0) continue
-      if (kind === "prose") continue
-      const bundle = yield* packageSource(workspace.workspaceRoot.abs, area.source, kind)
-      bundles.set(area.ref, bundle)
-      sourceRecords[area.ref] = {
-        ...sourceRecords[area.ref],
-        bundleHash: bundle.hash,
-        capturedAt: timestamp,
-        ...(bundle.truncated ? { truncated: true } : {}),
-        files: bundle.files.map(({ path, sha256, truncated }) => ({
-          path,
-          sha256,
-          ...(truncated === true ? { truncated: true } : {}),
-        })),
-      }
+      const source = { selector: area.source, kind } satisfies AreaSource
+      yield* validateSourceSelector(workspace.workspaceRoot.abs, source)
+      areaSources[area.ref] = source
+      sourcePlans.push({ area: area.ref, ...source })
     }
-    const sourceKinds = Object.fromEntries(
-      Object.entries(sourceRecords).map(([area, record]) => [area, record.kind]),
-    ) as Record<string, "path" | "glob" | "prose">
-    const graph = buildGraph(plan, sourceKinds)
+    const graph = buildGraph(plan)
     const requests = []
     const pending = []
     const completed = new Set(Object.keys(workUnits))
@@ -206,8 +190,8 @@ export const executeHarnessRun = (
           unit,
           plan,
           payloads,
-          bundles,
-          sourceRecords,
+          areaSources,
+          bodyGuidance,
           evaluationId: identity.evaluationId,
         }),
       )
@@ -233,7 +217,8 @@ export const executeHarnessRun = (
         instructions: protocol.instructions,
         ...(protocol.sharedContext === null ? {} : { sharedContext: protocol.sharedContext }),
         ...(protocol.context === null ? {} : { context: protocol.context }),
-        ...(protocol.source.length === 0 ? {} : { source: protocol.source }),
+        ...(protocol.bodyGuidance === "" ? {} : { bodyGuidance: protocol.bodyGuidance }),
+        ...(protocol.inspection === null ? {} : { inspection: protocol.inspection }),
         expectedSchema: protocol.expectedSchema,
         inputHash,
         correlationId,
@@ -242,7 +227,7 @@ export const executeHarnessRun = (
     const evaluatorUnits = graph.filter((unit) => unit.evaluatorBacked).length
     const total = graph.length
     const artifact = {
-      schemaVersion: 7,
+      schemaVersion: 8,
       kind: "EvaluationRun",
       manifest: {
         ...identity,
@@ -253,6 +238,7 @@ export const executeHarnessRun = (
         evaluatorKind: "harness",
         evaluatorCapabilities: harnessCapabilities,
         concurrency: resolvedConcurrency,
+        areaSources,
       },
       state: {
         status: "awaiting_evaluator",
@@ -261,7 +247,7 @@ export const executeHarnessRun = (
         updatedAt: timestamp,
         pendingEvaluatorCalls: pending,
       },
-      sources: sourceRecords,
+      evidence: {},
       results: { payloads },
     }
     yield* fs.makeDirectory(workspace.evaluations.abs, { recursive: true, mode: 0o755 })
@@ -301,7 +287,7 @@ export const executeHarnessRun = (
       evaluator: "harness",
       evaluatorKind: "harness",
       concurrency: resolvedConcurrency,
-      workUnits: { total, evaluatorUnits, completed: payloads.length },
+      workUnits: { total, evaluatorUnits, completed: Object.keys(workUnits).length },
       sources: sourcePlans,
       evaluatorRequests: requests,
       nextActions: [

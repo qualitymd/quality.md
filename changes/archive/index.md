@@ -824,3 +824,7 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   the TypeScript cutover's behavioral and native-platform acceptance, makes its
   Effect testing and architecture conventions agent-operable, and carries the
   verified runtime through the v0.31.0 release (`Done`).
+- [0201 — Agent-native evidence discovery](0201-agent-native-evidence-discovery.md) -
+  moves requirement-specific context discovery into fresh coding-agent
+  sessions, seals per-requirement evidence in the runner, and narrows evaluator
+  methods to harness, Codex, and Claude (`Done`).

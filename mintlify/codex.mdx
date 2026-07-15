@@ -14,8 +14,9 @@ agent-first setup in Codex. For the model behind the cadence, see
 When Codex runs the quality skill's evaluate workflow, the skill selects the
 built-in `harness` evaluator by default (unless you or the workspace config
 choose another evaluator). The deterministic `qualitymd` runner owns the work
-graph and every artifact; the Codex session itself supplies the bounded
-judgment answers through checkpoints. That means:
+graph and every artifact; the Codex session itself inspects requirement-specific
+workspace context and supplies judgment plus evidence locators through
+checkpoints. That means:
 
 - **No provider API key is needed.** Evaluation judgment uses the same
   authenticated agent that is already running the skill.
@@ -62,21 +63,13 @@ same pending work request. `qualitymd status --json` and
 `qualitymd evaluation list --json` identify awaiting runs and their
 continuation command.
 
-## Fallback credentials (only for non-harness evaluators)
+## Agent-runtime authentication
 
-Harness-backed evaluation needs no credential beyond the task's own agent.
-Reserve these for an explicitly selected fallback evaluator, and note that
-they are not interchangeable:
+Harness-backed evaluation needs no credential beyond the task's own agent. If
+you explicitly select the `codex` or `claude` evaluator, authentication belongs
+to that coding-agent runtime and may use its documented login, subscription, or
+headless credential mechanism. `qualitymd` does not define API-key evaluator
+methods or store provider tokens in `.quality/config.yaml`.
 
-- `OPENAI_API_KEY` — the direct OpenAI API evaluator (`--evaluator openai` or
-  an `openai`-kind profile).
-- `ANTHROPIC_API_KEY` — the direct Anthropic API evaluator.
-- `CODEX_API_KEY` / `CODEX_ACCESS_TOKEN` — non-interactive Codex CLI
-  authentication, per the
-  [Codex environment-variable reference](https://learn.chatgpt.com/docs/config-file/environment-variables);
-  distinct from a direct OpenAI API key.
-
-Supply secrets through the environment's secret facility as environment
-variables. Never commit values to `.quality/config.yaml` — evaluator profiles
-reference secrets by environment-variable name only — and avoid exposing
-task-wide credentials to steps that execute repository-controlled code.
+Supply any runtime credential through the environment's secret facility and
+avoid exposing task-wide credentials to repository-controlled code.

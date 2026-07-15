@@ -1,5 +1,13 @@
 # /quality runtime workflows update log
 
+## 2026-07-14
+
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0201 -
+  Agent-native evidence discovery. Requirement checkpoints now search and read
+  their authorized workspace, keep `source` as the judged subject, classify
+  supporting context, and return assessment, rating, and evidence together;
+  synthesis checkpoints remain tools-off.
+
 ## 2026-07-11
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0198 -

@@ -406,7 +406,7 @@ const evaluationRun = Command.make(
     evaluator: Flag.string("evaluator").pipe(
       Flag.withDefault(""),
       Flag.withDescription(
-        "Evaluator to use: auto (default), a built-in name, or a configured profile",
+        "Evaluator to use: auto (default), harness, codex, claude, or a configured agent-runtime profile",
       ),
     ),
     resume: Flag.string("resume").pipe(

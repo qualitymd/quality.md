@@ -15,8 +15,6 @@ export interface PathRef {
 export interface EvaluatorProfile {
   readonly kind: string
   readonly model?: string
-  readonly apiKeyEnv?: string
-  readonly baseUrl?: string
   readonly command?: string
 }
 

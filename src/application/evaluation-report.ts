@@ -72,9 +72,9 @@ export const buildReportsAtRun = (
       (JSON.parse(
         yield* fs.readFileString(paths.join(runAbs, "evaluation.json")),
       ) as ReportArtifact)
-    if (current.schemaVersion !== 7 || current.kind !== "EvaluationRun")
+    if (current.schemaVersion !== 8 || current.kind !== "EvaluationRun")
       throw new Error(
-        `evaluation artifact schema ${current.schemaVersion} is incompatible with schema 7`,
+        `evaluation artifact schema ${current.schemaVersion} is incompatible with schema 8`,
       )
     const model = decodeModel(
       parseQualityDocument(snapshotPath, yield* fs.readFileString(snapshotPath)),

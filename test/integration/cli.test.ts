@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process"
-import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
@@ -28,17 +28,35 @@ const replaceReference = (value: unknown, from: string, to: string): unknown => 
   return value
 }
 
+const replaceEvidenceRefs = (value: unknown): unknown => {
+  if (Array.isArray(value)) return value.map(replaceEvidenceRefs)
+  if (value !== null && typeof value === "object")
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [
+        key,
+        key === "sourceRef" ? "evidence[ev-001]" : replaceEvidenceRefs(child),
+      ]),
+    )
+  return value
+}
+
 const requirementPayload = (subject: string) => ({
-  assessment: replaceReference(
-    structuredClone(evaluationExamples.RequirementAssessmentResult),
-    "requirement:root::has-tests",
-    subject,
+  assessment: replaceEvidenceRefs(
+    replaceReference(
+      structuredClone(evaluationExamples.RequirementAssessmentResult),
+      "requirement:root::has-tests",
+      subject,
+    ),
   ),
   rating: replaceReference(
     structuredClone(evaluationExamples.RequirementRatingResult),
     "requirement:root::has-tests",
     subject,
   ),
+  evidence: {
+    observations: [{ id: "ev-001", kind: "file", role: "evaluated", path: "evidence.txt" }],
+    limits: [],
+  },
 })
 
 describe("CLI compatibility", () => {
@@ -222,7 +240,7 @@ factors:
     }
   })
 
-  it("classifies empty filesystem sources without creating a partial run", async () => {
+  it("passes unmatched source selectors to requirement inspection without prepackaging", async () => {
     await mkdir(join(repositoryRoot, "tmp"), { recursive: true })
     const directory = await mkdtemp(join(repositoryRoot, "tmp", "qualitymd-cli-test-"))
     const model = join(directory, "QUALITY.md")
@@ -249,13 +267,44 @@ factors:
 `,
     )
     try {
-      const result = run("evaluation", "run", "--model", model, "--evaluator", "harness", "--json")
-      expect(result.status).toBe(1)
-      expect(JSON.parse(result.stdout)).toMatchObject({
-        status: "failed",
-        failure: { category: "source_unavailable" },
+      const preview = run(
+        "evaluation",
+        "run",
+        "--model",
+        model,
+        "--evaluator",
+        "harness",
+        "--dry-run",
+        "--json",
+      )
+      expect(JSON.parse(preview.stdout)).toMatchObject({
+        inspectionPolicy: {
+          workspace: "read-only",
+          network: "disabled",
+          approvals: "never",
+          verification: "unavailable",
+          repositoryInstructions: "untrusted-data",
+        },
+        sources: [{ selector: "*.missing", kind: "glob" }],
       })
-      await expect(access(join(directory, ".quality", "evaluations"))).rejects.toThrow()
+      const result = run("evaluation", "run", "--model", model, "--evaluator", "harness", "--json")
+      expect(result.status).toBe(0)
+      const receipt = JSON.parse(result.stdout) as {
+        path: string
+        status: string
+        sources: Array<{ selector: string; kind: string }>
+        evaluatorRequests: Array<Record<string, unknown>>
+      }
+      expect(receipt).toMatchObject({
+        status: "awaiting_evaluator",
+        sources: [{ selector: "*.missing", kind: "glob" }],
+      })
+      expect(receipt.evaluatorRequests[0]).toHaveProperty("inspection")
+      expect(receipt.evaluatorRequests[0]).not.toHaveProperty("source")
+      const artifact = JSON.parse(
+        await readFile(join(directory, receipt.path, "evaluation.json"), "utf8"),
+      )
+      expect(artifact).toMatchObject({ schemaVersion: 8, evidence: {} })
     } finally {
       await rm(directory, { recursive: true })
     }
@@ -293,8 +342,16 @@ factors:
       expect(created.status).toBe(0)
       const receipt = JSON.parse(created.stdout) as {
         path: string
-        evaluatorRequests: Array<{ requestId: string; inputHash: string }>
+        evaluatorRequests: Array<{
+          requestId: string
+          inputHash: string
+          inspection: { source: { selector: string; kind: string } }
+        }>
       }
+      expect(receipt.evaluatorRequests[0]?.inspection.source).toEqual({
+        selector: "evidence.txt",
+        kind: "path",
+      })
       const runPath = join(directory, receipt.path)
       const repeated = run("evaluation", "run", "--resume", runPath, "--json")
       expect(repeated.status).toBe(0)
@@ -330,11 +387,46 @@ factors:
         "--json",
       )
       expect(resumed.status).toBe(0)
-      expect(JSON.parse(resumed.stdout)).toMatchObject({ status: "awaiting_evaluator" })
+      const retried = JSON.parse(resumed.stdout) as {
+        status: string
+        evaluatorRequests: Array<{
+          requestId: string
+          inputHash: string
+          subject: string
+        }>
+      }
+      expect(retried).toMatchObject({ status: "awaiting_evaluator" })
+      const evidenceRetry = retried.evaluatorRequests[0]!
+      const invalidEvidence = requirementPayload(evidenceRetry.subject)
+      invalidEvidence.evidence.observations[0]!.path = "../outside.txt"
+      await writeFile(
+        resultPath,
+        JSON.stringify({
+          requestId: evidenceRetry.requestId,
+          inputHash: evidenceRetry.inputHash,
+          evaluator: { runtime: "test-harness" },
+          payload: invalidEvidence,
+        }),
+      )
+      const evidenceRejected = run(
+        "evaluation",
+        "run",
+        "--resume",
+        runPath,
+        "--evaluator-result",
+        resultPath,
+        "--json",
+      )
+      expect(evidenceRejected.status, evidenceRejected.stderr + evidenceRejected.stdout).toBe(0)
+      expect(JSON.parse(evidenceRejected.stdout)).toMatchObject({
+        status: "awaiting_evaluator",
+        evaluatorRequests: [{ lastFailure: { category: "evidence_invalid" } }],
+      })
       const events = await readFile(join(runPath, "logs", "events.jsonl"), "utf8")
       expect(events).toContain('"event":"work_unit_retry"')
       const calls = await readFile(join(runPath, "logs", "evaluator-calls.jsonl"), "utf8")
       expect(calls).toContain('"failure":{"category":"rate_limited"')
+      expect(calls).toContain('"failure":{"category":"evidence_invalid"')
       expect(calls).toContain('"capabilities":{"structuredOutput":true')
     } finally {
       await rm(directory, { recursive: true })
@@ -416,11 +508,13 @@ factors:
       const afterPartial = JSON.parse(await readFile(artifactPath, "utf8")) as {
         state: { workUnits: Record<string, { status: string }> }
         results: { payloads: Array<{ workUnit: string }> }
+        evidence: Record<string, { observations: ReadonlyArray<{ path: string }> }>
       }
       expect(afterPartial.state.workUnits[accepted.workUnitId]?.status).toBe("completed")
       expect(
         afterPartial.results.payloads.filter((entry) => entry.workUnit === accepted.workUnitId),
       ).toHaveLength(2)
+      expect(afterPartial.evidence[accepted.workUnitId]?.observations[0]?.path).toBe("evidence.txt")
 
       const resumed = run("evaluation", "run", "--resume", runPath, "--json")
       expect(resumed.status).toBe(0)

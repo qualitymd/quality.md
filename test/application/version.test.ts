@@ -6,7 +6,7 @@ import { specificationVersion } from "../../src/build-info.ts"
 
 describe("version", () => {
   it("reports the bundled specification version", () => {
-    assert.strictEqual(specificationVersion, "0.11 (Draft)")
+    assert.strictEqual(specificationVersion, "0.12 (Draft)")
     assert.strictEqual(currentVersionInfo().specificationVersion, specificationVersion)
   })
 

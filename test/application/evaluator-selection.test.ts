@@ -12,11 +12,9 @@ const workspace = (evaluators: Workspace["evaluators"] = {}, selected?: string):
 const discovery = (
   commands: ReadonlyArray<string>,
   authenticated: boolean,
-  environment: Readonly<Record<string, string | undefined>> = {},
 ): EvaluatorDiscovery => ({
   which: (command) => (commands.includes(command) ? `/bin/${command}` : null),
   codexAuthenticated: () => authenticated,
-  environment,
 })
 
 describe("evaluator selection", () => {
@@ -35,26 +33,34 @@ describe("evaluator selection", () => {
     )
   })
 
-  it("selects ready API profiles in alphabetical order without exposing keys", () => {
-    const selected = selectEvaluator(
-      "auto",
-      workspace({
-        zeta: { kind: "openai", apiKeyEnv: "ZETA_KEY" },
-        alpha: { kind: "anthropic", apiKeyEnv: "ALPHA_KEY" },
-      }),
-      discovery([], false, { ALPHA_KEY: "secret", ZETA_KEY: "secret" }),
-    )
-    expect(selected.name).toBe("alpha")
-    expect(JSON.stringify(selected)).not.toContain("secret")
+  it("does not turn configured agent profiles into an implicit auto fallback", () => {
+    expect(() =>
+      selectEvaluator(
+        "auto",
+        workspace({ team: { kind: "claude", command: "/opt/team-claude" } }),
+        discovery([], false),
+      ),
+    ).toThrow("no evaluator is available")
   })
 
-  it("does not allow configured profiles to shadow reserved names", () => {
+  it("supports explicitly configured agent-runtime profiles", () => {
     const selected = selectEvaluator(
-      "openai",
-      workspace({ openai: { kind: "anthropic" } }),
+      "team-agent",
+      workspace({ "team-agent": { kind: "claude", command: "/opt/team-claude" } }),
       discovery([], false),
     )
-    expect(selected.kind).toBe("openai")
+    expect(selected.kind).toBe("claude")
+    expect(selected.name).toBe("team-agent")
+  })
+
+  it("rejects direct API profile kinds", () => {
+    expect(() =>
+      selectEvaluator(
+        "legacy-api",
+        workspace({ "legacy-api": { kind: "openai" } }),
+        discovery([], false),
+      ),
+    ).toThrow("use codex or claude")
   })
 
   it("reports the default Claude adapter's sequential, no-subagent execution boundary", () => {
@@ -62,6 +68,9 @@ describe("evaluator selection", () => {
     expect(selected.capabilities.concurrent).toBe(false)
     expect(selected.capabilities.subagents).toBe(false)
     expect(selected.capabilities.executableOverride).toBe(true)
+    expect(selected.capabilities.workspaceInspection).toBe(true)
+    expect(selected.capabilities.instructionIsolation).toBe(true)
+    expect(selected.capabilities.verification).toBe(false)
   })
 
   it("gives actionable remedies when discovery finds nothing usable", () => {
