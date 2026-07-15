@@ -2,8 +2,18 @@
 
 ## 2026-07-14
 
+- **Done**: Published v0.31.0 and archived
+  [0199 - Effect TypeScript CLI runtime](archive/0199-effect-typescript-cli-runtime.md)
+  and [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md).
+  Exact release-commit CI, preflight, the release workflow, independent public
+  channel verification, and the full hosted install matrix passed. The first
+  install smoke exposed a Windows cmd-shim compatibility issue; the fix and its
+  exact-commit CI passed, followed by a green managed-installer, npm, pnpm, and
+  Homebrew rerun on macOS, Linux, and Windows. Both cases reached `Done` with
+  the completed acceptance ledger archived under 0200.
+
 - **In-Review**: Implemented
-  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) and set
+  [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md) and set
   it `In-Review`. Added mirrored Effect/Vitest coverage, deterministic host and
   updater services, typed expected failures, scoped evaluator resources,
   provider-schema adaptation, honest Claude concurrency, static architecture
@@ -15,13 +25,13 @@
   published-channel evidence remain before `Done` and archival.
 
 - **In-Progress**: Advanced
-  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) from
+  [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md) from
   `Design` to `In-Progress` after settling its acceptance-ledger, test,
   architecture, toolchain, native-validation, and release design. Implementation
   may now update code, tests, workflows, and active guidance.
 
 - **Design**: Advanced
-  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) from
+  [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md) from
   `Draft` to `Design` after reviewing its R1–R8 requirements individually and
   as a set. Added the design doc: one acceptance ledger and former-behavior
   inventory; mirrored package-local tests with `@effect/vitest`; deterministic
@@ -31,7 +41,7 @@
   and publication sequence. No production code changed in this phase.
 
 - **Draft**: Opened
-  [0200 - Effect runtime acceptance](0200-effect-runtime-acceptance.md) to close
+  [0200 - Effect runtime acceptance](archive/0200-effect-runtime-acceptance.md) to close
   the proof gap between 0199's completed TypeScript port and a release-ready
   cutover. The functional spec requires former Go behavior disposition,
   representative differential checks, idiomatic package-local Effect tests,
@@ -41,7 +51,7 @@
   changed in this phase.
 
 - **In-Review**: Implemented
-  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  [0199 - Effect TypeScript CLI runtime](archive/0199-effect-typescript-cli-runtime.md)
   and set it `In-Review`. Replaced all Go source, tests, generators, toolchain,
   and GoReleaser configuration with one layered Effect v4 TypeScript runtime;
   ported the complete command and evaluation surfaces; added SDK-backed Codex
@@ -57,7 +67,7 @@
   real CLI subprocess tests, native smoke behavior, and cross-target builds.
 
 - **In-Progress**: Advanced
-  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  [0199 - Effect TypeScript CLI runtime](archive/0199-effect-typescript-cli-runtime.md)
   from `Design` to `In-Progress` after completing the mandatory runtime spike.
   Pinned the implementation target to Effect `4.0.0-beta.98` from the current
   Effect `main` branch and Bun `1.3.14`; verified the Effect CLI, Schema,
@@ -85,9 +95,9 @@
   the archived case.
 
 - **Design**: Opened
-  [0199 - Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md)
+  [0199 - Effect TypeScript CLI runtime](archive/0199-effect-typescript-cli-runtime.md)
   and advanced it from `Draft` to `Design` after reviewing its functional
-  [spec](0199-effect-typescript-cli-runtime/spec.md) against the requirement
+  [spec](archive/0199-effect-typescript-cli-runtime/spec.md) against the requirement
   quality and set-level bars. The case specifies one clean Go-to-TypeScript
   cutover: preserve the command, artifact, evaluation, install, update, and
   release contracts; detect a syntactically valid glob, then an existing path,

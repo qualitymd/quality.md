@@ -816,3 +816,11 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
   outstanding to the invoking harness so it can fan them out to subagents and
   stream results back, removing the concurrency-1 tax on harness-backed runs
   (`Done`).
+- [0199 — Effect TypeScript CLI runtime](0199-effect-typescript-cli-runtime.md) -
+  replaces the Go implementation with one Effect v4 TypeScript runtime, adds
+  capability-aware Codex and Claude SDK evaluators, and preserves the CLI,
+  evaluation, install, update, and multi-platform release contracts (`Done`).
+- [0200 — Effect runtime acceptance](0200-effect-runtime-acceptance.md) - proves
+  the TypeScript cutover's behavioral and native-platform acceptance, makes its
+  Effect testing and architecture conventions agent-operable, and carries the
+  verified runtime through the v0.31.0 release (`Done`).

@@ -2,7 +2,7 @@
 type: Change Case
 title: Effect TypeScript CLI runtime
 description: Replace the Go implementation with one Effect v4 TypeScript runtime, add SDK-backed agent evaluators with bounded context isolation, and preserve the CLI's behavior and multi-platform distribution contracts through a clean cutover.
-status: In-Review
+status: Done
 tags: [cli, evaluation, evaluator, typescript, effect, distribution]
 timestamp: 2026-07-14T00:00:00Z
 ---

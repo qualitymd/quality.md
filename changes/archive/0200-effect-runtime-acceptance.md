@@ -2,7 +2,7 @@
 type: Change Case
 title: Effect runtime acceptance
 description: Turn the completed TypeScript port into a release-ready, idiomatic, agent-operable Effect codebase with traceable behavioral, native-platform, provider, and distribution evidence.
-status: In-Review
+status: Done
 tags: [cli, typescript, effect, testing, agents, distribution, release]
 timestamp: 2026-07-14T00:00:00Z
 ---

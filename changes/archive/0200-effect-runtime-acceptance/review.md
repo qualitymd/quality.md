@@ -14,30 +14,30 @@ before landing; this file retains the reproducible command and finding.
 
 ## Requirement status
 
-| Requirement                                  | Status  | Evidence                                                                                                                                                                               |
-| -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| R1 — honest state and ledger                 | Passed  | 0199 and 0200 remain `In-Review`; implementation is complete while hosted and published-channel acceptance remains open.                                                               |
-| R2 — former behavior disposition             | Passed  | Suite-by-suite disposition and v0.30.0 differential results below.                                                                                                                     |
-| R3 — Effect-native deterministic tests       | Passed  | Mirrored `test/{domain,application,services,integration}` tree; `@effect/vitest`; model, source, updater, provider, partial-resume, cancellation, CLI, schema, and architecture tests. |
-| R4 — Effect architecture and resources       | Passed  | `HostRuntime` and `UpdateRuntime` services; domain error ownership; static architecture contract; provider temp files and sessions scoped; interruption finalizer test.                |
-| R5 — complete toolchain validation           | Passed  | TypeScript includes `scripts/**/*.ts`; `mise run check` passes typecheck, lint, 13 test files/49 tests, generated-artifact checks, docs links, formatting, and npm bundle checks.      |
-| R6 — agent-operable conventions              | Passed  | `docs/guides/effect-typescript-style.md`, `AGENTS.md`, and `CONTRIBUTING.md`.                                                                                                          |
-| R7 — native/provider/distribution acceptance | Pending | Eight targets compile; local Darwin, Debian/glibc, Alpine/musl, npm, Codex, Claude, cancellation, and resume evidence passes. Hosted Windows and published-channel evidence remain.    |
-| R8 — release and archival                    | Pending | Requires exact release-commit CI, archive, v0.31.0 publish, and channel verification.                                                                                                  |
+| Requirement                                  | Status | Evidence                                                                                                                                                                               |
+| -------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R1 — honest state and ledger                 | Passed | This ledger records the completed acceptance evidence; 0199 and 0200 are `Done` and archive with this closeout.                                                                        |
+| R2 — former behavior disposition             | Passed | Suite-by-suite disposition and v0.30.0 differential results below.                                                                                                                     |
+| R3 — Effect-native deterministic tests       | Passed | Mirrored `test/{domain,application,services,integration}` tree; `@effect/vitest`; model, source, updater, provider, partial-resume, cancellation, CLI, schema, and architecture tests. |
+| R4 — Effect architecture and resources       | Passed | `HostRuntime` and `UpdateRuntime` services; domain error ownership; static architecture contract; provider temp files and sessions scoped; interruption finalizer test.                |
+| R5 — complete toolchain validation           | Passed | TypeScript includes `scripts/**/*.ts`; `mise run check` passes typecheck, lint, 13 test files/49 tests, generated-artifact checks, docs links, formatting, and npm bundle checks.      |
+| R6 — agent-operable conventions              | Passed | `docs/guides/effect-typescript-style.md`, `AGENTS.md`, and `CONTRIBUTING.md`.                                                                                                          |
+| R7 — native/provider/distribution acceptance | Passed | Eight targets compile; local and hosted Darwin, Windows, Linux glibc/musl, npm/pnpm, managed-installer, Homebrew, Codex, Claude, cancellation, and resume evidence passes.             |
+| R8 — release and archival                    | Passed | Exact release-commit CI and preflight passed; v0.31.0 published and independently verified; both cases archive with this ledger.                                                       |
 
 ## 0199 cutover gates
 
-| Gate                                                        | Status  | Evidence                                                                                                                                                                   |
-| ----------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Former Go tests have a disposition                          | Passed  | Former suite table below.                                                                                                                                                  |
-| Differential tests have no unexplained differences          | Passed  | v0.30.0 differential table below; only renderer whitespace and generator-owner comment changed intentionally.                                                              |
-| Every supported target passes native command/install checks | Pending | All eight targets compile; Darwin arm64 and Linux arm64 glibc/musl run locally. Hosted macOS, Linux, and Windows matrix plus post-publish results remain.                  |
-| Compiled Codex and Claude adapters use external runtimes    | Passed  | Release-candidate binaries completed 12/12-unit evaluations through explicit external Codex and Claude executables; interruption finalization remains in the normal suite. |
-| Linux glibc and musl coverage                               | Passed  | Debian Bookworm ran the glibc arm64 archive; Alpine 3.22 ran the musl arm64 archive; target-selection tests and hosted Alpine coverage remain active.                      |
-| Ctrl-C cleans up and leaves a resumable artifact            | Passed  | `test/integration/evaluation-provider.test.ts` interrupts an in-flight evaluator, observes its finalizer, and reads the pending resumable artifact.                        |
-| Generated CLI docs and report gallery are current           | Passed  | `mise run check` passed CLI-doc, schema, specification sync, and report-gallery drift checks; the v0.30.0 report tree is byte-identical.                                   |
-| Archives, npm, Homebrew, updater, and repair pass           | Pending | Eight archives and eight npm platform packages build; local npm launcher install passes. Homebrew, updater, repair, and published channels await release.                  |
-| No live Go production/toolchain path                        | Passed  | No `.go`, `go.mod`, Go build task, GoReleaser config, or active Go contributor guidance remains; historical records are preserved.                                         |
+| Gate                                                        | Status | Evidence                                                                                                                                                                                                |
+| ----------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Former Go tests have a disposition                          | Passed | Former suite table below.                                                                                                                                                                               |
+| Differential tests have no unexplained differences          | Passed | v0.30.0 differential table below; only renderer whitespace and generator-owner comment changed intentionally.                                                                                           |
+| Every supported target passes native command/install checks | Passed | Release CI exercised hosted macOS, Linux, Windows, and Alpine; post-publish install smoke passed managed installers, npm, pnpm, and Homebrew across their supported hosts.                              |
+| Compiled Codex and Claude adapters use external runtimes    | Passed | Release-candidate binaries completed 12/12-unit evaluations through explicit external Codex and Claude executables; interruption finalization remains in the normal suite.                              |
+| Linux glibc and musl coverage                               | Passed | Debian Bookworm ran the glibc arm64 archive; Alpine 3.22 ran the musl arm64 archive; target-selection tests and hosted Alpine coverage remain active.                                                   |
+| Ctrl-C cleans up and leaves a resumable artifact            | Passed | `test/integration/evaluation-provider.test.ts` interrupts an in-flight evaluator, observes its finalizer, and reads the pending resumable artifact.                                                     |
+| Generated CLI docs and report gallery are current           | Passed | `mise run check` passed CLI-doc, schema, specification sync, and report-gallery drift checks; the v0.30.0 report tree is byte-identical.                                                                |
+| Archives, npm, Homebrew, updater, and repair pass           | Passed | Published verification passed all archives/checksums, nine npm packages, Homebrew checksums, and native metadata/spec; updater tests and repair's checksum-reuse/skip-existing path pass the full gate. |
+| No live Go production/toolchain path                        | Passed | No `.go`, `go.mod`, Go build task, GoReleaser config, or active Go contributor guidance remains; historical records are preserved.                                                                      |
 
 ## Former Go suite disposition
 
@@ -128,6 +128,30 @@ Local release-candidate evidence on 2026-07-14:
   intentional renderer whitespace, and the schema differs only in its current
   generator-owner comment.
 
-Still required before `Done`: exact release-commit hosted CI and preflight,
-hosted native Windows coverage, published GitHub/npm/Homebrew/updater/repair
-verification, final URLs and checksums, and Change Case archival.
+Hosted and published evidence on 2026-07-14:
+
+- Release commit `3206576fa779369fc3a44fc65f0792ec2ba4ed26` passed exact-commit
+  [CI](https://github.com/qualitymd/quality.md/actions/runs/29379419071) and the
+  v0.31.0 [release preflight](https://github.com/qualitymd/quality.md/actions/runs/29379482281).
+- The v0.31.0 [release workflow](https://github.com/qualitymd/quality.md/actions/runs/29379512668)
+  published all eight archives, checksums and metadata, the launcher and eight
+  platform packages on npm, the Homebrew cask, curated notes, and the final
+  non-draft [GitHub release](https://github.com/qualitymd/quality.md/releases/tag/v0.31.0).
+- An independent `mise run release-verify -- v0.31.0` passed GitHub asset and
+  checksum identity, release-note parity, all nine npm packages, Homebrew
+  version/checksums, and the downloaded native binary's version and bundled
+  specification.
+- The first post-release install smoke exposed a Windows `cmd.exe` shim issue.
+  Fix `11b27ef7b38f5389435848ec63d42a15502a99e0` made the shim prefer `pwsh`
+  with Windows PowerShell fallback; its exact-commit
+  [CI](https://github.com/qualitymd/quality.md/actions/runs/29379796303) and the
+  full rerun of [install smoke](https://github.com/qualitymd/quality.md/actions/runs/29379799928)
+  passed managed shell, PowerShell, and cmd installers plus npm, pnpm, and
+  Homebrew on the hosted matrix.
+- Updater archive/readiness behavior and repair reuse of published checksums
+  are covered by the green application and release-tooling gate. The published
+  checksums were reused by Homebrew and independently revalidated; no release
+  artifact was rebuilt during the post-release installer fix.
+
+All requirements and cutover gates passed. Change Cases 0199 and 0200 reached
+`Done` and archived with this acceptance record.
