@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.35.2 - 2026-07-15
+
 ### /quality skill
 
 - Automatic evaluation selection now discovers ready SDK evaluators before
@@ -17,12 +19,22 @@ QUALITY.md specification.
   artifacts, the workflow reports the selected method and whether explicit
   intent, configuration, provider affinity, CLI discovery, or harness fallback
   determined it.
+- Skill metadata advances to `0.35.2` and retains
+  `qualitymd >=0.35.0 <0.36.0` compatibility because this patch changes the
+  agent-mediated selection policy without changing the skill-facing CLI
+  surface.
 
 ### Compatibility / migration
 
 - No CLI command, automatic-discovery ordering, JSON receipt, persisted
   evaluation artifact, or QUALITY.md format behavior changes. Existing
   `0.35.x` CLI installations remain compatible with the updated skill.
+
+Compatibility:
+
+- CLI: `v0.35.2`
+- QUALITY.md specification: `0.12 (Draft)`
+- /quality skill: `0.35.2`, requires `qualitymd >=0.35.0 <0.36.0`
 
 ## v0.35.1 - 2026-07-15
 

@@ -2,6 +2,10 @@
 
 ## 2026-07-15
 
+- **Release metadata**: Advanced [`SKILL.md`](SKILL.md) metadata to `0.35.2`
+  while retaining `qualitymd >=0.35.0 <0.36.0` compatibility for the
+  provider-affine SDK evaluator-selection patch release.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0208 - Provider-affine
   SDK evaluator selection. The runtime now discovers SDK readiness before
