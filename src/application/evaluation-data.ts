@@ -21,6 +21,7 @@ import { jsonDocument } from "../domain/json.ts"
 import { decodeModel } from "../domain/model/model.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
 import { evaluationRunDirectories } from "./evaluation-runs.ts"
 
@@ -428,12 +429,9 @@ export const evaluationDataSetCommand = (
             Effect.gen(function* () {
               const absolute = paths.join(run.absolute, candidate.path)
               yield* fs.makeDirectory(paths.dirname(absolute), { recursive: true, mode: 0o755 })
-              const temp = yield* fs.makeTempFile({
-                directory: paths.dirname(absolute),
-                prefix: ".data.",
+              yield* atomicWriteFileString(absolute, jsonDocument(candidate.payload), {
+                mode: 0o644,
               })
-              yield* fs.writeFileString(temp, jsonDocument(candidate.payload), { mode: 0o644 })
-              yield* fs.rename(temp, absolute)
             }),
           { discard: true },
         )

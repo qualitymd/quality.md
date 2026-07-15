@@ -9,6 +9,7 @@ import { planEvaluation } from "../domain/evaluation/plan.ts"
 import { jsonDocument } from "../domain/json.ts"
 import { parseQualityDocument } from "../domain/model/document.ts"
 import { decodeModel } from "../domain/model/model.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { resolveRun, type RunFlags } from "./evaluation-inspect.ts"
 
 type Json = Record<string, unknown>
@@ -46,12 +47,7 @@ const write = (
   Effect.gen(function* () {
     const target = paths.join(root, relative)
     yield* fs.makeDirectory(paths.dirname(target), { recursive: true })
-    const temporary = yield* fs.makeTempFile({
-      directory: paths.dirname(target),
-      prefix: ".report.",
-    })
-    yield* fs.writeFileString(temporary, content, { mode: 0o644 })
-    yield* fs.rename(temporary, target)
+    yield* atomicWriteFileString(target, content, { mode: 0o644 })
   })
 
 export const buildReportsAtRun = (

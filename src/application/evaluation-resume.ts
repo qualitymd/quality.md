@@ -25,6 +25,7 @@ import {
   type SealedEvidenceManifest,
 } from "../services/source.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { hashJsonEffect, requestId } from "./evaluation-hash.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
 import { buildReportsAtRun } from "./evaluation-report.ts"
@@ -503,9 +504,7 @@ export const resumeEvaluationRun = (
       ]
     }
     if (pending.length === 0) delete artifact.state.pendingEvaluatorCalls
-    const temp = yield* fs.makeTempFile({ directory: runAbs, prefix: ".evaluation." })
-    yield* fs.writeFileString(temp, jsonDocument(artifact), { mode: 0o644 })
-    yield* fs.rename(temp, artifactPath)
+    yield* atomicWriteFileString(artifactPath, jsonDocument(artifact), { mode: 0o644 })
     if (events.length > 0) {
       yield* fs.writeFileString(
         paths.join(runAbs, "logs/events.jsonl"),

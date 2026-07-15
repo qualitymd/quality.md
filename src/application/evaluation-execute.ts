@@ -30,20 +30,10 @@ import type { EvaluatorCapabilities, EvaluatorKind } from "../domain/evaluator/t
 import { HostRuntime } from "../services/host-runtime.ts"
 import { detectSourceKind, validateSourceSelector, type AreaSource } from "../services/source.ts"
 import { resolveWorkspace } from "../services/workspace.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { hashJsonEffect, requestId } from "./evaluation-hash.ts"
 import { nextEvaluationRunNumber } from "./evaluation-runs.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
-
-const atomicWrite = Effect.fn("qualitymd.atomicEvaluationWrite")(function* (
-  path: string,
-  content: string,
-) {
-  const fs = yield* FileSystem.FileSystem
-  const paths = yield* Path.Path
-  const temp = yield* fs.makeTempFile({ directory: paths.dirname(path), prefix: ".evaluation." })
-  yield* fs.writeFileString(temp, content, { mode: 0o644 })
-  yield* fs.rename(temp, path)
-})
 
 export interface RunEvaluator {
   readonly name: string
@@ -152,7 +142,9 @@ const execute = Effect.fn("qualitymd.executeEvaluationRun")(function* (
   yield* fs.makeDirectory(runAbs, { mode: 0o755 })
   yield* fs.makeDirectory(paths.join(runAbs, "logs"), { mode: 0o755 })
   yield* fs.writeFileString(paths.join(runAbs, "model-snapshot.md"), raw, { mode: 0o644 })
-  yield* atomicWrite(paths.join(runAbs, "evaluation.json"), jsonDocument(artifact))
+  yield* atomicWriteFileString(paths.join(runAbs, "evaluation.json"), jsonDocument(artifact), {
+    mode: 0o644,
+  })
   yield* fs.writeFileString(paths.join(runAbs, "logs/evaluator-calls.jsonl"), "", {
     mode: 0o600,
   })

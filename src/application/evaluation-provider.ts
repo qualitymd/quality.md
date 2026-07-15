@@ -11,6 +11,7 @@ import { jsonDocument } from "../domain/json.ts"
 import type { EvaluatorService } from "../services/evaluator.ts"
 import { HostRuntime } from "../services/host-runtime.ts"
 import { resolveWorkspace, type Workspace } from "../services/workspace.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { executeEvaluationRun } from "./evaluation-execute.ts"
 import type { EvaluationRunInput } from "./evaluation-run.ts"
 import { resumeEvaluationRun } from "./evaluation-resume.ts"
@@ -70,9 +71,7 @@ const recordCancellation = Effect.fn("qualitymd.recordEvaluationCancellation")(f
   artifact.state.status = "cancelled"
   artifact.state.cancelled = true
   artifact.state.updatedAt = timestamp
-  const temp = yield* fs.makeTempFile({ directory: runAbs, prefix: ".evaluation." })
-  yield* fs.writeFileString(temp, jsonDocument(artifact), { mode: 0o644 })
-  yield* fs.rename(temp, artifactPath)
+  yield* atomicWriteFileString(artifactPath, jsonDocument(artifact), { mode: 0o644 })
   yield* fs.writeFileString(
     paths.join(runAbs, "logs/events.jsonl"),
     `${JSON.stringify({ timestamp, event: "run_status", status: "cancelled" })}\n`,
@@ -204,18 +203,27 @@ const driveProviderRun = (
             )
           }
           const completion = yield* Queue.take(queue)
-          const resultFile = yield* fs.makeTempFileScoped({
-            prefix: "qualitymd-evaluator-result-",
-          })
-          yield* fs.writeFileString(resultFile, jsonDocument(completion.envelope), { mode: 0o600 })
-          const checkpoint = yield* resumeEvaluationRun({
-            ...input,
-            evaluator: evaluator.name,
-            resume: runAbs,
-            resumeDisplay: receipt.path,
-            evaluatorResult: resultFile,
-            json: true,
-          })
+          // Scope the result file to this iteration: the temp directory backing it is
+          // removed as soon as the checkpoint resume reads it, rather than accumulating
+          // one `mkdtemp` dir per completion for the lifetime of the run.
+          const checkpoint = yield* Effect.scoped(
+            Effect.gen(function* () {
+              const resultFile = yield* fs.makeTempFileScoped({
+                prefix: "qualitymd-evaluator-result-",
+              })
+              yield* fs.writeFileString(resultFile, jsonDocument(completion.envelope), {
+                mode: 0o600,
+              })
+              return yield* resumeEvaluationRun({
+                ...input,
+                evaluator: evaluator.name,
+                resume: runAbs,
+                resumeDisplay: receipt.path,
+                evaluatorResult: resultFile,
+                json: true,
+              })
+            }),
+          )
           receipt = parseReceipt(checkpoint)
           active.delete(completion.requestId)
           if (!dispatching(receipt)) return checkpoint

@@ -6,6 +6,7 @@ import * as Path from "effect/Path"
 import { FileSystemFailure } from "../domain/errors.ts"
 import { commandResult, ExitCode, type CommandResult } from "../domain/command-result.ts"
 import { jsonDocument } from "../domain/json.ts"
+import { atomicWriteFileString } from "../services/atomic-file.ts"
 import { invalidDocumentResult, lintDocument } from "../domain/lint/lint.ts"
 import type { LintResult, RepairRecord } from "../domain/lint/result.ts"
 import {
@@ -43,17 +44,8 @@ const readDocument = (path: string) =>
 const writeAtomic = (path: string, content: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem
-    const paths = yield* Path.Path
     const info = yield* fs.stat(path)
-    const temp = yield* fs.makeTempFile({
-      directory: paths.dirname(path),
-      prefix: `.${paths.basename(path)}.`,
-    })
-    yield* Effect.gen(function* () {
-      yield* fs.writeFileString(temp, content, { mode: info.mode })
-      yield* fs.chmod(temp, info.mode)
-      yield* fs.rename(temp, path)
-    }).pipe(Effect.onError(() => Effect.ignore(fs.remove(temp, { force: true }))))
+    yield* atomicWriteFileString(path, content, { mode: info.mode })
   }).pipe(Effect.mapError((cause) => failure("write", path, cause)))
 
 const check = (path: string) =>
